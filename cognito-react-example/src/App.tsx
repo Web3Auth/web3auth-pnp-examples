@@ -6,8 +6,9 @@ import {
   SafeEventEmitterProvider,
 } from '@web3auth/base'
 import {OpenloginAdapter} from '@web3auth/openlogin-adapter'
-import Web3 from 'web3'
 import './App.css'
+// import RPC from './evm.web3'
+import RPC from './evm.ethers'
 
 const clientId =
   'BBWLCT1dIp57_-rJQwfMTTWqZgncOKu56b1TSqyLptpwSKrEndkCerKzgJ7aZ87_jviI5oLUJVCt-_mTqBJUSyQ' // get from https://dashboard.web3auth.io
@@ -66,7 +67,8 @@ function App() {
         relogin: true,
         loginProvider: 'jwt',
         extraLoginOptions: {
-          domain: 'https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com',
+          domain:
+            'https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com/oauth2',
           verifierIdField: 'email',
           response_type: 'token',
           scope: 'email profile openid',
@@ -92,6 +94,9 @@ function App() {
     }
     await web3auth.logout()
     setProvider(null)
+    window.open(
+      'https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com/logout?client_id=2upuksfh6n0n5c0nciirc1bdrv&logout_uri=http://localhost:3000&redirect_uri=http://localhost:3000',
+    )
   }
 
   const getAccounts = async () => {
@@ -99,9 +104,9 @@ function App() {
       uiConsole('provider not initialized yet')
       return
     }
-    const web3 = new Web3(provider as any)
-    const userAccounts = await web3.eth.getAccounts()
-    uiConsole(userAccounts)
+    const rpc = new RPC(provider)
+    const userAccount = await rpc.getAccounts()
+    uiConsole(userAccount)
   }
 
   const getBalance = async () => {
@@ -109,10 +114,9 @@ function App() {
       uiConsole('provider not initialized yet')
       return
     }
-    const web3 = new Web3(provider as any)
-    const accounts = await web3.eth.getAccounts()
-    const balance = await web3.eth.getBalance(accounts[0])
-    uiConsole(web3.utils.fromWei(balance) + ' ETH')
+    const rpc = new RPC(provider)
+    const balance = await rpc.getBalance()
+    uiConsole(balance)
   }
 
   const signMessage = async () => {
@@ -120,41 +124,9 @@ function App() {
       uiConsole('provider not initialized yet')
       return
     }
-    const web3 = new Web3(provider as any)
-    // Get user's Ethereum public address
-    const fromAddress = (await web3.eth.getAccounts())[0]
-
-    const message =
-      '0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad'
-
-    ;(web3.currentProvider as any)?.send(
-      {
-        method: 'eth_sign',
-        params: [fromAddress, message],
-        from: fromAddress,
-      },
-      (err: Error, result: any) => {
-        if (err) {
-          return console.error(err)
-        }
-        uiConsole(result)
-      },
-    )
-  }
-
-  const signTransaction = async () => {
-    if (!provider) {
-      uiConsole('provider not initialized yet')
-      return
-    }
-    const web3 = new Web3(provider as any)
-    const accounts = await web3.eth.getAccounts()
-    const txRes = await web3.eth.signTransaction({
-      from: accounts[0],
-      to: accounts[0],
-      value: web3.utils.toWei('0.01'),
-    })
-    uiConsole(txRes.raw)
+    const rpc = new RPC(provider)
+    const result = await rpc.signMessage()
+    uiConsole(result)
   }
 
   const sendTransaction = async () => {
@@ -162,15 +134,9 @@ function App() {
       uiConsole('provider not initialized yet')
       return
     }
-    const web3 = new Web3(provider as any)
-    const accounts = await web3.eth.getAccounts()
-
-    const txRes = await web3.eth.sendTransaction({
-      from: accounts[0],
-      to: accounts[0],
-      value: web3.utils.toWei('0.0001'),
-    })
-    uiConsole(txRes.transactionHash)
+    const rpc = new RPC(provider)
+    const result = await rpc.signAndSendTransaction()
+    uiConsole(result)
   }
 
   function uiConsole(...args: any[]): void {
@@ -201,11 +167,6 @@ function App() {
         <div>
           <button onClick={signMessage} className="card">
             Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={signTransaction} className="card">
-            Sign Transaction
           </button>
         </div>
         <div>

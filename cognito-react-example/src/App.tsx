@@ -64,11 +64,9 @@ function App() {
     const web3authProvider = await web3auth.connectTo(
       WALLET_ADAPTERS.OPENLOGIN,
       {
-        relogin: true,
         loginProvider: 'jwt',
         extraLoginOptions: {
-          domain:
-            'https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com/oauth2',
+          domain: 'https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com',
           verifierIdField: 'email',
           response_type: 'token',
           scope: 'email profile openid',

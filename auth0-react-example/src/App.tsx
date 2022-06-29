@@ -6,7 +6,8 @@ import {
   SafeEventEmitterProvider,
 } from '@web3auth/base'
 import {OpenloginAdapter} from '@web3auth/openlogin-adapter'
-import RPC from './evm'
+import RPC from './evm.web3'
+// import RPC from './evm.ethers'
 import './App.css'
 
 const clientId =
@@ -122,16 +123,6 @@ function App() {
     uiConsole(result)
   }
 
-  const signTransaction = async () => {
-    if (!provider) {
-      uiConsole('provider not initialized yet')
-      return
-    }
-    const rpc = new RPC(provider)
-    const result = await rpc.signTransaction()
-    uiConsole(result)
-  }
-
   const sendTransaction = async () => {
     if (!provider) {
       uiConsole('provider not initialized yet')
@@ -162,9 +153,6 @@ function App() {
       </button>
       <button onClick={signMessage} className="card">
         Sign Message
-      </button>
-      <button onClick={signTransaction} className="card">
-        Sign Transaction
       </button>
       <button onClick={sendTransaction} className="card">
         Send Transaction

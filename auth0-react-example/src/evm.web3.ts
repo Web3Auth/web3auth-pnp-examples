@@ -53,21 +53,6 @@ export default class EthereumRpc {
     return
   }
 
-  async signTransaction(): Promise<string> {
-    try {
-      const web3 = new Web3(this.provider as any)
-      const accounts = await web3.eth.getAccounts()
-      const txRes = await web3.eth.signTransaction({
-        from: accounts[0],
-        to: accounts[0],
-        value: web3.utils.toWei('0.01'),
-      })
-      return txRes.raw
-    } catch (error) {
-      return error as string
-    }
-  }
-
   async signAndSendTransaction(): Promise<string> {
     try {
       const web3 = new Web3(this.provider as any)

@@ -15,6 +15,7 @@
     "@web3auth/ethereum-provider": "^1.0.0",
     "@web3auth/openlogin-adapter": "^1.0.0",
     "@web3auth/web3auth": "^1.0.0",
+    "ethers": "^5.6.9",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",

@@ -3,8 +3,8 @@
 ## Quick Start
 
 ```bash
-git clone https://github.com/Web3Auth/auth0-react-example.git
-cd auth0-react-example
+git clone https://github.com/Web3Auth/examples.git
+cd examples/auth0-react-example
 ```
 
 ## Installation

@@ -4,7 +4,7 @@
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd cognito-react-example
+cd examples/cognito-react-example
 npm install
 npm run start # localhost:3000
 ```

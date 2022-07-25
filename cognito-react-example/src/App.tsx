@@ -7,8 +7,8 @@ import {
 } from '@web3auth/base'
 import {OpenloginAdapter} from '@web3auth/openlogin-adapter'
 import './App.css'
-// import RPC from './evm.web3'
-import RPC from './evm.ethers'
+// import RPC from './ethersRPC' for using ethers.js
+import RPC from './web3RPC'
 
 const clientId =
   'BBWLCT1dIp57_-rJQwfMTTWqZgncOKu56b1TSqyLptpwSKrEndkCerKzgJ7aZ87_jviI5oLUJVCt-_mTqBJUSyQ' // get from https://dashboard.web3auth.io

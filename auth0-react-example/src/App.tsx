@@ -6,8 +6,8 @@ import {
   SafeEventEmitterProvider,
 } from '@web3auth/base'
 import {OpenloginAdapter} from '@web3auth/openlogin-adapter'
-import RPC from './evm.web3'
-// import RPC from './evm.ethers'
+import RPC from './web3RPC'
+// import RPC from './ethersRPC' for using ethers.js
 import './App.css'
 
 const clientId =

@@ -7,8 +7,8 @@ import {
 } from '@web3auth/base'
 import {OpenloginAdapter} from '@web3auth/openlogin-adapter'
 import './App.css'
-// import RPC from './ethersRPC' for using ethers.js
-import RPC from './web3RPC'
+// import RPC from './ethersRPC' // for using ethers.js
+import RPC from './web3RPC' // for using web3.js
 
 const clientId =
   'BBP_6GOu3EJGGws9yd8wY_xFT0jZIWmiLMpqrEMx36jlM61K9XRnNLnnvEtGpF-RhXJDGMJjL-I-wTi13RcBBOo' // get from https://dashboard.web3auth.io
@@ -48,6 +48,9 @@ function App() {
         setWeb3auth(web3auth)
 
         await web3auth.init()
+        if (web3auth.provider) {
+          setProvider(web3auth.provider);
+        }
       } catch (error) {
         console.error(error)
       }
@@ -58,7 +61,7 @@ function App() {
 
   const login = async () => {
     if (!web3auth) {
-      uiConsole('web3auth not initialized yet')
+      console.log('web3auth not initialized yet')
       return
     }
     const web3authProvider = await web3auth.connectTo(
@@ -72,115 +75,117 @@ function App() {
 
   const getUserInfo = async () => {
     if (!web3auth) {
-      uiConsole('web3auth not initialized yet')
-      return
+      console.log("web3auth not initialized yet");
+      return;
     }
-    const user = await web3auth.getUserInfo()
-    uiConsole(user)
-  }
+    const user = await web3auth.getUserInfo();
+    console.log(user);
+  };
 
   const logout = async () => {
     if (!web3auth) {
-      uiConsole('web3auth not initialized yet')
-      return
+      console.log("web3auth not initialized yet");
+      return;
     }
-    await web3auth.logout()
-    setProvider(null)
-  }
+    await web3auth.logout();
+    setProvider(null);
+  };
 
+  const getChainId = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const chainId = await rpc.getChainId();
+    console.log(chainId);
+  };
   const getAccounts = async () => {
     if (!provider) {
-      uiConsole('provider not initialized yet')
-      return
+      console.log("provider not initialized yet");
+      return;
     }
-    const rpc = new RPC(provider)
-    const userAccount = await rpc.getAccounts()
-    uiConsole(userAccount)
-  }
+    const rpc = new RPC(provider);
+    const address = await rpc.getAccounts();
+    console.log(address);
+  };
 
   const getBalance = async () => {
     if (!provider) {
-      uiConsole('provider not initialized yet')
-      return
+      console.log("provider not initialized yet");
+      return;
     }
-    const rpc = new RPC(provider)
-    const balance = await rpc.getBalance()
-    uiConsole(balance)
-  }
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole('provider not initialized yet')
-      return
-    }
-    const rpc = new RPC(provider)
-    const result = await rpc.signMessage()
-    uiConsole(result)
-  }
+    const rpc = new RPC(provider);
+    const balance = await rpc.getBalance();
+    console.log(balance);
+  };
 
   const sendTransaction = async () => {
     if (!provider) {
-      uiConsole('provider not initialized yet')
-      return
+      console.log("provider not initialized yet");
+      return;
     }
-    const rpc = new RPC(provider)
-    const result = await rpc.signAndSendTransaction()
-    uiConsole(result)
-  }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendTransaction();
+    console.log(receipt);
+  };
 
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector('#console>p')
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2)
+  const signMessage = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
     }
-  }
+    const rpc = new RPC(provider);
+    const signedMessage = await rpc.signMessage();
+    console.log(signedMessage);
+  };
 
-  const loginView = (
-    <>
-      <div className="flex-container">
-        <div>
-          <button onClick={getUserInfo} className="card">
-            Get User Info
-          </button>
-        </div>
-        <div>
-          <button onClick={getAccounts} className="card">
-            Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={logout} className="card">
-            Log Out
-          </button>
-        </div>
+  const getPrivateKey = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const privateKey = await rpc.getPrivateKey();
+    console.log(privateKey);
+  };
+  const loggedInView = (
+    <div>
+      <button onClick={getUserInfo} className="card">
+        Get User Info
+      </button>
+      <button onClick={getChainId} className="card">
+        Get Chain ID
+      </button>
+      <button onClick={getAccounts} className="card">
+        Get Accounts
+      </button>
+      <button onClick={getBalance} className="card">
+        Get Balance
+      </button>
+      <button onClick={sendTransaction} className="card">
+        Send Transaction
+      </button>
+      <button onClick={signMessage} className="card">
+        Sign Message
+      </button>
+      <button onClick={getPrivateKey} className="card">
+        Get Private Key
+      </button>
+      <button onClick={logout} className="card">
+        Log Out
+      </button>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
+    </div>
+  );
 
-      <div id="console" style={{whiteSpace: 'pre-line'}}>
-        <p style={{whiteSpace: 'pre-line'}}></p>
-      </div>
-    </>
-  )
-
-  const logoutView = (
+  const unloggedInView = (
     <button onClick={login} className="card">
       Login
     </button>
-  )
+  );
 
   return (
     <div className="container">
@@ -191,7 +196,7 @@ function App() {
         Core & ReactJS Example for Facebook Login
       </h1>
 
-      <div className="grid">{provider ? loginView : logoutView}</div>
+      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

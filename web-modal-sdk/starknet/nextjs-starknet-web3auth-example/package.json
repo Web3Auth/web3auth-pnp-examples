@@ -1,0 +1,32 @@
+{
+  "name": "next-web3auth-modal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@web3auth/base": "^1.1.1",
+    "@web3auth/web3auth": "^1.1.1",
+    "@web3auth/openlogin-adapter": "^1.1.1",
+    "@starkware-industries/starkware-crypto-utils": "^0.0.2",
+    "elliptic": "^6.5.4",
+    "starknet": "^3.11.0",
+    "web3": "^1.7.0",
+    "next": "12.1.6",
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
+  },
+  "devDependencies": {
+    "@types/elliptic": "^6.4.14",
+    "@types/node": "17.0.35",
+    "@types/react": "18.0.9",
+    "@types/react-dom": "18.0.4",
+    "eslint": "8.15.0",
+    "eslint-config-next": "12.1.6",
+    "typescript": "4.6.4"
+  }
+}

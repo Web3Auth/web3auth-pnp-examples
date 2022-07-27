@@ -4,7 +4,7 @@
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd examples/google-core-react-example
+cd web-core-sdk/custom-authentication/google-react-core-example
 npm install
 npm run start # localhost:3000
 ```

@@ -4,7 +4,7 @@
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd examples/twitch-core-react-example
+cd web-core-sdk/custom-authentication/twitch-react-core-example
 npm install
 npm run start # localhost:3000
 ```

@@ -4,7 +4,7 @@
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd examples/cognito-react-example
+cd web-core-sdk/custom-authentication/cognito-react-core-example
 npm install
 npm run start # localhost:3000
 ```

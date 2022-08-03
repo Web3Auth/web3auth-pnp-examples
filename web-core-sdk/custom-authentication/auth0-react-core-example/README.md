@@ -1,4 +1,4 @@
-# Web3Auth x Cognito Demo Application
+# Web3Auth x Auth0 Demo Application
 
 ## Quick Start
 

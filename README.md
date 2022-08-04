@@ -69,14 +69,14 @@ provider specific to the user and application.
 
 ### Custom Authentication
 
-| Auth Provider | Lang Framework | Directory                                                                         |
-| :------------ | :------------- | :-------------------------------------------------------------------------------- |
-| `Auth0`       | `REACT`        | [Auth0-React-Web3Auth-Core-Example](/web-core-sdk/auth0-react-core-example)       |
-| `Google`      | `REACT`        | [Google-React-Web3Auth-Core-Example](/web-core-sdk/google-react-core-example)     |
-| `Discord`     | `REACT`        | [Discord-React-Web3Auth-Core-Example](/web-core-sdk/discord-react-core-example)   |
-| `Facebook`    | `REACT`        | [Facebook-React-Web3Auth-Core-Example](/web-core-sdk/facebook-react-core-example) |
-| `Twitch`      | `REACT`        | [Twitch-React-Web3Auth-Core-Example](/web-core-sdk/twitch-react-core-example)     |
-| `AWS Cognito` | `REACT`        | [Cognito-React-Web3Auth-Core-Example](/web-core-sdk/cognito-react-core-example)   |
+| Auth Provider | Lang Framework | Directory                                                                                               |
+| :------------ | :------------- | :------------------------------------------------------------------------------------------------------ |
+| `Auth0`       | `REACT`        | [Auth0-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/auth0-react-core-example)       |
+| `Google`      | `REACT`        | [Google-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/google-react-core-example)     |
+| `Discord`     | `REACT`        | [Discord-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/discord-react-core-example)   |
+| `Facebook`    | `REACT`        | [Facebook-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/facebook-react-core-example) |
+| `Twitch`      | `REACT`        | [Twitch-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/twitch-react-core-example)     |
+| `AWS Cognito` | `REACT`        | [Cognito-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/cognito-react-core-example)   |
 
 ### Server Side Verification
 

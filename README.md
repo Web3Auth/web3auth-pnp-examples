@@ -49,7 +49,7 @@ provider specific to the user and application.
 
 | Blockchain | Lang Framework | Directory                                                                                      |
 | :--------- | :------------- | :--------------------------------------------------------------------------------------------- |
-| `StarkNet` | `REACT`        | [React-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/react-starkset-web3auth-example)     |
+| `StarkNet` | `REACT`        | [React-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/react-starknet-web3auth-example)     |
 | `StarkNet` | `NEXTJS`       | [NextJS-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/nextjs-starknet-web3auth-example)   |
 | `StarkNet` | `Vue`          | [Vue-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/vue-starknet-web3auth-example)         |
 | `StarkNet` | `Angular`      | [Angular-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/angular-starknet-web3auth-example) |

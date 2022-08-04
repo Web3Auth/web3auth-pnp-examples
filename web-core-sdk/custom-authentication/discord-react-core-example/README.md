@@ -16,3 +16,9 @@ account for the integration and provide you with the links on how to develop a
 basic web application on the blockchain of your choice.
 
 [Read the full guide to configure.](https://web3auth.io/docs/guides/discord)
+
+## Questions
+
+Ask us on our
+[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
+out to our [Discord](https://discord.gg/web3auth).

@@ -11,7 +11,14 @@ npm run start # localhost:3000
 
 ## Configure
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Auth0 account for the integration and provide you with the links on how to
-develop a basic web application on the blockchain of your choice.
+This guide will cover the basics of how to set up your Web3Auth SDK and Auth0
+account for the integration and provide you with the links on how to develop a
+basic web application on the blockchain of your choice.
 
 [Read the full guide to configure.](https://web3auth.io/docs/guides/auth0)
+
+## Questions
+
+Ask us on our
+[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
+out to our [Discord](https://discord.gg/web3auth).

@@ -1,0 +1,19 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "web-core-sdk/custom-authentication/*",
+    "web-core-sdk/server-side-verification/*",
+    "web-modal-sdk/evm/*",
+    "web-modal-sdk/starkex/*",
+    "web-modal-sdk/starknet/*",
+    "web-modal-sdk/tezos/*"
+  ],
+  "scripts": {
+    "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'"
+  },
+  "devDependencies": {
+    "lerna": "^5.4.2",
+    "npm-check-updates": "^16.0.5"
+  }
+}

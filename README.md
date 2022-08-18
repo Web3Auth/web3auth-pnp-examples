@@ -84,6 +84,12 @@ provider specific to the user and application.
 | :---------------- | :------------- | :-------------------------------------------------------------------------------------------------------------- |
 | `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-Core-Example](/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example) |
 
+## Web3Auth Mobile SDKs
+
+| SDK       | Doccumentation                                        | Guide                                            | Directory                   |
+| :-------- | :---------------------------------------------------- | :----------------------------------------------- | :-------------------------- |
+| `Android` | [Documnetation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-Example](/android) |
+
 ## Questions
 
 Ask us on our

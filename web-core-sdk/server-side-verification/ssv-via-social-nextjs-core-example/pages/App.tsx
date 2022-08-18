@@ -8,6 +8,7 @@ import {
 import {OpenloginAdapter} from '@web3auth/openlogin-adapter'
 // import RPC from "./evm.web3";
 import RPC from './evm.ethers'
+import {getPublic, getPublicCompressed} from '@toruslabs/eccrypto'
 
 const clientId =
   'BG7vMGIhzy7whDXXJPZ-JHme9haJ3PmV1-wl9SJPGGs9Cjk5_8m682DJ-lTDmwBWJe-bEHYE_t9gw0cdboLEwR8' // get from https://dashboard.web3auth.io
@@ -48,7 +49,6 @@ function App() {
         })
         web3auth.configureAdapter(openloginAdapter)
         setWeb3auth(web3auth)
-
         await web3auth.init()
         if (web3auth.provider) {
           setProvider(web3auth.provider)
@@ -81,7 +81,13 @@ function App() {
       return
     }
     const user = await web3auth.getUserInfo()
-    const parsedToken = parseJWT(user?.idToken as string)
+
+    const privKey = await web3auth.provider?.request({
+      method: 'eth_private_key',
+    })
+    const pubkey = getPublicCompressed(Buffer.from(privKey, 'hex')).toString(
+      'hex',
+    )
 
     // Validate idToken with server
     const res = await fetch('/api/login', {
@@ -90,7 +96,7 @@ function App() {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + user.idToken,
       },
-      body: JSON.stringify({appPubKey: parsedToken.wallets[0].public_key}),
+      body: JSON.stringify({appPubKey: pubkey}),
     })
     if (res.status === 200) {
       console.log('JWT Verification Successful')
@@ -99,12 +105,6 @@ function App() {
       console.log('JWT Verification Failed')
       uiConsole('JWT Verification Failed')
     }
-  }
-
-  const parseJWT = (token: string) => {
-    const base64Url = token.split('.')[1]
-    const base64 = base64Url.replace('-', '+').replace('_', '/')
-    return JSON.parse(window.atob(base64))
   }
 
   const logout = async () => {

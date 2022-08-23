@@ -11,7 +11,7 @@ to test in your local device.
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd android
+cd android/custom-authentication-example
 # Open in Android Studio
 ```
 

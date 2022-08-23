@@ -73,6 +73,7 @@ provider specific to the user and application.
 | :------------ | :------------- | :------------------------------------------------------------------------------------------------------ |
 | `Auth0`       | `REACT`        | [Auth0-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/auth0-react-core-example)       |
 | `Google`      | `REACT`        | [Google-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/google-react-core-example)     |
+| `Firebase`    | `REACT`        | [Firebase-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/firebase-react-core-example) |
 | `Discord`     | `REACT`        | [Discord-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/discord-react-core-example)   |
 | `Facebook`    | `REACT`        | [Facebook-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/facebook-react-core-example) |
 | `Twitch`      | `REACT`        | [Twitch-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/twitch-react-core-example)     |

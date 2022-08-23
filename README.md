@@ -87,9 +87,9 @@ provider specific to the user and application.
 
 ## Web3Auth Mobile SDKs
 
-| SDK       | Doccumentation                                        | Guide                                            | Directory                   |
+| SDK       | Documentation                                         | Guide                                            | Directory                   |
 | :-------- | :---------------------------------------------------- | :----------------------------------------------- | :-------------------------- |
-| `Android` | [Documnetation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-Example](/android) |
+| `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-Example](/android) |
 
 ## Questions
 

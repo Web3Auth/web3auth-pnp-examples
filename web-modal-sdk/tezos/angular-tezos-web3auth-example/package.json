@@ -1,5 +1,5 @@
 {
-  "name": "angular-web3auth-modal",
+  "name": "angular-tezos-web3auth-example",
   "version": "0.1.0",
   "scripts": {
     "ng": "ng",

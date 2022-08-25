@@ -1,0 +1,109 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.sbz.web3authdemoapp"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="32" />
+9-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:6:5-67
+11-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:6:22-64
+12
+13    <queries>
+13-->[org.torusresearch:web3auth-android-sdk:2.4.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/3a685e3a350be6a70807d497d5ae096f/transformed/web3auth-android-sdk-2.4.0/AndroidManifest.xml:9:5-13:15
+14        <intent>
+14-->[org.torusresearch:web3auth-android-sdk:2.4.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/3a685e3a350be6a70807d497d5ae096f/transformed/web3auth-android-sdk-2.4.0/AndroidManifest.xml:10:9-12:18
+15            <action android:name="android.support.customtabs.action.CustomTabsService" />
+15-->[org.torusresearch:web3auth-android-sdk:2.4.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/3a685e3a350be6a70807d497d5ae096f/transformed/web3auth-android-sdk-2.4.0/AndroidManifest.xml:11:13-90
+15-->[org.torusresearch:web3auth-android-sdk:2.4.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/3a685e3a350be6a70807d497d5ae096f/transformed/web3auth-android-sdk-2.4.0/AndroidManifest.xml:11:21-87
+16        </intent>
+17    </queries>
+18
+19    <application
+19-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:8:5-38:19
+20        android:allowBackup="true"
+20-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:9:9-35
+21        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+21-->[androidx.core:core:1.8.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/319818de8066db9dee1015fa48896948/transformed/core-1.8.0/AndroidManifest.xml:24:18-86
+22        android:dataExtractionRules="@xml/data_extraction_rules"
+22-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:10:9-65
+23        android:debuggable="true"
+24        android:fullBackupContent="@xml/backup_rules"
+24-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:11:9-54
+25        android:icon="@mipmap/ic_launcher"
+25-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:12:9-43
+26        android:label="@string/app_name"
+26-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:13:9-41
+27        android:roundIcon="@mipmap/ic_launcher_round"
+27-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:14:9-54
+28        android:supportsRtl="true"
+28-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:15:9-35
+29        android:theme="@style/Theme.Web3AuthDemoApp" >
+29-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:16:9-53
+30        <activity
+30-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:18:9-37:20
+31            android:name="com.sbz.web3authdemoapp.MainActivity"
+31-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:20:13-41
+32            android:exported="true"
+32-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:21:13-36
+33            android:launchMode="singleTop" >
+33-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:19:13-43
+34            <intent-filter>
+34-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:22:13-26:29
+35                <action android:name="android.intent.action.MAIN" />
+35-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:23:17-69
+35-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:23:25-66
+36
+37                <category android:name="android.intent.category.LAUNCHER" />
+37-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:25:17-77
+37-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:25:27-74
+38            </intent-filter>
+39            <intent-filter>
+39-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:28:13-36:29
+40                <action android:name="android.intent.action.VIEW" />
+40-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:29:17-69
+40-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:29:25-66
+41
+42                <category android:name="android.intent.category.DEFAULT" />
+42-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:31:17-76
+42-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:31:27-73
+43                <category android:name="android.intent.category.BROWSABLE" />
+43-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:32:17-78
+43-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:32:27-75
+44
+45                <!-- Accept URIs: {YOUR_APP_PACKAGE_NAME}://* -->
+46                <data android:scheme="com.sbz.web3authdemoapp" />
+46-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:35:17-66
+46-->/Users/mohammadshahbazalam/git/GitHub/examples/mobile/android/app/src/main/AndroidManifest.xml:35:23-63
+47            </intent-filter>
+48        </activity>
+49
+50        <provider
+50-->[androidx.emoji2:emoji2:1.0.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/73392ce70148740a213c912606e6e592/transformed/emoji2-1.0.0/AndroidManifest.xml:26:9-34:20
+51            android:name="androidx.startup.InitializationProvider"
+51-->[androidx.emoji2:emoji2:1.0.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/73392ce70148740a213c912606e6e592/transformed/emoji2-1.0.0/AndroidManifest.xml:27:13-67
+52            android:authorities="com.sbz.web3authdemoapp.androidx-startup"
+52-->[androidx.emoji2:emoji2:1.0.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/73392ce70148740a213c912606e6e592/transformed/emoji2-1.0.0/AndroidManifest.xml:28:13-68
+53            android:exported="false" >
+53-->[androidx.emoji2:emoji2:1.0.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/73392ce70148740a213c912606e6e592/transformed/emoji2-1.0.0/AndroidManifest.xml:29:13-37
+54            <meta-data
+54-->[androidx.emoji2:emoji2:1.0.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/73392ce70148740a213c912606e6e592/transformed/emoji2-1.0.0/AndroidManifest.xml:31:13-33:52
+55                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+55-->[androidx.emoji2:emoji2:1.0.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/73392ce70148740a213c912606e6e592/transformed/emoji2-1.0.0/AndroidManifest.xml:32:17-75
+56                android:value="androidx.startup" />
+56-->[androidx.emoji2:emoji2:1.0.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/73392ce70148740a213c912606e6e592/transformed/emoji2-1.0.0/AndroidManifest.xml:33:17-49
+57            <meta-data
+57-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/b4411e330534bfab92f112750c9fdb33/transformed/lifecycle-process-2.4.0/AndroidManifest.xml:31:13-33:52
+58                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+58-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/b4411e330534bfab92f112750c9fdb33/transformed/lifecycle-process-2.4.0/AndroidManifest.xml:32:17-78
+59                android:value="androidx.startup" />
+59-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/mohammadshahbazalam/.gradle/caches/transforms-3/b4411e330534bfab92f112750c9fdb33/transformed/lifecycle-process-2.4.0/AndroidManifest.xml:33:17-49
+60        </provider>
+61    </application>
+62
+63</manifest>

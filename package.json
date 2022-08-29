@@ -4,7 +4,13 @@
   "workspaces": [
     "web-core-sdk/custom-authentication/*",
     "web-core-sdk/server-side-verification/*",
+    "web-core-sdk/evm/*",
+    "web-core-sdk/solana/*",
+    "web-core-sdk/starkex/*",
+    "web-core-sdk/starknet/*",
+    "web-core-sdk/tezos/*",
     "web-modal-sdk/evm/*",
+    "web-modal-sdk/solana/*",
     "web-modal-sdk/starkex/*",
     "web-modal-sdk/starknet/*",
     "web-modal-sdk/tezos/*"

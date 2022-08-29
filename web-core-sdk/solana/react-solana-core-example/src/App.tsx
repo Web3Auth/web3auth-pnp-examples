@@ -16,6 +16,7 @@ function App() {
       try {
 
       const web3auth = new Web3AuthCore({
+        clientId,
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.SOLANA,
           chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
@@ -27,7 +28,6 @@ function App() {
 
       const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {
-          clientId, // Web3Auth Client ID
           network: "testnet",
           uxMode: "popup",
         },

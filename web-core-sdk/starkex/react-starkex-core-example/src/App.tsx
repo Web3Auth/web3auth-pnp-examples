@@ -16,6 +16,7 @@ function App() {
       try {
 
       const web3auth = new Web3AuthCore({
+        clientId,
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.OTHER
         },
@@ -23,7 +24,6 @@ function App() {
 
       const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {
-          clientId,
           network: "testnet",
           uxMode: "popup",  
         },

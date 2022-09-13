@@ -91,6 +91,7 @@ provider specific to the user and application.
 | :-------- | :---------------------------------------------------- | :----------------------------------------------- | :------------------------------------------------------------------------------- |
 | `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-General-Example](/android/general-example/)                             |
 | `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-Custom-Authentication-Example](/android/custom-authentication-example/) |
+| `Flutter` | [Documentation](https://web3auth.io/docs/sdk/flutter) | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Example](/flutter)                                                      |
 
 ## Web3Auth Gaming SDKs
 

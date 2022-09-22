@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -653,8 +653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eab2a0bf902d6e4b9c2e968ad89f528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientId: BMTYgKa4904DjTJJUHIIxrY7HQgo36UlKkSPUfBbK_0nzw_aiVO2NMqrXl-1itMyz7kY7MvnRJwJFlqdNvApN-A
-  redirectUri: xxxapp://com.XXX.Web3AuthUnity
+  clientId: BP-HcHP_eD6X-TEZhh_yTC2p9skVcoe2iwqcvDH2jV2kHxEr7U8_ZsMARgiwl_5jX9FYRNuKjtzBHfam_GUe6qg
+  redirectUri: torusapp://com.torus.Web3AuthUnity/auth
   network: 1
 --- !u!81 &1293556679
 AudioListener:

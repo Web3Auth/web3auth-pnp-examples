@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -19,8 +20,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _result = '<empty>';
+  String _result = '';
   bool logoutVisible = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -53,44 +59,100 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // Map<String, dynamic> user = jsonDecode(_result);
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Web3Auth x Flutter Example'),
         ),
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Login with'),
-            ),
-            ElevatedButton(
-                onPressed: _login(_withGoogle), child: const Text('Google')),
-            ElevatedButton(
-                onPressed: _login(_withFacebook),
-                child: const Text('Facebook')),
-            ElevatedButton(
-                onPressed: _login(_withEmailPasswordless),
-                child: const Text('Email Passwordless')),
-            ElevatedButton(
-                onPressed: _login(_withDiscord), child: const Text('Discord')),
-            Visibility(
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.red // This is what you need!
-                      ),
-                  onPressed: _logout(),
-                  child: const Text('Logout')),
-              visible: logoutVisible,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Result: $_result'),
-            )
-          ],
-        )),
+        body: SingleChildScrollView(
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+              ),
+              Visibility(
+                visible: !logoutVisible,
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.flutter_dash,
+                      size: 80,
+                      color: Color(0xFF1389fd),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    const Text(
+                      'Web3Auth',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 36,
+                          color: Color(0xFF0364ff)),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      'Welcome to Web3Auth x Flutter Demo',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Login with',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: _login(_withGoogle),
+                        child: const Text('Google')),
+                    ElevatedButton(
+                        onPressed: _login(_withFacebook),
+                        child: const Text('Facebook')),
+                    ElevatedButton(
+                        onPressed: _login(_withEmailPasswordless),
+                        child: const Text('Email Passwordless')),
+                    ElevatedButton(
+                        onPressed: _login(_withDiscord),
+                        child: const Text('Discord')),
+                  ],
+                ),
+              ),
+              Visibility(
+                // ignore: sort_child_properties_last
+                child: Column(
+                  children: [
+                    Center(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Colors.red[600] // This is what you need!
+                              ),
+                          onPressed: _logout(),
+                          child: Column(
+                            children: const [
+                              Text('Logout'),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+                visible: logoutVisible,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(_result),
+              )
+            ],
+          )),
+        ),
       ),
     );
   }
@@ -114,11 +176,11 @@ class _MyAppState extends State<MyApp> {
   VoidCallback _logout() {
     return () async {
       try {
-        await Web3AuthFlutter.logout();
         setState(() {
-          _result = '<empty>';
+          _result = '';
           logoutVisible = false;
         });
+        await Web3AuthFlutter.logout();
       } on UserCancelledException {
         print("User cancelled.");
       } on UnKnownException {
@@ -130,7 +192,7 @@ class _MyAppState extends State<MyApp> {
   Future<Web3AuthResponse> _withGoogle() {
     return Web3AuthFlutter.login(LoginParams(
       loginProvider: Provider.google,
-      mfaLevel: MFALevel.NONE,
+      mfaLevel: MFALevel.DEFAULT,
     ));
   }
 

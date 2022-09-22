@@ -17,7 +17,7 @@ const resolvedRedirectUrl =
     : Linking.createURL("web3auth", { scheme: scheme });
 
 const clientId = "YOUR_CLIENT_ID";
-const providerUrl = "homestead"; // Or your desired provider url
+const providerUrl = "https://rpc.ankr.com/eth"; // Or your desired provider url
       
 export default function App() {
   const [key, setKey] = useState("");

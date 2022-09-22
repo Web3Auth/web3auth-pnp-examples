@@ -21,7 +21,7 @@ const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
   'BP-HcHP_eD6X-TEZhh_yTC2p9skVcoe2iwqcvDH2jV2kHxEr7U8_ZsMARgiwl_5jX9FYRNuKjtzBHfam_GUe6qg';
-const providerUrl = 'homestead'; // Or your desired provider url
+const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
 
 export default function App() {
   const [key, setKey] = useState('');

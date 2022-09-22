@@ -1,0 +1,29 @@
+PODS:
+  - Flutter (1.0.0)
+  - Web3Auth (3.5.0)
+  - web3auth_flutter (0.1.1):
+    - Flutter
+    - Web3Auth (~> 3.5.0)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - web3auth_flutter (from `.symlinks/plugins/web3auth_flutter/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Web3Auth
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  web3auth_flutter:
+    :path: ".symlinks/plugins/web3auth_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Web3Auth: 75c2b7d480f23dffa0eda9a589e2bc3cba1cd961
+  web3auth_flutter: d79313b6942fd627cd279e9c1d13232a4345f7f7
+
+PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
+
+COCOAPODS: 1.11.3

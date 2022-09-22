@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
     if (Platform.isAndroid) {
       redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
     } else if (Platform.isIOS) {
-      redirectUrl = Uri.parse('w3a://com.example.w3aflutter');
+      redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
     } else {
       throw UnKnownException('Unknown platform');
     }
@@ -204,7 +204,7 @@ class _MyAppState extends State<MyApp> {
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
         extraLoginOptions:
-            ExtraLoginOptions(login_hint: "shahbaz@web3auth.io")));
+            ExtraLoginOptions(login_hint: "hello@tor.us")));
   }
 
   Future<Web3AuthResponse> _withDiscord() {

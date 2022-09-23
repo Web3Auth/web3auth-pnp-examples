@@ -9,14 +9,12 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 global.Buffer = global.Buffer || Buffer;
     
-const scheme = "web3authrnsample"; // Or your desired app redirection scheme
-
 const resolvedRedirectUrl =
   Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
     ? Linking.createURL("web3auth", {})
     : Linking.createURL("web3auth", { scheme: scheme });
 
-const clientId = "YOUR_CLIENT_ID";
+const clientId = "BP-HcHP_eD6X-TEZhh_yTC2p9skVcoe2iwqcvDH2jV2kHxEr7U8_ZsMARgiwl_5jX9FYRNuKjtzBHfam_GUe6qg";
 const providerUrl = "https://rpc.ankr.com/eth"; // Or your desired provider url
       
 export default function App() {
@@ -124,20 +122,20 @@ export default function App() {
 
   const loggedInView = (
     <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
-      <Button title="Get User Info" onPress={() => uiConsole(userInfo)} />
-      <Button title="Get Chain ID" onPress={() => getChainId()} />
-      <Button title="Get Accounts" onPress={() => getAccounts()} />
-      <Button title="Get Balance" onPress={() => getBalance()} />
-      <Button title="Send Transaction" onPress={() => sendTransaction()}/>
-      <Button title="Sign Message" onPress={() => signMessage()} />
-      <Button title="Get Private Key" onPress={() => uiConsole(key)} />
-      <Button title="Log Out" onPress={() => setKey("")} />
+      <Button title="Get User Info" onPress={() => uiConsole(userInfo)} style={styles.button} />
+      <Button title="Get Chain ID" onPress={() => getChainId()} style={styles.button} />
+      <Button title="Get Accounts" onPress={() => getAccounts()} style={styles.button} />
+      <Button title="Get Balance" onPress={() => getBalance()} style={styles.button} />
+      <Button title="Send Transaction" onPress={() => sendTransaction()} style={styles.button} />
+      <Button title="Sign Message" onPress={() => signMessage()} style={styles.button} />
+      <Button title="Get Private Key" onPress={() => uiConsole(key)} style={styles.button} />
+      <Button title="Log Out" onPress={() => setKey("")} style={styles.button} />
     </View>
   );
   
   const unloggedInView = (
     <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
-      <Button title="Login with Web3Auth" onPress={login} />
+      <Button title="Login with Web3Auth" onPress={login} style={styles.button} />
     </View>
   );
 
@@ -160,6 +158,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  button: {
+    margin: 5,
+    padding: 5
   },
   consoleArea: {
     margin: 20, 

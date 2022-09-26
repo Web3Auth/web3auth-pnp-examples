@@ -85,6 +85,9 @@ function App() {
         });
 
         const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "default",
+          },
           adapterSettings: {
             network: "testnet",
             uxMode: "redirect",
@@ -157,7 +160,7 @@ function App() {
     const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub,  { verifier, verifierId: sub }, true);
 
     // check if the user hasn't enabled one key login
-    if (userDetails.typeOfUser === "v2" && userDetails.nonce && userDetails.nonce !== "0") {
+    if (userDetails.typeOfUser === "v2" && (userDetails.nonce === 0 || !userDetails.nonce)) {
       // if YES, login directly with the torus libraries within your app
       const keyDetails =  await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id: sub }, idToken, {});
       // use the private key to get the provider

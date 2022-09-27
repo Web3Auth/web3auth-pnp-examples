@@ -6,6 +6,7 @@ import {
   Button,
   ScrollView,
   Dimensions,
+  Platform,
 } from 'react-native';
 import * as WebBrowser from '@toruslabs/react-native-web-browser';
 import Web3Auth, {
@@ -18,9 +19,10 @@ import {Buffer} from 'buffer';
 global.Buffer = global.Buffer || Buffer;
 
 const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
-const resolvedRedirectUrl = `${scheme}://openlogin`;
+const resolvedRedirectUrl =
+  Platform.OS === 'ios' ? `${scheme}://openlogin` : `com.${scheme}://auth`;
 const clientId =
-  'BP-HcHP_eD6X-TEZhh_yTC2p9skVcoe2iwqcvDH2jV2kHxEr7U8_ZsMARgiwl_5jX9FYRNuKjtzBHfam_GUe6qg';
+  'BJ2juCFWiwv7Bfv0wyf4N8ZxDH8fzIdsImb-6rMKoyZZ1pZhEfW8Bu-FIrhWRMrScK3Q-h1FXWpGHgHNYMfZ4vk';
 const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
 
 export default function App() {
@@ -46,7 +48,7 @@ export default function App() {
       setKey(info.privKey);
       uiConsole('Logged In');
     } catch (e) {
-      uiConsole(e);
+      console.error(e);
     }
   };
 

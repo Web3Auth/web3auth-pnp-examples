@@ -1,0 +1,70 @@
+{
+  "name": "react-evm-web3auth-example",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@starkware-industries/starkware-crypto-utils": "^0.0.2",
+    "@taquito/signer": "^14.0.0",
+    "@taquito/taquito": "^14.0.0",
+    "@taquito/utils": "^14.0.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@tezos-core-tools/crypto-utils": "^0.0.7",
+    "@toruslabs/openlogin-ed25519": "^2.0.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.11.38",
+    "@types/react": "^18.0.12",
+    "@types/react-dom": "^18.0.5",
+    "@web3auth/base": "^2.0.0",
+    "@web3auth/ethereum-provider": "^2.1.2",
+    "@web3auth/solana-provider": "^2.1.2",
+    "@web3auth/torus-wallet-connector-plugin": "^2.1.2",
+    "@web3auth/web3auth": "^2.0.2",
+    "elliptic": "^6.5.4",
+    "ethers": "^5.6.9",
+    "near-api-js": "^1.0.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.7.3",
+    "web-vitals": "^2.1.4",
+    "web3": "^1.7.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.0"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  }
+}

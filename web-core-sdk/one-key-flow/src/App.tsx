@@ -159,13 +159,8 @@ function App() {
     const { torusNodeEndpoints, torusNodePub, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId: sub });
     const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub,  { verifier, verifierId: sub }, true);
 
-    function checkIfTrueValue(val: any) {
-      if (val === "00") return false;
-      if (!val) return false;
-      return true;
-    }
     // check if the user hasn't enabled one key login
-    if (userDetails.typeOfUser === "v2" && checkIfTrueValue(userDetails.nonce)) {
+    if (userDetails.typeOfUser === "v2" && userDetails.upgraded === false) {
       // if YES, login directly with the torus libraries within your app
       const keyDetails =  await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id: sub }, idToken, {});
       // use the private key to get the provider

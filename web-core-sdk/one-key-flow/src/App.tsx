@@ -71,6 +71,7 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [idToken, setIdToken] = useState<string | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -149,6 +150,7 @@ function App() {
     const loginRes = await signInWithGoogle();
     // get the id token from firebase
     const idToken = await loginRes.user.getIdToken(true);
+    setIdToken(idToken);
 
     // get sub value from firebase - firebase uses uid as sub within their id token    
     const sub = loginRes.user.uid;
@@ -158,7 +160,7 @@ function App() {
     const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub,  { verifier, verifierId: sub }, true);
 
     function checkIfTrueValue(val: any) {
-      if (val === "0") return false;
+      if (val === "00") return false;
       if (!val) return false;
       return true;
     }
@@ -199,7 +201,10 @@ function App() {
       return;
     }
     if (usesTorus) {
-      uiConsole("You are directly using Torus Libraries to login the user, hence this function won't work for you. Get the user details directly from id token")
+      const base64Url = idToken?.split('.')[1]
+      const base64 = base64Url?.replace('-', '+').replace('_', '/')
+      uiConsole("You are directly using Torus Libraries to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.", JSON.parse(window.atob(base64 || '')));
+      return;
     }
     const user = await web3auth.getUserInfo();
     uiConsole(user);
@@ -211,11 +216,12 @@ function App() {
       return;
     }
     if (usesTorus) {
-      uiConsole("You are directly using Torus Libraries to login the user, hence this function won't work for you. For server side verification, directly use your login provider and id token.")
+      uiConsole("You are directly using Torus Libraries to login the user, hence the Web3Auth <code>authenticateUser</code> function won't work for you. For server side verification, directly use your login provider and id token. <br/><br/> You can use the Firebase Id Token for example in this case. <br/>", idToken);
+      return;
     }
-    const idToken = await web3auth.authenticateUser();
+    const id_token = await web3auth.authenticateUser();
     // console.log(JSON.stringify(user, null, 2))
-    uiConsole("Id Token:", idToken, "You can use this id token from Web3Auth for server side verification from your own end, visit the web3auth documentation for more information.");
+    uiConsole("Id Token:", id_token, "You can use this id token from Web3Auth for server side verification from your own end, visit the web3auth documentation for more information.");
   };
 
   const logout = async () => {
@@ -224,7 +230,9 @@ function App() {
       return;
     }
     if (usesTorus) {
-      uiConsole("You are directly using Torus Libraries to login the user, hence this function won't work for you. You can logout the user directly from your login provider, or just clear the provider object.")
+      console.log("You are directly using Torus Libraries to login the user, hence the Web3Auth logout function won't work for you. You can logout the user directly from your login provider, or just clear the provider object.");
+      setProvider(null);
+      return;
     }
     await web3auth.logout();
     setProvider(null);
@@ -338,7 +346,7 @@ function App() {
         One Key Login Flow (without Openlogin Redirect)
       </h1>
 
-      <div className="grid">{provider ? loginView : logoutView}</div>
+      <div className="grid">{web3auth && torus ? provider ? loginView : logoutView : null}</div>
 
       <footer className="footer">
         <a

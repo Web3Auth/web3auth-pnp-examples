@@ -15,19 +15,19 @@ export default class AlgorandRPC {
     var passphrase = algosdk.secretKeyToMnemonic(
       Buffer.from(privateKey, "hex")
     );
-    var account = algosdk.mnemonicToSecretKey(passphrase);
-    return account;
+    var keyPair = algosdk.mnemonicToSecretKey(passphrase);
+    return keyPair;
   };
 
   getAccounts = async (): Promise<any> => {
-    const account = await this.getAlgorandKeyPair();
-    return account.addr;
+    const keyPair = await this.getAlgorandKeyPair();
+    return keyPair.addr;
   };
 
   getBalance = async (): Promise<any> => {
-    const account = await this.getAlgorandKeyPair();
+    const keyPair = await this.getAlgorandKeyPair();
     const client = await this.makeClient();
-    const balance = await client.accountInformation(account.addr).do();
+    const balance = await client.accountInformation(keyPair.addr).do();
     return balance.amount;
   };
 
@@ -43,46 +43,50 @@ export default class AlgorandRPC {
   };
 
   signMessage = async (): Promise<any> => {
-    const account = await this.getAlgorandKeyPair();
+    const keyPair = await this.getAlgorandKeyPair();
     const client = await this.makeClient();
     const params = await client.getTransactionParams().do();
     const enc = new TextEncoder();
     const message = enc.encode("Web3Auth says hello!");
     const txn = algosdk.makePaymentTxnWithSuggestedParams(
-      account.addr,
-      account.addr,
+      keyPair.addr,
+      keyPair.addr,
       0,
       undefined,
       message,
       params
     );
-    let signedTxn = algosdk.signTransaction(txn, account.sk);
+    let signedTxn = algosdk.signTransaction(txn, keyPair.sk);
     let txId = signedTxn.txID;
     return txId;
   };
 
   signAndSendTransaction = async (): Promise<any> => {
-    const account = await this.getAlgorandKeyPair();
-    const client = await this.makeClient();
-    const params = await client.getTransactionParams().do();
-    const enc = new TextEncoder();
-    const message = enc.encode("Web3Auth says hello!");
+    try {
+      const keyPair = await this.getAlgorandKeyPair();
+      const client = await this.makeClient();
+      const params = await client.getTransactionParams().do();
+      const enc = new TextEncoder();
+      const message = enc.encode("Web3Auth says hello!");
 
-    // You need to have some funds in your account to send a transaction
-    // You can get some testnet funds here: https://bank.testnet.algorand.network/
+      // You need to have some funds in your account to send a transaction
+      // You can get some testnet funds here: https://bank.testnet.algorand.network/
 
-    const txn = algosdk.makePaymentTxnWithSuggestedParams(
-      account.addr, // sender
-      account.addr, // receiver
-      1000,
-      undefined,
-      message,
-      params
-    );
-    let signedTxn = algosdk.signTransaction(txn, account.sk);
+      const txn = algosdk.makePaymentTxnWithSuggestedParams(
+        keyPair.addr, // sender
+        keyPair.addr, // receiver
+        1000,
+        undefined,
+        message,
+        params
+      );
+      let signedTxn = algosdk.signTransaction(txn, keyPair.sk);
 
-    const txHash = await client.sendRawTransaction(signedTxn.blob).do();
+      const txHash = await client.sendRawTransaction(signedTxn.blob).do();
 
-    return txHash.txId;
+      return txHash.txId;
+    } catch (error) {
+      console.log(error);
+    }
   };
 }

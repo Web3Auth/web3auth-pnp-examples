@@ -150,17 +150,20 @@ function App() {
     // get the id token from firebase
     const idToken = await loginRes.user.getIdToken(true);
 
-    // parse the id token to get the sub value - this will be verifier id (used to know the user)
-    const base64Url = idToken.split('.')[1]
-    const base64 = base64Url?.replace('-', '+').replace('_', '/')
-    const { sub } = JSON.parse(window.atob(base64 || ''))
+    // get sub value from firebase - firebase uses uid as sub within their id token    
+    const sub = loginRes.user.uid;
 
     // get details of the node shares on the torus network
     const { torusNodeEndpoints, torusNodePub, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId: sub });
     const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub,  { verifier, verifierId: sub }, true);
 
+    function checkIfTrueValue(val: any) {
+      if (val === "0") return false;
+      if (!val) return false;
+      return true;
+    }
     // check if the user hasn't enabled one key login
-    if (userDetails.typeOfUser === "v2" && (userDetails.nonce === 0 || !userDetails.nonce)) {
+    if (userDetails.typeOfUser === "v2" && checkIfTrueValue(userDetails.nonce)) {
       // if YES, login directly with the torus libraries within your app
       const keyDetails =  await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id: sub }, idToken, {});
       // use the private key to get the provider

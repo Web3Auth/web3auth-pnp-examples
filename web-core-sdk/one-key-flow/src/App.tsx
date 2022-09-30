@@ -19,6 +19,7 @@ import {
 import Torus from "@toruslabs/torus.js";
 import NodeDetailManager from "@toruslabs/fetch-node-details";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { subkey } from "@toruslabs/openlogin-subkey";
 
 const TORUS_NETWORK = {
   TESTNET: "testnet",
@@ -160,16 +161,17 @@ function App() {
     const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub,  { verifier, verifierId: sub }, true);
 
     // check if the user hasn't enabled one key login
-    if (userDetails.typeOfUser === "v2" && userDetails.upgraded === false) {
+    if (userDetails.typeOfUser === "v2" && userDetails.upgraded) {
       // if YES, login directly with the torus libraries within your app
       const keyDetails =  await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id: sub }, idToken, {});
       // use the private key to get the provider
+      const finalPrivKey = subkey(keyDetails.privKey.padStart(64, "0"), Buffer.from(clientId, "base64")).padStart(64, "0");
       const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
         config: {
           chainConfig,
         },
       });
-      await ethereumPrivateKeyProvider.setupProvider(keyDetails.privKey);
+      await ethereumPrivateKeyProvider.setupProvider(finalPrivKey);
       setProvider(ethereumPrivateKeyProvider.provider);
       setUsesTorus(true);
     } else {

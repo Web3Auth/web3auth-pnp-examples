@@ -1,4 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'dart:collection';
+// ignore: unused_import
 import 'dart:convert';
 import 'dart:io';
 
@@ -14,8 +17,10 @@ void main() {
   runApp(MyApp());
 }
 
+// ignore: use_key_in_widget_constructors
 class MyApp extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _MyAppState createState() => _MyAppState();
 }
 

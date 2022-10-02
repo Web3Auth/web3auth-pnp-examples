@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@web3auth/base": "^2.0.0",
-    "@web3auth/web3auth": "^2.0.2",
-    "@web3auth/solana-provider": "^2.0.0",
+    "@web3auth/base": "^2.1.2",
+    "@web3auth/web3auth": "^2.1.2",
+    "@web3auth/solana-provider": "^2.1.2",
     "@solana/web3.js": "^1.36.0",
     "next": "12.1.6",
     "react": "18.1.0",

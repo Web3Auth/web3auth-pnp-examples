@@ -63,6 +63,12 @@ provider specific to the user and application.
 | `Tezos`    | `Vue`          | [Vue-Tezos-Web3Auth-Example](/web-modal-sdk/tezos/vue-tezos-web3auth-example)         |
 | `Tezos`    | `Angular`      | [Angular-Tezos-Web3Auth-Example](/web-modal-sdk/tezos/angular-tezos-web3auth-example) |
 
+### Algorand
+
+| Blockchain | Lang Framework | Directory                                                                                  |
+| :--------- | :------------- | :----------------------------------------------------------------------------------------- |
+| `Algorand` | `REACT`        | [React-Algorand-Web3Auth-Example](/web-modal-sdk/algorand/react-algorand-web3auth-example) |
+
 ## Web3Auth Plug n Play Core
 
 `@web3auth/core`

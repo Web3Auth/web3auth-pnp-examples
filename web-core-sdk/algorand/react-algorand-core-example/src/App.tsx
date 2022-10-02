@@ -144,28 +144,43 @@ function App() {
 
   const loggedInView = (
     <>
-      <button onClick={getUserInfo} className="card">
-        Get User Info
-      </button>
-      <button onClick={onGetAlgorandKeypair} className="card">
-        Get Algorand Key Pair
-      </button>
-      <button onClick={getAccounts} className="card">
-        Get Accounts
-      </button>
-      <button onClick={getBalance} className="card">
-        Get Balance
-      </button>
-      <button onClick={signMessage} className="card">
-        Sign Message
-      </button>
-      <button onClick={signAndSendTransaction} className="card">
-        Sign And Send Transaction
-      </button>
-      <button onClick={logout} className="card">
-        Log Out
-      </button>
-
+      <div className="flex-container">
+        <div>
+          <button onClick={getUserInfo} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={onGetAlgorandKeypair} className="card">
+            Get Algorand Keypair
+          </button>
+        </div>
+        <div>
+          <button onClick={getAccounts} className="card">
+            Get Accounts
+          </button>
+        </div>
+        <div>
+          <button onClick={getBalance} className="card">
+            Get Balance
+          </button>
+        </div>
+        <div>
+          <button onClick={signAndSendTransaction} className="card">
+            Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={signMessage} className="card">
+            Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={logout} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
@@ -182,7 +197,7 @@ function App() {
     <div className="container">
       <h1 className="title">
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
-          Web3Auth
+          Web3Auth{" "}
         </a>
         & ReactJS Example
       </h1>
@@ -191,7 +206,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk"
           target="_blank"
           rel="noopener noreferrer"
         >

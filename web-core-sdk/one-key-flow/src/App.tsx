@@ -142,6 +142,13 @@ function App() {
     }
   };
 
+  const parseToken = (token: any) => {
+    const base64Url = idToken?.split('.')[1]
+    const base64 = base64Url?.replace('-', '+').replace('_', '/')
+    return JSON.parse(window.atob(base64 || ''));
+      
+  }
+
   const login = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
@@ -153,8 +160,8 @@ function App() {
     const idToken = await loginRes.user.getIdToken(true);
     setIdToken(idToken);
 
-    // get sub value from firebase - firebase uses uid as sub within their id token    
-    const sub = loginRes.user.uid;
+    // get sub value from firebase id token    
+    const { sub } = parseToken(idToken);
 
     // get details of the node shares on the torus network
     const { torusNodeEndpoints, torusNodePub, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId: sub });
@@ -198,9 +205,7 @@ function App() {
       return;
     }
     if (usesTorus) {
-      const base64Url = idToken?.split('.')[1]
-      const base64 = base64Url?.replace('-', '+').replace('_', '/')
-      uiConsole("You are directly using Torus Libraries to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.", JSON.parse(window.atob(base64 || '')));
+      uiConsole("You are directly using Torus Libraries to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.", parseToken(idToken));
       return;
     }
     const user = await web3auth.getUserInfo();

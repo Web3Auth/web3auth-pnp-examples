@@ -6,6 +6,7 @@ import {
     getAuth,
     signInWithPopup,
     UserCredential,
+    User,
 } from "firebase/auth";
 import { firebaseConfig } from "./config";
 
@@ -17,7 +18,9 @@ export interface UserLoginInterface {
     provider: SafeEventEmitterProvider | null | undefined;
     init(): Promise<void>;
     loginWithFirebase(): Promise<UserCredential>;
-    loginWithWeb3Auth(userCreds: UserCredential): Promise<SafeEventEmitterProvider | null>;
+    getCurrentFirebaseUser(): Promise<User | null> 
+    loginWithWeb3Auth(idToken: string, userId?: string): Promise<SafeEventEmitterProvider | null>;
+
     getUserInfo(): Promise<Partial<UserInfo>>;
     logout(): Promise<void>
     
@@ -27,7 +30,7 @@ export interface UserLoginInterface {
 export abstract class UserLoginbase implements UserLoginInterface {
     abstract provider: SafeEventEmitterProvider | null | undefined;
     abstract init(): Promise<void>;
-    abstract loginWithWeb3Auth(userCreds: UserCredential): Promise<SafeEventEmitterProvider | null>;
+    abstract loginWithWeb3Auth(idToken: string, userId?: string): Promise<SafeEventEmitterProvider | null>;
     abstract getUserInfo(): Promise<Partial<UserInfo>>;
     abstract logout(): Promise<void>
     protected userInfo: UserCredential | null = null;
@@ -44,4 +47,8 @@ export abstract class UserLoginbase implements UserLoginInterface {
           throw err;
         }
     };
+    async getCurrentFirebaseUser(): Promise<User | null> {
+        const auth = getAuth(app);
+        return auth.currentUser;
+    }
 }

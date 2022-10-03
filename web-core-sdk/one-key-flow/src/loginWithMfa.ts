@@ -4,7 +4,6 @@ import { UserLoginbase } from "./interface";
 
 import { Web3AuthCore } from "@web3auth/core";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { UserCredential } from "firebase/auth";
 
 export default class LoginWithMfa extends UserLoginbase {
    private web3auth: Web3AuthCore | null = null;
@@ -62,9 +61,7 @@ export default class LoginWithMfa extends UserLoginbase {
           }
    }
 
-    async loginWithWeb3Auth(userCreds: UserCredential): Promise<SafeEventEmitterProvider | null> {
-      
-        const idToken = await userCreds.user.getIdToken(true);
+    async loginWithWeb3Auth(idToken: string): Promise<SafeEventEmitterProvider | null>    {
 
         if (!this.web3auth) {
           throw new Error("web3auth not initialized yet");

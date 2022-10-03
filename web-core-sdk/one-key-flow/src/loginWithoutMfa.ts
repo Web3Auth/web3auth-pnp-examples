@@ -3,9 +3,7 @@ import { SafeEventEmitterProvider, UserInfo } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { nodeDetailManager, torus, chainConfig, verifier, clientId } from "./config";
 import { UserLoginbase } from "./interface";
-import {
-    UserCredential,
-  } from "firebase/auth";
+
 
 
 export default class LoginWithoutMfa extends UserLoginbase {
@@ -21,10 +19,9 @@ export default class LoginWithoutMfa extends UserLoginbase {
       return Promise.resolve();
    }
 
-   async loginWithWeb3Auth(userCreds: UserCredential): Promise<SafeEventEmitterProvider | null> {
-        const idToken = await userCreds.user.getIdToken(true);
-        const { torusNodeEndpoints, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId: userCreds.user.uid });
-        const keyDetails =  await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id:  userCreds.user.uid }, idToken, {});
+   async loginWithWeb3Auth(idToken: string, userId: string): Promise<SafeEventEmitterProvider | null> {
+        const { torusNodeEndpoints, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId: userId });
+        const keyDetails =  await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id:  userId }, idToken, {});
         // sub key package is required to make sure user will get same key even after enabling mfa.
         const finalPrivKey = subkey(keyDetails.privKey.padStart(64, "0"), Buffer.from(clientId, "base64")).padStart(64, "0");
         const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({

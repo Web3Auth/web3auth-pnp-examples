@@ -45,9 +45,9 @@ function App() {
   }, []);
 
   const getLoggedInUserInterface = (): UserLoginInterface | null => {
-     if (mfaLoginInterface?.provider) {
+     if (hasMfaEnabled && mfaLoginInterface?.provider) {
       return mfaLoginInterface;
-    } else if (nonMfaLoginInterface?.provider) {
+    } else if (!hasMfaEnabled &&  nonMfaLoginInterface?.provider) {
       return nonMfaLoginInterface
     } 
     return null
@@ -66,16 +66,19 @@ function App() {
       if (hadEnabledMfa) {
         // if mfa is enabled by user previously then use web3auth flow for mfa
         // it will redirect user to  mfa screens (app.openlogin.com).
-        blockchainProvider = await mfaLoginInterface.loginWithWeb3Auth(loginRes);
+        const idToken = await loginRes.user.getIdToken(true);
+
+        blockchainProvider = await mfaLoginInterface.loginWithWeb3Auth(idToken, loginRes.user.uid);
         setHasMfaEnabled(true);
       } else {
         if (!nonMfaLoginInterface) {
           throw new Error("Please wait for page to load");
         }
+        const idToken = await loginRes.user.getIdToken(true);
         // if mfa is not enabled by user previously then it won't redirect.
         // it will fetch the shares from web3auth network nodes and reconstruct
         // the key inside dapp's frontend context.
-        blockchainProvider = await nonMfaLoginInterface.loginWithWeb3Auth(loginRes);
+        blockchainProvider = await nonMfaLoginInterface.loginWithWeb3Auth(idToken, loginRes.user.uid);
         setHasMfaEnabled(false);
       }
 
@@ -89,6 +92,33 @@ function App() {
     }
   };
 
+  const enableMfa = async () => {
+    try {
+      if (hasMfaEnabled) {
+        throw new Error("Mfa already enabled");
+      }
+      const userLoginInterface = getLoggedInUserInterface();
+      if (!userLoginInterface) {
+        throw new Error("Please login first")
+      }
+      if (!mfaLoginInterface) {
+        throw new Error("Please login first")
+      }
+      const user = await userLoginInterface.getCurrentFirebaseUser();
+      if (!user) {
+        throw new Error("Please login first")
+      }
+
+      const idToken = await user.getIdToken(true);
+      // login with mfa interface to enable mfa.
+      const userInfo = await mfaLoginInterface.loginWithWeb3Auth(idToken);
+      uiConsole(userInfo)
+
+    } catch (error) {
+      uiConsole("error while getting enabling mfa", error);
+      console.error(error)
+    }
+  }
   const getUserInfo = async () => {
     try {
       const userLoginInterface = getLoggedInUserInterface();
@@ -99,7 +129,7 @@ function App() {
       uiConsole(userInfo)
 
     } catch (error) {
-      uiConsole("error while getting user infor", error);
+      uiConsole("error while getting user info", error);
       console.error(error)
     }
   };
@@ -174,6 +204,11 @@ function App() {
     <>
       <h1> { hasMfaEnabled ? "Logged in with mfa" : "Logged in without mfa" }</h1>
       <div className="flex-container">
+        <div>
+          <button disabled={hasMfaEnabled} onClick={enableMfa} className="card">
+          { hasMfaEnabled ? "Mfa Already Enabled" : "Enable Mfa" }
+          </button>
+        </div>
         <div>
           <button onClick={getUserInfo} className="card">
             Get User Info

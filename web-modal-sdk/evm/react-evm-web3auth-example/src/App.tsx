@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/web3auth";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import {OpenloginAdapter} from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
@@ -22,7 +23,31 @@ function App() {
           chainId: "0x1",
           rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
         },
+        uiConfig: {
+          theme: "dark",
+          loginMethodsOrder: ["facebook", "google"],
+          appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+        }
       });
+
+      const openloginAdapter = new OpenloginAdapter({
+        loginSettings: {
+          mfaLevel: "mandatory",
+        },
+        adapterSettings: {
+          clientId,
+          network: "testnet",
+          uxMode: "popup", 
+          whiteLabel: {
+            name: "Your app Name",
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            defaultLanguage: "en",
+            dark: true, // whether to enable dark mode. defaultValue: false
+          }, 
+        },
+      });
+      web3auth.configureAdapter(openloginAdapter);
 
       setWeb3auth(web3auth);
 

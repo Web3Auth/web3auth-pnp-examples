@@ -19,10 +19,7 @@ import {Buffer} from 'buffer';
 global.Buffer = global.Buffer || Buffer;
 
 const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
-const resolvedRedirectUrl =
-  Platform.OS === 'ios'
-    ? `${scheme}://openlogin`
-    : `${scheme}://com.web3authrnexample/auth`;
+const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
   'BJ2juCFWiwv7Bfv0wyf4N8ZxDH8fzIdsImb-6rMKoyZZ1pZhEfW8Bu-FIrhWRMrScK3Q-h1FXWpGHgHNYMfZ4vk';
 const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url

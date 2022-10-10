@@ -91,6 +91,13 @@ provider specific to the user and application.
 | :---------------- | :------------- | :-------------------------------------------------------------------------------------------------------------- |
 | `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-Core-Example](/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example) |
 
+### Using Web3Auth without Redirect (One Key Flow)
+
+| JWT Provider | Lang Framework | Directory                                                              |
+| :----------- | :------------- | :--------------------------------------------------------------------- |
+| `Firebase`   | `ReactJS`      | [Modular Example](/web-core-sdk/one-key-flow/modular-example/)         |
+| `Firebase`   | `ReactJS`      | [Single page Example](/web-core-sdk/one-key-flow/single-page-example/) |
+
 ## Web3Auth Mobile SDKs
 
 | SDK       | Documentation                                         | Guide                                            | Directory                                                                        |

@@ -91,6 +91,13 @@ provider specific to the user and application.
 | :---------------- | :------------- | :-------------------------------------------------------------------------------------------------------------- |
 | `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-Core-Example](/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example) |
 
+### Web3Auth Wagmi Connector
+
+| Lang Framework | Directory                                                                      |
+| :------------- | :----------------------------------------------------------------------------- |
+| `REACT`        | [React-Example](/wagmi-connector/react-example/)                               |
+| `REACT`        | [React-Example-With-Torus-Plugin](/wagmi-connector/react-example-with-plugin/) |
+
 ## Web3Auth Mobile SDKs
 
 | SDK       | Documentation                                         | Guide                                            | Directory                                                                        |

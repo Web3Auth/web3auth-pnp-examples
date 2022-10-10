@@ -16,8 +16,6 @@ const torusPlugin = new TorusWalletConnectorPlugin({
   },
 });
 
-const userInfo = {};
-
 export const rainbowWeb3AuthConnector = ({ chains }) => ({
   id: "web3auth",
   name: "Web3Auth",

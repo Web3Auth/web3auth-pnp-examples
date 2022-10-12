@@ -1,21 +1,19 @@
-# Web3Auth x Firebase Demo Application
+# Using Web3Auth without MFA with future compatibility Modular Example
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd web-core-sdk/custom-authentication/firebase-react-core-example
+cd web-core-sdk/one-key-flow/modular-example
 npm install
 npm run start # localhost:3000
 ```
 
 ## Configure
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Firebase
-account for the integration and provide you with the links on how to develop a
-basic web application on the blockchain of your choice.
+Adding Web3Auth Plug and Play SDKs to your application is a great way to authenticate users and reconstruct their private key, and to reconstruct the key, Web3Auth SDK redirects users to a Web3Auth hosted screen (i.e. http://app.openlogin.com). This flow is great for most use cases. Still, sometimes you may want to customize the authentication flow such that you can have more control over the UI and UX of the authentication process (i.e. to avoid the redirection to openlogin hosted screens). This guide will show you how to use one such flow to authenticate users without redirecting to a Web3Auth-hosted screen.
 
-[Read the full guide to configure.](https://web3auth.io/docs/guides/firebase)
+[Read the full guide to configure.](https://web3auth.io/docs/guides/one-key-flow)
 
 ## Questions
 

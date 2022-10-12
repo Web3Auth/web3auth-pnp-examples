@@ -25,7 +25,7 @@ const TORUS_NETWORK = {
   TESTNET: "testnet",
   MAINNET: "mainnet",
   CYAN: "cyan",
-} 
+};
 
 export const CONTRACT_MAP = {
   [TORUS_NETWORK.MAINNET]: NodeDetailManager.PROXY_ADDRESS_MAINNET,
@@ -68,7 +68,9 @@ function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
   const [usesTorus, setUsesTorus] = useState(false);
   const [torus, setTorus] = useState<Torus | any>(null);
-  const [nodeDetailManager, setNodeDetailManager] = useState<NodeDetailManager | any>(null);
+  const [nodeDetailManager, setNodeDetailManager] = useState<
+    NodeDetailManager | any
+  >(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -114,7 +116,10 @@ function App() {
         });
         setTorus(torus);
 
-        const nodeDetailManager = new NodeDetailManager({ network, proxyAddress: CONTRACT_MAP[TORUS_NETWORK.TESTNET] });
+        const nodeDetailManager = new NodeDetailManager({
+          network,
+          proxyAddress: CONTRACT_MAP[TORUS_NETWORK.TESTNET],
+        });
         setNodeDetailManager(nodeDetailManager);
 
         if (web3auth.provider) {
@@ -143,11 +148,15 @@ function App() {
   };
 
   const parseToken = (token: any) => {
-    const base64Url = idToken?.split('.')[1]
-    const base64 = base64Url?.replace('-', '+').replace('_', '/')
-    return JSON.parse(window.atob(base64 || ''));
-      
-  }
+    try {
+      const base64Url = token?.split(".")[1];
+      const base64 = base64Url?.replace("-", "+").replace("_", "/");
+      return JSON.parse(window.atob(base64 || ""));
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
 
   const login = async () => {
     if (!web3auth) {
@@ -160,19 +169,35 @@ function App() {
     const idToken = await loginRes.user.getIdToken(true);
     setIdToken(idToken);
 
-    // get sub value from firebase id token    
+    // get sub value from firebase id token
     const { sub } = parseToken(idToken);
 
     // get details of the node shares on the torus network
-    const { torusNodeEndpoints, torusNodePub, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId: sub });
-    const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub,  { verifier, verifierId: sub }, true);
+    const { torusNodeEndpoints, torusNodePub, torusIndexes } =
+      await nodeDetailManager.getNodeDetails({ verifier, verifierId: sub });
+    const userDetails = await torus.getUserTypeAndAddress(
+      torusNodeEndpoints,
+      torusNodePub,
+      { verifier, verifierId: sub },
+      true
+    );
 
     // check if the user hasn't enabled one key login
     if (userDetails.typeOfUser === "v2" && !userDetails.upgraded) {
       // if YES, login directly with the torus libraries within your app
-      const keyDetails =  await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id: sub }, idToken, {});
+      const keyDetails = await torus.retrieveShares(
+        torusNodeEndpoints,
+        torusIndexes,
+        verifier,
+        { verifier_id: sub },
+        idToken,
+        {}
+      );
       // use the private key to get the provider
-      const finalPrivKey = subkey(keyDetails.privKey.padStart(64, "0"), Buffer.from(clientId, "base64")).padStart(64, "0");
+      const finalPrivKey = subkey(
+        keyDetails.privKey.padStart(64, "0"),
+        Buffer.from(clientId, "base64")
+      ).padStart(64, "0");
       const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
         config: {
           chainConfig,
@@ -205,7 +230,10 @@ function App() {
       return;
     }
     if (usesTorus) {
-      uiConsole("You are directly using Torus Libraries to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.", parseToken(idToken));
+      uiConsole(
+        "You are directly using Torus Libraries to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.",
+        parseToken(idToken)
+      );
       return;
     }
     const user = await web3auth.getUserInfo();
@@ -218,12 +246,19 @@ function App() {
       return;
     }
     if (usesTorus) {
-      uiConsole("You are directly using Torus Libraries to login the user, hence the Web3Auth <code>authenticateUser</code> function won't work for you. For server side verification, directly use your login provider and id token. <br/><br/> You can use the Firebase Id Token for example in this case. <br/>", idToken);
+      uiConsole(
+        "You are directly using Torus Libraries to login the user, hence the Web3Auth <code>authenticateUser</code> function won't work for you. For server side verification, directly use your login provider and id token. <br/><br/> You can use the Firebase Id Token for example in this case. <br/>",
+        idToken
+      );
       return;
     }
     const id_token = await web3auth.authenticateUser();
     // console.log(JSON.stringify(user, null, 2))
-    uiConsole("Id Token:", id_token, "You can use this id token from Web3Auth for server side verification from your own end, visit the web3auth documentation for more information.");
+    uiConsole(
+      "Id Token:",
+      id_token,
+      "You can use this id token from Web3Auth for server side verification from your own end, visit the web3auth documentation for more information."
+    );
   };
 
   const logout = async () => {
@@ -232,7 +267,9 @@ function App() {
       return;
     }
     if (usesTorus) {
-      console.log("You are directly using Torus Libraries to login the user, hence the Web3Auth logout function won't work for you. You can logout the user directly from your login provider, or just clear the provider object.");
+      console.log(
+        "You are directly using Torus Libraries to login the user, hence the Web3Auth logout function won't work for you. You can logout the user directly from your login provider, or just clear the provider object."
+      );
       setProvider(null);
       return;
     }
@@ -348,7 +385,9 @@ function App() {
         One Key Login Flow (without Openlogin Redirect)
       </h1>
 
-      <div className="grid">{web3auth && torus ? provider ? loginView : logoutView : null}</div>
+      <div className="grid">
+        {web3auth && torus ? (provider ? loginView : logoutView) : null}
+      </div>
 
       <footer className="footer">
         <a

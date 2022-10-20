@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/web3auth";
+import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import {OpenloginAdapter} from "@web3auth/openlogin-adapter";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
@@ -10,52 +10,53 @@ const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
 
   useEffect(() => {
     const init = async () => {
       try {
-
-      const web3auth = new Web3Auth({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-        },
-        uiConfig: {
-          theme: "dark",
-          loginMethodsOrder: ["facebook", "google"],
-          appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-        }
-      });
-
-      const openloginAdapter = new OpenloginAdapter({
-        loginSettings: {
-          mfaLevel: "mandatory",
-        },
-        adapterSettings: {
+        const web3auth = new Web3Auth({
           clientId,
-          network: "testnet",
-          uxMode: "popup", 
-          whiteLabel: {
-            name: "Your app Name",
-            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+          uiConfig: {
+            theme: "dark",
+            loginMethodsOrder: ["facebook", "google"],
             defaultLanguage: "en",
-            dark: true, // whether to enable dark mode. defaultValue: false
-          }, 
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);
+            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+          },
+        });
 
-      setWeb3auth(web3auth);
+        const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "mandatory",
+          },
+          adapterSettings: {
+            clientId,
+            network: "testnet",
+            uxMode: "popup",
+            whiteLabel: {
+              name: "Your app Name",
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en",
+              dark: true, // whether to enable dark mode. defaultValue: false
+            },
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
 
-      await web3auth.initModal();
-      if (web3auth.provider) {
-        setProvider(web3auth.provider);
-      }
+        setWeb3auth(web3auth);
 
+        await web3auth.initModal();
+        if (web3auth.provider) {
+          setProvider(web3auth.provider);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -200,7 +201,11 @@ function App() {
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/react-evm-web3auth-example"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Source code
         </a>
       </footer>

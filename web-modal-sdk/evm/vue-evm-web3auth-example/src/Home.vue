@@ -1,16 +1,40 @@
 <template>
   <div id="app">
     <h2>Web3Auth X Vue.js</h2>
-    <section style="{ fontSize: '12px' }">
-      <button class="rpcBtn" @click="login" style="cursor: pointer">Login</button>
-      <button class="rpcBtn" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
-      <button class="rpcBtn" @click="getChainId" style="cursor: pointer">Get Chain ID</button>
-      <button class="rpcBtn" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
-      <button class="rpcBtn" @click="getBalance" style="cursor: pointer">Get Balance</button>
-      <button class="rpcBtn" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
-      <button class="rpcBtn" @click="signMessage" style="cursor: pointer">Sign Message</button>
-      <button class="rpcBtn" @click="getPrivateKey" style="cursor: pointer">Get Private Key</button>
-      <button class="rpcBtn" @click="logout" style="cursor: pointer">Logout</button>
+    <section
+      style="
+         {
+          fontsize: '12px';
+        }
+      "
+    >
+      <button class="rpcBtn" @click="login" style="cursor: pointer">
+        Login
+      </button>
+      <button class="rpcBtn" @click="getUserInfo" style="cursor: pointer">
+        Get User Info
+      </button>
+      <button class="rpcBtn" @click="getChainId" style="cursor: pointer">
+        Get Chain ID
+      </button>
+      <button class="rpcBtn" @click="getAccounts" style="cursor: pointer">
+        Get Accounts
+      </button>
+      <button class="rpcBtn" @click="getBalance" style="cursor: pointer">
+        Get Balance
+      </button>
+      <button class="rpcBtn" @click="sendTransaction" style="cursor: pointer">
+        Send Transaction
+      </button>
+      <button class="rpcBtn" @click="signMessage" style="cursor: pointer">
+        Sign Message
+      </button>
+      <button class="rpcBtn" @click="getPrivateKey" style="cursor: pointer">
+        Get Private Key
+      </button>
+      <button class="rpcBtn" @click="logout" style="cursor: pointer">
+        Logout
+      </button>
     </section>
     <div id="console" style="white-space: pre-line">
       <p style="white-space: pre-line"></p>
@@ -19,9 +43,8 @@
 </template>
 
 <script lang="ts">
-
 import { ref, onMounted } from "vue";
-import { Web3Auth } from "@web3auth/web3auth";
+import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import RPC from "./web3RPC";
 
@@ -37,25 +60,27 @@ export default {
     let provider = ref<SafeEventEmitterProvider | any>(null);
     const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
-      const web3auth = new Web3Auth({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-        },
-      });
+    const web3auth = new Web3Auth({
+      clientId,
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.EIP155,
+        chainId: "0x1",
+
+        rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+      },
+      uiConfig: {
+        defaultLanguage: "en",
+      },
+    });
 
     onMounted(async () => {
       try {
         loading.value = true;
 
-
-      await web3auth.initModal();
-      if (web3auth.provider) {
-        provider = web3auth.provider;
-      }
-
+        await web3auth.initModal();
+        if (web3auth.provider) {
+          provider = web3auth.provider;
+        }
       } catch (error) {
         console.log("error", error);
         console.log("error", error);
@@ -90,64 +115,64 @@ export default {
       provider = null;
     };
 
-  const getChainId = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const chainId = await rpc.getChainId();
-    console.log(chainId);
-  };
-  const getAccounts = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const address = await rpc.getAccounts();
-    console.log(address);
-  };
+    const getChainId = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider);
+      const chainId = await rpc.getChainId();
+      console.log(chainId);
+    };
+    const getAccounts = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider);
+      const address = await rpc.getAccounts();
+      console.log(address);
+    };
 
-  const getBalance = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
-    console.log(balance);
-  };
+    const getBalance = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider);
+      const balance = await rpc.getBalance();
+      console.log(balance);
+    };
 
-  const sendTransaction = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    console.log(receipt);
-  };
+    const sendTransaction = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider);
+      const receipt = await rpc.sendTransaction();
+      console.log(receipt);
+    };
 
-  const signMessage = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    console.log(signedMessage);
-  };
+    const signMessage = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider);
+      const signedMessage = await rpc.signMessage();
+      console.log(signedMessage);
+    };
 
-  const getPrivateKey = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    console.log(privateKey);
-  };
+    const getPrivateKey = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider);
+      const privateKey = await rpc.getPrivateKey();
+      console.log(privateKey);
+    };
     return {
       loading,
       loginButtonStatus,
@@ -162,7 +187,7 @@ export default {
       getBalance,
       sendTransaction,
       signMessage,
-      getPrivateKey
+      getPrivateKey,
     };
   },
 };

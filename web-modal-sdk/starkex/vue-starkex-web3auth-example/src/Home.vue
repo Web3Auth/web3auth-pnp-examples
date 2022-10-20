@@ -1,15 +1,41 @@
 <template>
   <div id="app">
     <h2>Web3Auth X Vue.js</h2>
-    <section style="{ fontSize: '12px' }">
-      <button class="rpcBtn" @click="login" style="cursor: pointer">Login</button>
-      <button class="rpcBtn" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
-      <button class="rpcBtn" @click="onGetStarkAccount" style="cursor: pointer">Get Stark Accounts</button>
-      <button class="rpcBtn" @click="getStarkKey"  style="cursor: pointer">Get Stark Key</button>
-      <button class="rpcBtn" @click="onMintRequest" style="cursor: pointer">Mint Request</button>
-      <button class="rpcBtn" @click="onDepositRequest" style="cursor: pointer">Deposit Request</button>
-      <button class="rpcBtn" @click="onWithdrawalRequest" style="cursor: pointer">Withdraw Request</button>
-      <button class="rpcBtn" @click="logout" style="cursor: pointer">Logout</button>
+    <section
+      style="
+         {
+          fontsize: '12px';
+        }
+      "
+    >
+      <button class="rpcBtn" @click="login" style="cursor: pointer">
+        Login
+      </button>
+      <button class="rpcBtn" @click="getUserInfo" style="cursor: pointer">
+        Get User Info
+      </button>
+      <button class="rpcBtn" @click="onGetStarkAccount" style="cursor: pointer">
+        Get Stark Accounts
+      </button>
+      <button class="rpcBtn" @click="getStarkKey" style="cursor: pointer">
+        Get Stark Key
+      </button>
+      <button class="rpcBtn" @click="onMintRequest" style="cursor: pointer">
+        Mint Request
+      </button>
+      <button class="rpcBtn" @click="onDepositRequest" style="cursor: pointer">
+        Deposit Request
+      </button>
+      <button
+        class="rpcBtn"
+        @click="onWithdrawalRequest"
+        style="cursor: pointer"
+      >
+        Withdraw Request
+      </button>
+      <button class="rpcBtn" @click="logout" style="cursor: pointer">
+        Logout
+      </button>
     </section>
     <div id="console" style="white-space: pre-line">
       <p style="white-space: pre-line"></p>
@@ -18,10 +44,13 @@
 </template>
 
 <script lang="ts">
-
 import { ref, onMounted } from "vue";
-import { Web3Auth } from "@web3auth/web3auth";
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { Web3Auth } from "@web3auth/modal";
+import {
+  WALLET_ADAPTERS,
+  CHAIN_NAMESPACES,
+  SafeEventEmitterProvider,
+} from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import RPC from "./starkexRPC";
 
@@ -37,30 +66,30 @@ export default {
     let provider = ref<SafeEventEmitterProvider | any>(null);
     const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
-      const web3auth = new Web3Auth({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.OTHER
-        },
-      });
+    const web3auth = new Web3Auth({
+      clientId,
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.OTHER,
+      },
+    });
 
     onMounted(async () => {
       try {
         loading.value = true;
 
-      const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
-          clientId,
-          network: "testnet",
-          uxMode: "popup",  
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            clientId,
+            network: "testnet",
+            uxMode: "popup",
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
 
-      await web3auth.initModal();
+        await web3auth.initModal();
         if (web3auth.provider) {
           provider = web3auth.provider;
-        };
+        }
       } catch (error) {
         console.log("error", error);
         console.log("error", error);
@@ -95,55 +124,55 @@ export default {
       provider = null;
     };
 
-  const onGetStarkAccount = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
-    const starkaccounts = await rpc.getStarkAccount();
-    console.log(starkaccounts);
-  };
+    const onGetStarkAccount = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const starkaccounts = await rpc.getStarkAccount();
+      console.log(starkaccounts);
+    };
 
-  const getStarkKey = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
-    const starkKey =  await rpc.getStarkKey();
-    console.log(starkKey);
-  };
+    const getStarkKey = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const starkKey = await rpc.getStarkKey();
+      console.log(starkKey);
+    };
 
-  const onMintRequest = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
-    const request = await rpc.onMintRequest();
-    console.log(request);
-  };
+    const onMintRequest = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const request = await rpc.onMintRequest();
+      console.log(request);
+    };
 
-  const onDepositRequest = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
-    const request = await rpc.onDepositRequest();
-    console.log(request);
-  };
+    const onDepositRequest = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const request = await rpc.onDepositRequest();
+      console.log(request);
+    };
 
-  const onWithdrawalRequest = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
-    const request = await rpc.onWithdrawalRequest();
-    console.log(request);
-  };
+    const onWithdrawalRequest = async () => {
+      if (!provider) {
+        console.log("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const request = await rpc.onWithdrawalRequest();
+      console.log(request);
+    };
     return {
       loading,
       loginButtonStatus,
@@ -157,7 +186,7 @@ export default {
       getStarkKey,
       onMintRequest,
       onDepositRequest,
-      onWithdrawalRequest
+      onWithdrawalRequest,
     };
   },
 };

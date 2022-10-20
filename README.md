@@ -22,7 +22,7 @@ provider specific to the user and application.
 
 ## Web3Auth Plug n Play UI
 
-`@web3auth/web3auth`
+`@web3auth/modal`
 
 ### Blockchain x Framework
 
@@ -91,7 +91,6 @@ provider specific to the user and application.
 | :---------------- | :------------- | :-------------------------------------------------------------------------------------------------------------- |
 | `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-Core-Example](/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example) |
 
-
 ### Using Web3Auth without Redirect (One Key Flow)
 
 | JWT Provider | Lang Framework | Directory                                                              |
@@ -99,14 +98,12 @@ provider specific to the user and application.
 | `Firebase`   | `ReactJS`      | [Modular Example](/web-core-sdk/one-key-flow/modular-example/)         |
 | `Firebase`   | `ReactJS`      | [Single page Example](/web-core-sdk/one-key-flow/single-page-example/) |
 
-
 ### Web3Auth Wagmi Connector
 
 | Lang Framework | Directory                                                                      |
 | :------------- | :----------------------------------------------------------------------------- |
 | `REACT`        | [React-Example](/wagmi-connector/react-example/)                               |
 | `REACT`        | [React-Example-With-Torus-Plugin](/wagmi-connector/react-example-with-plugin/) |
-
 
 ## Web3Auth Mobile SDKs
 

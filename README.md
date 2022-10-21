@@ -75,22 +75,22 @@ provider specific to the user and application.
 
 ### Custom Authentication
 
-| Auth Provider | Lang Framework | Directory                                                                                               |
-| :------------ | :------------- | :------------------------------------------------------------------------------------------------------ |
-| `Auth0`       | `REACT`        | [Auth0-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/auth0-react-core-example)       |
-| `Google`      | `REACT`        | [Google-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/google-react-core-example)     |
-| `Firebase`    | `REACT`        | [Firebase-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/firebase-react-core-example) |
-| `Discord`     | `REACT`        | [Discord-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/discord-react-core-example)   |
-| `Facebook`    | `REACT`        | [Facebook-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/facebook-react-core-example) |
-| `Twitch`      | `REACT`        | [Twitch-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/twitch-react-core-example)     |
-| `AWS Cognito` | `REACT`        | [Cognito-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/cognito-react-core-example)   |
+| Auth Provider | Lang Framework  | Directory                                                                                                                   |
+| :------------ | :-------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| `Auth0`       | `REACT`         | [Auth0-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/auth0-react-core-example)                           |
+| `Google`      | `REACT`         | [Google-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/google-react-core-example)                         |
+| `Firebase`    | `REACT`         | [Firebase-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/firebase-react-core-example)                     |
+| `Discord`     | `REACT`         | [Discord-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/discord-react-core-example)                       |
+| `Facebook`    | `REACT`         | [Facebook-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/facebook-react-core-example)                     |
+| `Twitch`      | `REACT`         | [Twitch-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/twitch-react-core-example)                         |
+| `AWS Cognito` | `REACT`         | [Cognito-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/cognito-react-core-example)                       |
+| `Custom JWT`  | `REACT-EXPRESS` | [Custom-JWT-React-Express-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/custom-jwt-react-express-core-example) |
 
 ### Server Side Verification
 
 | Via               | Lang Framework | Directory                                                                                                       |
 | :---------------- | :------------- | :-------------------------------------------------------------------------------------------------------------- |
 | `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-Core-Example](/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example) |
-
 
 ### Using Web3Auth without Redirect (One Key Flow)
 
@@ -99,14 +99,12 @@ provider specific to the user and application.
 | `Firebase`   | `ReactJS`      | [Modular Example](/web-core-sdk/one-key-flow/modular-example/)         |
 | `Firebase`   | `ReactJS`      | [Single page Example](/web-core-sdk/one-key-flow/single-page-example/) |
 
-
 ### Web3Auth Wagmi Connector
 
 | Lang Framework | Directory                                                                      |
 | :------------- | :----------------------------------------------------------------------------- |
 | `REACT`        | [React-Example](/wagmi-connector/react-example/)                               |
 | `REACT`        | [React-Example-With-Torus-Plugin](/wagmi-connector/react-example-with-plugin/) |
-
 
 ## Web3Auth Mobile SDKs
 

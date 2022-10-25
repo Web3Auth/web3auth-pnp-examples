@@ -1,8 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'dart:collection';
-// ignore: unused_import
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -41,7 +39,7 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    HashMap themeMap = HashMap<String, String>();
+    final themeMap = HashMap<String, String>();
     themeMap['primary'] = "#229954";
 
     Uri redirectUrl;
@@ -209,7 +207,7 @@ class _MyAppState extends State<MyApp> {
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
         extraLoginOptions:
-            ExtraLoginOptions(login_hint: "hello@tor.us")));
+            ExtraLoginOptions(login_hint: "hello+flutterdemo@tor.us")));
   }
 
   Future<Web3AuthResponse> _withDiscord() {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/web3auth";
+import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import RPC from "./algorandRPC";
 import "./App.css";
@@ -189,7 +189,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/algorand/react-algorand-web3auth-example"
           target="_blank"
           rel="noopener noreferrer"
         >

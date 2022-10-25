@@ -10,9 +10,9 @@
     "@types/node": "^16.11.38",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
-    "@web3auth/base": "^2.1.2",
-    "@web3auth/openlogin-adapter": "^2.1.2",
-    "@web3auth/web3auth": "^2.1.2",
+    "@web3auth/base": "^3.0.0",
+    "@web3auth/openlogin-adapter": "^3.0.0",
+    "@web3auth/modal": "^3.0.2",
     "algosdk": "^1.21.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -28,9 +28,11 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
     ],
     "development": [
       "last 1 chrome version",

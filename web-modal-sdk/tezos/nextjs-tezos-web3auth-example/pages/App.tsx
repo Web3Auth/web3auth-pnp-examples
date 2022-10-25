@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/web3auth";
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { Web3Auth } from "@web3auth/modal";
+import {
+  WALLET_ADAPTERS,
+  CHAIN_NAMESPACES,
+  SafeEventEmitterProvider,
+} from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import RPC from "./tezosRPC";
 
@@ -8,37 +12,40 @@ const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
 
   useEffect(() => {
     const init = async () => {
       try {
-      const web3auth = new Web3Auth({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.OTHER
-        },
-      });
-
-      const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
+        const web3auth = new Web3Auth({
           clientId,
-          network: "testnet",
-          uxMode: "popup",  
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);
-          setWeb3auth(web3auth);
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.OTHER,
+          },
+        });
 
-      await web3auth.initModal();if (web3auth.provider) {
-            setProvider(web3auth.provider);
-          };
-        } catch (error) {
-          console.error(error);
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            clientId,
+            network: "testnet",
+            uxMode: "popup",
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
+        setWeb3auth(web3auth);
+
+        await web3auth.initModal();
+        if (web3auth.provider) {
+          setProvider(web3auth.provider);
         }
-      };
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-      init();
+    init();
   }, []);
 
   const login = async () => {
@@ -165,7 +172,11 @@ function App() {
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Source code
         </a>
       </footer>

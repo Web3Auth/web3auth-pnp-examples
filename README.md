@@ -22,7 +22,7 @@ provider specific to the user and application.
 
 ## Web3Auth Plug n Play UI
 
-`@web3auth/web3auth`
+`@web3auth/modal`
 
 ### Blockchain x Framework
 

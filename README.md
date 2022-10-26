@@ -108,11 +108,13 @@ provider specific to the user and application.
 
 ## Web3Auth Mobile SDKs
 
-| SDK       | Documentation                                         | Guide                                            | Directory                                                                        |
-| :-------- | :---------------------------------------------------- | :----------------------------------------------- | :------------------------------------------------------------------------------- |
-| `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-General-Example](/android/general-example/)                             |
-| `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-Custom-Authentication-Example](/android/custom-authentication-example/) |
-| `Flutter` | [Documentation](https://web3auth.io/docs/sdk/flutter) | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Example](/flutter)                                                      |
+| SDK       | Documentation                                         | Guide                                            | Directory                                                                                                           |
+| :-------- | :---------------------------------------------------- | :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-General-Example](/android/general-example/)                                                                |
+| `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-Custom-Authentication-Example](/android/custom-authentication-example/)                                    |
+| `Flutter` | [Documentation](https://web3auth.io/docs/sdk/flutter) | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Example](/flutter/flutter)                                                                                 |
+| `Flutter` | [Documentation](https://web3auth.io/docs/sdk/flutter) | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Google-CustomAuthentication-Example](/flutter/custom-authentication-example/using-google/)                 |
+| `Flutter` | [Documentation](https://web3auth.io/docs/sdk/flutter) | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-JWT-CustomAuthentication-via-Firebase-Example](/flutter/custom-authentication-example/using-jwt-firebase/) |
 
 ## Web3Auth Gaming SDKs
 

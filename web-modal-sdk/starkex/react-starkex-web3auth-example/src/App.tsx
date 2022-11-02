@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import {
-  WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
   SafeEventEmitterProvider,
 } from "@web3auth/base";

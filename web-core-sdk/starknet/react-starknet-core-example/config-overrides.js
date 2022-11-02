@@ -25,5 +25,11 @@ module.exports = function override(config) {
         }
         return rule;
     });
+    config.module.rules.unshift({
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false, // disable the behavior
+        },
+      });
     return config;
 };

@@ -15,7 +15,7 @@
     "@web3auth/openlogin-adapter": "^3.0.0",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",
-    "starknet": "^3.11.0",
+    "starknet": "^4.4.2",
     "web3": "^1.7.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",

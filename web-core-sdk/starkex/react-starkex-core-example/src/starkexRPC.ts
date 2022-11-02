@@ -1,10 +1,8 @@
 //@ts-ignore
-import StarkExAPI from  "@starkware-industries/starkex-js/browser";
+import StarkExAPI from  "@starkware-industries/starkex-js/dist/browser";
 //@ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-//@ts-ignore
-import { ec as elliptic } from "elliptic";
 
 const starkExAPI = new StarkExAPI({
   endpoint: "https://gw.playground-v2.starkex.co",

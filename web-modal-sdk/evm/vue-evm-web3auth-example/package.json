@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@web3auth/base": "^3.0.0",
-    "@web3auth/modal": "^3.0.2",
+    "@web3auth/modal": "^3.0.3",
     "web3": "^1.8.0",
     "ethers": "^5.7.2",
     "node-polyfill-webpack-plugin": "^2.0.1",

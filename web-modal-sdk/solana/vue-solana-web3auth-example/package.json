@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@web3auth/base": "^3.0.0",
-    "@web3auth/modal": "^3.0.2",
-    "@web3auth/solana-provider": "^3.0.0",
+    "@web3auth/modal": "^3.0.3",
+    "@web3auth/solana-provider": "^3.0.3",
     "@solana/web3.js": "^1.66.1",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "core-js": "^3.25.5",

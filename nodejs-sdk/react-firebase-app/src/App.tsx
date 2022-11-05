@@ -115,7 +115,7 @@ function App() {
       return;
     }
     console.log("logout");
-    // setProvider(null);
+    setProvider(null);
   };
 
   const getAccounts = async () => {

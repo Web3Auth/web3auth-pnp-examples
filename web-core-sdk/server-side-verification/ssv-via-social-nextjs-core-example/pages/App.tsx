@@ -216,7 +216,7 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth
         </a>{' '}
-        & NextJS Example for Google Login
+        & NextJS Server Side Verification Example
       </h1>
 
       <div className="grid">{provider ? loginView : logoutView}</div>

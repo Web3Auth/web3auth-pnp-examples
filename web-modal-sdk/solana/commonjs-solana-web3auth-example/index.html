@@ -84,7 +84,7 @@
       $("#get-user-info").click(async function (event) {
         try {
           const user = await web3auth.getUserInfo();
-          console.log(user);
+          uiConsole(user);
         } catch (error) {
           console.error(error.message);
         }
@@ -93,7 +93,7 @@
       $("#get-accounts").click(async function (event) {
         try {
           const accounts = await rpc.getAccounts(web3auth.provider);
-          console.log(accounts);
+          uiConsole(accounts);
         } catch (error) {
           console.error(error.message);
         }
@@ -102,7 +102,7 @@
       $("#get-balance").click(async function (event) {
         try {
           const balance = await rpc.getBalance(web3auth.provider);
-          console.log(balance);
+          uiConsole(balance);
         } catch (error) {
           console.error(error.message);
         }
@@ -111,7 +111,7 @@
       $("#send-transaction").click(async function (event) {
         try {
           const receipt = await rpc.sendTransaction(web3auth.provider);
-          console.log(receipt);
+          uiConsole(receipt);
         } catch (error) {
           console.error(error.message);
         }
@@ -120,7 +120,7 @@
       $("#sign-message").click(async function (event) {
         try {
           const signedMsg = await rpc.signMessage(web3auth.provider);
-          console.log(signedMsg);
+          uiConsole(signedMsg);
         } catch (error) {
           console.error(error.message);
         }
@@ -129,7 +129,7 @@
       $("#get-private-key").click(async function (event) {
         try {
           const privateKey = await rpc.getPrivateKey(web3auth.provider);
-          console.log(privateKey);
+          uiConsole(privateKey);
         } catch (error) {
           console.error(error.message);
         }
@@ -144,6 +144,13 @@
           console.error(error.message);
         }
       });
+
+      function uiConsole(...args) {
+		    const el = document.querySelector("#console>p")
+        if (el) {
+          el.innerHTML = JSON.stringify(args || {}, null, 2)
+        }
+	    }
     </script>
   </body>
 </html>

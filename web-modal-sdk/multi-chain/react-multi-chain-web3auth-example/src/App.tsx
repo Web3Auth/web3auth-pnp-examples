@@ -215,7 +215,7 @@ function App() {
       config: {
         chainConfig: {
           chainId: "0x3",
-          rpcTarget: "https://ssc-dao.genesysgo.net",
+          rpcTarget: "https://api.mainnet-beta.solana.com",
           displayName: "Solana Mainnet",
           blockExplorer: "https://explorer.solana.com/",
           ticker: "SOL",

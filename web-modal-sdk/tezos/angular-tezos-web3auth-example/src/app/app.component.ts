@@ -47,80 +47,87 @@ export class AppComponent {
 
   login = async () => {
     if (!this.web3auth) {
-      console.log('web3auth not initialized yet');
+      this.uiConsole('web3auth not initialized yet');
       return;
     }
     const web3auth = this.web3auth;
     this.provider = await web3auth.connect();
-    console.log('logged in');
+    this.uiConsole('logged in');
   };
 
   getUserInfo = async () => {
     if (!this.web3auth) {
-      console.log('web3auth not initialized yet');
+      this.uiConsole('web3auth not initialized yet');
       return;
     }
     const user = await this.web3auth.getUserInfo();
-    console.log(user);
+    this.uiConsole(user);
   };
 
   onGetTezosKeyPair = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider as SafeEventEmitterProvider);
     const tezosKey = await rpc.getTezosKeyPair();
-    console.log(tezosKey);
+    this.uiConsole(tezosKey);
   };
 
   getAccounts = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider);
     const userAccount = await rpc.getAccounts();
-    console.log(userAccount);
+    this.uiConsole(userAccount);
   };
 
   getBalance = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider);
     const balance = await rpc.getBalance();
-    console.log(balance);
+    this.uiConsole(balance);
   };
 
   signMessage = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider);
     const result = await rpc.signMessage();
-    console.log(result);
+    this.uiConsole(result);
   };
 
   signAndSendTransaction = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider);
     const result = await rpc.signAndSendTransaction();
-    console.log(result);
+    this.uiConsole(result);
   };
 
   logout = async () => {
     if (!this.web3auth) {
-      console.log('web3auth not initialized yet');
+      this.uiConsole('web3auth not initialized yet');
       return;
     }
     await this.web3auth.logout();
     this.provider = null;
-    console.log('logged out');
+    this.uiConsole('logged out');
   };
+
+  uiConsole(...args: any[]) {
+		const el = document.querySelector("#console-ui>p")
+		if (el) {
+			el.innerHTML = JSON.stringify(args || {}, null, 2)
+		}
+	}
 }

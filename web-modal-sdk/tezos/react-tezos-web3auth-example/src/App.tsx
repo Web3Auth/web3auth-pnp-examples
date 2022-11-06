@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import {
-  WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
   SafeEventEmitterProvider,
 } from "@web3auth/base";
@@ -51,7 +50,7 @@ function App() {
 
   const login = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     const web3authProvider = await web3auth.connect();
@@ -60,16 +59,16 @@ function App() {
 
   const getUserInfo = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     const user = await web3auth.getUserInfo();
-    console.log(user);
+    uiConsole(user);
   };
 
   const logout = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     await web3auth.logout();
@@ -78,53 +77,61 @@ function App() {
 
   const onGetTezosKeyPair = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider as SafeEventEmitterProvider);
     const tezosKey = await rpc.getTezosKeyPair();
-    console.log(tezosKey);
+    uiConsole(tezosKey);
   };
 
   const getAccounts = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const userAccount = await rpc.getAccounts();
-    console.log(userAccount);
+    uiConsole(userAccount);
   };
 
   const getBalance = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const balance = await rpc.getBalance();
-    console.log(balance);
+    uiConsole(balance);
   };
 
   const signMessage = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const result = await rpc.signMessage();
-    console.log(result);
+    uiConsole(result);
   };
 
   const signAndSendTransaction = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const result = await rpc.signAndSendTransaction();
-    console.log(result);
+    uiConsole(result);
   };
+
+  function uiConsole(...args: any[]): void {
+		const el = document.querySelector("#console>p")
+		if (el) {
+			el.innerHTML = JSON.stringify(args || {}, null, 2)
+		}
+	}
+
   const loggedInView = (
     <>
       <button onClick={getUserInfo} className="card">

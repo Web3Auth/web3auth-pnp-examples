@@ -1,4 +1,10 @@
 PODS:
+  - AppAuth (1.6.0):
+    - AppAuth/Core (= 1.6.0)
+    - AppAuth/ExternalUserAgent (= 1.6.0)
+  - AppAuth/Core (1.6.0)
+  - AppAuth/ExternalUserAgent (1.6.0):
+    - AppAuth/Core
   - boost (1.76.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.70.4)
@@ -27,6 +33,10 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - fmt (6.2.1)
   - glog (0.3.5)
+  - GoogleSignIn (6.2.4):
+    - AppAuth (~> 1.5)
+    - GTMAppAuth (~> 1.3)
+    - GTMSessionFetcher/Core (< 3.0, >= 1.1)
   - GoogleUtilities/AppDelegateSwizzler (7.8.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -42,6 +52,9 @@ PODS:
   - "GoogleUtilities/NSData+zlib (7.8.0)"
   - GoogleUtilities/Reachability (7.8.0):
     - GoogleUtilities/Logger
+  - GTMAppAuth (1.3.1):
+    - AppAuth/Core (~> 1.6)
+    - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (2.2.0)
   - hermes-engine (0.70.4)
   - libevent (2.1.12)
@@ -347,6 +360,9 @@ PODS:
     - Firebase/Auth (= 10.1.0)
     - React-Core
     - RNFBApp
+  - RNGoogleSignin (8.2.0):
+    - GoogleSignIn (~> 6.2)
+    - React-Core
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -388,16 +404,20 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
+  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - Firebase
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreInternal
     - fmt
+    - GoogleSignIn
     - GoogleUtilities
+    - GTMAppAuth
     - GTMSessionFetcher
     - libevent
     - PromisesObjC
@@ -475,10 +495,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
     :path: "../node_modules/@react-native-firebase/auth"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-google-signin/google-signin"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 8a28262f61fbe40c04ce8677b8d835d97c18f1b3
@@ -489,7 +512,9 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: 96d75228e10fd369564da51bd898414eb0f54df5
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
+  GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: d62ffccea5108bb9e7762ee121ae63bbdd2c6303
   hermes-engine: 3623325e0d0676a45fbc544d72c57dd79fce7446
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -524,6 +549,7 @@ SPEC CHECKSUMS:
   ReactCommon: abf3605a56f98b91671d0d1327addc4ffb87af77
   RNFBApp: 69190bec3b0621b4b635f4a11b733a9401343dc8
   RNFBAuth: f1d50bfad2692338c1aa6947a39cf7bcaa474658
+  RNGoogleSignin: 05c56dd5cc815262db0f8f45133feb892fe06663
   Yoga: 1f02ef4ce4469aefc36167138441b27d988282b1
 
 PODFILE CHECKSUM: 0bccbe5769339cd0a599154fb6cad6036a8d7a48

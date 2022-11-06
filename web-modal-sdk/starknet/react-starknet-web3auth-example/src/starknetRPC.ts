@@ -1,9 +1,7 @@
 // @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-// @ts-ignore
-import { ec as elliptic } from "elliptic";
-import { DeployContractResponse, defaultProvider } from "starknet";
+import { defaultProvider } from "starknet";
 
 // @ts-ignore
 import CompiledAccountContractAbi from "./ArgentAccount.json";
@@ -19,10 +17,7 @@ export default class StarkNetRpc {
     try {
       const privateKey = await this.provider.request({ method: "private_key" });
       const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-      const account = starkwareCrypto.ec.keyFromPublic(
-        keyPair.getPublic(true, "hex"),
-        "hex"
-      );
+      const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
       return account;
     } catch (error) {
       return error;
@@ -39,9 +34,7 @@ export default class StarkNetRpc {
     }
   };
 
-  deployAccount = async (): Promise<
-    DeployContractResponse | string | undefined
-  > => {
+  deployAccount = async (): Promise<string | any> => {
     try {
       const account = await this.getStarkAccount();
       if (account) {

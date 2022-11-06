@@ -47,80 +47,87 @@ export class AppComponent {
 
   login = async () => {
     if (!this.web3auth) {
-      console.log('web3auth not initialized yet');
+      this.uiConsole('web3auth not initialized yet');
       return;
     }
     const web3auth = this.web3auth;
     this.provider = await web3auth.connect();
-    console.log('logged in');
+    this.uiConsole('logged in');
   };
 
   getUserInfo = async () => {
     if (!this.web3auth) {
-      console.log('web3auth not initialized yet');
+      this.uiConsole('web3auth not initialized yet');
       return;
     }
     const user = await this.web3auth.getUserInfo();
-    console.log(user);
+    this.uiConsole(user);
   };
 
   onGetStarkAccount = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider as SafeEventEmitterProvider);
     const starkaccounts = await rpc.getStarkAccount();
-    console.log(starkaccounts);
+    this.uiConsole(starkaccounts);
   };
 
   getStarkKey = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider as SafeEventEmitterProvider);
     const starkKey = await rpc.getStarkKey();
-    console.log(starkKey);
+    this.uiConsole(starkKey);
   };
 
   onMintRequest = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider as SafeEventEmitterProvider);
     const request = await rpc.onMintRequest();
-    console.log(request);
+    this.uiConsole(request);
   };
 
   onDepositRequest = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider as SafeEventEmitterProvider);
     const request = await rpc.onDepositRequest();
-    console.log(request);
+    this.uiConsole(request);
   };
 
   onWithdrawalRequest = async () => {
     if (!this.provider) {
-      console.log('provider not initialized yet');
+      this.uiConsole('provider not initialized yet');
       return;
     }
     const rpc = new RPC(this.provider as SafeEventEmitterProvider);
     const request = await rpc.onWithdrawalRequest();
-    console.log(request);
+    this.uiConsole(request);
   };
 
   logout = async () => {
     if (!this.web3auth) {
-      console.log('web3auth not initialized yet');
+      this.uiConsole('web3auth not initialized yet');
       return;
     }
     await this.web3auth.logout();
     this.provider = null;
-    console.log('logged out');
+    this.uiConsole('logged out');
   };
+
+  uiConsole(...args: any[]) {
+		const el = document.querySelector("#console-ui>p")
+		if (el) {
+			el.innerHTML = JSON.stringify(args || {}, null, 2)
+		}
+	}
 }

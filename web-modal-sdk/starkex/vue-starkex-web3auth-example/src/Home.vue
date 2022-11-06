@@ -91,8 +91,8 @@ export default {
           provider = web3auth.provider;
         }
       } catch (error) {
-        console.log("error", error);
-        console.log("error", error);
+        uiConsole("error", error);
+        uiConsole("error", error);
       } finally {
         loading.value = false;
       }
@@ -100,7 +100,7 @@ export default {
 
     const login = async () => {
       if (!web3auth) {
-        console.log("web3auth not initialized yet");
+        uiConsole("web3auth not initialized yet");
         return;
       }
       provider = await web3auth.connect();
@@ -108,16 +108,16 @@ export default {
 
     const getUserInfo = async () => {
       if (!web3auth) {
-        console.log("web3auth not initialized yet");
+        uiConsole("web3auth not initialized yet");
         return;
       }
       const user = await web3auth.getUserInfo();
-      console.log(user);
+      uiConsole(user);
     };
 
     const logout = async () => {
       if (!web3auth) {
-        console.log("web3auth not initialized yet");
+        uiConsole("web3auth not initialized yet");
         return;
       }
       await web3auth.logout();
@@ -126,53 +126,61 @@ export default {
 
     const onGetStarkAccount = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const starkaccounts = await rpc.getStarkAccount();
-      console.log(starkaccounts);
+      uiConsole(starkaccounts);
     };
 
     const getStarkKey = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const starkKey = await rpc.getStarkKey();
-      console.log(starkKey);
+      uiConsole(starkKey);
     };
 
     const onMintRequest = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const request = await rpc.onMintRequest();
-      console.log(request);
+      uiConsole(request);
     };
 
     const onDepositRequest = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const request = await rpc.onDepositRequest();
-      console.log(request);
+      uiConsole(request);
     };
 
     const onWithdrawalRequest = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const request = await rpc.onWithdrawalRequest();
-      console.log(request);
+      uiConsole(request);
     };
+
+    function uiConsole(...args: any[]): void {
+      const el = document.querySelector("#console>p")
+      if (el) {
+        el.innerHTML = JSON.stringify(args || {}, null, 2)
+      }
+    }
+
     return {
       loading,
       loginButtonStatus,

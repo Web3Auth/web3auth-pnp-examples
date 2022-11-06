@@ -1,10 +1,7 @@
-//@ts-ignore
-import StarkExAPI from "@starkware-industries/starkex-js/browser";
+import StarkExAPI from "@starkware-industries/starkex-js";
 //@ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-//@ts-ignore
-import { ec as elliptic } from "elliptic";
 
 const starkExAPI = new StarkExAPI({
   endpoint: "https://gw.playground-v2.starkex.co",
@@ -68,7 +65,7 @@ export default class StarkExRpc {
         tokenId: "0x3ef811e040c4bc9f9eee715441cee470f5d5aff69b9cd9aca7884f5a442a890",
         vaultId: 1924014660,
       };
-      const response = await starkExAPI.gateway.deposit(request);
+      const response = await starkExAPI.gateway.deposit(request as any);
       return response;
     } catch (error) {
       return error as string;
@@ -86,7 +83,7 @@ export default class StarkExRpc {
         tokenId: "0x2dd48fd7a024204f7c1bd874da5e709d4713d60c8a70639eb1167b367a9c378",
         vaultId: 612008755,
       };
-      const response = await starkExAPI.gateway.withdrawal(request);
+      const response = await starkExAPI.gateway.withdrawal(request as any);
       return response;
     } catch (error) {
       return error as string;

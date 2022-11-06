@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ethersproject/shims": "^5.7.0",
+    "@react-native-firebase/app": "^16.4.2",
     "@toruslabs/react-native-web-browser": "^1.1.0",
     "@web3auth/react-native-sdk": "^3.2.1",
     "buffer": "^6.0.3",

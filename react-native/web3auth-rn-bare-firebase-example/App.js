@@ -17,12 +17,35 @@ import '@ethersproject/shims';
 import {ethers} from 'ethers';
 import {Buffer} from 'buffer';
 global.Buffer = global.Buffer || Buffer;
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const scheme = 'web3authrnbarefirebase'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
   'BJ2juCFWiwv7Bfv0wyf4N8ZxDH8fzIdsImb-6rMKoyZZ1pZhEfW8Bu-FIrhWRMrScK3Q-h1FXWpGHgHNYMfZ4vk';
 const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
+
+async function signInWithGoogle() {
+  try {
+    GoogleSignin.configure({
+      webClientId:
+        '461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com',
+    });
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    const res = await auth().signInWithCredential(googleCredential);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export default function App() {
   const [key, setKey] = useState('');
@@ -44,14 +67,21 @@ export default function App() {
           },
         },
       });
+
+      const loginRes = await signInWithGoogle();
+      uiConsole('Google login success', loginRes);
+      const idToken = await loginRes.user.getIdToken(true);
+      uiConsole('idToken', idToken);
+
       const info = await web3auth.login({
         loginProvider: LOGIN_PROVIDER.JWT,
         redirectUrl: resolvedRedirectUrl,
         mfaLevel: 'none',
         curve: 'secp256k1',
         extraLoginOptions: {
-          domain: 'https://shahbaz-torus.us.auth0.com',
+          id_token: idToken,
           verifierIdField: 'sub',
+          domain: 'http://localhost:3000',
         },
       });
 

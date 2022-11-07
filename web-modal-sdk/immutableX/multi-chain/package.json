@@ -1,24 +1,29 @@
 {
-  "name": "react-algorand-web3auth-example",
+  "name": "react-evm-web3auth-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@imtbl/imx-sdk": "^1.35.4",
+    "@imtbl/core-sdk": "^1.0.0-beta.3",
+    "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^29.2.0",
-    "@types/node": "^18.11.2",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6",
+    "@toruslabs/openlogin-ed25519": "^2.0.0",
+    "@types/jest": "^29.2.1",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
     "@web3auth/base": "^3.0.0",
-    "@web3auth/modal": "^3.0.2",
-    "algosdk": "^1.22.0",
+    "@web3auth/modal": "^3.0.3",
+    "@web3auth/torus-wallet-connector-plugin": "^3.0.0",
+    "elliptic": "^6.5.4",
+    "ethers": "^5.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.8.4",
-    "web-vitals": "^3.0.4"
+    "web-vitals": "^3.0.4",
+    "web3": "^1.8.0"
   },
   "eslintConfig": {
     "extends": [

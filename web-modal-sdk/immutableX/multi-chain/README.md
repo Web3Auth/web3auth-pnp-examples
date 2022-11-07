@@ -1,7 +1,19 @@
-# Getting Started with Create React App
+# Web3Auth x React Demo Application
 
-This project was bootstrapped with
-[Create React App](https://github.com/facebook/create-react-app).
+## Questions
+
+Ask us on our
+[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
+out to our [Discord](https://discord.gg/web3auth).
+
+## Important Links
+
+- [Website](https://web3auth.io)
+- [Docs](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Github Discussion Board](https://github.com/orgs/Web3Auth/discussions)
 
 ## Available Scripts
 
@@ -52,16 +64,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for
 small and middle deployments, and you shouldn’t feel obligated to use this
 feature. However we understand that this tool wouldn’t be useful if you couldn’t
 customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Questions
-
-Ask us on our
-[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
-out to our [Discord](https://discord.gg/web3auth).

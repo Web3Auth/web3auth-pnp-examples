@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Web3Auth Demo App</string>
-    <string name="web3auth_project_id">BOMokGvHfODgTMtS8etu1eNvUWW_wVaTLPyThHCRHtHBjk5CLE6TVT3R5VoTQYg2cnqZI-5ARyzkt1WEA_0pG7Y</string>
+    <string name="web3auth_project_id">BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A</string>
     <string name="web3auth_google_client_id">774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com</string>
     <string name="web3auth_android_demo">Web3Auth Android Demo</string>
     <string name="login_with_google">Login with Google</string>

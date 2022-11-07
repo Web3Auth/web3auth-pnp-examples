@@ -61,12 +61,12 @@ class _MyAppState extends State<MyApp> {
         typeOfLogin: TypeOfLogin.jwt,
         name: "Custom JWT Login",
         clientId:
-            "BHZPoRIHdrfrdXj5E8G5Y72LGnh7L8UFuM8O0KrZSOs4T8lgiZnebB5Oc6cbgYSo3qSz7WBZXIs8fs6jgZqFFgw" // web3auth's plug and play client id
+            "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A" // web3auth's plug and play client id
         );
 
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BHZPoRIHdrfrdXj5E8G5Y72LGnh7L8UFuM8O0KrZSOs4T8lgiZnebB5Oc6cbgYSo3qSz7WBZXIs8fs6jgZqFFgw',
+            'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A',
         network: Network.testnet,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(

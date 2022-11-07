@@ -1,5 +1,5 @@
 {
-  "name": "react-evm-web3auth-example",
+  "name": "react-multi-chain-web3auth-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

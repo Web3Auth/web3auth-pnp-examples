@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
     );
 
     final themeMap = HashMap<String, String>();
-    themeMap['primary'] = "#229954";
+    themeMap['primary'] = "#F5820D";
 
     Uri redirectUrl;
     if (Platform.isAndroid) {
@@ -70,7 +70,9 @@ class _MyAppState extends State<MyApp> {
         network: Network.testnet,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(
-            dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+            dark: true,
+            name: "Web3Auth Flutter (JWT) Firebase Example",
+            theme: themeMap),
         loginConfig: loginConfig));
   }
 
@@ -81,7 +83,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Web3Auth x Flutter Example'),
+          title: const Text('W3A Flutter (JWT) Firebase Example'),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -114,7 +116,7 @@ class _MyAppState extends State<MyApp> {
                       height: 10,
                     ),
                     const Text(
-                      'Welcome to Web3Auth x Flutter Demo',
+                      'Welcome to Web3Auth Flutter (JWT) Firebase Example',
                       style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(
@@ -218,6 +220,6 @@ class _MyAppState extends State<MyApp> {
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.jwt,
         extraLoginOptions:
-            ExtraLoginOptions(id_token: idToken, domain: 'anything')));
+            ExtraLoginOptions(id_token: idToken, domain: 'firebase')));
   }
 }

@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     final themeMap = HashMap<String, String>();
-    themeMap['primary'] = "#229954";
+    themeMap['primary'] = "#eb5424";
 
     Uri redirectUrl;
     if (Platform.isAndroid) {
@@ -48,12 +48,11 @@ class _MyAppState extends State<MyApp> {
     }
 
     final loginConfig = HashMap<String, LoginConfigItem>();
-    loginConfig['google'] = LoginConfigItem(
-        verifier: "web3auth-core-google", // get it from web3auth dashboard
-        typeOfLogin: TypeOfLogin.google,
-        name: "Google Custom Authentication",
-        clientId:
-            "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com" // web3auth's plug and play client id
+    loginConfig['jwt'] = LoginConfigItem(
+        verifier: "web3auth-auth0-example", // get it from web3auth dashboard
+        typeOfLogin: TypeOfLogin.jwt,
+        name: "Web3Auth Flutter Auth0 Example",
+        clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT" // auth0 client id
         );
 
     await Web3AuthFlutter.init(Web3AuthOptions(
@@ -62,7 +61,9 @@ class _MyAppState extends State<MyApp> {
         network: Network.testnet,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(
-            dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+            dark: true,
+            name: "Web3Auth Flutter Auth0 Example",
+            theme: themeMap),
         loginConfig: loginConfig));
   }
 
@@ -73,7 +74,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Web3Auth x Flutter Example'),
+          title: const Text('Web3Auth Flutter Auth0 Example'),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -106,7 +107,7 @@ class _MyAppState extends State<MyApp> {
                       height: 10,
                     ),
                     const Text(
-                      'Welcome to Web3Auth x Flutter Demo',
+                      'Welcome to Web3Auth Flutter Auth0 Example',
                       style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(
@@ -121,11 +122,11 @@ class _MyAppState extends State<MyApp> {
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 72, 133, 237) // This is what you need!
+                            backgroundColor: const Color(
+                                0xFFeb5424) // This is what you need!
                             ),
-                        onPressed: _login(_withGoogle),
-                        child: const Text('Google')),
+                        onPressed: _login(_withAuth0),
+                        child: const Text('Auth0')),
                   ],
                 ),
               ),
@@ -193,10 +194,11 @@ class _MyAppState extends State<MyApp> {
     };
   }
 
-  Future<Web3AuthResponse> _withGoogle() {
+  Future<Web3AuthResponse> _withAuth0() {
     return Web3AuthFlutter.login(LoginParams(
-      loginProvider: Provider.google,
-      mfaLevel: MFALevel.DEFAULT,
-    ));
+        loginProvider: Provider.jwt,
+        extraLoginOptions: ExtraLoginOptions(
+            domain: 'https://shahbaz-torus.us.auth0.com',
+            verifierIdField: 'sub')));
   }
 }

@@ -38,7 +38,7 @@ export default function App() {
         loginConfig: {
           jwt: {
             name: 'Web3Auth-Auth0-JWT',
-            verifier: 'web3auth-auth0-alam',
+            verifier: 'web3auth-auth0-example',
             typeOfLogin: 'jwt',
             clientId: '294QRkchfq2YaXUbPri7D6PH7xzHgQMT',
           },

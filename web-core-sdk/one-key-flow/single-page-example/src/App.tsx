@@ -18,8 +18,7 @@ import {
 } from "firebase/auth";
 import Torus from "@toruslabs/torus.js";
 import NodeDetailManager from "@toruslabs/fetch-node-details";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { subkey } from "@toruslabs/openlogin-subkey";
+import { Web3Auth } from "@web3auth/node-sdk";
 
 const TORUS_NETWORK = {
   TESTNET: "testnet",
@@ -65,12 +64,10 @@ const firebaseConfig = {
 };
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+  const [web3authcore, setWeb3authCore] = useState<Web3AuthCore | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [usesTorus, setUsesTorus] = useState(false);
   const [torus, setTorus] = useState<Torus | any>(null);
-  const [nodeDetailManager, setNodeDetailManager] = useState<
-    NodeDetailManager | any
-  >(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -80,7 +77,7 @@ function App() {
     const init = async () => {
       try {
         // Initialising Web3Auth
-        const web3auth = new Web3AuthCore({
+        const web3authcore = new Web3AuthCore({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -105,9 +102,23 @@ function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3authcore.configureAdapter(openloginAdapter);
+        setWeb3authCore(web3authcore);
+        await web3authcore.init();
+
+        const web3auth = new Web3Auth({
+          clientId, // Get your Client ID from Web3Auth Dashboard
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
+          },
+        });
         setWeb3auth(web3auth);
-        await web3auth.init();
+
+        await web3auth.init({
+          network: "testnet",
+        });
 
         // Instantiating Torus for One Key Flow
         const torus = new Torus({
@@ -116,14 +127,8 @@ function App() {
         });
         setTorus(torus);
 
-        const nodeDetailManager = new NodeDetailManager({
-          network,
-          proxyAddress: CONTRACT_MAP[TORUS_NETWORK.TESTNET],
-        });
-        setNodeDetailManager(nodeDetailManager);
-
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        if (web3authcore.provider) {
+          setProvider(web3authcore.provider);
         }
       } catch (error) {
         console.error(error);
@@ -159,7 +164,7 @@ function App() {
   };
 
   const login = async () => {
-    if (!web3auth) {
+    if (!web3authcore) {
       uiConsole("web3auth not initialized yet");
       return;
     }
@@ -172,43 +177,18 @@ function App() {
     // get sub value from firebase id token
     const { sub } = parseToken(idToken);
 
-    // get details of the node shares on the torus network
-    const { torusNodeEndpoints, torusNodePub, torusIndexes } =
-      await nodeDetailManager.getNodeDetails({ verifier, verifierId: sub });
-    const userDetails = await torus.getUserTypeAndAddress(
-      torusNodeEndpoints,
-      torusNodePub,
-      { verifier, verifierId: sub },
-      true
-    );
-
-    // check if the user hasn't enabled one key login
-    if (userDetails.typeOfUser === "v2" && !userDetails.upgraded) {
-      // if YES, login directly with the torus libraries within your app
-      const keyDetails = await torus.retrieveShares(
-        torusNodeEndpoints,
-        torusIndexes,
+    try {
+      const web3authnodeprovider = await web3auth?.connect({
         verifier,
-        { verifier_id: sub },
+        verifierId: sub,
         idToken,
-        {}
-      );
-      // use the private key to get the provider
-      const finalPrivKey = subkey(
-        keyDetails.privKey.padStart(64, "0"),
-        Buffer.from(clientId, "base64")
-      ).padStart(64, "0");
-      const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-        config: {
-          chainConfig,
-        },
       });
-      await ethereumPrivateKeyProvider.setupProvider(finalPrivKey);
-      setProvider(ethereumPrivateKeyProvider.provider);
-      setUsesTorus(true);
-    } else {
-      // if NO, login with web3auth
-      const web3authProvider = await web3auth.connectTo(
+      if (web3authnodeprovider) {
+        setProvider(web3authnodeprovider);
+      }
+    } catch (err) {
+      console.error(err);
+      const web3authProvider = await web3authcore.connectTo(
         WALLET_ADAPTERS.OPENLOGIN,
         {
           loginProvider: "jwt",
@@ -225,7 +205,7 @@ function App() {
   };
 
   const getUserInfo = async () => {
-    if (!web3auth) {
+    if (!web3authcore) {
       uiConsole("web3auth not initialized yet");
       return;
     }
@@ -236,12 +216,12 @@ function App() {
       );
       return;
     }
-    const user = await web3auth.getUserInfo();
+    const user = await web3authcore.getUserInfo();
     uiConsole(user);
   };
 
   const authenticateUser = async () => {
-    if (!web3auth) {
+    if (!web3authcore) {
       uiConsole("web3auth not initialized yet");
       return;
     }
@@ -252,7 +232,7 @@ function App() {
       );
       return;
     }
-    const id_token = await web3auth.authenticateUser();
+    const id_token = await web3authcore.authenticateUser();
     // console.log(JSON.stringify(user, null, 2))
     uiConsole(
       "Id Token:",
@@ -262,7 +242,7 @@ function App() {
   };
 
   const logout = async () => {
-    if (!web3auth) {
+    if (!web3authcore) {
       uiConsole("web3auth not initialized yet");
       return;
     }
@@ -273,7 +253,7 @@ function App() {
       setProvider(null);
       return;
     }
-    await web3auth.logout();
+    await web3authcore.logout();
     setProvider(null);
   };
 
@@ -386,7 +366,7 @@ function App() {
       </h1>
 
       <div className="grid">
-        {web3auth && torus ? (provider ? loginView : logoutView) : null}
+        {web3authcore && torus ? (provider ? loginView : logoutView) : null}
       </div>
 
       <footer className="footer">

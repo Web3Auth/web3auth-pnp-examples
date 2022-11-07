@@ -108,13 +108,18 @@ provider specific to the user and application.
 
 ## Web3Auth Mobile SDKs
 
-| SDK       | Documentation                                         | Guide                                            | Directory                                                                                                           |
-| :-------- | :---------------------------------------------------- | :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
-| `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-General-Example](/android/general-example/)                                                                |
-| `Android` | [Documentation](https://web3auth.io/docs/sdk/android) | [Guide](https://web3auth.io/docs/guides/android) | [Android-Custom-Authentication-Example](/android/custom-authentication-example/)                                    |
-| `Flutter` | [Documentation](https://web3auth.io/docs/sdk/flutter) | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Example](/flutter/flutter)                                                                                 |
-| `Flutter` | [Documentation](https://web3auth.io/docs/sdk/flutter) | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Google-CustomAuthentication-Example](/flutter/custom-authentication-example/using-google/)                 |
-| `Flutter` | [Documentation](https://web3auth.io/docs/sdk/flutter) | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-JWT-CustomAuthentication-via-Firebase-Example](/flutter/custom-authentication-example/using-jwt-firebase/) |
+| SDK                   | Documentation                                              | Guide                                            | Directory                                                                    |
+| :-------------------- | :--------------------------------------------------------- | :----------------------------------------------- | :--------------------------------------------------------------------------- |
+| `Android`             | [Documentation](https://web3auth.io/docs/sdk/android)      | [Guide](https://web3auth.io/docs/guides/android) | [Android-Example](/android/android-example/)                                 |
+| `Android`             | ---                                                        | ---                                              | [Android-Auth0-Example](/android/android-auth0-example/)                     |
+| `Flutter`             | [Documentation](https://web3auth.io/docs/sdk/flutter)      | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Example](/flutter/flutter-example/)                                 |
+| `Flutter`             | ---                                                        | ---                                              | [Flutter-Auth0-Example](/flutter/flutter-auth0-example/)                     |
+| `Flutter`             | ---                                                        | ---                                              | [Flutter-Firebase-Example](/flutter/flutter-firebase-example/)               |
+| `React Native (Bare)` | [Documentation](https://web3auth.io/docs/sdk/react-native) | ---                                              | [ReactNative-Bare-Example](/react-native/rn-bare-example/)                   |
+| `React Native (Bare)` | ---                                                        | ---                                              | [ReactNative-Bare-Auth0-Example](/react-native/rn-bare-auth0-example/)       |
+| `React Native (Bare)` | ---                                                        | ---                                              | [ReactNative-Bare-Firebase-Example](/react-native/rn-bare-firebase-example/) |
+| `React Native (Expo)` | [Documentation](https://web3auth.io/docs/sdk/react-native) | ---                                              | [ReactNative-Expo-Example](/react-native/rn-expo-example/)                   |
+| `React Native (Expo)` | ---                                                        | ---                                              | [ReactNative-Expo-Auth0-Example](/react-native/rn-expo-auth0-example/)       |
 
 ## Web3Auth Gaming SDKs
 

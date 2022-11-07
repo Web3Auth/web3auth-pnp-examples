@@ -177,6 +177,7 @@ function App() {
     // get sub value from firebase id token
     const { sub } = parseToken(idToken);
 
+    // logging in with the NodeJS SDK
     try {
       const web3authnodeprovider = await web3auth?.connect({
         verifier,
@@ -186,8 +187,10 @@ function App() {
       if (web3authnodeprovider) {
         setProvider(web3authnodeprovider);
       }
+      setUsesTorus(true);
     } catch (err) {
-      console.error(err);
+      // NodeJS SDK throws an error if the user has already enabled MFA
+      // We can use the Web3AuthCore SDK to handle this case
       const web3authProvider = await web3authcore.connectTo(
         WALLET_ADAPTERS.OPENLOGIN,
         {
@@ -218,27 +221,6 @@ function App() {
     }
     const user = await web3authcore.getUserInfo();
     uiConsole(user);
-  };
-
-  const authenticateUser = async () => {
-    if (!web3authcore) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    if (usesTorus) {
-      uiConsole(
-        "You are directly using Torus Libraries to login the user, hence the Web3Auth <code>authenticateUser</code> function won't work for you. For server side verification, directly use your login provider and id token. <br/><br/> You can use the Firebase Id Token for example in this case. <br/>",
-        idToken
-      );
-      return;
-    }
-    const id_token = await web3authcore.authenticateUser();
-    // console.log(JSON.stringify(user, null, 2))
-    uiConsole(
-      "Id Token:",
-      id_token,
-      "You can use this id token from Web3Auth for server side verification from your own end, visit the web3auth documentation for more information."
-    );
   };
 
   const logout = async () => {
@@ -315,11 +297,6 @@ function App() {
         <div>
           <button onClick={getAccounts} className="card">
             Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={authenticateUser} className="card">
-            Server Side Verification
           </button>
         </div>
         <div>

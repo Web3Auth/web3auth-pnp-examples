@@ -23,7 +23,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 const scheme = 'web3authrnbarefirebase'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
-  'BJ2juCFWiwv7Bfv0wyf4N8ZxDH8fzIdsImb-6rMKoyZZ1pZhEfW8Bu-FIrhWRMrScK3Q-h1FXWpGHgHNYMfZ4vk';
+  'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A';
 const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
 
 async function signInWithGoogle() {

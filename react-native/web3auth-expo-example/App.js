@@ -14,7 +14,7 @@ const resolvedRedirectUrl =
     ? Linking.createURL("web3auth", {})
     : Linking.createURL("web3auth", { scheme: scheme });
 
-const clientId = "BP-HcHP_eD6X-TEZhh_yTC2p9skVcoe2iwqcvDH2jV2kHxEr7U8_ZsMARgiwl_5jX9FYRNuKjtzBHfam_GUe6qg";
+const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A";
 const providerUrl = "https://rpc.ankr.com/eth"; // Or your desired provider url
       
 export default function App() {

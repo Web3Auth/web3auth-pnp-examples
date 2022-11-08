@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Web3Auth Demo App</string>
-    <string name="web3auth_project_id">BOMokGvHfODgTMtS8etu1eNvUWW_wVaTLPyThHCRHtHBjk5CLE6TVT3R5VoTQYg2cnqZI-5ARyzkt1WEA_0pG7Y</string>
-    <string name="web3auth_android_demo">Web3Auth Android Demo</string>
-    <string name="login_with_google">Login with Google</string>
-    <string name="logout">Logout</string>
-    <string name="not_logged_in">Log in to see Web3Auth Data</string>
-</resources>

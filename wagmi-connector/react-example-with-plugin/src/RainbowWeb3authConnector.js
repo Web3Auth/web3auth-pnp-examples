@@ -26,7 +26,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => ({
       chains: chains,
       options: {
         enableLogging: true,
-        clientId: "YOUR_CLIENT_ID", // Get your own client id from https://dashboard.web3auth.io
+        clientId: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A", // Get your own client id from https://dashboard.web3auth.io
         network: "testnet",
         chainId: "0x1",
       },

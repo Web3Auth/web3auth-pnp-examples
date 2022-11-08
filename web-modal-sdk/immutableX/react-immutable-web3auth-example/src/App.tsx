@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import "./App.css";
-import RPC from "./ethersRPC"; // for using web3.js
+import RPC from "./immutableRPC"; // for using web3.js
 
 const clientId =
   "BBP_6GOu3EJGGws9yd8wY_xFT0jZIWmiLMpqrEMx36jlM61K9XRnNLnnvEtGpF-RhXJDGMJjL-I-wTi13RcBBOo"; // get from https://dashboard.web3auth.io

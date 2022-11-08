@@ -98,7 +98,7 @@ export default class EthereumRpc {
 
       const depositResponse = await this.client.deposit(ethSigner, {
         type: "ETH",
-        amount: "1000000000000000", // Amount in wei
+        amount: "10000000000000", // Amount in wei
       });
       return depositResponse;
     } catch (error) {

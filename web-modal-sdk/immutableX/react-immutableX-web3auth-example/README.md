@@ -1,4 +1,4 @@
-# Web3Auth x React Demo Application
+# Web3Auth x ImmutableX Demo Application
 
 ## Questions
 

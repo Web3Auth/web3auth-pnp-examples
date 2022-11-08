@@ -66,7 +66,8 @@ export default class EthereumRpc {
 
       const walletConnection = { ethSigner, starkSigner };
       const response = await this.client.registerOffchain(walletConnection);
-      if (response.tx_hash) {
+      console.log("response", response);
+      if (response) {
         return "Successfully registered";
       }
     } catch (error) {

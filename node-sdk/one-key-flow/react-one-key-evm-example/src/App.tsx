@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+
+// Import Node SDK for no redirect flow
+import { Web3Auth } from "@web3auth/node-sdk";
+
+// Import Web3Auth Core SDK for redirect in case of users who have enabled MFA
 import { Web3AuthCore } from "@web3auth/core";
 import {
   WALLET_ADAPTERS,
@@ -6,9 +11,12 @@ import {
   SafeEventEmitterProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import "./App.css";
+
+// RPC libraries for blockchain calls
 // import RPC from "./evm.web3";
 import RPC from "./evm.ethers";
+
+// Firebase libraries for custom authentication
 import { initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
@@ -16,18 +24,19 @@ import {
   signInWithPopup,
   UserCredential,
 } from "firebase/auth";
-import { Web3Auth } from "@web3auth/node-sdk";
+
+import "./App.css";
 
 const verifier = "web3auth-core-firebase";
 
 const clientId =
-  "BKjpD5DNAFDbX9Ty9RSBAXdQP8YDY1rldKqKCgbxxa8JZODZ8zxVRzlT74qRIHsor5aIwZ55dQVlcmrwJu37PI8"; // get from https://dashboard.web3auth.io
+  "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
-  chainId: "0x3",
-  rpcTarget: "https://rpc.ankr.com/eth_ropsten",
-  displayName: "Ropsten Testnet",
-  blockExplorer: "https://ropsten.etherscan.io/",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
 };
@@ -43,9 +52,9 @@ const firebaseConfig = {
 };
 
 function App() {
-  const [web3authcore, setWeb3authCore] = useState<Web3AuthCore | null>(null);
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [usesNodeJSsdk, setUsesNodeJSsdk] = useState(false);
+  const [web3authCore, setWeb3authCore] = useState<Web3AuthCore | null>(null);
+  const [web3authNode, setWeb3authNode] = useState<Web3Auth | null>(null);
+  const [usesNodeSDK, setUsesNodeSDK] = useState(false);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -54,8 +63,22 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // Initialising Web3Auth
-        const web3authcore = new Web3AuthCore({
+        // Initialising Web3Auth Node SDK
+        const web3authNode = new Web3Auth({
+          clientId, // Get your Client ID from Web3Auth Dashboard
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
+          },
+        });
+        setWeb3authNode(web3authNode);
+        await web3authNode.init({
+          network: "testnet",
+        });
+
+        // Initialising Web3Auth Core SDK
+        const web3authCore = new Web3AuthCore({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -80,26 +103,12 @@ function App() {
             },
           },
         });
-        web3authcore.configureAdapter(openloginAdapter);
-        setWeb3authCore(web3authcore);
-        await web3authcore.init();
+        web3authCore.configureAdapter(openloginAdapter);
+        setWeb3authCore(web3authCore);
+        await web3authCore.init();
 
-        const web3auth = new Web3Auth({
-          clientId, // Get your Client ID from Web3Auth Dashboard
-          chainConfig: {
-            chainNamespace: "eip155",
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
-          },
-        });
-        setWeb3auth(web3auth);
-
-        await web3auth.init({
-          network: "testnet",
-        });
-
-        if (web3authcore.provider) {
-          setProvider(web3authcore.provider);
+        if (web3authCore.provider) {
+          setProvider(web3authCore.provider);
         }
       } catch (error) {
         console.error(error);
@@ -135,84 +144,89 @@ function App() {
   };
 
   const login = async () => {
-    if (!web3authcore) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
     // login with firebase
     const loginRes = await signInWithGoogle();
     // get the id token from firebase
     const idToken = await loginRes.user.getIdToken(true);
     setIdToken(idToken);
 
-    // get sub value from firebase id token
-    const { sub } = parseToken(idToken);
-
-    // logging in with the NodeJS SDK
+    // trying logging in with the NodeJS SDK
     try {
-      const web3authnodeprovider = await web3auth?.connect({
+      // get sub value from firebase id token
+      const { sub } = parseToken(idToken);
+
+      const web3authNodeprovider = await web3authNode?.connect({
         verifier,
         verifierId: sub,
         idToken,
       });
-      if (web3authnodeprovider) {
-        setProvider(web3authnodeprovider);
+      if (web3authNodeprovider) {
+        setProvider(web3authNodeprovider);
       }
-      setUsesNodeJSsdk(true);
+      setUsesNodeSDK(true);
     } catch (err) {
       // NodeJS SDK throws an error if the user has already enabled MFA
-      // We can use the Web3AuthCore SDK to handle this case
-      const web3authProvider = await web3authcore.connectTo(
-        WALLET_ADAPTERS.OPENLOGIN,
-        {
-          loginProvider: "jwt",
-          extraLoginOptions: {
-            id_token: idToken,
-            verifierIdField: "sub",
-            domain: "http://localhost:3000",
-          },
+      // We will try to use the Web3AuthCore SDK to handle this case
+      try {
+        if (!web3authCore) {
+          uiConsole("Web3Auth Core SDK not initialized yet");
+          return;
         }
-      );
-      setProvider(web3authProvider);
-      setUsesNodeJSsdk(false);
+        const web3authProvider = await web3authCore.connectTo(
+          WALLET_ADAPTERS.OPENLOGIN,
+          {
+            loginProvider: "jwt",
+            extraLoginOptions: {
+              id_token: idToken,
+              verifierIdField: "sub",
+              domain: "http://localhost:3000",
+            },
+          }
+        );
+        setProvider(web3authProvider);
+        setUsesNodeSDK(false);
+      } catch (err) {
+        console.error(err);
+        uiConsole(err);
+      }
     }
   };
 
   const getUserInfo = async () => {
-    if (!web3authcore) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    if (usesNodeJSsdk) {
+    if (usesNodeSDK) {
       uiConsole(
         "You are directly using NodeJS SDK to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.",
         parseToken(idToken)
       );
       return;
     }
-    const user = await web3authcore.getUserInfo();
+    if (!web3authCore) {
+      uiConsole("Web3Auth Core SDK not initialized yet");
+      return;
+    }
+    const user = await web3authCore.getUserInfo();
     uiConsole(user);
   };
 
   const logout = async () => {
-    if (!web3authcore) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    if (usesNodeJSsdk) {
+    if (usesNodeSDK) {
       console.log(
         "You are directly using NodeJS SDK to login the user, hence the Web3Auth logout function won't work for you. You can logout the user directly from your login provider, or just clear the provider object."
       );
       setProvider(null);
       return;
     }
-    await web3authcore.logout();
+    if (!web3authCore) {
+      uiConsole("Web3Auth Core SDK not initialized yet");
+      return;
+    }
+    await web3authCore.logout();
     setProvider(null);
   };
 
   const getAccounts = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      uiConsole("No provider found");
       return;
     }
     const rpc = new RPC(provider);
@@ -222,7 +236,7 @@ function App() {
 
   const getBalance = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      uiConsole("No provider found");
       return;
     }
     const rpc = new RPC(provider);
@@ -232,7 +246,7 @@ function App() {
 
   const signMessage = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      uiConsole("No provider found");
       return;
     }
     const rpc = new RPC(provider);
@@ -242,7 +256,7 @@ function App() {
 
   const sendTransaction = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      uiConsole("No provider found");
       return;
     }
     const rpc = new RPC(provider);
@@ -314,7 +328,7 @@ function App() {
       </h1>
 
       <div className="grid">
-        {web3authcore && web3auth ? (provider ? loginView : logoutView) : null}
+        {web3authCore && web3authNode ? (provider ? loginView : logoutView) : null}
       </div>
 
       <footer className="footer">

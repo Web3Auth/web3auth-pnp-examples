@@ -4,7 +4,7 @@ Visit https://web3auth.io/docs/guides/android to get started.
 
 ## Try in your Android Phone
 
-[Download the APK](https://github.com/Web3Auth/examples/raw/main/android/android-example/web3auth-android-demo-app.apk)
+[Download the APK](https://github.com/Web3Auth/examples/raw/main/android/android-auth0-example/app-debug.apk)
 to test in your local device.
 
 ## Try in your Android Studio

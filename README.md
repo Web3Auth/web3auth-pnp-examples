@@ -92,12 +92,12 @@ provider specific to the user and application.
 | :---------------- | :------------- | :-------------------------------------------------------------------------------------------------------------- |
 | `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-Core-Example](/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example) |
 
-### Using Web3Auth without Redirect (One Key Flow)
+### Node SDK
 
-| JWT Provider | Lang Framework | Directory                                                              |
-| :----------- | :------------- | :--------------------------------------------------------------------- |
-| `Firebase`   | `ReactJS`      | [Modular Example](/web-core-sdk/one-key-flow/modular-example/)         |
-| `Firebase`   | `ReactJS`      | [Single page Example](/web-core-sdk/one-key-flow/single-page-example/) |
+| JWT Provider | Lang Framework | Directory                                                         |
+| :----------- | :------------- | :---------------------------------------------------------------- |
+| `Firebase`   | `ReactJS`      | [One-key-flow](/node-sdk/one-key-flow/react-one-key-evm-example/) |
+| `Custom`     | `NodeJS`       | [Backend-Example](/node-sdk/node-backend-example/)                |
 
 ### Web3Auth Wagmi Connector
 

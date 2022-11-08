@@ -328,12 +328,16 @@ function App() {
       </h1>
 
       <div className="grid">
-        {web3authCore && web3authNode ? (provider ? loginView : logoutView) : null}
+        {web3authCore && web3authNode
+          ? provider
+            ? loginView
+            : logoutView
+          : null}
       </div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/master/one-key-flow-core-react-example"
+          href="https://github.com/Web3Auth/examples/tree/master/node-sdk/one-key-flow/react-one-key-evm-example"
           target="_blank"
           rel="noopener noreferrer"
         >

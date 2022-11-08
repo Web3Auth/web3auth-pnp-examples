@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+
+// Import Node SDK for no redirect flow
+import { Web3Auth } from "@web3auth/node-sdk";
+
+// Import Web3Auth Core SDK for redirect in case of users who have enabled MFA
 import { Web3AuthCore } from "@web3auth/core";
 import {
   WALLET_ADAPTERS,
@@ -6,9 +11,12 @@ import {
   SafeEventEmitterProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import "./App.css";
+
+// RPC libraries for blockchain calls
 // import RPC from "./evm.web3";
 import RPC from "./evm.ethers";
+
+// Firebase libraries for custom authentication
 import { initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
@@ -16,40 +24,19 @@ import {
   signInWithPopup,
   UserCredential,
 } from "firebase/auth";
-import Torus from "@toruslabs/torus.js";
-import NodeDetailManager from "@toruslabs/fetch-node-details";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { subkey } from "@toruslabs/openlogin-subkey";
 
-const TORUS_NETWORK = {
-  TESTNET: "testnet",
-  MAINNET: "mainnet",
-  CYAN: "cyan",
-};
+import "./App.css";
 
-export const CONTRACT_MAP = {
-  [TORUS_NETWORK.MAINNET]: NodeDetailManager.PROXY_ADDRESS_MAINNET,
-  [TORUS_NETWORK.TESTNET]: NodeDetailManager.PROXY_ADDRESS_TESTNET,
-  [TORUS_NETWORK.CYAN]: NodeDetailManager.PROXY_ADDRESS_CYAN,
-};
-
-export const NETWORK_MAP = {
-  [TORUS_NETWORK.MAINNET]: "https://rpc.ankr.com/eth",
-  [TORUS_NETWORK.TESTNET]: "https://rpc.ankr.com/eth_ropsten",
-  [TORUS_NETWORK.CYAN]: "https://rpc.ankr.com/polygon",
-};
-
-const network = NETWORK_MAP[TORUS_NETWORK.TESTNET];
 const verifier = "web3auth-core-firebase";
 
 const clientId =
-  "BKjpD5DNAFDbX9Ty9RSBAXdQP8YDY1rldKqKCgbxxa8JZODZ8zxVRzlT74qRIHsor5aIwZ55dQVlcmrwJu37PI8"; // get from https://dashboard.web3auth.io
+  "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
-  chainId: "0x3",
-  rpcTarget: "https://rpc.ankr.com/eth_ropsten",
-  displayName: "Ropsten Testnet",
-  blockExplorer: "https://ropsten.etherscan.io/",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
 };
@@ -65,12 +52,9 @@ const firebaseConfig = {
 };
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
-  const [usesTorus, setUsesTorus] = useState(false);
-  const [torus, setTorus] = useState<Torus | any>(null);
-  const [nodeDetailManager, setNodeDetailManager] = useState<
-    NodeDetailManager | any
-  >(null);
+  const [web3authCore, setWeb3authCore] = useState<Web3AuthCore | null>(null);
+  const [web3authNode, setWeb3authNode] = useState<Web3Auth | null>(null);
+  const [usesNodeSDK, setUsesNodeSDK] = useState(false);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -79,8 +63,22 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // Initialising Web3Auth
-        const web3auth = new Web3AuthCore({
+        // Initialising Web3Auth Node SDK
+        const web3authNode = new Web3Auth({
+          clientId, // Get your Client ID from Web3Auth Dashboard
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
+          },
+        });
+        setWeb3authNode(web3authNode);
+        await web3authNode.init({
+          network: "testnet",
+        });
+
+        // Initialising Web3Auth Core SDK
+        const web3authCore = new Web3AuthCore({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -105,25 +103,12 @@ function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
-        setWeb3auth(web3auth);
-        await web3auth.init();
+        web3authCore.configureAdapter(openloginAdapter);
+        setWeb3authCore(web3authCore);
+        await web3authCore.init();
 
-        // Instantiating Torus for One Key Flow
-        const torus = new Torus({
-          enableOneKey: true,
-          network,
-        });
-        setTorus(torus);
-
-        const nodeDetailManager = new NodeDetailManager({
-          network,
-          proxyAddress: CONTRACT_MAP[TORUS_NETWORK.TESTNET],
-        });
-        setNodeDetailManager(nodeDetailManager);
-
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        if (web3authCore.provider) {
+          setProvider(web3authCore.provider);
         }
       } catch (error) {
         console.error(error);
@@ -159,127 +144,89 @@ function App() {
   };
 
   const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
     // login with firebase
     const loginRes = await signInWithGoogle();
     // get the id token from firebase
     const idToken = await loginRes.user.getIdToken(true);
     setIdToken(idToken);
 
-    // get sub value from firebase id token
-    const { sub } = parseToken(idToken);
+    // trying logging in with the NodeJS SDK
+    try {
+      // get sub value from firebase id token
+      const { sub } = parseToken(idToken);
 
-    // get details of the node shares on the torus network
-    const { torusNodeEndpoints, torusNodePub, torusIndexes } =
-      await nodeDetailManager.getNodeDetails({ verifier, verifierId: sub });
-    const userDetails = await torus.getUserTypeAndAddress(
-      torusNodeEndpoints,
-      torusNodePub,
-      { verifier, verifierId: sub },
-      true
-    );
-
-    // check if the user hasn't enabled one key login
-    if (userDetails.typeOfUser === "v2" && !userDetails.upgraded) {
-      // if YES, login directly with the torus libraries within your app
-      const keyDetails = await torus.retrieveShares(
-        torusNodeEndpoints,
-        torusIndexes,
+      const web3authNodeprovider = await web3authNode?.connect({
         verifier,
-        { verifier_id: sub },
+        verifierId: sub,
         idToken,
-        {}
-      );
-      // use the private key to get the provider
-      const finalPrivKey = subkey(
-        keyDetails.privKey.padStart(64, "0"),
-        Buffer.from(clientId, "base64")
-      ).padStart(64, "0");
-      const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-        config: {
-          chainConfig,
-        },
       });
-      await ethereumPrivateKeyProvider.setupProvider(finalPrivKey);
-      setProvider(ethereumPrivateKeyProvider.provider);
-      setUsesTorus(true);
-    } else {
-      // if NO, login with web3auth
-      const web3authProvider = await web3auth.connectTo(
-        WALLET_ADAPTERS.OPENLOGIN,
-        {
-          loginProvider: "jwt",
-          extraLoginOptions: {
-            id_token: idToken,
-            verifierIdField: "sub",
-            domain: "http://localhost:3000",
-          },
+      if (web3authNodeprovider) {
+        setProvider(web3authNodeprovider);
+      }
+      setUsesNodeSDK(true);
+    } catch (err) {
+      // NodeJS SDK throws an error if the user has already enabled MFA
+      // We will try to use the Web3AuthCore SDK to handle this case
+      try {
+        if (!web3authCore) {
+          uiConsole("Web3Auth Core SDK not initialized yet");
+          return;
         }
-      );
-      setProvider(web3authProvider);
-      setUsesTorus(false);
+        const web3authProvider = await web3authCore.connectTo(
+          WALLET_ADAPTERS.OPENLOGIN,
+          {
+            loginProvider: "jwt",
+            extraLoginOptions: {
+              id_token: idToken,
+              verifierIdField: "sub",
+              domain: "http://localhost:3000",
+            },
+          }
+        );
+        setProvider(web3authProvider);
+        setUsesNodeSDK(false);
+      } catch (err) {
+        console.error(err);
+        uiConsole(err);
+      }
     }
   };
 
   const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    if (usesTorus) {
+    if (usesNodeSDK) {
       uiConsole(
-        "You are directly using Torus Libraries to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.",
+        "You are directly using NodeJS SDK to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.",
         parseToken(idToken)
       );
       return;
     }
-    const user = await web3auth.getUserInfo();
+    if (!web3authCore) {
+      uiConsole("Web3Auth Core SDK not initialized yet");
+      return;
+    }
+    const user = await web3authCore.getUserInfo();
     uiConsole(user);
   };
 
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    if (usesTorus) {
-      uiConsole(
-        "You are directly using Torus Libraries to login the user, hence the Web3Auth <code>authenticateUser</code> function won't work for you. For server side verification, directly use your login provider and id token. <br/><br/> You can use the Firebase Id Token for example in this case. <br/>",
-        idToken
-      );
-      return;
-    }
-    const id_token = await web3auth.authenticateUser();
-    // console.log(JSON.stringify(user, null, 2))
-    uiConsole(
-      "Id Token:",
-      id_token,
-      "You can use this id token from Web3Auth for server side verification from your own end, visit the web3auth documentation for more information."
-    );
-  };
-
   const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    if (usesTorus) {
+    if (usesNodeSDK) {
       console.log(
-        "You are directly using Torus Libraries to login the user, hence the Web3Auth logout function won't work for you. You can logout the user directly from your login provider, or just clear the provider object."
+        "You are directly using NodeJS SDK to login the user, hence the Web3Auth logout function won't work for you. You can logout the user directly from your login provider, or just clear the provider object."
       );
       setProvider(null);
       return;
     }
-    await web3auth.logout();
+    if (!web3authCore) {
+      uiConsole("Web3Auth Core SDK not initialized yet");
+      return;
+    }
+    await web3authCore.logout();
     setProvider(null);
   };
 
   const getAccounts = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      uiConsole("No provider found");
       return;
     }
     const rpc = new RPC(provider);
@@ -289,7 +236,7 @@ function App() {
 
   const getBalance = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      uiConsole("No provider found");
       return;
     }
     const rpc = new RPC(provider);
@@ -299,7 +246,7 @@ function App() {
 
   const signMessage = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      uiConsole("No provider found");
       return;
     }
     const rpc = new RPC(provider);
@@ -309,7 +256,7 @@ function App() {
 
   const sendTransaction = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      uiConsole("No provider found");
       return;
     }
     const rpc = new RPC(provider);
@@ -335,11 +282,6 @@ function App() {
         <div>
           <button onClick={getAccounts} className="card">
             Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={authenticateUser} className="card">
-            Server Side Verification
           </button>
         </div>
         <div>
@@ -386,12 +328,16 @@ function App() {
       </h1>
 
       <div className="grid">
-        {web3auth && torus ? (provider ? loginView : logoutView) : null}
+        {web3authCore && web3authNode
+          ? provider
+            ? loginView
+            : logoutView
+          : null}
       </div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/master/one-key-flow-core-react-example"
+          href="https://github.com/Web3Auth/examples/tree/master/node-sdk/one-key-flow/react-one-key-evm-example"
           target="_blank"
           rel="noopener noreferrer"
         >

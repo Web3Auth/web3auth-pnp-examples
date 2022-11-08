@@ -10,10 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.web3auth.core.Web3Auth
-import com.web3auth.core.types.LoginParams
-import com.web3auth.core.types.Provider
-import com.web3auth.core.types.Web3AuthOptions
-import com.web3auth.core.types.Web3AuthResponse
+import com.web3auth.core.types.*
 import java8.util.concurrent.CompletableFuture
 
 
@@ -33,17 +30,32 @@ class MainActivity : AppCompatActivity() {
                 clientId = getString(R.string.web3auth_project_id),
                 network = Web3Auth.Network.TESTNET,
                 redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"),
-                // whiteLabel = WhiteLabelData(
-                //     "Web3Auth dApp Share", null, null, "en", true,
-                //     hashMapOf(
-                //         "primary" to "#229954"
-                //     )
-                // ),
+                 whiteLabel = WhiteLabelData(
+                     "Web3Auth Android Example", null, null, "en", true,
+                     hashMapOf(
+                         "primary" to "#229954"
+                     )
+                 ),
             )
         )
 
         // Handle user signing in when app is not alive
         web3Auth.setResultUrl(intent?.data)
+
+        // Call sessionResponse() in onCreate() to check for any existing session.
+        val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
+        print("SESSION MANAGEMENT");
+        print(sessionResponse);
+        sessionResponse.whenComplete { loginResponse, error ->
+            if (error == null) {
+                print("LOGIN RESPONSE");
+                println(loginResponse)
+                reRender(loginResponse)
+            } else {
+                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+                // Ideally, you should initiate the login function here.
+            }
+        }
 
         // Setup UI and event handlers
         val signInButton = findViewById<Button>(R.id.signInButton)

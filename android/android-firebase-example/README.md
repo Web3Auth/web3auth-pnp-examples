@@ -4,14 +4,14 @@ Visit https://web3auth.io/docs/guides/android to get started.
 
 ## Try in your Android Phone
 
-[Download the APK](https://github.com/Web3Auth/examples/raw/main/android/android-auth0-example/app-debug.apk)
+[Download the APK](https://github.com/Web3Auth/examples/raw/main/android/android-firebase-example/app-debug.apk)
 to test in your local device.
 
 ## Try in your Android Studio
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd android/android-auth0-example
+cd android/android-firebase-example
 # Open in Android Studio
 ```
 

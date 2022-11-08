@@ -1,0 +1,15 @@
+{
+  "name": "node-app",
+  "version": "0.0.1",
+  "description": "Web3Auth's Node SDK Demo App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@web3auth/node-sdk": "^0.0.1"
+  }
+}

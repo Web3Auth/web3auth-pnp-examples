@@ -10,10 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.web3auth.core.Web3Auth
-import com.web3auth.core.types.LoginParams
-import com.web3auth.core.types.Provider
-import com.web3auth.core.types.Web3AuthOptions
-import com.web3auth.core.types.Web3AuthResponse
+import com.web3auth.core.types.*
 import java8.util.concurrent.CompletableFuture
 
 
@@ -35,22 +32,34 @@ class MainActivity : AppCompatActivity() {
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
                // Optional parameters
                whiteLabel = WhiteLabelData(
-                   "Web3Auth dApp Share", null, null, "en", true,
+                   "Web3Auth Android Auth0 Example", null, null, "en", true,
                    hashMapOf(
-                       "primary" to "#F1C40F"
+                       "primary" to "#eb5424"
                    )
                ),
-               loginConfig = hashMapOf("google" to LoginConfigItem(
-                   verifier = "web3auth-core-google",
-                   typeOfLogin = TypeOfLogin.GOOGLE,
-                   name = "Custom Google Login",
-                   clientId = getString(R.string.web3auth_google_client_id)
+               loginConfig = hashMapOf("jwt" to LoginConfigItem(
+                   verifier = "web3auth-auth0-example",
+                   typeOfLogin = TypeOfLogin.JWT,
+                   name = "Auth0 Login",
+                   clientId = getString(R.string.web3auth_auth0_client_id)
                ))
            )
        )
 
         // Handle user signing in when app is not alive
         web3Auth.setResultUrl(intent?.data)
+
+        // Call sessionResponse() in onCreate() to check for any existing session.
+        val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
+        sessionResponse.whenComplete { loginResponse, error ->
+            if (error == null) {
+                println(loginResponse)
+                reRender(loginResponse)
+            } else {
+                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+                // Ideally, you should initiate the login function here.
+            }
+        }
 
         // Setup UI and event handlers
         val signInButton = findViewById<Button>(R.id.signInButton)
@@ -70,16 +79,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
-        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+        val selectedLoginProvider = Provider.JWT   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "https://shahbaz-torus.us.auth0.com", verifierIdField = "sub")))
 
     //    For Email Passwordless, use the below code and pass email id into extraLoginOptions of LoginParams.
     //    val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS
     //    val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(login_hint = "shahbaz.web3@gmail.com")))
 
-    //    For login with JWT, use the below code and pass email id into extraLoginOptions of LoginParams.
+    //    For login with Custom JWT, use the below code and pass email id into extraLoginOptions of LoginParams.
     //    val selectedLoginProvider = Provider.JWT
-    //    val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(id_token_hint = "<id-token>")))
+    //    val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(id_token = "<id-token>", domain: "your-domain")))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {

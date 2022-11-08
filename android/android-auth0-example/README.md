@@ -4,14 +4,14 @@ Visit https://web3auth.io/docs/guides/android to get started.
 
 ## Try in your Android Phone
 
-[Download the APK](https://github.com/Web3Auth/examples/raw/main/android/web3auth-android-demo-app.apk)
+[Download the APK](https://github.com/Web3Auth/examples/raw/main/android/android-example/web3auth-android-demo-app.apk)
 to test in your local device.
 
 ## Try in your Android Studio
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd android/custom-authentication-example
+cd android/android-auth0-example
 # Open in Android Studio
 ```
 

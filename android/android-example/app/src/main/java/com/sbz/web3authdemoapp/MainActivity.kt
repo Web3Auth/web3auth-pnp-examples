@@ -44,11 +44,8 @@ class MainActivity : AppCompatActivity() {
 
         // Call sessionResponse() in onCreate() to check for any existing session.
         val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
-        print("SESSION MANAGEMENT");
-        print(sessionResponse);
         sessionResponse.whenComplete { loginResponse, error ->
             if (error == null) {
-                print("LOGIN RESPONSE");
                 println(loginResponse)
                 reRender(loginResponse)
             } else {

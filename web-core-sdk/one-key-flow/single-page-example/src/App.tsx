@@ -16,29 +16,8 @@ import {
   signInWithPopup,
   UserCredential,
 } from "firebase/auth";
-import Torus from "@toruslabs/torus.js";
-import NodeDetailManager from "@toruslabs/fetch-node-details";
 import { Web3Auth } from "@web3auth/node-sdk";
 
-const TORUS_NETWORK = {
-  TESTNET: "testnet",
-  MAINNET: "mainnet",
-  CYAN: "cyan",
-};
-
-export const CONTRACT_MAP = {
-  [TORUS_NETWORK.MAINNET]: NodeDetailManager.PROXY_ADDRESS_MAINNET,
-  [TORUS_NETWORK.TESTNET]: NodeDetailManager.PROXY_ADDRESS_TESTNET,
-  [TORUS_NETWORK.CYAN]: NodeDetailManager.PROXY_ADDRESS_CYAN,
-};
-
-export const NETWORK_MAP = {
-  [TORUS_NETWORK.MAINNET]: "https://rpc.ankr.com/eth",
-  [TORUS_NETWORK.TESTNET]: "https://rpc.ankr.com/eth_ropsten",
-  [TORUS_NETWORK.CYAN]: "https://rpc.ankr.com/polygon",
-};
-
-const network = NETWORK_MAP[TORUS_NETWORK.TESTNET];
 const verifier = "web3auth-core-firebase";
 
 const clientId =
@@ -66,8 +45,7 @@ const firebaseConfig = {
 function App() {
   const [web3authcore, setWeb3authCore] = useState<Web3AuthCore | null>(null);
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [usesTorus, setUsesTorus] = useState(false);
-  const [torus, setTorus] = useState<Torus | any>(null);
+  const [usesNodeJSsdk, setUsesNodeJSsdk] = useState(false);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -119,13 +97,6 @@ function App() {
         await web3auth.init({
           network: "testnet",
         });
-
-        // Instantiating Torus for One Key Flow
-        const torus = new Torus({
-          enableOneKey: true,
-          network,
-        });
-        setTorus(torus);
 
         if (web3authcore.provider) {
           setProvider(web3authcore.provider);
@@ -187,7 +158,7 @@ function App() {
       if (web3authnodeprovider) {
         setProvider(web3authnodeprovider);
       }
-      setUsesTorus(true);
+      setUsesNodeJSsdk(true);
     } catch (err) {
       // NodeJS SDK throws an error if the user has already enabled MFA
       // We can use the Web3AuthCore SDK to handle this case
@@ -203,7 +174,7 @@ function App() {
         }
       );
       setProvider(web3authProvider);
-      setUsesTorus(false);
+      setUsesNodeJSsdk(false);
     }
   };
 
@@ -212,9 +183,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    if (usesTorus) {
+    if (usesNodeJSsdk) {
       uiConsole(
-        "You are directly using Torus Libraries to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.",
+        "You are directly using NodeJS SDK to login the user, hence the Web3Auth <code>getUserInfo</code> function won't work for you. Get the user details directly from id token.",
         parseToken(idToken)
       );
       return;
@@ -228,9 +199,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    if (usesTorus) {
+    if (usesNodeJSsdk) {
       console.log(
-        "You are directly using Torus Libraries to login the user, hence the Web3Auth logout function won't work for you. You can logout the user directly from your login provider, or just clear the provider object."
+        "You are directly using NodeJS SDK to login the user, hence the Web3Auth logout function won't work for you. You can logout the user directly from your login provider, or just clear the provider object."
       );
       setProvider(null);
       return;
@@ -343,7 +314,7 @@ function App() {
       </h1>
 
       <div className="grid">
-        {web3authcore && torus ? (provider ? loginView : logoutView) : null}
+        {web3authcore && web3auth ? (provider ? loginView : logoutView) : null}
       </div>
 
       <footer className="footer">

@@ -11,7 +11,7 @@ import RPC from './evm.ethers';
 import { getPublic, getPublicCompressed } from '@toruslabs/eccrypto';
 
 const clientId =
-	'BG7vMGIhzy7whDXXJPZ-JHme9haJ3PmV1-wl9SJPGGs9Cjk5_8m682DJ-lTDmwBWJe-bEHYE_t9gw0cdboLEwR8'; // get from https://dashboard.web3auth.io
+	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 function App() {
 	const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);

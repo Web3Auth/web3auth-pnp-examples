@@ -18,7 +18,7 @@ import {
 } from "firebase/auth";
 
 const clientId =
-  "BKjpD5DNAFDbX9Ty9RSBAXdQP8YDY1rldKqKCgbxxa8JZODZ8zxVRzlT74qRIHsor5aIwZ55dQVlcmrwJu37PI8"; // get from https://dashboard.web3auth.io
+  "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

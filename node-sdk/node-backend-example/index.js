@@ -1,7 +1,7 @@
 const { Web3Auth } = require("@web3auth/node-sdk");
 
 const web3auth = new Web3Auth({
-  clientId: "BBP_6GOu3EJGGws9yd8wY_xFT0jZIWmiLMpqrEMx36jlM61K9XRnNLnnvEtGpF-RhXJDGMJjL-I-wTi13RcBBOo", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",

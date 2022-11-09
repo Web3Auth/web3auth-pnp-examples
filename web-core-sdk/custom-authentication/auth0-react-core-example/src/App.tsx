@@ -11,7 +11,7 @@ import './App.css';
 import RPC from './web3RPC'; // for using web3.js
 
 const clientId =
-	'BBWLCT1dIp57_-rJQwfMTTWqZgncOKu56b1TSqyLptpwSKrEndkCerKzgJ7aZ87_jviI5oLUJVCt-_mTqBJUSyQ'; // get from https://dashboard.web3auth.io
+	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 function App() {
 	const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);

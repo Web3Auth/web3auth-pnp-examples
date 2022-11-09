@@ -40,6 +40,8 @@ PODS:
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (2.1.0)
   - PromisesObjC (2.1.1)
+  - shared_preferences_ios (0.0.1):
+    - Flutter
   - Web3Auth (3.5.0)
   - web3auth_flutter (0.1.1):
     - Flutter
@@ -49,6 +51,7 @@ DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - web3auth_flutter (from `.symlinks/plugins/web3auth_flutter/ios`)
 
 SPEC REPOS:
@@ -69,6 +72,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
   web3auth_flutter:
     :path: ".symlinks/plugins/web3auth_flutter/ios"
 
@@ -83,6 +88,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
   GTMSessionFetcher: ffbb25ec00ebcb5201adab0a56d808f6f1902d9f
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   Web3Auth: 75c2b7d480f23dffa0eda9a589e2bc3cba1cd961
   web3auth_flutter: d79313b6942fd627cd279e9c1d13232a4345f7f7
 

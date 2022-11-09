@@ -13,6 +13,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -25,6 +30,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _result = '';
   bool logoutVisible = false;
+  String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
 
   @override
   void dispose() {
@@ -156,6 +162,31 @@ class _MyAppState extends State<MyApp> {
                             ],
                           )),
                     ),
+                    const Text(
+                      'Blockchain calls',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 195, 47, 233) // This is what you need!
+                            ),
+                        onPressed: _getAddress,
+                        child: const Text('Get Address')),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 195, 47, 233) // This is what you need!
+                            ),
+                        onPressed: _getBalance,
+                        child: const Text('Get Balance')),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 195, 47, 233) // This is what you need!
+                            ),
+                        onPressed: _sendTransaction,
+                        child: const Text('Send Transaction')),
                   ],
                 ),
                 visible: logoutVisible,
@@ -175,6 +206,8 @@ class _MyAppState extends State<MyApp> {
     return () async {
       try {
         final Web3AuthResponse response = await method();
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('privateKey', response.privKey.toString());
         setState(() {
           _result = response.toString();
           logoutVisible = true;
@@ -221,5 +254,67 @@ class _MyAppState extends State<MyApp> {
         loginProvider: Provider.jwt,
         extraLoginOptions:
             ExtraLoginOptions(id_token: idToken, domain: 'firebase')));
+  }
+
+  Future<String> _getAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    final privateKey = prefs.getString('privateKey') ?? '0';
+    // const String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
+
+    // final client = Web3Client(rpcUrl, Client());
+    final credentials = EthPrivateKey.fromHex(privateKey);
+    final address = credentials.address;
+    debugPrint("Account, ${address.hexEip55}");
+    setState(() {
+      _result = address.hexEip55.toString();
+    });
+    return address.hexEip55;
+  }
+
+  Future<EtherAmount> _getBalance() async {
+    final prefs = await SharedPreferences.getInstance();
+    final privateKey = prefs.getString('privateKey') ?? '0';
+
+    final client = Web3Client(rpcUrl, Client());
+    final credentials = EthPrivateKey.fromHex(privateKey);
+    final address = credentials.address;
+    final balance = await client.getBalance(address);
+    debugPrint(balance.toString());
+    setState(() {
+      _result = balance.toString();
+    });
+    return balance;
+  }
+
+  Future<String> _sendTransaction() async {
+    final prefs = await SharedPreferences.getInstance();
+    final privateKey = prefs.getString('privateKey') ?? '0';
+
+    final client = Web3Client(rpcUrl, Client());
+    final credentials = EthPrivateKey.fromHex(privateKey);
+    final address = credentials.address;
+    try {
+      final receipt = await client.sendTransaction(
+          credentials,
+          Transaction(
+            from: address,
+            to: EthereumAddress.fromHex(
+                '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
+            // gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 100),
+            value: EtherAmount.fromUnitAndValue(
+                EtherUnit.gwei, 5000000), // 0.005 ETH
+          ),
+          chainId: 5);
+      debugPrint(receipt);
+      setState(() {
+        _result = receipt;
+      });
+      return receipt;
+    } catch (e) {
+      setState(() {
+        _result = e.toString();
+      });
+      return e.toString();
+    }
   }
 }

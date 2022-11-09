@@ -38,6 +38,8 @@ dependencies:
   web3auth_flutter: ^1.0.2
   firebase_core: ^2.1.0
   firebase_auth: ^4.0.2
+  web3dart: ^2.4.1
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

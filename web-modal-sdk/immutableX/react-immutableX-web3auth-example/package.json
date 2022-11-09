@@ -2,6 +2,9 @@
   "name": "react-evm-web3auth-example",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "<=14.21.0"
+  },
   "dependencies": {
     "@imtbl/core-sdk": "^1.0.0-beta.3",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",

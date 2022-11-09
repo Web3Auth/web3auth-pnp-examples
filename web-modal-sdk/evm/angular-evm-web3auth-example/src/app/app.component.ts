@@ -4,7 +4,17 @@ import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from '@web3auth/base';
 import RPC from './web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 
-const clientId = 'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
+// Adapters
+import { WalletConnectV1Adapter } from '@web3auth/wallet-connect-v1-adapter';
+import { MetamaskAdapter } from '@web3auth/metamask-adapter';
+import { TorusWalletAdapter } from '@web3auth/torus-evm-adapter';
+import { CoinbaseAdapter } from '@web3auth/coinbase-adapter';
+
+// Plugin
+import { TorusWalletConnectorPlugin } from '@web3auth/torus-wallet-connector-plugin';
+
+const clientId =
+  'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 @Component({
   selector: 'app-root',
@@ -27,6 +37,53 @@ export class AppComponent {
       },
     });
     const web3auth = this.web3auth;
+
+    // Add adapters
+    // Configuring adapters
+
+    const walletConnectV1Adapter = new WalletConnectV1Adapter({
+      adapterSettings: {
+        bridge: 'https://bridge.walletconnect.org',
+      },
+      clientId,
+    });
+
+    web3auth.configureAdapter(walletConnectV1Adapter);
+
+    const metamaskAdapter = new MetamaskAdapter({
+      clientId,
+    });
+
+    // it will add/update  the metamask adapter in to web3auth class
+    web3auth.configureAdapter(metamaskAdapter);
+
+    const torusWalletAdapter = new TorusWalletAdapter({
+      clientId,
+    });
+
+    // it will add/update  the torus-evm adapter in to web3auth class
+    web3auth.configureAdapter(torusWalletAdapter);
+
+    const coinbaseAdapter = new CoinbaseAdapter({
+      clientId,
+    });
+    web3auth.configureAdapter(coinbaseAdapter);
+
+    // Plugin
+
+    const torusPlugin = new TorusWalletConnectorPlugin({
+      torusWalletOpts: {},
+      walletInitOptions: {
+        whiteLabel: {
+          theme: { isDark: true, colors: { primary: '#00a8ff' } },
+          logoDark: 'https://web3auth.io/images/w3a-L-Favicon-1.svg',
+          logoLight: 'https://web3auth.io/images/w3a-D-Favicon-1.svg',
+        },
+        useWalletConnect: true,
+        enableLogging: true,
+      },
+    });
+    await web3auth.addPlugin(torusPlugin);
 
     await web3auth.initModal();
     if (web3auth.provider) {
@@ -124,9 +181,9 @@ export class AppComponent {
   };
 
   uiConsole(...args: any[]) {
-		const el = document.querySelector("#console-ui>p")
-		if (el) {
-			el.innerHTML = JSON.stringify(args || {}, null, 2)
-		}
-	}
+    const el = document.querySelector('#console-ui>p');
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
 }

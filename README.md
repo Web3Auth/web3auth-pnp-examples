@@ -69,6 +69,12 @@ provider specific to the user and application.
 | :--------- | :------------- | :----------------------------------------------------------------------------------------- |
 | `Algorand` | `REACT`        | [React-Algorand-Web3Auth-Example](/web-modal-sdk/algorand/react-algorand-web3auth-example) |
 
+### ImmutableX
+
+| Blockchain   | Lang Framework | Directory                                                                                         |
+| :----------- | :------------- | :------------------------------------------------------------------------------------------------ |
+| `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-Example](/web-modal-sdk/immutableX/react-immutableX-web3auth-example/) |
+
 ## Web3Auth Plug n Play Core
 
 `@web3auth/core`

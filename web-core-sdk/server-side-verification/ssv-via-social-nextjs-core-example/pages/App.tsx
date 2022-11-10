@@ -6,9 +6,9 @@ import {
 	SafeEventEmitterProvider,
 } from '@web3auth/base';
 import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
-// import RPC from "./evm.web3";
-import RPC from './evm.ethers';
-import { getPublic, getPublicCompressed } from '@toruslabs/eccrypto';
+// import RPC from "../components/evm.web3";
+import RPC from '../components/evm.ethers';
+import { getPublicCompressed } from '@toruslabs/eccrypto';
 
 const clientId =
 	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
@@ -81,7 +81,7 @@ function App() {
 		}
 		const user = await web3auth.getUserInfo();
 
-		const privKey = await web3auth.provider?.request({
+		const privKey: any = await web3auth.provider?.request({
 			method: 'eth_private_key',
 		});
 		const pubkey = getPublicCompressed(Buffer.from(privKey, 'hex')).toString(

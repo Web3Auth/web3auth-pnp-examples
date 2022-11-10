@@ -45,6 +45,10 @@ import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import RPC from "./solanaRPC";
 
+import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
+import { SolflareAdapter } from "@web3auth/solflare-adapter";
+import { SolletWebAdapter } from "@web3auth/sollet-adapter";
+
 export default {
   name: "Home",
   props: {
@@ -55,7 +59,8 @@ export default {
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
     let provider = ref<SafeEventEmitterProvider | any>(null);
-    const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+    const clientId =
+      "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
     const web3auth = new Web3Auth({
       clientId,
@@ -66,10 +71,35 @@ export default {
       },
     });
 
+    const torusPlugin = new SolanaWalletConnectorPlugin({
+      torusWalletOpts: {},
+      walletInitOptions: {
+        whiteLabel: {
+          name: "Whitelabel Demo",
+          theme: { isDark: true, colors: { torusBrand1: "#00a8ff" } },
+          logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+          logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+          topupHide: true,
+          defaultLanguage: "en",
+        },
+        enableLogging: true,
+      },
+    });
+
+    const solflareAdapter = new SolflareAdapter({
+      clientId,
+    });
+    web3auth.configureAdapter(solflareAdapter);
+
+    const solletWebAdapter = new SolletWebAdapter({
+      clientId,
+    });
+    web3auth.configureAdapter(solletWebAdapter);
+
     onMounted(async () => {
       try {
         loading.value = true;
-
+        await web3auth.addPlugin(torusPlugin);
         await web3auth.initModal();
         if (web3auth.provider) {
           provider = web3auth.provider;
@@ -159,9 +189,9 @@ export default {
     };
 
     function uiConsole(...args: any[]): void {
-      const el = document.querySelector("#console>p")
+      const el = document.querySelector("#console>p");
       if (el) {
-        el.innerHTML = JSON.stringify(args || {}, null, 2)
+        el.innerHTML = JSON.stringify(args || {}, null, 2);
       }
     }
 

@@ -181,6 +181,7 @@ function App() {
               verifierIdField: "sub",
               domain: "http://localhost:3000",
             },
+            mfaLevel: "optional",
           }
         );
         setProvider(web3authProvider);

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h2>Web3Auth X Vue.js</h2>
+    <h2>Web3Auth & Vue.js Solana Example</h2>
     <section
       style="
          {

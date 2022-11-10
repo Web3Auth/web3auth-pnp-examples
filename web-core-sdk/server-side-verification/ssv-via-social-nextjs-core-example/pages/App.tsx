@@ -222,18 +222,18 @@ function App() {
 
 			<footer className='footer'>
 				<a
-					href='https://github.com/Web3Auth/examples/tree/master/google-core-react-example'
+					href='https://github.com/Web3Auth/examples/tree/main/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example'
 					target='_blank'
 					rel='noopener noreferrer'
 				>
 					Source code
 				</a>
 				<a
-					href='https://faucet.egorfine.com/'
+					href='https://goerlifaucet.com/'
 					target='_blank'
 					rel='noopener noreferrer'
 				>
-					Ropsten Faucet
+					Goerli Faucet
 				</a>
 			</footer>
 		</div>

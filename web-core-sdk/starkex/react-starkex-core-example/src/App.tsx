@@ -204,7 +204,7 @@ function App() {
 				<a target='_blank' href='http://web3auth.io/' rel='noreferrer'>
 					Web3Auth
 				</a>
-				& ReactJS Example
+				& ReactJS StarkEx Example
 			</h1>
 
 			<div className='grid'>{provider ? loggedInView : unloggedInView}</div>

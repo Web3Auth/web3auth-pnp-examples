@@ -132,6 +132,11 @@ function App() {
 					</button>
 				</div>
 				<div>
+					<button onClick={authenticateUser} className='card'>
+						Get ID Token
+					</button>
+				</div>
+				<div>
 					<button onClick={onGetStarkAccount} className='card'>
 						Get Stark Accounts
 					</button>

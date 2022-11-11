@@ -43,6 +43,15 @@ export class AppComponent {
     this.uiConsole('logged in');
   };
 
+  authenticateUser = async () => {
+    if (!this.web3auth) {
+      this.uiConsole('web3auth not initialized yet');
+      return;
+    }
+    const id_token = await this.web3auth.authenticateUser();
+    this.uiConsole(id_token);
+  };
+
   getUserInfo = async () => {
     if (!this.web3auth) {
       this.uiConsole('web3auth not initialized yet');

@@ -73,6 +73,7 @@ function App() {
 			},
 		);
 		setProvider(web3authProvider);
+		await validateIdToken();
 	};
 
 	const authenticateUser = async () => {
@@ -91,9 +92,45 @@ function App() {
 		}
 		const user = await web3auth.getUserInfo();
 
+		uiConsole(user);
+
+		// const privKey: any = await web3auth.provider?.request({
+		// 	method: 'eth_private_key',
+		// });
+		// const pubkey = getPublicCompressed(Buffer.from(privKey, 'hex')).toString(
+		// 	'hex',
+		// );
+
+		// // Validate idToken with server
+		// const res = await fetch('/api/login', {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		Authorization: 'Bearer ' + user.idToken,
+		// 	},
+		// 	body: JSON.stringify({ appPubKey: pubkey }),
+		// });
+		// if (res.status === 200) {
+		// 	console.log('JWT Verification Successful');
+		// 	uiConsole(user);
+		// } else {
+		// 	console.log('JWT Verification Failed');
+		// 	uiConsole('JWT Verification Failed');
+		// }
+	};
+
+	const validateIdToken = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		console.log(idToken);
+
 		const privKey: any = await web3auth.provider?.request({
 			method: 'eth_private_key',
 		});
+		console.log(privKey);
 		const pubkey = getPublicCompressed(Buffer.from(privKey, 'hex')).toString(
 			'hex',
 		);
@@ -103,16 +140,19 @@ function App() {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + user.idToken,
+				Authorization: 'Bearer ' + idToken.idToken,
 			},
 			body: JSON.stringify({ appPubKey: pubkey }),
 		});
 		if (res.status === 200) {
+			alert('JWT Verification Successful');
 			console.log('JWT Verification Successful');
-			uiConsole(user);
+			await getUserInfo();
+			return res.status;
 		} else {
+			alert('JWT Verification Failed');
 			console.log('JWT Verification Failed');
-			uiConsole('JWT Verification Failed');
+			return res.status;
 		}
 	};
 

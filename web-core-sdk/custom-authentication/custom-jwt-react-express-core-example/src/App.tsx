@@ -61,7 +61,7 @@ function App() {
 	}, []);
 
 	const getIdToken = async () => {
-		// Get idToken from server
+		// Get ID Token from server
 		const res = await fetch('http://localhost:8080/api/token', {
 			method: 'POST',
 			headers: {
@@ -90,6 +90,16 @@ function App() {
 			},
 		);
 		setProvider(web3authProvider);
+		uiConsole('Logged in Successfully!')
+	};
+
+	const authenticateUser = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		uiConsole(idToken);
 	};
 
 	const getUserInfo = async () => {
@@ -173,6 +183,11 @@ function App() {
 				<div>
 					<button onClick={getUserInfo} className='card'>
 						User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={authenticateUser} className='card'>
+						Get ID Token
 					</button>
 				</div>
 				<div>

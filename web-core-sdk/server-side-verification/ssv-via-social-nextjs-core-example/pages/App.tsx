@@ -9,7 +9,8 @@ import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 // import RPC from "../components/evm.web3";
 import RPC from '../components/evm.ethers';
 import { getPublicCompressed } from '@toruslabs/eccrypto';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const clientId =
 	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
@@ -68,11 +69,21 @@ function App() {
 		const web3authProvider = await web3auth.connectTo(
 			WALLET_ADAPTERS.OPENLOGIN,
 			{
-				mfaLevel: "optional",
+				mfaLevel: 'default',
 				loginProvider: 'google',
 			},
 		);
 		setProvider(web3authProvider);
+		await validateIdToken();
+	};
+
+	const authenticateUser = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		uiConsole(idToken);
 	};
 
 	const getUserInfo = async () => {
@@ -81,10 +92,21 @@ function App() {
 			return;
 		}
 		const user = await web3auth.getUserInfo();
+		uiConsole(user);
+	};
+
+	const validateIdToken = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const { idToken } = await web3auth.authenticateUser();
+		console.log(idToken);
 
 		const privKey: any = await web3auth.provider?.request({
 			method: 'eth_private_key',
 		});
+		console.log(privKey);
 		const pubkey = getPublicCompressed(Buffer.from(privKey, 'hex')).toString(
 			'hex',
 		);
@@ -94,17 +116,19 @@ function App() {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + user.idToken,
+				Authorization: 'Bearer ' + idToken,
 			},
 			body: JSON.stringify({ appPubKey: pubkey }),
 		});
 		if (res.status === 200) {
-			console.log('JWT Verification Successful');
-			uiConsole(user);
+			toast.success("JWT Verification Successful");
+			await getUserInfo();
 		} else {
+			toast.error("JWT Verification Failed");
 			console.log('JWT Verification Failed');
-			uiConsole('JWT Verification Failed');
+			await logout();
 		}
+		return res.status;
 	};
 
 	const logout = async () => {
@@ -169,6 +193,11 @@ function App() {
 				<div>
 					<button onClick={getUserInfo} className='card'>
 						Get User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={authenticateUser} className='card'>
+						Get ID Token
 					</button>
 				</div>
 				<div>

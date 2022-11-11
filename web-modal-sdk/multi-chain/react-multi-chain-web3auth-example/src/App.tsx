@@ -1,365 +1,381 @@
-import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { useEffect, useState } from 'react';
+import { Web3Auth } from '@web3auth/modal';
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from '@web3auth/base';
+import './App.css';
+import RPC from './web3RPC'; // for using web3.js
+import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
 // EVM
-import Web3 from "web3";
+import Web3 from 'web3';
 // Solana
 import {
-  SolanaPrivateKeyProvider,
-  SolanaWallet,
-} from "@web3auth/solana-provider";
+	SolanaPrivateKeyProvider,
+	SolanaWallet,
+} from '@web3auth/solana-provider';
 // Tezos
 //@ts-ignore
-import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { hex2buf } from "@taquito/utils";
+import * as tezosCrypto from '@tezos-core-tools/crypto-utils';
+import { hex2buf } from '@taquito/utils';
 // StarkEx and StarkNet
 //@ts-ignore
-import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
+import starkwareCrypto from '@starkware-industries/starkware-crypto-utils';
 //@ts-ignore
-import { ec as elliptic } from "elliptic";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ec as elliptic } from 'elliptic';
 
 const clientId =
-  "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+	const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+	const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+		null,
+	);
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        // ETH_Ropsten
-        const web3auth = new Web3Auth({
-          clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x3",
-          },
-        });
+	useEffect(() => {
+		const init = async () => {
+			try {
+				// ETH_Ropsten
+				const web3auth = new Web3Auth({
+					clientId,
+					chainConfig: {
+						chainNamespace: CHAIN_NAMESPACES.EIP155,
+						chainId: '0x3',
+					},
+				});
 
-        setWeb3auth(web3auth);
+				setWeb3auth(web3auth);
 
-        await web3auth.initModal();
+				await web3auth.initModal();
 
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+				if (web3auth.provider) {
+					setProvider(web3auth.provider);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
 
-    init();
-  }, []);
+		init();
+	}, []);
 
-  const getAllAccounts = async () => {
-    // EVM chains
-    const polygon_address = await getPolygonAddress();
-    const bnb_address = await getBnbAddress();
+	const getAllAccounts = async () => {
+		// EVM chains
+		const polygon_address = await getPolygonAddress();
+		const bnb_address = await getBnbAddress();
 
-    // Solana
-    const solana_address = await getSolanaAddress();
+		// Solana
+		const solana_address = await getSolanaAddress();
 
-    // Others
-    const tezos_address = await getTezosAddress();
-    const starkex_address = await getStarkExAddress();
-    const starknet_address = await getStarkNetAddress();
+		// Others
+		const tezos_address = await getTezosAddress();
+		const starkex_address = await getStarkExAddress();
+		const starknet_address = await getStarkNetAddress();
 
-    uiConsole(
-      "Polygon Address: " + polygon_address,
-      "BNB Address: " + bnb_address,
-      "Solana Address: " + solana_address,
-      "Tezos Address: " + tezos_address,
-      "StarkEx Address: " + starkex_address,
-      "StarkNet Address: " + starknet_address
-    );
-  };
+		uiConsole(
+			'Polygon Address: ' + polygon_address,
+			'BNB Address: ' + bnb_address,
+			'Solana Address: ' + solana_address,
+			'Tezos Address: ' + tezos_address,
+			'StarkEx Address: ' + starkex_address,
+			'StarkNet Address: ' + starknet_address,
+		);
+	};
 
-  const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const web3authProvider = await web3auth.connect();
-    setProvider(web3authProvider);
-  };
+	const login = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const web3authProvider = await web3auth.connect();
+		setProvider(web3authProvider);
+		uiConsole('Logged in Successfully!');
+	};
 
-  const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  };
+	const authenticateUser = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		uiConsole(idToken);
+	};
 
-  const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    await web3auth.logout();
-    setProvider(null);
-  };
+	const getUserInfo = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const user = await web3auth.getUserInfo();
+		uiConsole(user);
+	};
 
-  const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const address = await rpc.getAccounts();
-    uiConsole("ETH Address: " + address);
-  };
+	const logout = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		await web3auth.logout();
+		setProvider(null);
+	};
 
-  const getBalance = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
-  };
+	const getAccounts = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const address = await rpc.getAccounts();
+		uiConsole('ETH Address: ' + address);
+	};
 
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
-  };
+	const getBalance = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const balance = await rpc.getBalance();
+		uiConsole(balance);
+	};
 
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    uiConsole(signedMessage);
-  };
+	const sendTransaction = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const receipt = await rpc.sendTransaction();
+		uiConsole(receipt);
+	};
 
-  const getPolygonAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
+	const signMessage = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const signedMessage = await rpc.signMessage();
+		uiConsole(signedMessage);
+	};
 
-    const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0x13881",
-          rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-          displayName: "Polygon Mumbai",
-          blockExplorer: "https://mumbai.polygonscan.com/",
-          ticker: "MATIC",
-          tickerName: "MATIC",
-        },
-      },
-    });
-    await polygonPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(polygonPrivateKeyProvider.provider as any);
-    const address = (await web3.eth.getAccounts())[0];
-    return address;
-  };
+	const getPolygonAddress = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const privateKey = await rpc.getPrivateKey();
 
-  const getBnbAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
+		const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
+			config: {
+				chainConfig: {
+					chainId: '0x13881',
+					rpcTarget: 'https://rpc.ankr.com/polygon_mumbai',
+					displayName: 'Polygon Mumbai',
+					blockExplorer: 'https://mumbai.polygonscan.com/',
+					ticker: 'MATIC',
+					tickerName: 'MATIC',
+				},
+			},
+		});
+		await polygonPrivateKeyProvider.setupProvider(privateKey);
+		const web3 = new Web3(polygonPrivateKeyProvider.provider as any);
+		const address = (await web3.eth.getAccounts())[0];
+		return address;
+	};
 
-    const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0x38",
-          rpcTarget: "https://rpc.ankr.com/bsc",
-          displayName: "Binance SmartChain Mainnet",
-          blockExplorer: "https://bscscan.com/",
-          ticker: "BNB",
-          tickerName: "BNB",
-        },
-      },
-    });
-    await bnbPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(bnbPrivateKeyProvider.provider as any);
-    const address = (await web3.eth.getAccounts())[0];
-    return address;
-  };
+	const getBnbAddress = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const privateKey = await rpc.getPrivateKey();
 
-  const getSolanaAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
+		const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
+			config: {
+				chainConfig: {
+					chainId: '0x38',
+					rpcTarget: 'https://rpc.ankr.com/bsc',
+					displayName: 'Binance SmartChain Mainnet',
+					blockExplorer: 'https://bscscan.com/',
+					ticker: 'BNB',
+					tickerName: 'BNB',
+				},
+			},
+		});
+		await bnbPrivateKeyProvider.setupProvider(privateKey);
+		const web3 = new Web3(bnbPrivateKeyProvider.provider as any);
+		const address = (await web3.eth.getAccounts())[0];
+		return address;
+	};
 
-    const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
-    const ed25519key = getED25519Key(privateKey).sk.toString("hex");
+	const getSolanaAddress = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const privateKey = await rpc.getPrivateKey();
 
-    // Get user's Solana's public address
-    const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0x3",
-          rpcTarget: "https://api.mainnet-beta.solana.com",
-          displayName: "Solana Mainnet",
-          blockExplorer: "https://explorer.solana.com/",
-          ticker: "SOL",
-          tickerName: "Solana",
-        },
-      },
-    });
-    await solanaPrivateKeyProvider.setupProvider(ed25519key);
-    console.log(solanaPrivateKeyProvider.provider);
+		const { getED25519Key } = await import('@toruslabs/openlogin-ed25519');
+		const ed25519key = getED25519Key(privateKey).sk.toString('hex');
 
-    const solanaWallet = new SolanaWallet(
-      solanaPrivateKeyProvider.provider as any
-    );
-    const solana_address = await solanaWallet.requestAccounts();
-    return solana_address[0];
-  };
+		// Get user's Solana's public address
+		const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
+			config: {
+				chainConfig: {
+					chainId: '0x3',
+					rpcTarget: 'https://api.mainnet-beta.solana.com',
+					displayName: 'Solana Mainnet',
+					blockExplorer: 'https://explorer.solana.com/',
+					ticker: 'SOL',
+					tickerName: 'Solana',
+				},
+			},
+		});
+		await solanaPrivateKeyProvider.setupProvider(ed25519key);
+		console.log(solanaPrivateKeyProvider.provider);
 
-  const getTezosAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
-    const address = keyPairTezos?.pkh;
-    return address;
-  };
+		const solanaWallet = new SolanaWallet(
+			solanaPrivateKeyProvider.provider as any,
+		);
+		const solana_address = await solanaWallet.requestAccounts();
+		return solana_address[0];
+	};
 
-  const getStarkExAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starkex_account = starkwareCrypto.ec.keyFromPublic(
-      keyPairStarkEx.getPublic(true, "hex"),
-      "hex"
-    );
-    const address = starkex_account.pub.getX().toString("hex");
-    return address;
-  };
+	const getTezosAddress = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const privateKey = await rpc.getPrivateKey();
+		const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
+		const address = keyPairTezos?.pkh;
+		return address;
+	};
 
-  const getStarkNetAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(
-      privateKey,
-      "hex"
-    );
-    const starknet_account = starkwareCrypto.ec.keyFromPublic(
-      keyPairStarkNet.getPublic(true, "hex"),
-      "hex"
-    );
-    const address = starknet_account.pub.getX().toString("hex");
-    return address;
-  };
+	const getStarkExAddress = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const privateKey = await rpc.getPrivateKey();
+		const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, 'hex');
+		const starkex_account = starkwareCrypto.ec.keyFromPublic(
+			keyPairStarkEx.getPublic(true, 'hex'),
+			'hex',
+		);
+		const address = starkex_account.pub.getX().toString('hex');
+		return address;
+	};
 
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
+	const getStarkNetAddress = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const privateKey = await rpc.getPrivateKey();
+		const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(
+			privateKey,
+			'hex',
+		);
+		const starknet_account = starkwareCrypto.ec.keyFromPublic(
+			keyPairStarkNet.getPublic(true, 'hex'),
+			'hex',
+		);
+		const address = starknet_account.pub.getX().toString('hex');
+		return address;
+	};
 
-  const loggedInView = (
-    <>
-      <div className="flex-container">
-        <div>
-          <button onClick={getUserInfo} className="card">
-            Get User Info
-          </button>
-        </div>
-        <div>
-          <button onClick={getAccounts} className="card">
-            Get ETH Account
-          </button>
-        </div>
-        <div>
-          <button onClick={getAllAccounts} className="card">
-            Get All Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={logout} className="card">
-            Log Out
-          </button>
-        </div>
-      </div>
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
-      </div>
-    </>
-  );
+	function uiConsole(...args: any[]): void {
+		const el = document.querySelector('#console>p');
+		if (el) {
+			el.innerHTML = JSON.stringify(args || {}, null, 2);
+		}
+	}
 
-  const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
-  );
+	const loggedInView = (
+		<>
+			<div className='flex-container'>
+				<div>
+					<button onClick={getUserInfo} className='card'>
+						Get User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={authenticateUser} className='card'>
+						Get ID Token
+					</button>
+				</div>
+				<div>
+					<button onClick={getAccounts} className='card'>
+						Get ETH Account
+					</button>
+				</div>
+				<div>
+					<button onClick={getAllAccounts} className='card'>
+						Get All Accounts
+					</button>
+				</div>
+				<div>
+					<button onClick={getBalance} className='card'>
+						Get ETH Balance
+					</button>
+				</div>
+				<div>
+					<button onClick={sendTransaction} className='card'>
+						Send Transaction
+					</button>
+				</div>
+				<div>
+					<button onClick={signMessage} className='card'>
+						Sign Message
+					</button>
+				</div>
+				<div>
+					<button onClick={logout} className='card'>
+						Log Out
+					</button>
+				</div>
+			</div>
+			<div id='console' style={{ whiteSpace: 'pre-line' }}>
+				<p style={{ whiteSpace: 'pre-line' }}></p>
+			</div>
+		</>
+	);
 
-  return (
-    <div className="container">
-      <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
-          Web3Auth{" "}
-        </a>
-        & ReactJS Example
-      </h1>
+	const unloggedInView = (
+		<button onClick={login} className='card'>
+			Login
+		</button>
+	);
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+	return (
+		<div className='container'>
+			<h1 className='title'>
+				<a target='_blank' href='http://web3auth.io/' rel='noreferrer'>
+					Web3Auth{' '}
+				</a>
+				& ReactJS Multi-chain Example
+			</h1>
 
-      <footer className="footer">
-        <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/multi-chain"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Source code
-        </a>
-      </footer>
-    </div>
-  );
+			<div className='grid'>{provider ? loggedInView : unloggedInView}</div>
+
+			<footer className='footer'>
+				<a
+					href='https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/multi-chain/react-multi-chain-web3auth-example'
+					target='_blank'
+					rel='noopener noreferrer'
+				>
+					Source code
+				</a>
+			</footer>
+		</div>
+	);
 }
 
 export default App;

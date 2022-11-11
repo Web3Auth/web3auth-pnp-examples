@@ -1,156 +1,176 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Web3Auth Getting Started</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
+	<head>
+		<title>Web3Auth Getting Started</title>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
 
-  <body>
-    <div class="container">
-      <h1 class="title"><a target="_blank" href="http://web3auth.io/">Web3Auth</a> & JS Integration Example</h1>
-      <!-- Logged In -->
-      <div class="grid btn-logged-in">
-        <button id="get-user-info" class="btn">Get User Info</button>
-        <button id="get-accounts" class="btn">Get Accounts</button>
-        <button id="get-balance" class="btn">Get Balance</button>
-        <button id="sign-message" class="btn">Sign Message</button>
+	<body>
+		<div class="container">
+			<h1 class="title">
+				<a target="_blank" href="http://web3auth.io/">Web3Auth</a> & JS Solana
+				Example
+			</h1>
+			<!-- Logged In -->
+			<div class="grid btn-logged-in">
+				<button id="get-user-info" class="btn">Get User Info</button>
+				<button id="get-id-token" class="btn">Get ID Token</button>
+				<button id="get-accounts" class="btn">Get Accounts</button>
+				<button id="get-balance" class="btn">Get Balance</button>
+				<button id="sign-message" class="btn">Sign Message</button>
+				<button id="send-transaction" class="btn">Send Transaction</button>
 
-        <button id="logout" class="btn">Logout</button>
+				<button id="logout" class="btn">Logout</button>
 
-        <div class="console" id="console">
-          <p id="code" class="code"></p>
-        </div>
-      </div>
+				<div class="console" id="console">
+					<p id="code" class="code"></p>
+				</div>
+			</div>
 
-      <!-- Logged Logout -->
-      <div class="grid btn-logged-out">
-        <button id="login" class="btn">Login</button>
-      </div>
-      <footer class="footer">
-        <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/getting-started" target="_blank" rel="noopener noreferrer">
-          Source code
-        </a>
-      </footer>
-    </div>
+			<!-- Logged Logout -->
+			<div class="grid btn-logged-out">
+				<button id="login" class="btn">Login</button>
+			</div>
+			<footer class="footer">
+				<a
+					href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/getting-started"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Source code
+				</a>
+			</footer>
+		</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/web3auth@1.1.1/dist/web3auth.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.43.5/lib/index.iife.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@1.1.1/dist/solanaProvider.umd.min.js"></script>
-    <script src="./solanaRPC.js"></script>
-    <script>
-      let web3auth = null;
-      let provider = null;
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.43.5/lib/index.iife.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@1.1.1/dist/solanaProvider.umd.min.js"></script>
+		<script src="./solanaRPC.js"></script>
+		<script>
+			let web3auth = null;
+			let provider = null;
 
-      (async function init() {
-        $(".btn-logged-in").hide();
-        $("#sign-tx").hide();
+			(async function init() {
+				$('.btn-logged-in').hide();
+				$('#sign-tx').hide();
 
-        const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get your clientId from https://dashboard.web3auth.io
+				const clientId =
+					'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get your clientId from https://dashboard.web3auth.io
 
-      web3auth = new window.Web3auth.Web3Auth({
-        clientId,
-        chainConfig: {
-          chainNamespace: "solana",
-          chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-          rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-        },
-      });
-      await web3auth.initModal();
-        if (web3auth.provider) {
-          $(".btn-logged-in").show();
-          $(".btn-logged-out").hide();
-          if (web3auth.connectedAdapterName === "openlogin") {
-            $("#sign-tx").show();
-          }
-        } else {
-          $(".btn-logged-out").show();
-          $(".btn-logged-in").hide();
-        }
-      })();
+				web3auth = new window.Modal.Web3Auth({
+					clientId,
+					chainConfig: {
+						chainNamespace: 'solana',
+						chainId: '0x1', // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+						rpcTarget: 'https://api.mainnet-beta.solana.com', // This is the public RPC we have added, please pass on your own endpoint while creating an app
+					},
+				});
+				await web3auth.initModal();
+				if (web3auth.provider) {
+					$('.btn-logged-in').show();
+					$('.btn-logged-out').hide();
+					if (web3auth.connectedAdapterName === 'openlogin') {
+						$('#sign-tx').show();
+					}
+				} else {
+					$('.btn-logged-out').show();
+					$('.btn-logged-in').hide();
+				}
+			})();
 
-      $("#login").click(async function (event) {
-        try {
-          const provider = await web3auth.connect();
-          $(".btn-logged-out").hide();
-          $(".btn-logged-in").show();
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+			$('#login').click(async function (event) {
+				try {
+					const provider = await web3auth.connect();
+					$('.btn-logged-out').hide();
+					$('.btn-logged-in').show();
+					uiConsole('Logged in Successfully!');
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
 
-      $("#get-user-info").click(async function (event) {
-        try {
-          const user = await web3auth.getUserInfo();
-          uiConsole(user);
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+			$('#get-id-token').click(async function (event) {
+				try {
+					const id_token = await web3auth.authenticateUser();
+					uiConsole(id_token);
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
 
-      $("#get-accounts").click(async function (event) {
-        try {
-          const accounts = await rpc.getAccounts(web3auth.provider);
-          uiConsole(accounts);
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+			$('#get-user-info').click(async function (event) {
+				try {
+					const user = await web3auth.getUserInfo();
+					uiConsole(user);
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
 
-      $("#get-balance").click(async function (event) {
-        try {
-          const balance = await rpc.getBalance(web3auth.provider);
-          uiConsole(balance);
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+			$('#get-accounts').click(async function (event) {
+				try {
+					const accounts = await rpc.getAccounts(web3auth.provider);
+					uiConsole(accounts);
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
 
-      $("#send-transaction").click(async function (event) {
-        try {
-          const receipt = await rpc.sendTransaction(web3auth.provider);
-          uiConsole(receipt);
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+			$('#get-balance').click(async function (event) {
+				try {
+					const balance = await rpc.getBalance(web3auth.provider);
+					uiConsole(balance);
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
 
-      $("#sign-message").click(async function (event) {
-        try {
-          const signedMsg = await rpc.signMessage(web3auth.provider);
-          uiConsole(signedMsg);
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+			$('#send-transaction').click(async function (event) {
+				try {
+					const receipt = await rpc.sendTransaction(web3auth.provider);
+					uiConsole(receipt);
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
 
-      $("#get-private-key").click(async function (event) {
-        try {
-          const privateKey = await rpc.getPrivateKey(web3auth.provider);
-          uiConsole(privateKey);
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+			$('#sign-message').click(async function (event) {
+				try {
+					const signedMsg = await rpc.signMessage(web3auth.provider);
+					uiConsole(signedMsg);
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
 
-      $("#logout").click(async function (event) {
-        try {
-          await web3auth.logout();
-          $(".btn-logged-in").hide();
-          $(".btn-logged-out").show();
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+			$('#get-private-key').click(async function (event) {
+				try {
+					const privateKey = await rpc.getPrivateKey(web3auth.provider);
+					uiConsole(privateKey);
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
 
-      function uiConsole(...args) {
-		    const el = document.querySelector("#console>p")
-        if (el) {
-          el.innerHTML = JSON.stringify(args || {}, null, 2)
-        }
-	    }
-    </script>
-  </body>
+			$('#logout').click(async function (event) {
+				try {
+					await web3auth.logout();
+					$('.btn-logged-in').hide();
+					$('.btn-logged-out').show();
+				} catch (error) {
+					console.error(error.message);
+				}
+			});
+
+			function uiConsole(...args) {
+				const el = document.querySelector('#console>p');
+				if (el) {
+					el.innerHTML = JSON.stringify(args || {}, null, 2);
+				}
+			}
+		</script>
+	</body>
 </html>

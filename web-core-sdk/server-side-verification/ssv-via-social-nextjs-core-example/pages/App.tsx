@@ -9,13 +9,12 @@ import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 // import RPC from "../components/evm.web3";
 import RPC from '../components/evm.ethers';
 import { getPublicCompressed } from '@toruslabs/eccrypto';
-import { useToasts } from 'react-toast-notifications';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const clientId =
 	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 function App() {
-	const { addToast } = useToasts();
 	const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
 	const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
 		null,
@@ -122,22 +121,14 @@ function App() {
 			body: JSON.stringify({ appPubKey: pubkey }),
 		});
 		if (res.status === 200) {
-			addToast('JWT Verification Successful', {
-				appearance: 'success',
-				autoDismiss: true,
-			});
-			console.log('JWT Verification Successful');
+			toast.success("JWT Verification Successful");
 			await getUserInfo();
-			return res.status;
 		} else {
-			addToast('JWT Verification Failed', {
-				appearance: 'error',
-				autoDismiss: true,
-			});
+			toast.error("JWT Verification Failed");
 			console.log('JWT Verification Failed');
 			await logout();
-			return res.status;
 		}
+		return res.status;
 	};
 
 	const logout = async () => {

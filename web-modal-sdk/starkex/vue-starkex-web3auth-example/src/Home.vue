@@ -258,7 +258,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #app {
-	width: 80%;
+	width: 70%;
 	margin: auto;
 	padding: 0 2rem;
 }

@@ -1,6 +1,11 @@
 <template>
 	<div id="app">
-		<h2>Web3Auth Vue.js Tezos Example</h2>
+		<h2>
+			<a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+				Web3Auth
+			</a>
+			Vue.js Tezos Example
+		</h2>
 		<button
 			v-if="!loggedin"
 			class="card"

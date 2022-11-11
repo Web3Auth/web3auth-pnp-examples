@@ -56,6 +56,7 @@ function App() {
 		}
 		const web3authProvider = await web3auth.connect();
 		setProvider(web3authProvider);
+		uiConsole('Logged in Successfully!');
 	};
 
 	const authenticateUser = async () => {
@@ -148,6 +149,11 @@ function App() {
 				<div>
 					<button onClick={getUserInfo} className='card'>
 						Get User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={authenticateUser} className='card'>
+						Get ID Token
 					</button>
 				</div>
 				<div>

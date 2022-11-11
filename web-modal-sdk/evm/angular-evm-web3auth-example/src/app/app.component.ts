@@ -43,7 +43,7 @@ export class AppComponent {
 		}
 		const web3auth = this.web3auth;
 		this.provider = await web3auth.connect();
-		this.uiConsole('logged in');
+		this.uiConsole('Logged in successfully!');
 	};
 
 	authenticateUser = async () => {

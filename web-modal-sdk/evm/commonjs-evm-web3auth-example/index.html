@@ -88,6 +88,7 @@
 					const provider = await web3auth.connect();
 					$('.btn-logged-out').hide();
 					$('.btn-logged-in').show();
+					uiConsole('Logged in Successfully!');
 				} catch (error) {
 					console.error(error.message);
 				}

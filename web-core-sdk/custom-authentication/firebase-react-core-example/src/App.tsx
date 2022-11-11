@@ -115,6 +115,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    uiConsole('Logged in Successfully!');
   };
 
   const authenticateUser = async () => {
@@ -133,16 +134,7 @@ function App() {
     }
     const user = await web3auth.getUserInfo();
     uiConsole(user);
-  };
-
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    // console.log(JSON.stringify(user, null, 2))
-    uiConsole(idToken);
+    uiConsole('Logged in Successfully!')
   };
 
   const logout = async () => {
@@ -211,17 +203,12 @@ function App() {
         </div>
         <div>
 					<button onClick={authenticateUser} className='card'>
-						Get idToken
+						Get ID Token
 					</button>
 				</div>
         <div>
           <button onClick={getAccounts} className="card">
             Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={authenticateUser} className="card">
-            Get idToken
           </button>
         </div>
         <div>

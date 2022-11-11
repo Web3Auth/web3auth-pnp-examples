@@ -29,7 +29,7 @@
 						@click="authenticateUser"
 						style="cursor: pointer"
 					>
-						Get idToken
+						Get ID Token
 					</button>
 				</div>
 				<div>
@@ -124,6 +124,7 @@ export default {
 			}
 			provider = await web3auth.connect();
 			loggedin.value = true;
+			uiConsole('Logged in Successfully!');
 		};
 
 		const authenticateUser = async () => {

@@ -124,6 +124,7 @@ export default {
 			}
 			provider = await web3auth.connect();
 			loggedin.value = true;
+			uiConsole('Logged in Successfully!');
 		};
 
 		const authenticateUser = async () => {

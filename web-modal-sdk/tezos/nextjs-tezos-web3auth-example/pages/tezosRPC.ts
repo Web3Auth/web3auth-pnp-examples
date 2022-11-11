@@ -5,8 +5,7 @@ import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
 import { InMemorySigner } from "@taquito/signer";
 
-const tezos = new TezosToolkit("https://ithacanet.ecadinfra.com");
-
+const tezos = new TezosToolkit("https://rpc.tzbeta.net/");
 export default class TezosRpc {
   private provider: SafeEventEmitterProvider;
 

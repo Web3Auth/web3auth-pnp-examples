@@ -9,11 +9,13 @@ import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 // import RPC from "../components/evm.web3";
 import RPC from '../components/evm.ethers';
 import { getPublicCompressed } from '@toruslabs/eccrypto';
+import { useToasts } from 'react-toast-notifications';
 
 const clientId =
 	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 function App() {
+	const { addToast } = useToasts();
 	const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
 	const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
 		null,
@@ -68,7 +70,7 @@ function App() {
 		const web3authProvider = await web3auth.connectTo(
 			WALLET_ADAPTERS.OPENLOGIN,
 			{
-				mfaLevel: 'optional',
+				mfaLevel: 'default',
 				loginProvider: 'google',
 			},
 		);
@@ -91,32 +93,7 @@ function App() {
 			return;
 		}
 		const user = await web3auth.getUserInfo();
-
 		uiConsole(user);
-
-		// const privKey: any = await web3auth.provider?.request({
-		// 	method: 'eth_private_key',
-		// });
-		// const pubkey = getPublicCompressed(Buffer.from(privKey, 'hex')).toString(
-		// 	'hex',
-		// );
-
-		// // Validate idToken with server
-		// const res = await fetch('/api/login', {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 		Authorization: 'Bearer ' + user.idToken,
-		// 	},
-		// 	body: JSON.stringify({ appPubKey: pubkey }),
-		// });
-		// if (res.status === 200) {
-		// 	console.log('JWT Verification Successful');
-		// 	uiConsole(user);
-		// } else {
-		// 	console.log('JWT Verification Failed');
-		// 	uiConsole('JWT Verification Failed');
-		// }
 	};
 
 	const validateIdToken = async () => {
@@ -124,7 +101,7 @@ function App() {
 			uiConsole('web3auth not initialized yet');
 			return;
 		}
-		const idToken = await web3auth.authenticateUser();
+		const { idToken } = await web3auth.authenticateUser();
 		console.log(idToken);
 
 		const privKey: any = await web3auth.provider?.request({
@@ -140,18 +117,25 @@ function App() {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + idToken.idToken,
+				Authorization: 'Bearer ' + idToken,
 			},
 			body: JSON.stringify({ appPubKey: pubkey }),
 		});
 		if (res.status === 200) {
-			alert('JWT Verification Successful');
+			addToast('JWT Verification Successful', {
+				appearance: 'success',
+				autoDismiss: true,
+			});
 			console.log('JWT Verification Successful');
 			await getUserInfo();
 			return res.status;
 		} else {
-			alert('JWT Verification Failed');
+			addToast('JWT Verification Failed', {
+				appearance: 'error',
+				autoDismiss: true,
+			});
 			console.log('JWT Verification Failed');
+			await logout();
 			return res.status;
 		}
 	};

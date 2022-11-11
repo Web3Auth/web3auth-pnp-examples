@@ -235,6 +235,7 @@ export default {
 		}
 
 		return {
+			loggedin,
 			loading,
 			loginButtonStatus,
 			connecting,

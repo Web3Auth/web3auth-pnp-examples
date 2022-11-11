@@ -147,17 +147,12 @@ function App() {
 				</div>
 				<div>
 					<button onClick={getAccounts} className='card'>
-						Get ETH Account
-					</button>
-				</div>
-				<div>
-					<button onClick={getAllAccounts} className='card'>
-						Get All Accounts
+						Get Account
 					</button>
 				</div>
 				<div>
 					<button onClick={getBalance} className='card'>
-						Get ETH Balance
+						Get Balance
 					</button>
 				</div>
 				<div>
@@ -168,6 +163,11 @@ function App() {
 				<div>
 					<button onClick={signMessage} className='card'>
 						Sign Message
+					</button>
+				</div>
+				<div>
+					<button onClick={getPrivateKey} className='card'>
+						Get Private Key
 					</button>
 				</div>
 				<div>
@@ -192,9 +192,9 @@ function App() {
 		<div className='container'>
 			<h1 className='title'>
 				<a target='_blank' href='http://web3auth.io/' rel='noreferrer'>
-					Web3Auth
+					Web3Auth{' '}
 				</a>
-				& ReactJS Example
+				& ReactJS Solana Example
 			</h1>
 
 			<div className='grid'>{provider ? loggedInView : unloggedInView}</div>

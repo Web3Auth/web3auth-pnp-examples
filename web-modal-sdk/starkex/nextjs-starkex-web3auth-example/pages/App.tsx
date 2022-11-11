@@ -144,31 +144,48 @@ function App() {
 
 	const loggedInView = (
 		<>
-			<button onClick={getUserInfo} className='card'>
-				Get User Info
-			</button>
-			<button onClick={authenticateUser} className='card'>
-				Get ID Token
-			</button>
-			<button onClick={onGetStarkAccount} className='card'>
-				Get Stark Accounts
-			</button>
-			<button onClick={getStarkKey} className='card'>
-				Get Stark Key
-			</button>
-			<button onClick={onMintRequest} className='card'>
-				Mint Request
-			</button>
-			<button onClick={onDepositRequest} className='card'>
-				Deposit Request
-			</button>
-			<button onClick={onWithdrawalRequest} className='card'>
-				Withdraw Request
-			</button>
-			<button onClick={logout} className='card'>
-				Log Out
-			</button>
-
+			<div className='flex-container'>
+				<div>
+					<button onClick={getUserInfo} className='card'>
+						Get User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={authenticateUser} className='card'>
+						Get ID Token
+					</button>
+				</div>
+				<div>
+					<button onClick={onGetStarkAccount} className='card'>
+						Get Stark Accounts
+					</button>
+				</div>
+				<div>
+					<button onClick={getStarkKey} className='card'>
+						Get Stark Key
+					</button>
+				</div>
+				<div>
+					<button onClick={onMintRequest} className='card'>
+						Mint Request
+					</button>
+				</div>
+				<div>
+					<button onClick={onDepositRequest} className='card'>
+						Deposit Request
+					</button>
+				</div>
+				<div>
+					<button onClick={onWithdrawalRequest} className='card'>
+						Withdraw Request
+					</button>
+				</div>
+				<div>
+					<button onClick={logout} className='card'>
+						Log Out
+					</button>
+				</div>
+			</div>
 			<div id='console' style={{ whiteSpace: 'pre-line' }}>
 				<p style={{ whiteSpace: 'pre-line' }}></p>
 			</div>

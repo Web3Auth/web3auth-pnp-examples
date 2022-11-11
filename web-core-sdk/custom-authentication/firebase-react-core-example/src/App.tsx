@@ -117,6 +117,15 @@ function App() {
     setProvider(web3authProvider);
   };
 
+  const authenticateUser = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		uiConsole(idToken);
+	};
+
   const getUserInfo = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
@@ -201,6 +210,11 @@ function App() {
           </button>
         </div>
         <div>
+					<button onClick={authenticateUser} className='card'>
+						Get idToken
+					</button>
+				</div>
+        <div>
           <button onClick={getAccounts} className="card">
             Get Accounts
           </button>
@@ -257,7 +271,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/master/firebase-core-react-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/custom-authentication/firebase-react-core-example"
           target="_blank"
           rel="noopener noreferrer"
         >

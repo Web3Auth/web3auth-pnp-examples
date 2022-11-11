@@ -68,11 +68,20 @@ function App() {
 		const web3authProvider = await web3auth.connectTo(
 			WALLET_ADAPTERS.OPENLOGIN,
 			{
-				mfaLevel: "optional",
+				mfaLevel: 'optional',
 				loginProvider: 'google',
 			},
 		);
 		setProvider(web3authProvider);
+	};
+
+	const authenticateUser = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		uiConsole(idToken);
 	};
 
 	const getUserInfo = async () => {
@@ -169,6 +178,11 @@ function App() {
 				<div>
 					<button onClick={getUserInfo} className='card'>
 						Get User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={authenticateUser} className='card'>
+						Get ID Token
 					</button>
 				</div>
 				<div>

@@ -1,191 +1,225 @@
-import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import RPC from "./tezosRPC";
-import "./App.css";
+import { useEffect, useState } from 'react';
+import { Web3AuthCore } from '@web3auth/core';
+import {
+	CHAIN_NAMESPACES,
+	SafeEventEmitterProvider,
+	WALLET_ADAPTERS,
+} from '@web3auth/base';
+import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
+import RPC from './tezosRPC';
+import './App.css';
 
-const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+const clientId =
+	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+	const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+	const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+		null,
+	);
 
-  useEffect(() => {
-    const init = async () => {
-      try {
+	useEffect(() => {
+		const init = async () => {
+			try {
+				const web3auth = new Web3AuthCore({
+					clientId,
+					chainConfig: {
+						chainNamespace: CHAIN_NAMESPACES.OTHER,
+					},
+				});
 
-      const web3auth = new Web3AuthCore({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.OTHER
-        },
-      });
+				const openloginAdapter = new OpenloginAdapter({
+					adapterSettings: {
+						network: 'testnet',
+						uxMode: 'popup',
+					},
+				});
+				web3auth.configureAdapter(openloginAdapter);
+				setWeb3auth(web3auth);
 
-      const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
-          network: "testnet",
-          uxMode: "popup",  
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);
-      setWeb3auth(web3auth);
+				await web3auth.init();
+				if (web3auth.provider) {
+					setProvider(web3auth.provider);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
 
-      await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
-        };
-      } catch (error) {
-        console.error(error);
-      }
-    };
+		init();
+	}, []);
 
-    init();
-  }, []);
+	const login = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const web3authProvider = await web3auth.connectTo(
+			WALLET_ADAPTERS.OPENLOGIN,
+			{
+				loginProvider: 'google',
+			},
+		);
+		setProvider(web3authProvider);
+	};
 
-  const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: 'google',
-      },
-    );
-    setProvider(web3authProvider);
-  };
+	const authenticateUser = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		uiConsole(idToken);
+	};
 
-  const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  };
+	const getUserInfo = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const user = await web3auth.getUserInfo();
+		uiConsole(user);
+	};
 
-  const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    await web3auth.logout();
-    setProvider(null);
-  };
+	const logout = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		await web3auth.logout();
+		setProvider(null);
+	};
 
-  const onGetTezosKeyPair = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
-    const tezosKey = await rpc.getTezosKeyPair();
-    uiConsole(tezosKey);
-  };
+	const onGetTezosKeyPair = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider as SafeEventEmitterProvider);
+		const tezosKey = await rpc.getTezosKeyPair();
+		uiConsole(tezosKey);
+	};
 
-  const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const userAccount = await rpc.getAccounts();
-    uiConsole(userAccount);
-  };
+	const getAccounts = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const userAccount = await rpc.getAccounts();
+		uiConsole(userAccount);
+	};
 
-  const getBalance = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
-  };
+	const getBalance = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const balance = await rpc.getBalance();
+		uiConsole(balance);
+	};
 
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const result = await rpc.signMessage();
-    uiConsole(result);
-  };
+	const signMessage = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const result = await rpc.signMessage();
+		uiConsole(result);
+	};
 
-  const signAndSendTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const result = await rpc.signAndSendTransaction();
-    uiConsole(result);
-  };
+	const signAndSendTransaction = async () => {
+		if (!provider) {
+			uiConsole('provider not initialized yet');
+			return;
+		}
+		const rpc = new RPC(provider);
+		const result = await rpc.signAndSendTransaction();
+		uiConsole(result);
+	};
 
-  function uiConsole(...args: any[]): void {
-		const el = document.querySelector("#console>p")
+	function uiConsole(...args: any[]): void {
+		const el = document.querySelector('#console>p');
 		if (el) {
-			el.innerHTML = JSON.stringify(args || {}, null, 2)
+			el.innerHTML = JSON.stringify(args || {}, null, 2);
 		}
 	}
 
-  const loggedInView = (
-    <>
-      <button onClick={getUserInfo} className="card">
-        Get User Info
-      </button>
-      <button onClick={onGetTezosKeyPair} className="card">
-        Get Tezos Key Pair
-      </button>
-      <button onClick={getAccounts} className="card">
-        Get Accounts
-      </button>
-      <button onClick={getBalance} className="card">
-        Get Balance
-      </button>
-      <button onClick={signMessage} className="card">
-        Sign Message
-      </button>
-      <button onClick={signAndSendTransaction} className="card">
-        Sign And Send Transaction
-      </button>
-      <button onClick={logout} className="card">
-        Log Out
-      </button>
+	const loggedInView = (
+		<>
+			<div className='flex-container'>
+				<div>
+					<button onClick={getUserInfo} className='card'>
+						Get User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={onGetTezosKeyPair} className='card'>
+						Get Tezos Key Pair
+					</button>
+				</div>
+				<div>
+					<button onClick={getAccounts} className='card'>
+						Get Accounts
+					</button>
+				</div>
+				<div>
+					<button onClick={getBalance} className='card'>
+						Get Balance
+					</button>
+				</div>
+				<div>
+					<button onClick={signMessage} className='card'>
+						Sign Message
+					</button>
+				</div>
+				<div>
+					<button onClick={signAndSendTransaction} className='card'>
+						Sign And Send Transaction
+					</button>
+				</div>
+				<div>
+					<button onClick={logout} className='card'>
+						Log Out
+					</button>
+				</div>
+			</div>
+			<div id='console' style={{ whiteSpace: 'pre-line' }}>
+				<p style={{ whiteSpace: 'pre-line' }}></p>
+			</div>
+		</>
+	);
 
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
-      </div>
-    </>
-  );
+	const unloggedInView = (
+		<button onClick={login} className='card'>
+			Login
+		</button>
+	);
 
-  const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
-  );
+	return (
+		<div className='container'>
+			<h1 className='title'>
+				<a target='_blank' href='http://web3auth.io/' rel='noreferrer'>
+					Web3Auth
+				</a>
+				& ReactJS Example
+			</h1>
 
-  return (
-    <div className="container">
-      <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
-          Web3Auth
-        </a>
-        & ReactJS Example
-      </h1>
+			<div className='grid'>{provider ? loggedInView : unloggedInView}</div>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
-
-      <footer className="footer">
-        <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
-          Source code
-        </a>
-      </footer>
-    </div>
-  );
+			<footer className='footer'>
+				<a
+					href='https://github.com/Web3Auth/examples/tree/main/web-core-sdk/tezos/react-solana-core-example'
+					target='_blank'
+					rel='noopener noreferrer'
+				>
+					Source code
+				</a>
+			</footer>
+		</div>
+	);
 }
 
 export default App;

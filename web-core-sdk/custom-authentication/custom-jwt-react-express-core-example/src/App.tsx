@@ -92,6 +92,15 @@ function App() {
 		setProvider(web3authProvider);
 	};
 
+	const authenticateUser = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		uiConsole(idToken);
+	};
+
 	const getUserInfo = async () => {
 		if (!web3auth) {
 			uiConsole('web3auth not initialized yet');
@@ -173,6 +182,11 @@ function App() {
 				<div>
 					<button onClick={getUserInfo} className='card'>
 						User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={authenticateUser} className='card'>
+						Get idToken
 					</button>
 				</div>
 				<div>

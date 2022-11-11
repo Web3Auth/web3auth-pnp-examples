@@ -13,21 +13,44 @@
 
 		<div v-if="loggedin">
 			<div class="flex-container">
-				<button class="card" @click="getUserInfo" style="cursor: pointer">
-					Get User Info
-				</button>
-				<button class="card" @click="onGetStarkAccount" style="cursor: pointer">
-					Get Stark Accounts
-				</button>
-				<button class="card" @click="getStarkKey" style="cursor: pointer">
-					Get Stark Key
-				</button>
-				<button class="card" @click="onDeployAccount" style="cursor: pointer">
-					Deploy Account
-				</button>
-				<button class="card" @click="logout" style="cursor: pointer">
-					Logout
-				</button>
+				<div>
+					<button class="card" @click="getUserInfo" style="cursor: pointer">
+						Get User Info
+					</button>
+				</div>
+				<div>
+					<button
+						class="card"
+						@click="authenticateUser"
+						style="cursor: pointer"
+					>
+						Get ID Token
+					</button>
+				</div>
+				<div>
+					<button
+						class="card"
+						@click="onGetStarkAccount"
+						style="cursor: pointer"
+					>
+						Get Stark Accounts
+					</button>
+				</div>
+				<div>
+					<button class="card" @click="getStarkKey" style="cursor: pointer">
+						Get Stark Key
+					</button>
+				</div>
+				<div>
+					<button class="card" @click="onDeployAccount" style="cursor: pointer">
+						Deploy Account
+					</button>
+				</div>
+				<div>
+					<button class="card" @click="logout" style="cursor: pointer">
+						Logout
+					</button>
+				</div>
 			</div>
 			<div id="console" style="white-space: pre-line">
 				<p style="white-space: pre-line"></p>
@@ -129,6 +152,7 @@ export default {
 			}
 			await web3auth.logout();
 			provider = null;
+			loggedin.value = false;
 		};
 
 		const onGetStarkAccount = async () => {
@@ -190,7 +214,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #app {
-	width: 80%;
+	width: 60%;
 	margin: auto;
 	padding: 0 2rem;
 }

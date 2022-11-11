@@ -178,7 +178,7 @@ function App() {
 				</div>
 				<div>
 					<button onClick={authenticateUser} className='card'>
-						Get idToken
+						Get ID Token
 					</button>
 				</div>
 				<div>

@@ -119,7 +119,6 @@ export default {
 				}
 			} catch (error) {
 				uiConsole('error', error);
-				uiConsole('error', error);
 			} finally {
 				loading.value = false;
 			}

@@ -6,7 +6,6 @@ import {
   Button,
   ScrollView,
   Dimensions,
-  Platform,
 } from 'react-native';
 import * as WebBrowser from '@toruslabs/react-native-web-browser';
 import Web3Auth, {
@@ -140,7 +139,7 @@ export default function App() {
   };
 
   const loggedInView = (
-    <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={styles.buttonArea}>
       <Button title="Get User Info" onPress={() => uiConsole(userInfo)} />
       <Button title="Get Chain ID" onPress={() => getChainId()} />
       <Button title="Get Accounts" onPress={() => getAccounts()} />
@@ -153,7 +152,7 @@ export default function App() {
   );
 
   const unloggedInView = (
-    <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={styles.buttonArea}>
       <Button title="Login with Web3Auth" onPress={login} />
     </View>
   );
@@ -190,5 +189,10 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     padding: 10,
     width: Dimensions.get('window').width - 60,
+  },
+  buttonArea: {
+    flex: 2,
+    alignItems: 'space-evenly',
+    justifyContent: 'space-evenly',
   },
 });

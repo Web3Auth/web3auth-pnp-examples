@@ -6,23 +6,18 @@ import {
   Button,
   ScrollView,
   Dimensions,
-  Platform,
 } from 'react-native';
 import * as WebBrowser from '@toruslabs/react-native-web-browser';
 import Web3Auth, {
   LOGIN_PROVIDER,
   OPENLOGIN_NETWORK,
 } from '@web3auth/react-native-sdk';
-import '@ethersproject/shims';
-import {ethers} from 'ethers';
-import {Buffer} from 'buffer';
-global.Buffer = global.Buffer || Buffer;
+import RPC from './ethersRPC'; // for using ethers.js
 
 const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
   'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A';
-const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
 
 export default function App() {
   const [key, setKey] = useState('');
@@ -52,75 +47,30 @@ export default function App() {
   };
 
   const getChainId = async () => {
-    try {
-      setConsole('Getting chain id');
-      const ethersProvider = ethers.getDefaultProvider(providerUrl);
-      const networkDetails = await ethersProvider.getNetwork();
-      uiConsole(networkDetails);
-    } catch (e) {
-      uiConsole(e);
-    }
+    setConsole('Getting chain id');
+    const networkDetails = await RPC.getChainId();
+    uiConsole(networkDetails);
   };
 
   const getAccounts = async () => {
-    try {
-      setConsole('Getting account');
-      const wallet = new ethers.Wallet(key);
-      const address = await wallet.address;
-      uiConsole(address);
-    } catch (e) {
-      uiConsole(e);
-    }
+    setConsole('Getting account');
+    const address = await RPC.getAccounts(key);
+    uiConsole(address);
   };
   const getBalance = async () => {
-    try {
-      setConsole('Fetching balance');
-      const ethersProvider = ethers.getDefaultProvider(providerUrl);
-      const wallet = new ethers.Wallet(key, ethersProvider);
-      const balance = await wallet.getBalance();
-      uiConsole(balance);
-    } catch (e) {
-      uiConsole(e);
-    }
+    setConsole('Fetching balance');
+    const balance = await RPC.getBalance(key);
+    uiConsole(balance);
   };
   const sendTransaction = async () => {
-    try {
-      setConsole('Sending transaction');
-      const ethersProvider = ethers.getDefaultProvider(providerUrl);
-      const wallet = new ethers.Wallet(key, ethersProvider);
-
-      const destination = '0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56';
-
-      // Convert 1 ether to wei
-      const amount = ethers.utils.parseEther('0.001');
-
-      // Submit transaction to the blockchain
-      const tx = await wallet.sendTransaction({
-        to: destination,
-        value: amount,
-        maxPriorityFeePerGas: '5000000000', // Max priority fee per gas
-        maxFeePerGas: '6000000000000', // Max fee per gas
-      });
-      uiConsole(tx);
-    } catch (e) {
-      uiConsole(e);
-    }
+    setConsole('Sending transaction');
+    const tx = await RPC.sendTransaction(key);
+    uiConsole(tx);
   };
   const signMessage = async () => {
-    try {
-      setConsole('Signing message');
-      const ethersProvider = ethers.getDefaultProvider(providerUrl);
-      const wallet = new ethers.Wallet(key, ethersProvider);
-
-      const originalMessage = 'YOUR_MESSAGE';
-
-      // Sign the message
-      const signedMessage = await wallet.signMessage(originalMessage);
-
-      uiConsole(signedMessage);
-    } catch (e) {
-      uiConsole(e);
-    }
+    setConsole('Signing message');
+    const message = await RPC.signMessage(key);
+    uiConsole(message);
   };
 
   const uiConsole = (...args) => {
@@ -128,7 +78,7 @@ export default function App() {
   };
 
   const loggedInView = (
-    <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={styles.buttonArea}>
       <Button title="Get User Info" onPress={() => uiConsole(userInfo)} />
       <Button title="Get Chain ID" onPress={() => getChainId()} />
       <Button title="Get Accounts" onPress={() => getAccounts()} />
@@ -141,7 +91,7 @@ export default function App() {
   );
 
   const unloggedInView = (
-    <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={styles.buttonArea}>
       <Button title="Login with Web3Auth" onPress={login} />
     </View>
   );
@@ -150,7 +100,7 @@ export default function App() {
     <View style={styles.container}>
       {key ? loggedInView : unloggedInView}
       <View style={styles.consoleArea}>
-        <Text style={{padding: 10}}>Console:</Text>
+        <Text style={styles.consoleText}>Console:</Text>
         <ScrollView style={styles.console}>
           <Text>{console}</Text>
         </ScrollView>
@@ -165,6 +115,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 50,
+    paddingBottom: 30,
   },
   consoleArea: {
     margin: 20,
@@ -178,5 +130,14 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     padding: 10,
     width: Dimensions.get('window').width - 60,
+  },
+  consoleText: {
+    padding: 10,
+  },
+  buttonArea: {
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingBottom: 30,
   },
 });

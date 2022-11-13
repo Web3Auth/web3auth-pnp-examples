@@ -127,6 +127,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 50,
+    paddingBottom: 30,
   },
   consoleArea: {
     margin: 20,
@@ -148,5 +150,6 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: 'center',
     justifyContent: 'space-around',
+    paddingBottom: 30,
   },
 });

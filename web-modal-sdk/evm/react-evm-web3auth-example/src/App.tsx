@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
+import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
 
-const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -50,6 +53,30 @@ function App() {
           },
         });
         web3auth.configureAdapter(openloginAdapter);
+
+        // Metamask, WalletConnect and Torus are already added
+        // because of OpenloginAdapter
+
+        const coinbaseAdapter = new CoinbaseAdapter({
+          clientId,
+        });
+        web3auth.configureAdapter(coinbaseAdapter);
+
+        // Adding Torus Wallet Connector Plugin
+
+        const torusPlugin = new TorusWalletConnectorPlugin({
+          torusWalletOpts: {},
+          walletInitOptions: {
+            whiteLabel: {
+              theme: { isDark: true, colors: { primary: "#00a8ff" } },
+              logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            },
+            useWalletConnect: true,
+            enableLogging: true,
+          },
+        });
+        await web3auth.addPlugin(torusPlugin);
 
         setWeb3auth(web3auth);
 
@@ -152,11 +179,11 @@ function App() {
   };
 
   function uiConsole(...args: any[]): void {
-		const el = document.querySelector("#console>p")
-		if (el) {
-			el.innerHTML = JSON.stringify(args || {}, null, 2)
-		}
-	}
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
 
   const loggedInView = (
     <>
@@ -203,7 +230,7 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth
         </a>
-        & ReactJS Example
+        & ReactJS Ethereum Example
       </h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>

@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "@web3auth/base": "^3.0.0",
+    "@web3auth/coinbase-adapter": "^3.0.4",
     "@web3auth/modal": "^3.0.3",
-    "web3": "^1.8.0",
+    "@web3auth/torus-wallet-connector-plugin": "^3.0.4",
+    "core-js": "^3.25.5",
     "ethers": "^5.7.2",
     "node-polyfill-webpack-plugin": "^2.0.1",
-    "core-js": "^3.25.5",
-    "vue": "^3.2.41"
+    "vue": "^3.2.41",
+    "web3": "^1.8.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.40.1",

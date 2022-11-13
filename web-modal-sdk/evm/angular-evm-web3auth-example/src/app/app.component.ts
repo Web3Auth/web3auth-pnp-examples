@@ -4,139 +4,169 @@ import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from '@web3auth/base';
 import RPC from './web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 
+// Plugins
+import { TorusWalletConnectorPlugin } from '@web3auth/torus-wallet-connector-plugin';
+
+// Adapters
+
+import { CoinbaseAdapter } from '@web3auth/coinbase-adapter';
+
 const clientId =
-	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
+  'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 @Component({
-	selector: 'app-root',
-	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.css'],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-	title = 'angular-app';
-	web3auth: Web3Auth | null = null;
-	provider: SafeEventEmitterProvider | null = null;
-	isModalLoaded = false;
+  title = 'angular-app';
+  web3auth: Web3Auth | null = null;
+  provider: SafeEventEmitterProvider | null = null;
+  isModalLoaded = false;
 
-	async ngOnInit() {
-		this.web3auth = new Web3Auth({
-			clientId,
-			chainConfig: {
-				chainNamespace: CHAIN_NAMESPACES.EIP155,
-				chainId: '0x1',
-				rpcTarget: 'https://rpc.ankr.com/eth', // This is the public RPC we have added, please pass on your own endpoint while creating an app
-			},
-		});
-		const web3auth = this.web3auth;
+  async ngOnInit() {
+    this.web3auth = new Web3Auth({
+      clientId,
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.EIP155,
+        chainId: '0x1',
+        rpcTarget: 'https://rpc.ankr.com/eth', // This is the public RPC we have added, please pass on your own endpoint while creating an app
+      },
+    });
+    const web3auth = this.web3auth;
 
-		await web3auth.initModal();
-		if (web3auth.provider) {
-			this.provider = web3auth.provider;
-		}
-		this.isModalLoaded = true;
-	}
+    // adding torus wallet connector plugin
 
-	login = async () => {
-		if (!this.web3auth) {
-			this.uiConsole('web3auth not initialized yet');
-			return;
-		}
-		const web3auth = this.web3auth;
-		this.provider = await web3auth.connect();
-		this.uiConsole('Logged in successfully!');
-	};
+    const torusPlugin = new TorusWalletConnectorPlugin({
+      torusWalletOpts: {},
+      walletInitOptions: {
+        whiteLabel: {
+          theme: { isDark: true, colors: { primary: '#00a8ff' } },
+          logoDark: 'https://web3auth.io/images/w3a-L-Favicon-1.svg',
+          logoLight: 'https://web3auth.io/images/w3a-D-Favicon-1.svg',
+        },
+        useWalletConnect: true,
+        enableLogging: true,
+      },
+    });
+    await web3auth.addPlugin(torusPlugin);
 
-	authenticateUser = async () => {
-		if (!this.web3auth) {
-			this.uiConsole('web3auth not initialized yet');
-			return;
-		}
-		const id_token = await this.web3auth.authenticateUser();
-		this.uiConsole(id_token);
-	};
+    // adding coinbase adapter
 
-	getUserInfo = async () => {
-		if (!this.web3auth) {
-			this.uiConsole('web3auth not initialized yet');
-			return;
-		}
-		const user = await this.web3auth.getUserInfo();
-		this.uiConsole(user);
-	};
+    const coinbaseAdapter = new CoinbaseAdapter({
+      clientId,
+    });
+    web3auth.configureAdapter(coinbaseAdapter);
 
-	getChainId = async () => {
-		if (!this.provider) {
-			this.uiConsole('provider not initialized yet');
-			return;
-		}
-		const rpc = new RPC(this.provider);
-		const chainId = await rpc.getChainId();
-		this.uiConsole(chainId);
-	};
-	getAccounts = async () => {
-		if (!this.provider) {
-			this.uiConsole('provider not initialized yet');
-			return;
-		}
-		const rpc = new RPC(this.provider);
-		const address = await rpc.getAccounts();
-		this.uiConsole(address);
-	};
+    await web3auth.initModal();
+    if (web3auth.provider) {
+      this.provider = web3auth.provider;
+    }
+    this.isModalLoaded = true;
+  }
 
-	getBalance = async () => {
-		if (!this.provider) {
-			this.uiConsole('provider not initialized yet');
-			return;
-		}
-		const rpc = new RPC(this.provider);
-		const balance = await rpc.getBalance();
-		this.uiConsole(balance);
-	};
+  login = async () => {
+    if (!this.web3auth) {
+      this.uiConsole('web3auth not initialized yet');
+      return;
+    }
+    const web3auth = this.web3auth;
+    this.provider = await web3auth.connect();
+    this.uiConsole('Logged in successfully!');
+  };
 
-	sendTransaction = async () => {
-		if (!this.provider) {
-			this.uiConsole('provider not initialized yet');
-			return;
-		}
-		const rpc = new RPC(this.provider);
-		const receipt = await rpc.sendTransaction();
-		this.uiConsole(receipt);
-	};
+  authenticateUser = async () => {
+    if (!this.web3auth) {
+      this.uiConsole('web3auth not initialized yet');
+      return;
+    }
+    const id_token = await this.web3auth.authenticateUser();
+    this.uiConsole(id_token);
+  };
 
-	signMessage = async () => {
-		if (!this.provider) {
-			this.uiConsole('provider not initialized yet');
-			return;
-		}
-		const rpc = new RPC(this.provider);
-		const signedMessage = await rpc.signMessage();
-		this.uiConsole(signedMessage);
-	};
+  getUserInfo = async () => {
+    if (!this.web3auth) {
+      this.uiConsole('web3auth not initialized yet');
+      return;
+    }
+    const user = await this.web3auth.getUserInfo();
+    this.uiConsole(user);
+  };
 
-	getPrivateKey = async () => {
-		if (!this.provider) {
-			this.uiConsole('provider not initialized yet');
-			return;
-		}
-		const rpc = new RPC(this.provider);
-		const privateKey = await rpc.getPrivateKey();
-		this.uiConsole(privateKey);
-	};
+  getChainId = async () => {
+    if (!this.provider) {
+      this.uiConsole('provider not initialized yet');
+      return;
+    }
+    const rpc = new RPC(this.provider);
+    const chainId = await rpc.getChainId();
+    this.uiConsole(chainId);
+  };
+  getAccounts = async () => {
+    if (!this.provider) {
+      this.uiConsole('provider not initialized yet');
+      return;
+    }
+    const rpc = new RPC(this.provider);
+    const address = await rpc.getAccounts();
+    this.uiConsole(address);
+  };
 
-	logout = async () => {
-		if (!this.web3auth) {
-			this.uiConsole('web3auth not initialized yet');
-			return;
-		}
-		await this.web3auth.logout();
-		this.provider = null;
-		this.uiConsole('logged out');
-	};
+  getBalance = async () => {
+    if (!this.provider) {
+      this.uiConsole('provider not initialized yet');
+      return;
+    }
+    const rpc = new RPC(this.provider);
+    const balance = await rpc.getBalance();
+    this.uiConsole(balance);
+  };
 
-	uiConsole(...args: any[]) {
-		const el = document.querySelector('#console-ui>p');
-		if (el) {
-			el.innerHTML = JSON.stringify(args || {}, null, 2);
-		}
-	}
+  sendTransaction = async () => {
+    if (!this.provider) {
+      this.uiConsole('provider not initialized yet');
+      return;
+    }
+    const rpc = new RPC(this.provider);
+    const receipt = await rpc.sendTransaction();
+    this.uiConsole(receipt);
+  };
+
+  signMessage = async () => {
+    if (!this.provider) {
+      this.uiConsole('provider not initialized yet');
+      return;
+    }
+    const rpc = new RPC(this.provider);
+    const signedMessage = await rpc.signMessage();
+    this.uiConsole(signedMessage);
+  };
+
+  getPrivateKey = async () => {
+    if (!this.provider) {
+      this.uiConsole('provider not initialized yet');
+      return;
+    }
+    const rpc = new RPC(this.provider);
+    const privateKey = await rpc.getPrivateKey();
+    this.uiConsole(privateKey);
+  };
+
+  logout = async () => {
+    if (!this.web3auth) {
+      this.uiConsole('web3auth not initialized yet');
+      return;
+    }
+    await this.web3auth.logout();
+    this.provider = null;
+    this.uiConsole('logged out');
+  };
+
+  uiConsole(...args: any[]) {
+    const el = document.querySelector('#console-ui>p');
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
 }

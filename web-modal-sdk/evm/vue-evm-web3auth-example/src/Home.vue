@@ -87,6 +87,9 @@ import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plu
 // Adapters
 
 import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
+import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
+import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
 export default {
   name: "Home",
@@ -115,6 +118,9 @@ export default {
       },
     });
 
+    // plugins and adapters are optional and can be added as per your requirement
+    // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/
+
     // adding torus wallet connector plugin
 
     const torusPlugin = new TorusWalletConnectorPlugin({
@@ -130,12 +136,41 @@ export default {
       },
     });
 
+    // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
+
     // adding coinbase adapter
 
     const coinbaseAdapter = new CoinbaseAdapter({
       clientId,
     });
     web3auth.configureAdapter(coinbaseAdapter);
+
+    // adding wallet connect v1 adapter
+
+    const walletConnectV1Adapter = new WalletConnectV1Adapter({
+      adapterSettings: {
+        bridge: "https://bridge.walletconnect.org",
+      },
+      clientId,
+    });
+
+    web3auth.configureAdapter(walletConnectV1Adapter);
+
+    // adding metamask adapter
+
+    const metamaskAdapter = new MetamaskAdapter({
+      clientId,
+    });
+
+    // it will add/update  the metamask adapter in to web3auth class
+    web3auth.configureAdapter(metamaskAdapter);
+
+    const torusWalletAdapter = new TorusWalletAdapter({
+      clientId,
+    });
+
+    // it will add/update  the torus-evm adapter in to web3auth class
+    web3auth.configureAdapter(torusWalletAdapter);
 
     onMounted(async () => {
       try {

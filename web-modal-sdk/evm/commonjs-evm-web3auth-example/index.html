@@ -47,6 +47,9 @@
     <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/coinbase-adapter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/metamask-adapter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/wallet-connect-v1-adapter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-evm-adapter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-wallet-connector-plugin"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.3/dist/web3.min.js"></script>
     <script src="./web3RPC.js"></script>
@@ -91,6 +94,26 @@
           clientId,
         });
         web3auth.configureAdapter(coinbaseAdapter);
+
+        const metamaskAdapter = new window.MetamaskAdapter.MetamaskAdapter({
+          clientId,
+        });
+        web3auth.configureAdapter(metamaskAdapter);
+
+        const walletConnectAdapter =
+          new window.WalletConnectV1Adapter.WalletConnectV1Adapter({
+            adapterSettings: {
+              bridge: "https://bridge.walletconnect.org",
+            },
+            clientId,
+          });
+        web3auth.configureAdapter(walletConnectAdapter);
+
+        const torusAdapter = new window.TorusEvmAdapter.TorusWalletAdapter({
+          clientId,
+        });
+        web3auth.configureAdapter(torusAdapter);
+
         await web3auth.initModal();
         if (web3auth.provider) {
           $(".btn-logged-in").show();

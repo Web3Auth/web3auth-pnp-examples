@@ -82,6 +82,7 @@ import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-p
 // Adapters
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
 import { SolletWebAdapter } from "@web3auth/sollet-adapter";
+import { SlopeAdapter } from "@web3auth/slope-adapter";
 
 export default {
   name: "Home",
@@ -132,6 +133,11 @@ export default {
       clientId,
     });
     web3auth.configureAdapter(solletWebAdapter);
+
+    const slopeAdapter = new SlopeAdapter({
+      clientId,
+    });
+    web3auth.configureAdapter(slopeAdapter);
 
     onMounted(async () => {
       try {

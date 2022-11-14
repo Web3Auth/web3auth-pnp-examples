@@ -9,6 +9,7 @@ import { SolanaWalletConnectorPlugin } from '@web3auth/solana-wallet-connector-p
 // Adapters
 import { SolflareAdapter } from '@web3auth/solflare-adapter';
 import { SolletWebAdapter } from '@web3auth/sollet-adapter';
+import { SlopeAdapter } from '@web3auth/slope-adapter';
 
 const clientId =
   'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
@@ -62,6 +63,11 @@ export class AppComponent {
       clientId,
     });
     web3auth.configureAdapter(solletWebAdapter);
+
+    const slopeAdapter = new SlopeAdapter({
+      clientId,
+    });
+    web3auth.configureAdapter(slopeAdapter);
 
     await web3auth.initModal();
     if (web3auth.provider) {

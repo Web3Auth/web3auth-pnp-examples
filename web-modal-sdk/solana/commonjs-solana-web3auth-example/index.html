@@ -51,6 +51,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@1.1.1/dist/solanaProvider.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/solflare-adapter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/sollet-adapter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/slope-adapter"></script>
     <script src="./solanaRPC.js"></script>
     <script>
       let web3auth = null;
@@ -98,6 +99,11 @@
           clientId,
         });
         web3auth.configureAdapter(solletWebAdapter);
+
+        const slopeAdapter = new window.SlopeAdapter.SlopeAdapter({
+          clientId,
+        });
+        web3auth.configureAdapter(slopeAdapter);
 
         await web3auth.initModal();
         if (web3auth.provider) {

@@ -100,10 +100,16 @@ provider specific to the user and application.
 
 ### Node SDK
 
-| JWT Provider | Lang Framework | Directory                                                         |
-| :----------- | :------------- | :---------------------------------------------------------------- |
-| `Firebase`   | `ReactJS`      | [One-key-flow](/node-sdk/one-key-flow/react-one-key-evm-example/) |
-| `Custom`     | `NodeJS`       | [Backend-Example](/node-sdk/node-backend-example/)                |
+| JWT Provider | Lang Framework | Directory                                          |
+| :----------- | :------------- | :------------------------------------------------- |
+| `Custom`     | `NodeJS`       | [Backend-Example](/node-sdk/node-backend-example/) |
+
+### Using Web3Auth without Redirect (One Key Flow)
+
+| JWT Provider | Lang Framework | Directory                                                              |
+| :----------- | :------------- | :--------------------------------------------------------------------- |
+| `Firebase`   | `ReactJS`      | [Modular Example](/web-core-sdk/one-key-flow/modular-example/)         |
+| `Firebase`   | `ReactJS`      | [Single page Example](/web-core-sdk/one-key-flow/single-page-example/) |
 
 ### Web3Auth Wagmi Connector
 

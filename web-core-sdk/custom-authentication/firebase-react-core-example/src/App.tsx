@@ -134,7 +134,6 @@ function App() {
     }
     const user = await web3auth.getUserInfo();
     uiConsole(user);
-    uiConsole('Logged in Successfully!')
   };
 
   const logout = async () => {

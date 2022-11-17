@@ -46,7 +46,7 @@ function App() {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x3",
+            chainId: "0x5",
           },
         });
 
@@ -262,13 +262,6 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a
-          href="https://faucet.egorfine.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Ropsten Faucet
         </a>
       </footer>
     </div>

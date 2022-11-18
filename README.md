@@ -26,7 +26,7 @@ provider specific to the user and application.
 
 ### Blockchain x Framework
 
-### Ethereum - EVM Based
+#### Ethereum - EVM Based
 
 | Blockchain | Lang Framework | Directory                                                                         |
 | :--------- | :------------- | :-------------------------------------------------------------------------------- |
@@ -36,7 +36,7 @@ provider specific to the user and application.
 | `EVM`      | `Angular`      | [Angular-EVM-Web3Auth-Example](/web-modal-sdk/evm/angular-evm-web3auth-example)   |
 | `EVM`      | `CommonJS`     | [CommonJS-EVM-Web3Auth-Example](/web-modal-sdk/evm/commonjs-evm-web3auth-example) |
 
-### StarkEx
+#### StarkEx
 
 | Blockchain | Lang Framework | Directory                                                                                   |
 | :--------- | :------------- | :------------------------------------------------------------------------------------------ |
@@ -45,7 +45,7 @@ provider specific to the user and application.
 | `StarkEx`  | `Vue`          | [Vue-StarkEx-Web3Auth-Example](/web-modal-sdk/starkex/vue-starkex-web3auth-example)         |
 | `StarkEx`  | `Angular`      | [Angular-StarkEx-Web3Auth-Example](/web-modal-sdk/starkex/angular-starkex-web3auth-example) |
 
-### StarkNet
+#### StarkNet
 
 | Blockchain | Lang Framework | Directory                                                                                      |
 | :--------- | :------------- | :--------------------------------------------------------------------------------------------- |
@@ -54,7 +54,7 @@ provider specific to the user and application.
 | `StarkNet` | `Vue`          | [Vue-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/vue-starknet-web3auth-example)         |
 | `StarkNet` | `Angular`      | [Angular-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/angular-starknet-web3auth-example) |
 
-### Tezos
+#### Tezos
 
 | Blockchain | Lang Framework | Directory                                                                             |
 | :--------- | :------------- | :------------------------------------------------------------------------------------ |
@@ -63,17 +63,23 @@ provider specific to the user and application.
 | `Tezos`    | `Vue`          | [Vue-Tezos-Web3Auth-Example](/web-modal-sdk/tezos/vue-tezos-web3auth-example)         |
 | `Tezos`    | `Angular`      | [Angular-Tezos-Web3Auth-Example](/web-modal-sdk/tezos/angular-tezos-web3auth-example) |
 
-### Algorand
+#### Algorand
 
 | Blockchain | Lang Framework | Directory                                                                                  |
 | :--------- | :------------- | :----------------------------------------------------------------------------------------- |
 | `Algorand` | `REACT`        | [React-Algorand-Web3Auth-Example](/web-modal-sdk/algorand/react-algorand-web3auth-example) |
 
-### ImmutableX
+#### ImmutableX
 
 | Blockchain   | Lang Framework | Directory                                                                                         |
 | :----------- | :------------- | :------------------------------------------------------------------------------------------------ |
 | `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-Example](/web-modal-sdk/immutableX/react-immutableX-web3auth-example/) |
+
+### Browser Extensions
+
+| Browser  | Lang Framework | Directory                                                                                                 |
+| -------- | -------------- | --------------------------------------------------------------------------------------------------------- |
+| `Chrome` | `REACT`        | [Chrome-extension-web3auth-example](/web-modal-sdk/browser-extensions/chrome-extension-web3auth-example/) |
 
 ## Web3Auth Plug n Play Core
 

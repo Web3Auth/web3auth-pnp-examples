@@ -29,7 +29,7 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.SOLANA,
             chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-            rpcTarget: "https://api.mainnet-beta.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
         });
 

@@ -104,6 +104,12 @@ provider specific to the user and application.
 | :---------------- | :------------- | :-------------------------------------------------------------------------------------------------------------- |
 | `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-Core-Example](/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example) |
 
+### Browser Extensions
+
+| Browser  | Lang Framework | Directory                                                                                                |
+| -------- | -------------- | -------------------------------------------------------------------------------------------------------- |
+| `Chrome` | `REACT`        | [Chrome-extension-web3auth-example](/web-core-sdk/browser-extensions/chrome-extension-web3auth-example/) |
+
 ### Node SDK
 
 | JWT Provider | Lang Framework | Directory                                                         |

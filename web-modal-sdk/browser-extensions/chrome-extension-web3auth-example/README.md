@@ -3,8 +3,8 @@
 ## QuickStart
 
 ```bash
-git clone
-cd w3a-chrome-extension
+git clone https://github.com/Web3Auth/examples.git
+cd examples/web-modal-sdk/browser-extensions/chrome-extension-web3auth-example
 npm run install && npm run build
 ```
 

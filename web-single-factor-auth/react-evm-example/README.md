@@ -4,7 +4,7 @@
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd examples/single-factor-auth/react-single-factor-auth-evm-example
+cd examples/web-single-factor-auth/react-evm-example
 npm install
 npm run start # localhost:3000
 ```

@@ -10,6 +10,7 @@
   "dependencies": {
     "@web3auth/base": "^3.0.0",
     "@web3auth/coinbase-adapter": "^3.0.4",
+    "@web3auth/openlogin-adapter": "^3.0.4",
     "@web3auth/metamask-adapter": "^3.0.4",
     "@web3auth/modal": "^3.0.3",
     "@web3auth/torus-evm-adapter": "^3.0.4",

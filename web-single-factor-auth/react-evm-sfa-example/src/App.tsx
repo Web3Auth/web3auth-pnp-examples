@@ -34,10 +34,11 @@ const clientId =
   "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io/",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+  rpcTarget: "https://rpc.ankr.com/eth_goerli",
+  displayName: "Goerli Testnet",
+  blockExplorer: "https://goerli.etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
 };
@@ -60,6 +61,7 @@ function App() {
     null
   );
   const [idToken, setIdToken] = useState<string | null>(null);
+  const app = initializeApp(firebaseConfig);
 
   useEffect(() => {
     const init = async () => {
@@ -67,11 +69,7 @@ function App() {
         // Initialising Web3Auth Single Factor Auth SDK
         const web3authSfa = new Web3Auth({
           clientId, // Get your Client ID from Web3Auth Dashboard
-          chainConfig: {
-            chainNamespace: "eip155",
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
-          },
+          chainConfig,
         });
         setWeb3authSFAuth(web3authSfa);
         await web3authSfa.init({
@@ -81,10 +79,7 @@ function App() {
         // Initialising Web3Auth Core SDK
         const web3authCore = new Web3AuthCore({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            ...chainConfig,
-          },
+          chainConfig,
         });
 
         const openloginAdapter = new OpenloginAdapter({
@@ -121,7 +116,6 @@ function App() {
 
   const signInWithGoogle = async (): Promise<UserCredential> => {
     try {
-      const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
       const googleProvider = new GoogleAuthProvider();
       const res = await signInWithPopup(auth, googleProvider);
@@ -135,8 +129,8 @@ function App() {
 
   const parseToken = (token: any) => {
     try {
-      const base64Url = token?.split(".")[1];
-      const base64 = base64Url?.replace("-", "+").replace("_", "/");
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace("-", "+").replace("_", "/");
       return JSON.parse(window.atob(base64 || ""));
     } catch (err) {
       console.error(err);
@@ -153,10 +147,15 @@ function App() {
 
     // trying logging in with the Single Factor Auth SDK
     try {
+      if (!web3authSFAuth) {
+        uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
+        return;
+      }
+      
       // get sub value from firebase id token
       const { sub } = parseToken(idToken);
 
-      const web3authSfaprovider = await web3authSFAuth?.connect({
+      const web3authSfaprovider = await web3authSFAuth.connect({
         verifier,
         verifierId: sub,
         idToken,
@@ -231,6 +230,34 @@ function App() {
     setProvider(null);
   };
 
+  const enableMfa = async () => {
+    if (!web3authCore) {
+      uiConsole("Web3Auth Core SDK not initialized yet");
+      return;
+    }
+    const auth = getAuth(app);
+    const user = auth.currentUser;
+    // user
+    if (!user) {
+      uiConsole("User ID Token not found");
+      return;
+    }
+    const idToken = await user.getIdToken(true);
+  
+    // web3auth instance must be initialized before calling this function
+    // as decribed in login with mfa flow above
+    const web3AuthProvider = await web3authCore.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "jwt",
+      extraLoginOptions: {
+        id_token: idToken,
+        verifierIdField: "sub",
+        domain: window.location.origin,
+      },
+      mfaLevel: "optional",
+    });
+    return web3AuthProvider;
+  };
+
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("No provider found");
@@ -286,6 +313,15 @@ function App() {
             Get User Info
           </button>
         </div>
+        {
+          usesSfaSDK ? (
+            <div>
+            <button onClick={enableMfa} className="card">
+              Enable MFA
+            </button>
+          </div>
+          ) : null
+        }
         <div>
           <button onClick={getAccounts} className="card">
             Get Accounts

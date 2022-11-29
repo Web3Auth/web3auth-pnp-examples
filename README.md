@@ -116,7 +116,7 @@ provider specific to the user and application.
 
 | JWT Provider | Lang Framework | Directory                                                           |
 | :----------- | :------------- | :------------------------------------------------------------------ |
-| `Firebase`   | `React`        | [React-EVM-SFA-Example](/web-single-factor-auth/react-evm-example/) |
+| `Firebase`   | `React`        | [React-EVM-SFA-Example](/web-single-factor-auth/react-evm-sfa-example/) |
 
 ### Node SDK
 

@@ -46,6 +46,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/coinbase-adapter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/metamask-adapter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/wallet-connect-v1-adapter"></script>
@@ -65,7 +66,7 @@
         $("#sign-tx").hide();
 
         const clientId =
-          "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get your clientId from https://dashboard.web3auth.io
+          "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get your clientId from https://dashboard.web3auth.io
 
         web3auth = new window.Modal.Web3Auth({
           clientId,
@@ -75,6 +76,14 @@
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
         });
+
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            network: "cyan",
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
+        
         // Add Torus Wallet Connector Plugin
         const torusPlugin =
           new window.TorusWalletConnectorPlugin.TorusWalletConnectorPlugin({

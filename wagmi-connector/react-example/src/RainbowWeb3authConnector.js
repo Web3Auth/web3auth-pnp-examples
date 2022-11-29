@@ -10,8 +10,8 @@ export const rainbowWeb3AuthConnector = ({ chains }) => ({
       chains: chains,
       options: {
         enableLogging: true,
-        clientId: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A", // Get your own client id from https://dashboard.web3auth.io
-        network: "testnet",
+        clientId: "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk", // Get your own client id from https://dashboard.web3auth.io
+        network: "cyan",
         chainId: "0x1",
       },
     });

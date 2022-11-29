@@ -53,7 +53,7 @@ In your sign-in script', create an Web3Auth instance with your Web3Auth project'
 Web3Auth web3Auth = new Web3Auth(new Web3AuthOptions() {
   redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
     clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
-    network = Web3Auth.Network.TESTNET,
+    network = Web3Auth.Network.CYAN,
     whiteLabel = new WhiteLabelData() {
       name = "Web3Auth Sample App",
         logoLight = null,

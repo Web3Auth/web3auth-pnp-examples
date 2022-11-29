@@ -5,7 +5,7 @@ import RPC from './algorandRPC';
 import './App.css';
 
 const clientId =
-	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
+	'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk'; // get from https://dashboard.web3auth.io
 
 function App() {
 	const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);

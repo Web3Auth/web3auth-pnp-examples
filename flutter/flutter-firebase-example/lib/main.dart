@@ -63,17 +63,17 @@ class _MyAppState extends State<MyApp> {
 
     final loginConfig = HashMap<String, LoginConfigItem>();
     loginConfig['jwt'] = LoginConfigItem(
-        verifier: "web3auth-core-firebase", // get it from web3auth dashboard
+        verifier: "web3auth-firebase-examples", // get it from web3auth dashboard
         typeOfLogin: TypeOfLogin.jwt,
         name: "Custom JWT Login",
         clientId:
-            "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A" // web3auth's plug and play client id
+            "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk" // web3auth's plug and play client id
         );
 
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A',
-        network: Network.testnet,
+            'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk',
+        network: Network.cyan,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(
             dark: true,

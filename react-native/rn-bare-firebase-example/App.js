@@ -19,7 +19,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 const scheme = 'web3authrnbarefirebase'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
-  'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A';
+  'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk';
 const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
 
 async function signInWithGoogle() {
@@ -53,11 +53,11 @@ export default function App() {
       setConsole('Logging in');
       const web3auth = new Web3Auth(WebBrowser, {
         clientId,
-        network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+        network: OPENLOGIN_NETWORK.CYAN, // or other networks
         loginConfig: {
           jwt: {
             name: 'Web3Auth-Auth0-JWT',
-            verifier: 'web3auth-core-firebase',
+            verifier: 'web3auth-firebase-examples',
             typeOfLogin: 'jwt',
             clientId,
           },

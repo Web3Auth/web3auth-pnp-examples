@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter"
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
@@ -23,7 +24,7 @@ import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { ec as elliptic } from "elliptic";
 
 const clientId =
-  "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -42,8 +43,24 @@ function App() {
             chainId: "0x5",
           },
         });
-
         setWeb3auth(web3auth);
+
+        const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "optional",
+          },
+          adapterSettings: {
+            network: "cyan",
+            whiteLabel: {
+              name: "Your app Name",
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en",
+              dark: true, // whether to enable dark mode. defaultValue: false
+            },
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
 
         await web3auth.initModal();
 

@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
 
     final loginConfig = HashMap<String, LoginConfigItem>();
     loginConfig['jwt'] = LoginConfigItem(
-        verifier: "web3auth-auth0-example", // get it from web3auth dashboard
+        verifier: "web3auth-auth0-demo", // get it from web3auth dashboard
         typeOfLogin: TypeOfLogin.jwt,
         name: "Web3Auth Flutter Auth0 Example",
         clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT" // auth0 client id
@@ -62,8 +62,8 @@ class _MyAppState extends State<MyApp> {
 
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A',
-        network: Network.testnet,
+            'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk',
+        network: Network.cyan,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(
             dark: true,

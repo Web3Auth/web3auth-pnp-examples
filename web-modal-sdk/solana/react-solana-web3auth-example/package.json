@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.0.6",
     "@web3auth/base": "^3.0.0",
     "@web3auth/modal": "^3.0.3",
+    "@web3auth/openlogin-adapter": "^3.0.3",
     "@web3auth/slope-adapter": "^3.0.4",
     "@web3auth/solana-provider": "^3.0.3",
     "@web3auth/solana-wallet-connector-plugin": "^3.0.4",

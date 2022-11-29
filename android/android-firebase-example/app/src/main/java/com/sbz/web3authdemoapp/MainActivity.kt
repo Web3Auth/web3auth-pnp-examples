@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
            Web3AuthOptions(
                context = this,
                clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
-               network = Web3Auth.Network.TESTNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN)
+               network = Web3Auth.Network.CYAN, // pass over the network you want to use (MAINNET or TESTNET or CYAN)
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
                // Optional parameters
                whiteLabel = WhiteLabelData(
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                    )
                ),
                loginConfig = hashMapOf("jwt" to LoginConfigItem(
-                   verifier = "web3auth-core-firebase",
+                   verifier = "web3auth-firebase-examples",
                    typeOfLogin = TypeOfLogin.JWT,
                    name = "Firebase Login",
                    clientId = getString(R.string.web3auth_project_id)

@@ -85,7 +85,7 @@ import RPC from "./web3RPC";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 
 // Adapters
-
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter"
 import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
 import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
@@ -103,7 +103,7 @@ export default {
     const connecting = ref<boolean>(false);
     let provider = ref<SafeEventEmitterProvider | any>(false);
     const clientId =
-      "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+      "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
     const web3auth = new Web3Auth({
       clientId,
@@ -117,6 +117,13 @@ export default {
         defaultLanguage: "en",
       },
     });
+
+    const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        network: "cyan",
+      },
+    });
+    web3auth.configureAdapter(openloginAdapter);
 
     // plugins and adapters are optional and can be added as per your requirement
     // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/

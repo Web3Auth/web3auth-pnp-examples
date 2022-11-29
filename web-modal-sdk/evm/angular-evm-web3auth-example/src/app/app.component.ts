@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Web3Auth } from '@web3auth/modal';
+import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from '@web3auth/base';
 import RPC from './web3RPC'; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
@@ -15,7 +16,7 @@ import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 import { TorusWalletAdapter } from '@web3auth/torus-evm-adapter';
 
 const clientId =
-  'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
+  'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk'; // get from https://dashboard.web3auth.io
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,13 @@ export class AppComponent {
       },
     });
     const web3auth = this.web3auth;
+
+    const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        network: "cyan",
+      },
+    });
+    web3auth.configureAdapter(openloginAdapter);
 
     // plugins and adapters are optional and can be added as per your requirement
     // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/

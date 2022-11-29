@@ -61,8 +61,8 @@ class _MyAppState extends State<MyApp> {
 
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A',
-        network: Network.testnet,
+            'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk',
+        network: Network.cyan,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(
             dark: true, name: "Web3Auth Flutter App", theme: themeMap)));

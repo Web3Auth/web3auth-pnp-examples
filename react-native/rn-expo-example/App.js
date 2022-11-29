@@ -11,7 +11,7 @@ const resolvedRedirectUrl =
     ? Linking.createURL("web3auth", {})
     : Linking.createURL("web3auth", { scheme: scheme });
 
-const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A";
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk";
 const providerUrl = "https://rpc.ankr.com/eth"; // Or your desired provider url
       
 export default function App() {
@@ -24,7 +24,7 @@ export default function App() {
       setConsole("Logging in");
       const web3auth = new Web3Auth(WebBrowser, {
         clientId,
-        network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+        network: OPENLOGIN_NETWORK.CYAN, // or other networks
       });
       const info = await web3auth.login({
         loginProvider: LOGIN_PROVIDER.GOOGLE,

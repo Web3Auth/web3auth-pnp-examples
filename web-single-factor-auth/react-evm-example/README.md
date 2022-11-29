@@ -4,7 +4,7 @@
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd web-core-sdk/one-key-flow/single-page-example
+cd examples/single-factor-auth/react-single-factor-auth-evm-example
 npm install
 npm run start # localhost:3000
 ```

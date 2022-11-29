@@ -110,12 +110,19 @@ provider specific to the user and application.
 | -------- | -------------- | -------------------------------------------------------------------------------------------------------- |
 | `Chrome` | `REACT`        | [Chrome-extension-web3auth-example](/web-core-sdk/browser-extensions/chrome-extension-web3auth-example/) |
 
+### Single Factor Auth
+
+`@web3auth/single-factor-auth`
+
+| JWT Provider | Lang Framework | Directory                                                           |
+| :----------- | :------------- | :------------------------------------------------------------------ |
+| `Firebase`   | `React`        | [React-EVM-SFA-Example](/web-single-factor-auth/react-evm-example/) |
+
 ### Node SDK
 
-| JWT Provider | Lang Framework | Directory                                                         |
-| :----------- | :------------- | :---------------------------------------------------------------- |
-| `Firebase`   | `ReactJS`      | [One-key-flow](/node-sdk/one-key-flow/react-one-key-evm-example/) |
-| `Custom`     | `NodeJS`       | [Backend-Example](/node-sdk/node-backend-example/)                |
+| JWT Provider | Lang Framework | Directory                                          |
+| :----------- | :------------- | :------------------------------------------------- |
+| `Custom`     | `NodeJS`       | [Backend-Example](/node-sdk/node-backend-example/) |
 
 ### Web3Auth Wagmi Connector
 

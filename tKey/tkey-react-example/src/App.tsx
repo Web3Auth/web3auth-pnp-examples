@@ -3,6 +3,7 @@ import './App.css';
 import ThresholdKey from '@tkey/default';
 import WebStorageModule from '@tkey/web-storage';
 import SecurityQuestionsModule from '@tkey/security-questions';
+import swal from 'sweetalert';
 
 // Configuration of Service Provider
 const customAuthArgs = {
@@ -68,6 +69,7 @@ function App() {
 			const { requiredShares } = tKey.getKeyDetails();
 			if (requiredShares === 0) {
 				const reconstructedKey = await tKey.reconstructKey();
+				// setIsLoggingIn(true);
 				uiConsole(
 					'Reconstructed tKey: ' + reconstructedKey.privKey.toString('hex'),
 				);
@@ -75,6 +77,52 @@ function App() {
 		} catch (error) {
 			console.error(error, 'caught');
 		}
+	};
+
+	const generateNewShareWithPassword = async () => {
+		await initializeNewKey();
+		// swal is just a pretty dialog box
+		if (
+			(tKey.modules.securityQuestions as SecurityQuestionsModule)
+				.getSecurityQuestions
+		) {
+			swal('Enter password (>10 characters)', {
+				content: 'input' as any,
+			}).then(async value => {
+				if (value.length > 10) {
+					await (
+						tKey.modules.securityQuestions as SecurityQuestionsModule
+					).changeSecurityQuestionAndAnswer(value, 'whats your password?');
+					console.log('Successfully changed new share with password.');
+				} else {
+					swal('Error', 'Password must be > 10 characters', 'error');
+				}
+			});
+		} else {
+			swal('Enter password (>10 characters)', {
+				content: 'input' as any,
+			}).then(async value => {
+				if (value.length > 10) {
+					await (
+						tKey.modules.securityQuestions as SecurityQuestionsModule
+					).generateNewShareWithSecurityQuestions(
+						value,
+						'whats your password?',
+					);
+					console.log('Successfully generated new share with password.');
+				} else {
+					swal('Error', 'Password must be > 10 characters', 'error');
+				}
+			});
+		}
+		const keyDetails = await tKey.getKeyDetails();
+		uiConsole(keyDetails);
+	};
+
+	const keyDetails = async () => {
+		await initializeNewKey();
+		const keyDetails = await tKey.getKeyDetails();
+		uiConsole(keyDetails);
 	};
 
 	const logout = (): void => {
@@ -99,6 +147,16 @@ function App() {
 				<div>
 					<button onClick={getUserInfo} className='card'>
 						Get User Info
+					</button>
+				</div>
+				<div>
+					<button onClick={generateNewShareWithPassword} className='card'>
+						Generate (ShareC)
+					</button>
+				</div>
+				<div>
+					<button onClick={keyDetails} className='card'>
+						Key Details
 					</button>
 				</div>
 				{/* <div>
@@ -133,6 +191,7 @@ function App() {
 					</button>
 				</div>
 			</div>
+
 			<div id='console' style={{ whiteSpace: 'pre-line' }}>
 				<p style={{ whiteSpace: 'pre-line' }}></p>
 			</div>

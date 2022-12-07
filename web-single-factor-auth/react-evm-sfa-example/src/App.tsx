@@ -70,11 +70,10 @@ function App() {
         const web3authSfa = new Web3Auth({
           clientId, // Get your Client ID from Web3Auth Dashboard
           chainConfig,
+          web3AuthNetwork: "cyan",
         });
         setWeb3authSFAuth(web3authSfa);
-        await web3authSfa.init({
-          network: "cyan",
-        });
+        await web3authSfa.init();
 
         // Initialising Web3Auth Core SDK
         const web3authCore = new Web3AuthCore({
@@ -147,7 +146,7 @@ function App() {
         uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
         return;
       }
-      
+
       // get sub value from firebase id token
       const { sub } = parseToken(idToken);
 
@@ -163,7 +162,7 @@ function App() {
     } catch (err) {
       // Single Factor Auth SDK throws an error if the user has already enabled MFA
       // We will try to use the Web3AuthCore SDK to handle this case
-
+      console.log(err);
       if (err instanceof WalletLoginError && err.code === 5115) {
         try {
           if (!web3authCore) {
@@ -239,18 +238,21 @@ function App() {
       return;
     }
     const idToken = await user.getIdToken(true);
-  
+
     // web3auth instance must be initialized before calling this function
     // as decribed in login with mfa flow above
-    const web3AuthProvider = await web3authCore.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-      loginProvider: "jwt",
-      extraLoginOptions: {
-        id_token: idToken,
-        verifierIdField: "sub",
-        domain: window.location.origin,
-      },
-      mfaLevel: "optional",
-    });
+    const web3AuthProvider = await web3authCore.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        loginProvider: "jwt",
+        extraLoginOptions: {
+          id_token: idToken,
+          verifierIdField: "sub",
+          domain: window.location.origin,
+        },
+        mfaLevel: "optional",
+      }
+    );
     return web3AuthProvider;
   };
 
@@ -309,15 +311,13 @@ function App() {
             Get User Info
           </button>
         </div>
-        {
-          usesSfaSDK ? (
-            <div>
+        {usesSfaSDK ? (
+          <div>
             <button onClick={enableMfa} className="card">
               Enable MFA
             </button>
           </div>
-          ) : null
-        }
+        ) : null}
         <div>
           <button onClick={getAccounts} className="card">
             Get Accounts

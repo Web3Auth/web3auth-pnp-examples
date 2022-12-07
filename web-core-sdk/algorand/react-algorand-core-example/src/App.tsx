@@ -78,7 +78,7 @@ function App() {
 			return;
 		}
 		const user = await web3auth.getUserInfo();
-		console.log(user);
+		// console.log(user);
 		uiConsole(user);
 	};
 

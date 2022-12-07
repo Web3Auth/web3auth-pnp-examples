@@ -33,7 +33,7 @@ export default class AlgorandRPC {
 
   makeClient = async (): Promise<any> => {
     const algodToken = {
-      "x-api-key": "YOUR_ALGOD_API_KEY",
+      "x-api-key": "yay5jiXMXr88Bi8nsG1Af9E1X3JfwGOC2F7222r3",
     };
     const algodServer = "https://testnet-algorand.api.purestake.io/ps2";
     const algodPort = "";

@@ -70,11 +70,10 @@ function App() {
         const web3authSfa = new Web3Auth({
           clientId, // Get your Client ID from Web3Auth Dashboard
           chainConfig,
+          web3AuthNetwork: "cyan"
         });
         setWeb3authSFAuth(web3authSfa);
-        await web3authSfa.init({
-          network: "cyan",
-        });
+        await web3authSfa.init();
 
         // Initialising Web3Auth Core SDK
         const web3authCore = new Web3AuthCore({

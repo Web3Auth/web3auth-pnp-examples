@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    implementation 'com.github.Web3Auth:single-factor-auth-java:2283c9cf05'
+    implementation 'org.web3j:crypto:4.8.8'
+    implementation 'org.torusresearch:fetch-node-details-java:3.1.0'
+    implementation 'com.auth0:java-jwt:3.19.2'
+    implementation 'net.andreinc:mockneat:0.4.8'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}

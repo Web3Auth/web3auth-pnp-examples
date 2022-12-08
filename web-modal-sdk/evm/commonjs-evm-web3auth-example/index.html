@@ -45,13 +45,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/coinbase-adapter"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/metamask-adapter"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/wallet-connect-v1-adapter"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-evm-adapter"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-wallet-connector-plugin"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@4.1.0-alpha.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@4.0.0-alpha.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/coinbase-adapter@4.0.0-alpha.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/metamask-adapter@4.0.0-alpha.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/wallet-connect-v1-adapter@4.0.0-alpha.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-evm-adapter@4.0.0-alpha.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-wallet-connector-plugin@4.0.0-alpha.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.3/dist/web3.min.js"></script>
     <script src="./web3RPC.js"></script>
     <!-- for using web3.js -->
@@ -77,7 +77,7 @@
           },
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter({
           adapterSettings: {
             network: "cyan",
           },

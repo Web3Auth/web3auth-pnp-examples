@@ -17,6 +17,7 @@ class Web3RPC : ObservableObject {
     
     @Published var balance: Double = 0
     @Published var signedMessageHashString:String = ""
+    @Published var sentTransactionID:String = ""
     @Published var publicAddress: String = ""
     
     init?(user: Web3AuthState){
@@ -74,6 +75,19 @@ class Web3RPC : ObservableObject {
         } catch {
             self.signedMessageHashString = "Something Went Wrong"
         }
+    }
+    
+    func sendTransaction()  {
+        Task{
+            do {
+                let val = try await transferAsset(sendTo: "0x24BfD1c2D000EC276bb2b6af38C47390Ae6B5FF0", amount: 0.0001, maxTip: 0.0001)
+                self.sentTransactionID = val
+            } catch {
+                self.sentTransactionID = "Something Went Wrong"
+            }
+            
+        }
+        
     }
     
     func transferAsset(sendTo: String, amount: Double, maxTip: Double, gasLimit: BigUInt = 21000) async throws -> String {

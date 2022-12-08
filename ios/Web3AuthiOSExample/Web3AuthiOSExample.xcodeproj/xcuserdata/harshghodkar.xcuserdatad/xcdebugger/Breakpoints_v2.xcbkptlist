@@ -14,8 +14,8 @@
             filePath = "Web3AuthiOSExample/web3RPC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
             landmarkName = "getBalance()"
             landmarkType = "7">
          </BreakpointContent>

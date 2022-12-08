@@ -63,6 +63,18 @@ struct UserDetailView: View {
                     if(web3RPC.signedMessageHashString != "") {
                         Text("\(web3RPC.signedMessageHashString)")
                     }
+                    Button{
+                        web3RPC.sendTransaction()
+                    } label: {
+                        HStack{
+                            Text("Send Transaction")
+                            Spacer()
+                        }
+                    }
+                    if(web3RPC.sentTransactionID != "") {
+                        Text("\(web3RPC.sentTransactionID)")
+                    }
+                    
                 }
                 header: {
                     Text("Blockchain Calls")

@@ -22,7 +22,7 @@ DEFINITIONS
 
 "Original Version" refers to the collection of Font Software components as distributed by the Copyright Holder(s).
 
-"Modified Version" refers to any derivative made by adding to, deleting, or substituting -- in part or in whole -- any of the components of the Original Version, by changing formats or by porting the Font Software to a new environment.
+"Modified Version" refers to any derivative made by adding to, deleting, or substituting -- in part '../../../../Assets/TextMesh Pro/Fonts'or in whole -- any of the components of the Original Version, by changing formats or by porting the Font Software to a new environment.
 
 "Author" refers to any designer, engineer, programmer, technical writer or other person who contributed to the Font Software.
 
@@ -37,7 +37,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font Software shall not be used to promote, endorse or advertise any Modified Version, except to acknowledge the contribution(s) of the Copyright Holder(s) and the Author(s) or with their explicit written permission.
 
-5) The Font Software, modified or unmodified, in part or in whole, must be distributed entirely under this license, and must not be distributed under any other license. The requirement for fonts to remain under this license does not apply to any document created using the Font Software.
+5) The Font Software, modified or unmodified, in part '../../../../Assets/TextMesh Pro/Fonts'or in whole, must be distributed entirely under this license, and must not be distributed under any other license. The requirement for fonts to remain under this license does not apply to any document created using the Font Software.
 
 TERMINATION
 This license becomes null and void if any of the above conditions are not met.

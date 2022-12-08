@@ -151,7 +151,7 @@ provider specific to the user and application.
 
 | SDK     | Documentation                                       | Guide                                          | Directory               |
 | :------ | :-------------------------------------------------- | :--------------------------------------------- | :---------------------- |
-| `Unity` | [Documentation](https://web3auth.io/docs/sdk/unity) | [Guide](https://web3auth.io/docs/guides/unity) | [Unity-Example](/unity) |
+| `Unity` | [Documentation](https://web3auth.io/docs/sdk/unity) | [Guide](https://web3auth.io/docs/guides/unity) | [Unity-Example](/unity/unity-example/) |
 
 ## Questions
 

@@ -146,6 +146,7 @@ provider specific to the user and application.
 | `React Native (Bare)` | ---                                                        | ---                                              | [ReactNative-Bare-Firebase-Example](/react-native/rn-bare-firebase-example/) |
 | `React Native (Expo)` | [Documentation](https://web3auth.io/docs/sdk/react-native) | ---                                              | [ReactNative-Expo-Example](/react-native/rn-expo-example/)                   |
 | `React Native (Expo)` | ---                                                        | ---                                              | [ReactNative-Expo-Auth0-Example](/react-native/rn-expo-auth0-example/)       |
+| `iOS`                 | [Documentation](https://web3auth.io/docs/sdk/ios)          | ---                                              | [iOS-Example](/ios/Web3AuthiOSExample)                                       |
 
 ## Web3Auth Gaming SDKs
 

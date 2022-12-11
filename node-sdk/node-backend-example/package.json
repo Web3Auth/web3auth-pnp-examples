@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@web3auth/node-sdk": "^0.0.1"
+    "@web3auth/node-sdk": "^0.1.0"
   }
 }

@@ -79,13 +79,8 @@ function App() {
 		}
 	};
 
-	const generateNewShareWithPassword = async () => {
-		await initializeNewKey();
+	const changeSecurityQuestionAndAnswer = async () => {
 		// swal is just a pretty dialog box
-		if (
-			(tKey.modules.securityQuestions as SecurityQuestionsModule)
-				.getSecurityQuestions
-		) {
 			swal('Enter password (>10 characters)', {
 				content: 'input' as any,
 			}).then(async value => {
@@ -95,32 +90,33 @@ function App() {
 					).changeSecurityQuestionAndAnswer(value, 'whats your password?');
 					console.log('Successfully changed new share with password.');
 				} else {
-					swal('Error', 'Password must be > 10 characters', 'error');
+					swal('Error', 'Password must be >= 11 characters', 'error');
 				}
 			});
-		} else {
-			swal('Enter password (>10 characters)', {
-				content: 'input' as any,
-			}).then(async value => {
-				if (value.length > 10) {
-					await (
-						tKey.modules.securityQuestions as SecurityQuestionsModule
-					).generateNewShareWithSecurityQuestions(
-						value,
-						'whats your password?',
-					);
-					console.log('Successfully generated new share with password.');
-				} else {
-					swal('Error', 'Password must be > 10 characters', 'error');
-				}
-			});
-		}
 		const keyDetails = await tKey.getKeyDetails();
 		uiConsole(keyDetails);
 	};
 
+	const generateNewShareWithPassword = async () => {
+		// swal is just a pretty dialog box
+		swal('Enter password (>10 characters)', {
+			content: 'input' as any,
+		}).then(async value => {
+			if (value.length > 10) {
+				await (
+					tKey.modules.securityQuestions as SecurityQuestionsModule
+				).generateNewShareWithSecurityQuestions(
+					value,
+					'whats your password?',
+				);
+				console.log('Successfully generated new share with password.');
+			} else {
+				swal('Error', 'Password must be >= 11 characters', 'error');
+			}
+		});
+	}
+
 	const keyDetails = async () => {
-		await initializeNewKey();
 		const keyDetails = await tKey.getKeyDetails();
 		uiConsole(keyDetails);
 	};
@@ -151,7 +147,12 @@ function App() {
 				</div>
 				<div>
 					<button onClick={generateNewShareWithPassword} className='card'>
-						Generate (ShareC)
+						Generate Password Share (ShareC)
+					</button>
+				</div>
+				<div>
+					<button onClick={changeSecurityQuestionAndAnswer} className='card'>
+						Change Password Share (ShareC)
 					</button>
 				</div>
 				<div>

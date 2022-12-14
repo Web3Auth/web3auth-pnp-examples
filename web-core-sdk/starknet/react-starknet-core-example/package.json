@@ -11,7 +11,7 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "@web3auth/base": "^4.0.0-alpha.0",
-    "@web3auth/modal": "^4.1.1-alpha.0",
+    "@web3auth/modal": "^4.2.1-alpha.0",
     "@web3auth/openlogin-adapter": "^4.0.0-alpha.0",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",

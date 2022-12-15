@@ -11,7 +11,7 @@ import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plu
 
 // Adapters
 
-import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
+
 import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
@@ -81,12 +81,6 @@ function App() {
 
         // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
 
-        // adding coinbase adapter
-
-        const coinbaseAdapter = new CoinbaseAdapter({
-          clientId,
-        });
-        web3auth.configureAdapter(coinbaseAdapter);
 
         // adding wallet connect v1 adapter
 

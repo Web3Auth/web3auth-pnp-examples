@@ -1,13 +1,13 @@
 //
-//  Web3AuthiOSExampleUITestsLaunchTests.swift
-//  Web3AuthiOSExampleUITests
+//  ios_auth0_exampleUITestsLaunchTests.swift
+//  ios-auth0-exampleUITests
 //
-//  Created by Harsh Ghodkar on 17/11/22.
+//  Created by Harsh Ghodkar on 16/12/22.
 //
 
 import XCTest
 
-class Web3AuthiOSExampleUITestsLaunchTests: XCTestCase {
+class ios_auth0_exampleUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

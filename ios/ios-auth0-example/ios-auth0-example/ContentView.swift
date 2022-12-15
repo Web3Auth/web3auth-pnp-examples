@@ -1,7 +1,6 @@
 import SwiftUI
 import Web3Auth
 
-
 struct ContentView: View {
     @StateObject var vm: ViewModel
     

@@ -49,8 +49,9 @@ struct UserDetailView: View {
                            Spacer()
                        }
                    }
-                    if(web3RPC.balance>0){
+                    if(web3RPC.balance>=0){
                         Text("\(web3RPC.balance) Eth")
+                        
                     }
                     Button {
                         web3RPC.signMessage()

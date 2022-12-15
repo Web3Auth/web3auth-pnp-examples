@@ -1,14 +1,14 @@
 //
-//  Web3AuthiOSExampleTests.swift
-//  Web3AuthiOSExampleTests
+//  ios_auth0_exampleTests.swift
+//  ios-auth0-exampleTests
 //
-//  Created by Harsh Ghodkar on 17/11/22.
+//  Created by Harsh Ghodkar on 16/12/22.
 //
 
 import XCTest
-@testable import Web3AuthiOSExample
+@testable import ios_auth0_example
 
-class Web3AuthiOSExampleTests: XCTestCase {
+class ios_auth0_exampleTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

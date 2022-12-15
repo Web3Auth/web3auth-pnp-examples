@@ -1,4 +1,3 @@
-
 import BigInt
 import Combine
 import Foundation
@@ -33,6 +32,7 @@ class Web3RPC : ObservableObject {
     
     func getAccounts() {
         self.publicAddress = address.value
+        print(address.value)
     }
     
 
@@ -64,6 +64,7 @@ class Web3RPC : ObservableObject {
                     self?.balance = balance
                 }
             }
+            print(balance)
             
         }
     }
@@ -72,6 +73,7 @@ class Web3RPC : ObservableObject {
         do {
             let val = try account.sign(message: "Hello World")
             self.signedMessageHashString = val.web3.hexString
+            print(self.signedMessageHashString)
         } catch {
             self.signedMessageHashString = "Something Went Wrong"
         }
@@ -82,6 +84,7 @@ class Web3RPC : ObservableObject {
             do {
                 let val = try await transferAsset(sendTo: "0x24BfD1c2D000EC276bb2b6af38C47390Ae6B5FF0", amount: 0.0001, maxTip: 0.0001)
                 self.sentTransactionID = val
+                print(val)
             } catch {
                 self.sentTransactionID = "Something Went Wrong"
             }

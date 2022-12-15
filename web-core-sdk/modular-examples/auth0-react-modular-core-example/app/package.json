@@ -6,9 +6,9 @@
   "dependencies": {
     "@solana/web3.js": "^1.66.2",
     "@toruslabs/openlogin": "^2.7.0",
-    "@web3auth/base": "^4.0.0-alpha.0",
-    "@web3auth/core": "^4.0.0-alpha.0",
-    "@web3auth/openlogin-adapter": "^4.0.0-alpha.0",
+    "@web3auth/base": "^4.2.3-beta.0",
+    "@web3auth/core": "^4.2.3-beta.0",
+    "@web3auth/openlogin-adapter": "^4.2.3-beta.0",
     "dotenv": "^16.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

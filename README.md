@@ -114,8 +114,8 @@ provider specific to the user and application.
 
 `@web3auth/single-factor-auth`
 
-| JWT Provider | Lang Framework | Directory                                                           |
-| :----------- | :------------- | :------------------------------------------------------------------ |
+| JWT Provider | Lang Framework | Directory                                                               |
+| :----------- | :------------- | :---------------------------------------------------------------------- |
 | `Firebase`   | `React`        | [React-EVM-SFA-Example](/web-single-factor-auth/react-evm-sfa-example/) |
 
 ### Node SDK
@@ -146,12 +146,13 @@ provider specific to the user and application.
 | `React Native (Bare)` | ---                                                        | ---                                              | [ReactNative-Bare-Firebase-Example](/react-native/rn-bare-firebase-example/) |
 | `React Native (Expo)` | [Documentation](https://web3auth.io/docs/sdk/react-native) | ---                                              | [ReactNative-Expo-Example](/react-native/rn-expo-example/)                   |
 | `React Native (Expo)` | ---                                                        | ---                                              | [ReactNative-Expo-Auth0-Example](/react-native/rn-expo-auth0-example/)       |
-| `iOS`                 | [Documentation](https://web3auth.io/docs/sdk/ios)          | ---                                              | [iOS-Example](/ios/Web3AuthiOSExample)                                       |
+| `iOS`                 | [Documentation](https://web3auth.io/docs/sdk/ios)          | ---                                              | [iOS-Example](/ios/ios-example)                                              |
+| `iOS`                 | ---                                                        | ---                                              | [iOS-Auth0-Example](/ios/ios-auth0-example)                                  |
 
 ## Web3Auth Gaming SDKs
 
-| SDK     | Documentation                                       | Guide                                          | Directory               |
-| :------ | :-------------------------------------------------- | :--------------------------------------------- | :---------------------- |
+| SDK     | Documentation                                       | Guide                                          | Directory                              |
+| :------ | :-------------------------------------------------- | :--------------------------------------------- | :------------------------------------- |
 | `Unity` | [Documentation](https://web3auth.io/docs/sdk/unity) | [Guide](https://web3auth.io/docs/guides/unity) | [Unity-Example](/unity/unity-example/) |
 
 ## Questions

@@ -12,11 +12,18 @@ import com.google.gson.Gson
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.*
 import java8.util.concurrent.CompletableFuture
+import org.web3j.crypto.Credentials
+import org.web3j.protocol.Web3j
+import org.web3j.protocol.http.HttpService
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var web3Auth: Web3Auth
+    private lateinit var sessionId: String // <-- Stores the Web3Auth's sessionId.
+    private lateinit var web3: Web3j
+    private lateinit var credentials: Credentials
+    private val rpcUrl = "https://rpc.ankr.com/eth"
 
     private val gson = Gson()
 
@@ -46,6 +53,9 @@ class MainActivity : AppCompatActivity() {
         val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
         sessionResponse.whenComplete { loginResponse, error ->
             if (error == null) {
+                sessionId = loginResponse.sessionId.toString()
+                credentials = Credentials.create(sessionId)
+                web3 = Web3j.build(HttpService(rpcUrl))
                 println(loginResponse)
                 reRender(loginResponse)
             } else {
@@ -77,6 +87,12 @@ class MainActivity : AppCompatActivity() {
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
+                // Set the sessionId from Web3Auth in App State
+                // This will be used when making blockchain calls with Web3j
+                sessionId = loginResponse.sessionId.toString()
+                // Sets the credentials and Web3j instance.
+                credentials = Credentials.create(sessionId)
+                web3 = Web3j.build(HttpService(rpcUrl))
                 println(loginResponse)
                 reRender(loginResponse)
             } else {

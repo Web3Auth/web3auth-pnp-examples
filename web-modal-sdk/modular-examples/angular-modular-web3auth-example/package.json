@@ -1,5 +1,5 @@
 {
-  "name": "angular-app",
+  "name": "angular-modular-web3auth-example",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

@@ -101,8 +101,25 @@
 
         const metamaskAdapter = new window.MetamaskAdapter.MetamaskAdapter({
           clientId,
+          sessionTime: 3600, // 1 hour in seconds
+          web3AuthNetwork: "cyan",
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
         });
         web3auth.configureAdapter(metamaskAdapter);
+        // we can change the above settings using this function
+        metamaskAdapter.setAdapterSettings({
+          sessionTime: 86400, // 1 day in seconds
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x89",
+            rpcTarget: "https://rpc-mainnet.matic.network", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+          web3AuthNetwork: "cyan",
+        });
 
         const walletConnectAdapter =
           new window.WalletConnectV1Adapter.WalletConnectV1Adapter({

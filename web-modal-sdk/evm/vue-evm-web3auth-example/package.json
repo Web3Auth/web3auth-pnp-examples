@@ -8,29 +8,28 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@web3auth/base": "^3.0.0",
-    "@web3auth/coinbase-adapter": "^3.0.4",
-    "@web3auth/metamask-adapter": "^3.0.4",
-    "@web3auth/modal": "^3.0.3",
-    "@web3auth/torus-evm-adapter": "^3.0.4",
-    "@web3auth/torus-wallet-connector-plugin": "^3.0.4",
-    "@web3auth/wallet-connect-v1-adapter": "^3.0.4",
-    "core-js": "^3.25.5",
+    "@web3auth/base": "^4.0.0",
+    "@web3auth/metamask-adapter": "^4.0.0",
+    "@web3auth/modal": "^4.0.0",
+    "@web3auth/torus-evm-adapter": "^4.0.0",
+    "@web3auth/torus-wallet-connector-plugin": "^4.0.0",
+    "@web3auth/wallet-connect-v1-adapter": "^4.0.0",
+    "core-js": "^3.26.1",
     "ethers": "^5.7.2",
     "node-polyfill-webpack-plugin": "^2.0.1",
-    "vue": "^3.2.41",
-    "web3": "^1.8.0"
+    "vue": "^3.2.45",
+    "web3": "^1.8.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.40.1",
-    "@typescript-eslint/parser": "^5.40.1",
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-plugin-typescript": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-typescript": "^11.0.2",
-    "eslint": "^8.25.0",
-    "eslint-plugin-vue": "^9.6.0",
-    "typescript": "~4.8.4"
+    "eslint": "^8.29.0",
+    "eslint-plugin-vue": "^9.8.0",
+    "typescript": "~4.9.4"
   }
 }

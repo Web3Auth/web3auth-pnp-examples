@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             Web3AuthOptions(
                 context = this,
                 clientId = getString(R.string.web3auth_project_id),
-                network = Web3Auth.Network.TESTNET,
+                network = Web3Auth.Network.CYAN,
                 redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"),
                  whiteLabel = WhiteLabelData(
                      "Web3Auth Android Example", null, null, "en", true,

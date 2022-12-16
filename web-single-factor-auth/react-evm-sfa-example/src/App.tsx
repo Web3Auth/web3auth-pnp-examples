@@ -28,10 +28,10 @@ import {
 
 import "./App.css";
 
-const verifier = "web3auth-core-firebase";
+const verifier = "web3auth-firebase-examples";
 
 const clientId =
-  "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -70,11 +70,10 @@ function App() {
         const web3authSfa = new Web3Auth({
           clientId, // Get your Client ID from Web3Auth Dashboard
           chainConfig,
+          web3AuthNetwork: "cyan"
         });
         setWeb3authSFAuth(web3authSfa);
-        await web3authSfa.init({
-          network: "testnet",
-        });
+        await web3authSfa.init();
 
         // Initialising Web3Auth Core SDK
         const web3authCore = new Web3AuthCore({
@@ -83,12 +82,8 @@ function App() {
         });
 
         const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "default",
-          },
           adapterSettings: {
-            network: "testnet",
-            uxMode: "redirect",
+            network: "cyan",
             loginConfig: {
               jwt: {
                 name: "Web3Auth One Key Login Flow",

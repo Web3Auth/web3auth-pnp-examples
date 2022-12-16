@@ -1,7 +1,7 @@
 const { Web3Auth } = require("@web3auth/node-sdk");
 
 const web3auth = new Web3Auth({
-  clientId: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
@@ -9,7 +9,7 @@ const web3auth = new Web3Auth({
   },
 });
 
-web3auth.init({ network: "testnet" });
+web3auth.init({ network: "cyan" });
 
 const connect = async () => {
   const provider = await web3auth.connect({

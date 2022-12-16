@@ -8,9 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@web3auth/base": "^3.0.0",
-    "@web3auth/modal": "^3.0.3",
-    "@web3auth/openlogin-adapter": "^3.0.3",
+    "@web3auth/base": "^4.0.0",
+    "@web3auth/modal": "^4.0.0",
+    "@web3auth/openlogin-adapter": "^4.0.0",
     "@taquito/signer": "^14.0.0",
     "@taquito/taquito": "^14.0.0",
     "@taquito/utils": "^14.0.0",

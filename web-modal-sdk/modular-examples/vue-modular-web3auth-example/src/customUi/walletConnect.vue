@@ -30,6 +30,7 @@ import QRCodeModal from "@walletconnect/qrcode-modal";
 import { ADAPTER_STATUS, CHAIN_NAMESPACES, CONNECTED_EVENT_DATA, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3AuthCore } from "@web3auth/core";
 import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import Vue from "vue";
 
 import Loader from "../components/loader.vue";
@@ -38,6 +39,12 @@ import EthRpc from "../rpc/ethRpc.vue";
 
 export default Vue.extend({
   name: "BeginnerExampleMode",
+  props: {
+    openloginNetwork: {
+      type: String,
+      default: "testnet",
+    },
+  },
   data() {
     return {
       loading: false,
@@ -45,7 +52,7 @@ export default Vue.extend({
       connected: false,
       provider: undefined,
       namespace: undefined,
-      web3auth: new Web3AuthCore({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId["testnet"] }),
+      web3auth: new Web3AuthCore({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] }),
     };
   },
   components: {
@@ -58,10 +65,18 @@ export default Vue.extend({
   methods: {
     async initWeb3Auth() {
       try {
-        this.web3auth = new Web3AuthCore({ chainConfig: { chainId: "0x3", chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId["testnet"] });
+        this.web3auth = new Web3AuthCore({ chainConfig: { chainId: "0x3", chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] });
         this.subscribeAuthEvents(this.web3auth);
-        const adapter = new WalletConnectV1Adapter({ adapterSettings: { qrcodeModal: QRCodeModal } });
+        const adapter = new WalletConnectV1Adapter({ adapterSettings: { qrcodeModal: QRCodeModal }, web3AuthNetwork: this.openloginNetwork });
         this.web3auth.configureAdapter(adapter);
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            network: this.openloginNetwork,
+            uxMode: "redirect",
+          },
+        });
+
+        this.web3auth.configureAdapter(openloginAdapter);
         await this.web3auth.init();
       } catch (error) {
         console.log("error", error);

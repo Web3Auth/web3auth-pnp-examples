@@ -11,7 +11,6 @@ import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plu
 
 // Adapters
 
-
 import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
@@ -81,7 +80,6 @@ function App() {
 
         // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
 
-
         // adding wallet connect v1 adapter
 
         const walletConnectV1Adapter = new WalletConnectV1Adapter({
@@ -97,6 +95,23 @@ function App() {
 
         const metamaskAdapter = new MetamaskAdapter({
           clientId,
+          sessionTime: 3600, // 1 hour in seconds
+          web3AuthNetwork: "cyan",
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+        });
+        // we can change the above settings using this function
+        metamaskAdapter.setAdapterSettings({
+          sessionTime: 86400, // 1 day in seconds
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+          web3AuthNetwork: "cyan",
         });
 
         // it will add/update  the metamask adapter in to web3auth class

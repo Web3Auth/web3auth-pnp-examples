@@ -45,7 +45,7 @@ export default Vue.extend({
       connected: false,
       provider: undefined,
       namespace: undefined,
-      web3auth: new Web3AuthCore({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId }),
+      web3auth: new Web3AuthCore({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] }),
     };
   },
   components: {
@@ -58,12 +58,11 @@ export default Vue.extend({
   methods: {
     async initWeb3Auth() {
       try {
-        this.web3auth = new Web3AuthCore({ chainConfig: { chainId: "0x3", chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId });
+        this.web3auth = new Web3AuthCore({ chainConfig: { chainId: "0x3", chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] });
         this.subscribeAuthEvents(this.web3auth);
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             network: "testnet",
-            clientId: config.clientId,
             uxMode: "redirect",
           },
         });

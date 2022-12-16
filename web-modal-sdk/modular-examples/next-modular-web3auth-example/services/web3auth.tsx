@@ -94,15 +94,19 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
 
     async function init() {
       try {
-        const clientId = "BKPxkCtfC9gZ5dj-eg-W6yb5Xfr3XkxHuGZl2o2Bn8gKQ7UYike9Dh6c-_LaXlUN77x0cBoPwcSx-IVm0llVsLA";
+        const clientId = {
+          testnet: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A",
+          mainnet: "BJRZ6qdDTbj6Vd5YXvV994TYCqY42-PxldCetmvGTUdoq6pkCqdpuC1DIehz76zuYdaq1RJkXGHuDraHRhCQHvA",
+          cyan: "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"
+        };
         setIsLoading(true);
         const web3AuthInstance = new Web3Auth({
           chainConfig: currentChainConfig,
           // get your client id from https://dashboard.web3auth.io
-          clientId,
+          clientId: clientId[web3AuthNetwork],
         });
 
-        const adapter = new OpenloginAdapter({ adapterSettings: { network: web3AuthNetwork, clientId } });
+        const adapter = new OpenloginAdapter({ adapterSettings: { network: web3AuthNetwork } });
         web3AuthInstance.configureAdapter(adapter);
         subscribeAuthEvents(web3AuthInstance);
         setWeb3Auth(web3AuthInstance);

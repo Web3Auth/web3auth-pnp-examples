@@ -76,7 +76,7 @@ export default Vue.extend({
       loading: false,
       loginButtonStatus: "",
       provider: undefined,
-      web3auth: new Web3Auth({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId }),
+      web3auth: new Web3Auth({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] }),
     };
   },
   components: {
@@ -115,11 +115,10 @@ export default Vue.extend({
       try {
         this.loading = true;
 
-        this.web3auth = new Web3Auth({ chainConfig: polygonMumbaiConfig, clientId: config.clientId, authMode: "DAPP" });
+        this.web3auth = new Web3Auth({ chainConfig: polygonMumbaiConfig, clientId: config.clientId[this.openloginNetwork], authMode: "DAPP" });
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             network: this.openloginNetwork,
-            clientId: config.clientId,
           },
         });
         const coinbaseAdapter = new CoinbaseAdapter({

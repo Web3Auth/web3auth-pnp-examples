@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@web3auth/base": "^4.2.3-beta.0",
-    "@web3auth/modal": "^4.3.1-beta.0",
-    "@web3auth/openlogin-adapter": "^4.2.3-beta.0",
+    "@web3auth/base": "^4.3.2-beta.0",
+    "@web3auth/modal": "^4.3.3-beta.0",
+    "@web3auth/openlogin-adapter": "^4.3.2-beta.0",
     "@taquito/signer": "^14.0.0",
     "@taquito/taquito": "^14.0.0",
     "@taquito/utils": "^14.0.0",

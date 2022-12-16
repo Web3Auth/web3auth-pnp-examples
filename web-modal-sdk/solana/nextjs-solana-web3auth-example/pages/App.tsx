@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import RPC from "./api/solanaRPC";
 
 // Plugins
@@ -9,7 +9,6 @@ import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-p
 
 // Adapters
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
-import { SolletWebAdapter } from "@web3auth/sollet-adapter";
 import { SlopeAdapter } from "@web3auth/slope-adapter";
 
 const clientId =
@@ -62,11 +61,6 @@ function App() {
           clientId,
         });
         web3auth.configureAdapter(solflareAdapter);
-
-        const solletWebAdapter = new SolletWebAdapter({
-          clientId,
-        });
-        web3auth.configureAdapter(solletWebAdapter);
 
         const slopeAdapter = new SlopeAdapter({
           clientId,

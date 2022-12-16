@@ -9,7 +9,6 @@ import { SolanaWalletConnectorPlugin } from '@web3auth/solana-wallet-connector-p
 
 // Adapters
 import { SolflareAdapter } from '@web3auth/solflare-adapter';
-import { SolletWebAdapter } from '@web3auth/sollet-adapter';
 import { SlopeAdapter } from '@web3auth/slope-adapter';
 
 const clientId =
@@ -39,7 +38,7 @@ export class AppComponent {
 
     const openloginAdapter = new OpenloginAdapter({
       adapterSettings: {
-        network: "cyan",
+        network: 'cyan',
       },
     });
     web3auth.configureAdapter(openloginAdapter);
@@ -66,11 +65,6 @@ export class AppComponent {
       clientId,
     });
     web3auth.configureAdapter(solflareAdapter);
-
-    const solletWebAdapter = new SolletWebAdapter({
-      clientId,
-    });
-    web3auth.configureAdapter(solletWebAdapter);
 
     const slopeAdapter = new SlopeAdapter({
       clientId,

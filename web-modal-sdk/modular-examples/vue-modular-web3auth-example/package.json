@@ -24,7 +24,6 @@
     "@web3auth/solana-provider": "^4.3.2-beta.0",
     "@web3auth/solana-wallet-connector-plugin": "^4.3.2-beta.0",
     "@web3auth/solflare-adapter": "^4.3.2-beta.0",
-    "@web3auth/sollet-adapter": "^4.3.2-beta.0",
     "@web3auth/torus-evm-adapter": "^4.3.2-beta.0",
     "@web3auth/torus-solana-adapter": "^4.3.2-beta.0",
     "@web3auth/torus-wallet-connector-plugin": "^4.3.2-beta.0",

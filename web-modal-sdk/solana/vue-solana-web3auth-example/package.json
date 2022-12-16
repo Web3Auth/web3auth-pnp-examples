@@ -15,7 +15,6 @@
     "@web3auth/solana-provider": "^4.3.2-beta.0",
     "@web3auth/solana-wallet-connector-plugin": "^4.3.2-beta.0",
     "@web3auth/solflare-adapter": "^4.3.2-beta.0",
-    "@web3auth/sollet-adapter": "^4.3.2-beta.0",
     "core-js": "^3.25.5",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "vue": "^3.2.41"

@@ -1,27 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import ThresholdKey from '@tkey/default';
-import WebStorageModule from '@tkey/web-storage';
 import SecurityQuestionsModule from '@tkey/security-questions';
 import swal from 'sweetalert';
-
-// Configuration of Service Provider
-const customAuthArgs = {
-	baseUrl: `${window.location.origin}/serviceworker`,
-	network: 'cyan',
-};
-// Configuration of Modules
-const webStorageModule = new WebStorageModule(); // For 2/2
-const securityQuestionsModule = new SecurityQuestionsModule(); // For 2/3
-
-// Instantiation of tKey
-const tKey = new ThresholdKey({
-	modules: {
-		webStorage: webStorageModule,
-		securityQuestions: securityQuestionsModule,
-	},
-	customAuthArgs: customAuthArgs as any,
-});
+import { tKey } from './lib/web3auth';
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -44,7 +25,7 @@ function App() {
 			// Triggering Login using Service Provider ==> opens the popup
 			const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
 				typeOfLogin: 'google',
-				verifier: 'w3a-tkey-google',
+				verifier: 'google-tkey-w3a',
 				clientId:
 					'774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com',
 			});
@@ -62,7 +43,12 @@ function App() {
 			// Initialization of tKey
 			await tKey.initialize(); // 1/2 flow
 			// Gets the deviceShare
-			await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
+			try {
+				await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
+			} catch (error) {
+				console.error(error);
+				await recoverShare();
+			}
 
 			// Checks the requiredShares to reconstruct the tKey,
 			// starts from 2 by default and each of the above share reduce it by one.
@@ -79,13 +65,8 @@ function App() {
 		}
 	};
 
-	const generateNewShareWithPassword = async () => {
-		await initializeNewKey();
+	const changeSecurityQuestionAndAnswer = async () => {
 		// swal is just a pretty dialog box
-		if (
-			(tKey.modules.securityQuestions as SecurityQuestionsModule)
-				.getSecurityQuestions
-		) {
 			swal('Enter password (>10 characters)', {
 				content: 'input' as any,
 			}).then(async value => {
@@ -93,34 +74,49 @@ function App() {
 					await (
 						tKey.modules.securityQuestions as SecurityQuestionsModule
 					).changeSecurityQuestionAndAnswer(value, 'whats your password?');
+					swal('Success', 'Successfully changed new share with password.', 'success');
 					console.log('Successfully changed new share with password.');
 				} else {
-					swal('Error', 'Password must be > 10 characters', 'error');
+					swal('Error', 'Password must be >= 11 characters', 'error');
 				}
 			});
-		} else {
-			swal('Enter password (>10 characters)', {
-				content: 'input' as any,
-			}).then(async value => {
-				if (value.length > 10) {
+		const keyDetails = await tKey.getKeyDetails();
+		uiConsole(keyDetails);
+	};
+
+	const generateNewShareWithPassword = async () => {
+		// swal is just a pretty dialog box
+		swal('Enter password (>10 characters)', {
+			content: 'input' as any,
+		}).then(async value => {
+			if (value.length > 10) {
+				try {
 					await (
 						tKey.modules.securityQuestions as SecurityQuestionsModule
 					).generateNewShareWithSecurityQuestions(
 						value,
 						'whats your password?',
 					);
+					swal('Success', 'Successfully generated new share with password.', 'success');
 					console.log('Successfully generated new share with password.');
-				} else {
-					swal('Error', 'Password must be > 10 characters', 'error');
+				} catch (error) {
+					swal('Error', (error as any)?.message.toString(), 'error');
 				}
-			});
-		}
-		const keyDetails = await tKey.getKeyDetails();
-		uiConsole(keyDetails);
-	};
+			} else {
+				swal('Error', 'Password must be >= 11 characters', 'error');
+			}
+		});
+	}
+
+	const recoverShare = async () => {
+		await (tKey.modules.securityQuestions as SecurityQuestionsModule).inputShareFromSecurityQuestions("12345678901"); // 2/2 flow
+		tKey.reconstructKey();
+		const sharestore = await tKey.generateNewShare();
+		console.log(sharestore);
+		await (tKey.modules.webStorage as any).storeDeviceShare(sharestore.newShareStores[1]);
+	}
 
 	const keyDetails = async () => {
-		await initializeNewKey();
 		const keyDetails = await tKey.getKeyDetails();
 		uiConsole(keyDetails);
 	};
@@ -151,7 +147,12 @@ function App() {
 				</div>
 				<div>
 					<button onClick={generateNewShareWithPassword} className='card'>
-						Generate (ShareC)
+						Generate Password Share
+					</button>
+				</div>
+				<div>
+					<button onClick={changeSecurityQuestionAndAnswer} className='card'>
+						Change Password Share
 					</button>
 				</div>
 				<div>
@@ -217,7 +218,7 @@ function App() {
 
 			<footer className='footer'>
 				<a
-					href='https://github.com/Web3Auth/examples/tree/main/tKey/tkey-react-example'
+					href='https://github.com/Web3Auth/examples/tree/main/self-host/self-host-react-example'
 					target='_blank'
 					rel='noopener noreferrer'
 				>

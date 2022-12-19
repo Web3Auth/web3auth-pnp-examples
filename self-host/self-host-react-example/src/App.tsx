@@ -43,7 +43,12 @@ function App() {
 			// Initialization of tKey
 			await tKey.initialize(); // 1/2 flow
 			// Gets the deviceShare
-			await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
+			try {
+				await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
+			} catch (error) {
+				console.error(error);
+				await recoverShare();
+			}
 
 			// Checks the requiredShares to reconstruct the tKey,
 			// starts from 2 by default and each of the above share reduce it by one.
@@ -101,6 +106,14 @@ function App() {
 				swal('Error', 'Password must be >= 11 characters', 'error');
 			}
 		});
+	}
+
+	const recoverShare = async () => {
+		await (tKey.modules.securityQuestions as SecurityQuestionsModule).inputShareFromSecurityQuestions("12345678901"); // 2/2 flow
+		tKey.reconstructKey();
+		const sharestore = await tKey.generateNewShare();
+		console.log(sharestore);
+		await (tKey.modules.webStorage as any).storeDeviceShare(sharestore.newShareStores[1]);
 	}
 
 	const keyDetails = async () => {

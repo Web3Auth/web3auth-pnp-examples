@@ -6,6 +6,7 @@ import { tKey } from './lib/web3auth';
 
 function App() {
 	const [user, setUser] = useState(null);
+	const [privateKey, setPrivateKey] = useState<any>();
 
 	// Init Service Provider inside the useEffect Method
 	useEffect(() => {
@@ -29,7 +30,7 @@ function App() {
 				clientId:
 					'774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com',
 			});
-			setUser(loginResponse);
+			setUser(loginResponse.userInfo);
 			console.log('Public Key : ' + loginResponse.publicAddress);
 			console.log('Email : ' + loginResponse.userInfo.email);
 		} catch (error) {
@@ -55,9 +56,9 @@ function App() {
 			const { requiredShares } = tKey.getKeyDetails();
 			if (requiredShares <= 0) {
 				const reconstructedKey = await tKey.reconstructKey();
-				// setIsLoggingIn(true);
+				setPrivateKey(reconstructedKey?.privKey.toString("hex"))
 				uiConsole(
-					'Reconstructed tKey: ' + reconstructedKey.privKey.toString('hex'),
+					'Private Key: ' + reconstructedKey.privKey.toString("hex"),
 				);
 			}
 		} catch (error) {
@@ -117,9 +118,8 @@ function App() {
 				try {
 					await (tKey.modules.securityQuestions as SecurityQuestionsModule).inputShareFromSecurityQuestions(value); // 2/2 flow
 					tKey.reconstructKey();
-					const sharestore = await tKey.generateNewShare();
-					// console.log(sharestore);
-					await (tKey.modules.webStorage as any).storeDeviceShare(sharestore.newShareStores[1]);
+					const shareStore = await tKey.generateNewShare();
+					await (tKey.modules.webStorage as any).storeDeviceShare(shareStore.newShareStores[1]);
 					swal('Success', 'Successfully logged you in with the recovery password.', 'success');
 					console.log('Successfully logged you in with the recovery password.');
 				} catch (error) {
@@ -146,6 +146,10 @@ function App() {
 
 	const getUserInfo = (): void => {
 		uiConsole(user);
+	};
+
+	const getPrivateKey = (): void => {
+		uiConsole(privateKey);
 	};
 
 	const uiConsole = (...args: any[]): void => {
@@ -176,6 +180,11 @@ function App() {
 				<div>
 					<button onClick={keyDetails} className='card'>
 						Key Details
+					</button>
+				</div>
+				<div>
+					<button onClick={getPrivateKey} className='card'>
+						Private Key
 					</button>
 				</div>
 				{/* <div>

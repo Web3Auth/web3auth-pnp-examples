@@ -109,11 +109,29 @@ function App() {
 	}
 
 	const recoverShare = async () => {
-		await (tKey.modules.securityQuestions as SecurityQuestionsModule).inputShareFromSecurityQuestions("12345678901"); // 2/2 flow
-		tKey.reconstructKey();
-		const sharestore = await tKey.generateNewShare();
-		console.log(sharestore);
-		await (tKey.modules.webStorage as any).storeDeviceShare(sharestore.newShareStores[1]);
+		// swal is just a pretty dialog box
+		swal('Enter password (>10 characters)', {
+			content: 'input' as any,
+		}).then(async value => {
+			if (value.length > 10) {
+				try {
+					await (tKey.modules.securityQuestions as SecurityQuestionsModule).inputShareFromSecurityQuestions(value); // 2/2 flow
+					tKey.reconstructKey();
+					const sharestore = await tKey.generateNewShare();
+					console.log(sharestore);
+					await (tKey.modules.webStorage as any).storeDeviceShare(sharestore.newShareStores[1]);
+					swal('Success', 'Successfully logged you in with the recovery password.', 'success');
+					console.log('Successfully logged you in with the recovery password.');
+				} catch (error) {
+					swal('Error', (error as any)?.message.toString(), 'error');
+					console.log(error);
+					logout();
+				}
+			} else {
+				swal('Error', 'Password must be >= 11 characters', 'error');
+				logout();
+			}
+		});
 	}
 
 	const keyDetails = async () => {

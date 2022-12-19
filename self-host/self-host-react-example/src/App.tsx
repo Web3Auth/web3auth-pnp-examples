@@ -1,27 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import ThresholdKey from '@tkey/default';
-import WebStorageModule from '@tkey/web-storage';
 import SecurityQuestionsModule from '@tkey/security-questions';
 import swal from 'sweetalert';
-
-// Configuration of Service Provider
-const customAuthArgs = {
-	baseUrl: `${window.location.origin}/serviceworker`,
-	network: 'cyan',
-};
-// Configuration of Modules
-const webStorageModule = new WebStorageModule(); // For 2/2
-const securityQuestionsModule = new SecurityQuestionsModule(); // For 2/3
-
-// Instantiation of tKey
-const tKey = new ThresholdKey({
-	modules: {
-		webStorage: webStorageModule,
-		securityQuestions: securityQuestionsModule,
-	},
-	customAuthArgs: customAuthArgs as any,
-});
+import { tKey } from './lib/web3auth';
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -44,7 +25,7 @@ function App() {
 			// Triggering Login using Service Provider ==> opens the popup
 			const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
 				typeOfLogin: 'google',
-				verifier: 'w3a-tkey-google',
+				verifier: 'google-tkey-w3a',
 				clientId:
 					'774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com',
 			});
@@ -88,6 +69,7 @@ function App() {
 					await (
 						tKey.modules.securityQuestions as SecurityQuestionsModule
 					).changeSecurityQuestionAndAnswer(value, 'whats your password?');
+					swal('Success', 'Successfully changed new share with password.', 'success');
 					console.log('Successfully changed new share with password.');
 				} else {
 					swal('Error', 'Password must be >= 11 characters', 'error');
@@ -103,13 +85,18 @@ function App() {
 			content: 'input' as any,
 		}).then(async value => {
 			if (value.length > 10) {
-				await (
-					tKey.modules.securityQuestions as SecurityQuestionsModule
-				).generateNewShareWithSecurityQuestions(
-					value,
-					'whats your password?',
-				);
-				console.log('Successfully generated new share with password.');
+				try {
+					await (
+						tKey.modules.securityQuestions as SecurityQuestionsModule
+					).generateNewShareWithSecurityQuestions(
+						value,
+						'whats your password?',
+					);
+					swal('Success', 'Successfully generated new share with password.', 'success');
+					console.log('Successfully generated new share with password.');
+				} catch (error) {
+					swal('Error', (error as any)?.message.toString(), 'error');
+				}
 			} else {
 				swal('Error', 'Password must be >= 11 characters', 'error');
 			}
@@ -147,12 +134,12 @@ function App() {
 				</div>
 				<div>
 					<button onClick={generateNewShareWithPassword} className='card'>
-						Generate Password Share (ShareC)
+						Generate Password Share
 					</button>
 				</div>
 				<div>
 					<button onClick={changeSecurityQuestionAndAnswer} className='card'>
-						Change Password Share (ShareC)
+						Change Password Share
 					</button>
 				</div>
 				<div>
@@ -218,7 +205,7 @@ function App() {
 
 			<footer className='footer'>
 				<a
-					href='https://github.com/Web3Auth/examples/tree/main/tKey/tkey-react-example'
+					href='https://github.com/Web3Auth/examples/tree/main/self-host/self-host-react-example'
 					target='_blank'
 					rel='noopener noreferrer'
 				>

@@ -53,7 +53,7 @@ function App() {
 			// Checks the requiredShares to reconstruct the tKey,
 			// starts from 2 by default and each of the above share reduce it by one.
 			const { requiredShares } = tKey.getKeyDetails();
-			if (requiredShares === 0) {
+			if (requiredShares <= 0) {
 				const reconstructedKey = await tKey.reconstructKey();
 				// setIsLoggingIn(true);
 				uiConsole(
@@ -118,7 +118,7 @@ function App() {
 					await (tKey.modules.securityQuestions as SecurityQuestionsModule).inputShareFromSecurityQuestions(value); // 2/2 flow
 					tKey.reconstructKey();
 					const sharestore = await tKey.generateNewShare();
-					console.log(sharestore);
+					// console.log(sharestore);
 					await (tKey.modules.webStorage as any).storeDeviceShare(sharestore.newShareStores[1]);
 					swal('Success', 'Successfully logged you in with the recovery password.', 'success');
 					console.log('Successfully logged you in with the recovery password.');

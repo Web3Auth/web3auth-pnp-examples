@@ -1,45 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import swal from 'sweetalert';
-import ThresholdKey from '@tkey/default';
-import WebStorageModule from '@tkey/web-storage';
-import SecurityQuestionsModule from '@tkey/security-questions';
+import {tKey} from "./tkey"
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import Web3 from "web3";
 
 function App() {
 	const [user, setUser] = useState<any>(null);
 	const [privateKey, setPrivateKey] = useState<any>();
-	const [tKey, setTKey] = useState<ThresholdKey | null>(null);
+	const [provider, setProvider] = useState<any>();
 
 	// Init Service Provider inside the useEffect Method
 	useEffect(() => {
 		const init = async () => {
-			// Configuration of Service Provider
-			const customAuthArgs = {
-				baseUrl: `${window.location.origin}/serviceworker`,
-				network: 'cyan',
-			};
-			// Configuration of Modules
-			const webStorageModule = new WebStorageModule(); // For 2/2
-			const securityQuestionsModule = new SecurityQuestionsModule(); // For 2/3
-
-			// Instantiation of tKey
-			const tKey = new ThresholdKey({
-				modules: {
-					webStorage: webStorageModule,
-					securityQuestions: securityQuestionsModule,
-				},
-				customAuthArgs: customAuthArgs as any,
-			});
-			setTKey(tKey);
 			// Initialization of Service Provider
-			await (tKey.serviceProvider as any).init();
 			try {
+				await (tKey.serviceProvider as any).init();
 			} catch (error) {
-				uiConsole(error);
+			  console.error(error);
 			}
-		};
-		init();
-	}, []);
+		  };
+		  init();
+		const ethProvider = async() => {
+			const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+			  config: {
+				/*
+				pass the chain config that you want to connect with
+				all chainConfig fields are required.
+				*/
+				chainConfig: {
+				  chainId: "0x13881",
+				  rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+				  displayName: "Polygon Testnet",
+				  blockExplorer: "https://mumbai.polygonscan.com",
+				  ticker: "MATIC",
+				  tickerName: "Matic",
+				},
+			  },
+			});
+			/*
+			pass user's private key here.
+			after calling setupProvider, we can use
+			*/
+			if(privateKey){
+				await ethereumPrivateKeyProvider.setupProvider(privateKey);
+				console.log(ethereumPrivateKeyProvider.provider);
+				setProvider(ethereumPrivateKeyProvider.provider);
+			}
+		  }
+		ethProvider();
+	}, [privateKey]);
 
 	const triggerLogin = async () => {
 		if (!tKey) {
@@ -55,8 +65,8 @@ function App() {
 					'774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com',
 			});
 			setUser(loginResponse.userInfo);
-			uiConsole('Public Key : ' + loginResponse.publicAddress);
-			uiConsole('Email : ' + loginResponse.userInfo.email);
+			// uiConsole('Public Key : ' + loginResponse.publicAddress);
+			// uiConsole('Email : ' + loginResponse.userInfo.email);
 		} catch (error) {
 			uiConsole(error);
 		}
@@ -73,7 +83,7 @@ function App() {
 			await tKey.initialize(); // 1/2 flow
 			// Gets the deviceShare
 			try {
-				await (tKey.modules.webStorage as WebStorageModule).inputShareFromWebStorage(); // 2/2 flow
+				await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
 			} catch (e) {
 				uiConsole(e);
 				await recoverShare();
@@ -104,9 +114,7 @@ function App() {
 			content: 'input' as any,
 		}).then(async value => {
 			if (value.length > 10) {
-				await (
-					tKey.modules.securityQuestions as SecurityQuestionsModule
-				).changeSecurityQuestionAndAnswer(value, 'whats your password?');
+				await (tKey.modules.securityQuestions as any).changeSecurityQuestionAndAnswer(value, 'whats your password?');
 				swal('Success', 'Successfully changed new share with password.', 'success');
 				uiConsole('Successfully changed new share with password.');
 			} else {
@@ -128,9 +136,7 @@ function App() {
 		}).then(async value => {
 			if (value.length > 10) {
 				try {
-					await (
-						tKey.modules.securityQuestions as SecurityQuestionsModule
-					).generateNewShareWithSecurityQuestions(
+					await (tKey.modules.securityQuestions as any).generateNewShareWithSecurityQuestions(
 						value,
 						'whats your password?',
 					);
@@ -156,7 +162,7 @@ function App() {
 		}).then(async value => {
 			if (value.length > 10) {
 				try {
-					await (tKey.modules.securityQuestions as SecurityQuestionsModule).inputShareFromSecurityQuestions(value); // 2/2 flow
+					await (tKey.modules.securityQuestions as any).inputShareFromSecurityQuestions(value); // 2/2 flow
 					const { requiredShares } = tKey.getKeyDetails();
 					if (requiredShares <= 0) {
 						const reconstructedKey = await tKey.reconstructKey();
@@ -166,7 +172,7 @@ function App() {
 						);
 					}
 					const shareStore = await tKey.generateNewShare();
-					await (tKey.modules.webStorage as WebStorageModule).storeDeviceShare(shareStore.newShareStores[1]);
+					await (tKey.modules.webStorage as any).storeDeviceShare(shareStore.newShareStores[1]);
 					swal('Success', 'Successfully logged you in with the recovery password.', 'success');
 					uiConsole('Successfully logged you in with the recovery password.');
 				} catch (error) {
@@ -203,6 +209,91 @@ function App() {
 		uiConsole(privateKey);
 	};
 
+	const getChainID = async() => {
+		if (!provider) {
+			console.log("provider not initialized yet");
+			return;
+		}
+		const web3 = new Web3(provider);
+		const chainId = await web3.eth.getChainId();
+		uiConsole(chainId)
+	}
+
+	const getAccounts = async() => {
+		if (!provider) {
+			console.log("provider not initialized yet");
+			return;
+		}
+		const web3 = new Web3(provider);
+		const address = (await web3.eth.getAccounts())[0];
+		uiConsole(address)
+	}
+
+	const getBalance = async() => {
+		if (!provider) {
+			console.log("provider not initialized yet");
+			return;
+		}
+		const web3 = new Web3(provider);
+		const address = (await web3.eth.getAccounts())[0];
+		const balance = web3.utils.fromWei(
+			await web3.eth.getBalance(address) // Balance is in wei
+		  );
+		uiConsole(balance)
+	}
+
+	const signMessage = async(): Promise<any> => {
+		if (!provider) {
+			console.log("provider not initialized yet");
+			return;
+		}
+		const web3 = new Web3(provider);
+		const fromAddress = (await web3.eth.getAccounts())[0];
+		const originalMessage = [
+			{
+			  type: "string",
+			  name: "fullName",
+			  value: "Satoshi Nakamoto",
+			},
+			{
+			  type: "uint32",
+			  name: "userId",
+			  value: "1212",
+			},
+		];
+		const params = [originalMessage, fromAddress];
+		const method = "eth_signTypedData";
+		const signedMessage = await (web3.currentProvider as any)?.sendAsync({
+			id: 1,
+			method,
+			params,
+			fromAddress,
+		});
+		uiConsole(signedMessage)
+	}
+
+	const sendTransaction = async() => {
+		if (!provider) {
+			console.log("provider not initialized yet");
+			return;
+		}
+		const web3 = new Web3(provider);
+		const fromAddress = (await web3.eth.getAccounts())[0];
+
+		const destination = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
+		const amount = web3.utils.toWei("0.0001"); // Convert 1 ether to wei
+
+		// Submit transaction to the blockchain and wait for it to be mined
+		const receipt = await web3.eth.sendTransaction({
+			from: fromAddress,
+			to: destination,
+			value: amount,
+			maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+			maxFeePerGas: "6000000000000", // Max fee per gas
+		});
+		uiConsole(receipt)
+	}
+
 	const uiConsole = (...args: any[]): void => {
 		const el = document.querySelector('#console>p');
 		if (el) {
@@ -238,8 +329,8 @@ function App() {
 						Private Key
 					</button>
 				</div>
-				{/* <div>
-					<button onClick={getChainId} className='card'>
+				<div>
+					<button onClick={getChainID} className='card'>
 						Get Chain ID
 					</button>
 				</div>
@@ -253,6 +344,7 @@ function App() {
 						Get Balance
 					</button>
 				</div>
+				
 				<div>
 					<button onClick={signMessage} className='card'>
 						Sign Message
@@ -262,8 +354,7 @@ function App() {
 					<button onClick={sendTransaction} className='card'>
 						Send Transaction
 					</button>
-				</div> */}
-
+				</div>
 				<div>
 					<button onClick={logout} className='card'>
 						Log Out

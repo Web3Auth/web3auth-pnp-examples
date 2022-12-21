@@ -46,7 +46,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-wallet-connector-plugin"></script>
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.66.1/lib/index.iife.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@1.1.1/dist/solanaProvider.umd.min.js"></script>
@@ -71,14 +70,8 @@
             chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
             rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
+          web3AuthNetwork: "cyan",
         });
-
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: "cyan",
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
 
         const torusPlugin =
           new window.SolanaWalletConnectorPlugin.SolanaWalletConnectorPlugin({

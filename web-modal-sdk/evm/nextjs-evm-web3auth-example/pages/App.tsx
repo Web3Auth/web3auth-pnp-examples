@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import RPC from "./api/web3RPC"; // for using web3.js
 // import RPC from ".api/ethersRPC"; // for using ethers.js
@@ -32,14 +31,8 @@ function App() {
             chainId: "0x1",
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
+          web3AuthNetwork: "cyan",
         });
-
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: "cyan",
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
 
         // plugins and adapters are optional and can be added as per your requirement
         // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/

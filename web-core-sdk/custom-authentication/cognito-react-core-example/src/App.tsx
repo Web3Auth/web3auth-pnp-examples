@@ -28,14 +28,13 @@ function App() {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
           },
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             loginConfig: {
               jwt: {
-                name: "Custom AWS Cognito Login via Google",
                 verifier: "web3auth-cognito-google",
                 typeOfLogin: "jwt",
                 clientId: "2upuksfh6n0n5c0nciirc1bdrv", //use your app client id you will get from aws cognito app

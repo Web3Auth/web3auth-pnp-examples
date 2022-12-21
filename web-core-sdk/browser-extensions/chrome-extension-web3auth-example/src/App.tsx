@@ -29,13 +29,10 @@ function App() {
             chainId: "0x13881",
             rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
           },
+          web3AuthNetwork: "cyan",
         });
 
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: "cyan",
-          },
-        });
+        const openloginAdapter = new OpenloginAdapter({});
         web3auth.configureAdapter(openloginAdapter);
 
         setWeb3auth(web3auth);

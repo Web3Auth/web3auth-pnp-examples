@@ -28,15 +28,14 @@ function App() {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
           },
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             uxMode: "popup",
             loginConfig: {
               jwt: {
-                name: "Web3Auth-Auth0-JWT",
                 verifier: "web3auth-auth0-demo",
                 typeOfLogin: "jwt",
                 clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",

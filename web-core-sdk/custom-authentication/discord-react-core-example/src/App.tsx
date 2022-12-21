@@ -28,15 +28,14 @@ function App() {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
           },
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             uxMode: "popup",
             loginConfig: {
               discord: {
-                name: "Custom Discord Auth Login",
                 verifier: "web3auth-discord-example",
                 typeOfLogin: "discord",
                 clientId: "993506120276648017", //use your app client id you got from discord

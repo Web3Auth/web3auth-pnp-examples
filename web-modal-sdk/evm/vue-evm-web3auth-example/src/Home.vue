@@ -1,40 +1,71 @@
 <template>
   <div id="app">
     <h2>
-      <a target="_blank" href="http://web3auth.io/" rel="noreferrer"> Web3Auth </a>
+      <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+        Web3Auth
+      </a>
       Vue.js Ethereum Example
     </h2>
 
-    <button v-if="!loggedin" class="card" @click="login" style="cursor: pointer">Login</button>
+    <button
+      v-if="!loggedin"
+      class="card"
+      @click="login"
+      style="cursor: pointer"
+    >
+      Login
+    </button>
 
     <div v-if="loggedin">
       <div class="flex-container">
         <div>
-          <button class="card" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
+          <button class="card" @click="getUserInfo" style="cursor: pointer">
+            Get User Info
+          </button>
         </div>
         <div>
-          <button class="card" @click="authenticateUser" style="cursor: pointer">Get ID Token</button>
+          <button
+            class="card"
+            @click="authenticateUser"
+            style="cursor: pointer"
+          >
+            Get ID Token
+          </button>
         </div>
         <div>
-          <button class="card" @click="getChainId" style="cursor: pointer">Get Chain ID</button>
+          <button class="card" @click="getChainId" style="cursor: pointer">
+            Get Chain ID
+          </button>
         </div>
         <div>
-          <button class="card" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
+          <button class="card" @click="getAccounts" style="cursor: pointer">
+            Get Accounts
+          </button>
         </div>
         <div>
-          <button class="card" @click="getBalance" style="cursor: pointer">Get Balance</button>
+          <button class="card" @click="getBalance" style="cursor: pointer">
+            Get Balance
+          </button>
         </div>
         <div>
-          <button class="card" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
+          <button class="card" @click="sendTransaction" style="cursor: pointer">
+            Send Transaction
+          </button>
         </div>
         <div>
-          <button class="card" @click="signMessage" style="cursor: pointer">Sign Message</button>
+          <button class="card" @click="signMessage" style="cursor: pointer">
+            Sign Message
+          </button>
         </div>
         <div>
-          <button class="card" @click="getPrivateKey" style="cursor: pointer">Get Private Key</button>
+          <button class="card" @click="getPrivateKey" style="cursor: pointer">
+            Get Private Key
+          </button>
         </div>
         <div>
-          <button class="card" @click="logout" style="cursor: pointer">Logout</button>
+          <button class="card" @click="logout" style="cursor: pointer">
+            Logout
+          </button>
         </div>
       </div>
       <div id="console" style="white-space: pre-line">
@@ -54,7 +85,6 @@ import RPC from "./web3RPC";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 
 // Adapters
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
@@ -70,7 +100,8 @@ export default {
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
     let provider = ref<SafeEventEmitterProvider | any>(false);
-    const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+    const clientId =
+      "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
     const web3auth = new Web3Auth({
       clientId,
@@ -83,14 +114,8 @@ export default {
       uiConfig: {
         defaultLanguage: "en",
       },
+      web3AuthNetwork: "cyan",
     });
-
-    const openloginAdapter = new OpenloginAdapter({
-      adapterSettings: {
-        network: "cyan",
-      },
-    });
-    web3auth.configureAdapter(openloginAdapter);
 
     // plugins and adapters are optional and can be added as per your requirement
     // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/

@@ -1,9 +1,20 @@
-import { ADAPTER_EVENTS, SafeEventEmitterProvider , WALLET_ADAPTER_TYPE} from "@web3auth/base";
+import {
+  ADAPTER_EVENTS,
+  SafeEventEmitterProvider,
+  WALLET_ADAPTER_TYPE,
+} from "@web3auth/base";
 import { Web3AuthCore } from "@web3auth/core";
 import type { LOGIN_PROVIDER_TYPE } from "@toruslabs/openlogin";
 
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import React, { createContext, FunctionComponent, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  FunctionComponent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { CHAIN_CONFIG, CHAIN_CONFIG_TYPE } from "../config/chainConfig";
 import { WEB3AUTH_NETWORK_TYPE } from "../config/web3AuthNetwork";
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
@@ -14,9 +25,12 @@ export interface IWeb3AuthContext {
   isLoading: boolean;
   user: unknown;
   chain: string;
-  login: (adapter: WALLET_ADAPTER_TYPE,provider: LOGIN_PROVIDER_TYPE) => Promise<void>;
+  login: (
+    adapter: WALLET_ADAPTER_TYPE,
+    provider: LOGIN_PROVIDER_TYPE
+  ) => Promise<void>;
   logout: () => Promise<void>;
-  setIsLoading: (loading: boolean)=>void,
+  setIsLoading: (loading: boolean) => void;
   getUserInfo: () => Promise<any>;
   signMessage: () => Promise<any>;
   getAccounts: () => Promise<any>;
@@ -31,8 +45,11 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   isLoading: false,
   user: null,
   chain: "",
-  setIsLoading:(loading: boolean)=>{},
-  login: async (adapter: WALLET_ADAPTER_TYPE, provider: LOGIN_PROVIDER_TYPE) => {},
+  setIsLoading: (loading: boolean) => {},
+  login: async (
+    adapter: WALLET_ADAPTER_TYPE,
+    provider: LOGIN_PROVIDER_TYPE
+  ) => {},
   logout: async () => {},
   getUserInfo: async () => {},
   signMessage: async () => {},
@@ -49,27 +66,34 @@ export function useWeb3Auth(): IWeb3AuthContext {
 interface IWeb3AuthState {
   web3AuthNetwork: WEB3AUTH_NETWORK_TYPE;
   chain: CHAIN_CONFIG_TYPE;
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 interface IWeb3AuthProps {
-  children?: React.ReactNode | any,
+  children?: React.ReactNode | any;
   web3AuthNetwork: WEB3AUTH_NETWORK_TYPE;
   chain: CHAIN_CONFIG_TYPE;
 }
 
-export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, web3AuthNetwork, chain }: IWeb3AuthProps) => {
+export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
+  children,
+  web3AuthNetwork,
+  chain,
+}: IWeb3AuthProps) => {
   const [web3Auth, setWeb3Auth] = useState<Web3AuthCore | null>(null);
   const [provider, setProvider] = useState<IWalletProvider | null>(null);
   const [user, setUser] = useState<unknown | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const setWalletProvider = useCallback(
     (web3authProvider: SafeEventEmitterProvider) => {
-      const walletProvider = getWalletProvider(chain, web3authProvider, uiConsole); 
-      setTimeout(function(){
+      const walletProvider = getWalletProvider(
+        chain,
+        web3authProvider,
+        uiConsole
+      );
+      setTimeout(function () {
         setProvider(walletProvider);
-      },1000); 
+      }, 1000);
     },
     [chain]
   );
@@ -97,33 +121,34 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
       });
     };
 
-
     async function init() {
       try {
         setIsLoading(true);
         // get your client id from https://dashboard.web3auth.io by registering a plug and play application.
-        const clientId =  "BE-nSVAJjuFSstTO_9wlA8MTZKdZ9bJaH8wWcnHKMUGLzYLg-cPPZ9v6Tm1snsi-Cv12XMHkFXX0ujRp3FtBnAc";
+        const clientId =
+          "BE-nSVAJjuFSstTO_9wlA8MTZKdZ9bJaH8wWcnHKMUGLzYLg-cPPZ9v6Tm1snsi-Cv12XMHkFXX0ujRp3FtBnAc";
         const currentChainConfig = CHAIN_CONFIG[chain];
 
         const web3AuthInstance = new Web3AuthCore({
           chainConfig: currentChainConfig,
-          clientId
+          clientId,
+          web3AuthNetwork,
         });
         subscribeAuthEvents(web3AuthInstance);
-        const adapter = new OpenloginAdapter({ adapterSettings: { 
-          network: web3AuthNetwork, 
-          clientId, 
-          uxMode: "redirect",
-          loginConfig: {
-            jwt: {
-              name: "Custom cognito Login",
-              verifier: "cognito-demo",
-              typeOfLogin: "jwt",
-              //use your app client id you will get from aws cognito app
-              clientId: "29343gi24opt30vsa5s7u8gfvg", 
+        const adapter = new OpenloginAdapter({
+          adapterSettings: {
+            clientId,
+            uxMode: "redirect",
+            loginConfig: {
+              jwt: {
+                verifier: "cognito-demo",
+                typeOfLogin: "jwt",
+                //use your app client id you will get from aws cognito app
+                clientId: "29343gi24opt30vsa5s7u8gfvg",
+              },
             },
           },
-        }});
+        });
         web3AuthInstance.configureAdapter(adapter);
         await web3AuthInstance.init();
         setWeb3Auth(web3AuthInstance);
@@ -136,7 +161,10 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
     init();
   }, [chain, web3AuthNetwork, setWalletProvider]);
 
-  const login = async (adapter: WALLET_ADAPTER_TYPE, loginProvider: LOGIN_PROVIDER_TYPE) => {
+  const login = async (
+    adapter: WALLET_ADAPTER_TYPE,
+    loginProvider: LOGIN_PROVIDER_TYPE
+  ) => {
     try {
       // setIsLoading(true);
       if (!web3Auth) {
@@ -144,7 +172,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
         uiConsole("web3auth not initialized yet");
         return;
       }
-      const localProvider = await web3Auth.connectTo(adapter, { 
+      const localProvider = await web3Auth.connectTo(adapter, {
         relogin: true,
         loginProvider,
         extraLoginOptions: {
@@ -156,7 +184,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
           response_type: "token",
           // scope params are those which are enabled in cognito app's "Allowed OAuth Scopes" settings
           scope: "email openid profile",
-        }
+        },
       });
       setWalletProvider(localProvider!);
     } catch (error) {
@@ -254,5 +282,9 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
     signTransaction,
     signAndSendTransaction,
   };
-  return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
+  return (
+    <Web3AuthContext.Provider value={contextProvider}>
+      {children}
+    </Web3AuthContext.Provider>
+  );
 };

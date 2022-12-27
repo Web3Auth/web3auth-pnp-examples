@@ -34,7 +34,7 @@ export default function App() {
       const info = await web3auth.login({
         loginProvider: LOGIN_PROVIDER.GOOGLE,
         redirectUrl: resolvedRedirectUrl,
-        mfaLevel: 'mandatory',
+        mfaLevel: 'default',
         curve: 'secp256k1',
       });
 

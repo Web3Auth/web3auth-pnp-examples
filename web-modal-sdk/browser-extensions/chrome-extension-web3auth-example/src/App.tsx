@@ -31,6 +31,7 @@ function App() {
             defaultLanguage: "en",
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
           },
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
@@ -39,7 +40,6 @@ function App() {
           },
           adapterSettings: {
             clientId,
-            network: "cyan",
             uxMode: "popup",
             whiteLabel: {
               name: "Web3Auth Chrome Extension",

@@ -46,7 +46,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@4.2.1-alpha.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@4.0.0-alpha.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/metamask-adapter@4.0.0-alpha.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/wallet-connect-v1-adapter@4.0.0-alpha.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-evm-adapter@4.0.0-alpha.0"></script>
@@ -74,15 +73,9 @@
             chainId: "0x1",
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
+          web3AuthNetwork: "cyan",
         });
 
-        const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter({
-          adapterSettings: {
-            network: "cyan",
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
-        
         // Add Torus Wallet Connector Plugin
         const torusPlugin =
           new window.TorusWalletConnectorPlugin.TorusWalletConnectorPlugin({

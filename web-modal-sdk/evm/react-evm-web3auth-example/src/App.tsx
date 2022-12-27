@@ -40,6 +40,7 @@ function App() {
             defaultLanguage: "en",
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
           },
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
@@ -47,7 +48,6 @@ function App() {
             mfaLevel: "optional",
           },
           adapterSettings: {
-            network: "cyan",
             whiteLabel: {
               name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",

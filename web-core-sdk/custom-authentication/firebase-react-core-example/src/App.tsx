@@ -48,15 +48,14 @@ function App() {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
           },
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             uxMode: "redirect",
             loginConfig: {
               jwt: {
-                name: "Custom Firebase Auth - Google Login",
                 verifier: "web3auth-firebase-examples",
                 typeOfLogin: "jwt",
                 clientId,

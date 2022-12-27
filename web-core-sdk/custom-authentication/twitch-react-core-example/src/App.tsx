@@ -28,15 +28,14 @@ function App() {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
           },
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             uxMode: "popup",
             loginConfig: {
               twitch: {
-                name: "Custom Twitch Auth Login",
                 verifier: "web3auth-twitch-example",
                 typeOfLogin: "twitch",
                 clientId: "csotztipy7zn1bk9x4973bht1d8b0u", //use your app client id you got from twitch

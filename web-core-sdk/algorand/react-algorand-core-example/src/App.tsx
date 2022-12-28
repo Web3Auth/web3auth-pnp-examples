@@ -26,12 +26,13 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
+          web3AuthNetwork: "cyan"
         });
 
         const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: "cyan",
-          },
+          // adapterSettings: {
+          //   network: "cyan",
+          // },
         });
         web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);
@@ -60,7 +61,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {
@@ -78,7 +78,7 @@ function App() {
       return;
     }
     const user = await web3auth.getUserInfo();
-    console.log(user);
+    // console.log(user);
     uiConsole(user);
   };
 
@@ -197,7 +197,7 @@ function App() {
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );

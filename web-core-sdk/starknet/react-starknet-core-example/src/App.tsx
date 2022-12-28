@@ -60,7 +60,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {
@@ -163,7 +162,7 @@ function App() {
       </div>
 
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );
@@ -187,7 +186,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/starknet/react-solana-core-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/starknet/react-starknet-core-example"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -11,7 +11,7 @@ import './App.css';
 import RPC from './evm.ethers';
 
 const clientId =
-	'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk'; // get from https://dashboard.web3auth.io
+	'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A'; // get from https://dashboard.web3auth.io
 
 function App() {
 	const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
@@ -28,16 +28,16 @@ function App() {
 						chainNamespace: CHAIN_NAMESPACES.EIP155,
 						chainId: '0x5',
 					},
+					web3AuthNetwork: "cyan"
 				});
 
 				const openloginAdapter = new OpenloginAdapter({
 					adapterSettings: {
-						network: "cyan",
 						loginConfig: {
 							jwt: {
 								verifier: 'web3auth-custom-jwt',
 								typeOfLogin: 'jwt',
-								clientId,
+								clientId
 							},
 						},
 					},
@@ -74,20 +74,20 @@ function App() {
 			uiConsole('web3auth not initialized yet');
 			return;
 		}
+		const idToken = await getIdToken();
 
 		const web3authProvider = await web3auth.connectTo(
 			WALLET_ADAPTERS.OPENLOGIN,
 			{
 				loginProvider: 'jwt',
 				extraLoginOptions: {
-					id_token: await getIdToken(),
+					id_token: idToken,
 					verifierIdField: 'sub',
-					domain: 'http://localhost:3000',
+					domain: "http://localhost:3000",
 				},
 			},
 		);
 		setProvider(web3authProvider);
-		uiConsole('Logged in Successfully!')
 	};
 
 	const authenticateUser = async () => {
@@ -220,7 +220,7 @@ function App() {
 			</div>
 
 			<div id='console' style={{ whiteSpace: 'pre-line' }}>
-				<p style={{ whiteSpace: 'pre-line' }}></p>
+				<p style={{ whiteSpace: 'pre-line' }}>Logged in Successfully!</p>
 			</div>
 		</>
 	);

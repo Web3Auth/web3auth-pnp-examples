@@ -28,11 +28,11 @@ function App() {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
           },
+          web3AuthNetwork: "cyan"
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             uxMode: "popup",
             loginConfig: {
               jwt: {
@@ -66,7 +66,6 @@ function App() {
     const web3authProvider = await web3auth.connectTo(
       WALLET_ADAPTERS.OPENLOGIN,
       {
-        relogin: true,
         loginProvider: "jwt",
         extraLoginOptions: {
           domain: "https://shahbaz-torus.us.auth0.com",
@@ -75,7 +74,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {
@@ -221,7 +219,7 @@ function App() {
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );

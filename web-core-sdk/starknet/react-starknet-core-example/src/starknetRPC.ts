@@ -46,6 +46,7 @@ export default class StarkNetRpc {
       const account = await this.getStarkAccount();
       if (account) {
         const contract = JSON.parse(JSON.stringify(CompiledAccountContractAbi));
+        // @ts-ignore
         const response = await defaultProvider.deployContract({
           contract,
         });

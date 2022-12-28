@@ -30,14 +30,13 @@ function App() {
             chainId: "0x5",
             rpcTarget: "https://rpc.ankr.com/eth_goerli",
           },
+          web3AuthNetwork: "cyan"
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             loginConfig: {
               google: {
-                name: "custom google login",
                 verifier: "web3auth-google-example",
                 typeOfLogin: "google",
                 clientId:
@@ -227,7 +226,7 @@ function App() {
       </div>
 
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );

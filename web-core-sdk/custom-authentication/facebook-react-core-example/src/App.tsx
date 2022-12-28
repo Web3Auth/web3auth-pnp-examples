@@ -28,11 +28,11 @@ function App() {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
           },
+          web3AuthNetwork: "cyan"
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             loginConfig: {
               facebook: {
                 verifier: "web3auth-facebook-example",
@@ -69,7 +69,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {
@@ -215,7 +214,7 @@ function App() {
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );

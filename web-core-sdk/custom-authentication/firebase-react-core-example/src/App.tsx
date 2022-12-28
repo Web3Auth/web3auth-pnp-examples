@@ -39,9 +39,6 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // const app = initializeApp(firebaseConfig);
-        // const auth = getAuth(app);
-
         const web3auth = new Web3AuthCore({
           clientId,
           chainConfig: {
@@ -53,7 +50,6 @@ function App() {
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            // network: "cyan",
             uxMode: "redirect",
             loginConfig: {
               jwt: {

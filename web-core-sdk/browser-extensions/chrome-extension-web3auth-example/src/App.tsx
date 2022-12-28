@@ -32,11 +32,7 @@ function App() {
           web3AuthNetwork: "cyan"
         });
 
-        const openloginAdapter = new OpenloginAdapter({
-          // adapterSettings: {
-          //   network: "cyan",
-          // },
-        });
+        const openloginAdapter = new OpenloginAdapter();
         web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);
 

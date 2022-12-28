@@ -27,7 +27,7 @@ function App() {
           },
           uiConfig: {
             theme: "dark",
-            loginMethodsOrder: ["facebook", "google"],
+            loginMethodsOrder: ["github", "google"],
             defaultLanguage: "en",
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
           },
@@ -255,7 +255,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/browser-extensions/chrome-extension-web3auth-example"
           target="_blank"
           rel="noopener noreferrer"
         >

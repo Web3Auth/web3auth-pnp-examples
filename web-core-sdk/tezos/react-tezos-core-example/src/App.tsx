@@ -26,10 +26,13 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
-          web3AuthNetwork: "cyan",
         });
 
-        const openloginAdapter = new OpenloginAdapter({});
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            network: "cyan",
+          }
+        });
         web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);
 

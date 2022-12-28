@@ -28,12 +28,15 @@ function App() {
             chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
             rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
-          web3AuthNetwork: "cyan",
         });
 
         setWeb3auth(web3auth);
 
-        const openloginAdapter = new OpenloginAdapter({});
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            network: "cyan",
+          }
+        });
         web3auth.configureAdapter(openloginAdapter);
 
         await web3auth.init();

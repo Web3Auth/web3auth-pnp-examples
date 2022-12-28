@@ -21,7 +21,6 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
-          web3AuthNetwork: "cyan",
         });
         setWeb3auth(web3auth);
 

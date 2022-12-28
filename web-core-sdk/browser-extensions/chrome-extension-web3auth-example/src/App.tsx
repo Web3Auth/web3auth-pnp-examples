@@ -5,6 +5,7 @@ import {
   SafeEventEmitterProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 
@@ -28,9 +29,14 @@ function App() {
             chainId: "0x13881",
             rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
           },
-          web3AuthNetwork: "cyan",
         });
 
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            network: "cyan",
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);
 
         await web3auth.init();

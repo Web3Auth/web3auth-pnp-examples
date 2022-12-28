@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import RPC from "./solanaRPC";
 import "./App.css";
 
@@ -33,9 +32,6 @@ function App() {
           },
           web3AuthNetwork: "cyan",
         });
-
-        const openloginAdapter = new OpenloginAdapter({});
-        web3auth.configureAdapter(openloginAdapter);
 
         // adding solana wallet connector plugin
 

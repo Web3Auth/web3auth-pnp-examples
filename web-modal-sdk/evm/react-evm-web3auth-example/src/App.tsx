@@ -81,7 +81,6 @@ function App() {
         // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
 
         // adding wallet connect v1 adapter
-
         const walletConnectV1Adapter = new WalletConnectV1Adapter({
           adapterSettings: {
             bridge: "https://bridge.walletconnect.org",
@@ -92,7 +91,6 @@ function App() {
         web3auth.configureAdapter(walletConnectV1Adapter);
 
         // adding metamask adapter
-
         const metamaskAdapter = new MetamaskAdapter({
           clientId,
           sessionTime: 3600, // 1 hour in seconds

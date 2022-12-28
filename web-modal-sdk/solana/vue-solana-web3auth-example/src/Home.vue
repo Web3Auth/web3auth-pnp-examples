@@ -64,7 +64,7 @@
         </div>
       </div>
       <div id="console" style="white-space: pre-line">
-        <p style="white-space: pre-line"></p>
+        <p style="white-space: pre-line">Logged in Successfully!</p>
       </div>
     </div>
   </div>
@@ -159,7 +159,6 @@ export default {
       }
       provider = await web3auth.connect();
       loggedin.value = true;
-      uiConsole("Logged in Successfully!");
     };
 
     const authenticateUser = async () => {

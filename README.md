@@ -69,6 +69,12 @@ provider specific to the user and application.
 | :--------- | :------------- | :----------------------------------------------------------------------------------------- |
 | `Algorand` | `REACT`        | [React-Algorand-Web3Auth-Example](/web-modal-sdk/algorand/react-algorand-web3auth-example) |
 
+#### Polkadot
+
+| Blockchain | Lang Framework | Directory                                                                                  |
+| :--------- | :------------- | :----------------------------------------------------------------------------------------- |
+| `Polkadot` | `REACT`        | [React-Polkadot-Web3Auth-Example](/web-modal-sdk/polkadot/react-polkadot-web3auth-example) |
+
 #### ImmutableX
 
 | Blockchain   | Lang Framework | Directory                                                                                         |

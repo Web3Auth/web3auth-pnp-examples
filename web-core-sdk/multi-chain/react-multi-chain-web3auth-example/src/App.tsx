@@ -252,7 +252,7 @@ function App() {
       config: {
         chainConfig: {
           chainId: "0x3",
-          rpcTarget: "https://api.mainnet-beta.solana.com",
+          rpcTarget: "https://rpc.ankr.com/solana",
           displayName: "Solana Mainnet",
           blockExplorer: "https://explorer.solana.com/",
           ticker: "SOL",

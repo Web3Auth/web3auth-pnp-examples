@@ -45,7 +45,6 @@ function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {
@@ -163,7 +162,7 @@ function App() {
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );
@@ -187,7 +186,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/algorand/react-algorand-web3auth-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/polkadot/react-polkadot-web3auth-example"
           target="_blank"
           rel="noopener noreferrer"
         >

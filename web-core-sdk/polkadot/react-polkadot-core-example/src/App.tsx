@@ -200,7 +200,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/algorand/react-algorand-web3auth-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/polkadot/react-polkadot-web3auth-example"
           target="_blank"
           rel="noopener noreferrer"
         >

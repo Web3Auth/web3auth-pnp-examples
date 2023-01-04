@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
+import { Web3AuthCore } from "@web3auth/core";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import {
+  CHAIN_NAMESPACES,
+  SafeEventEmitterProvider,
+  WALLET_ADAPTERS,
+} from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -27,7 +31,7 @@ const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -36,7 +40,7 @@ function App() {
     const init = async () => {
       try {
         // ETH_Goerli
-        const web3auth = new Web3Auth({
+        const web3auth = new Web3AuthCore({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -62,7 +66,7 @@ function App() {
         });
         web3auth.configureAdapter(openloginAdapter);
 
-        await web3auth.initModal();
+        await web3auth.init();
 
         if (web3auth.provider) {
           setProvider(web3auth.provider);
@@ -103,7 +107,12 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connect();
+    const web3authProvider = await web3auth.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        loginProvider: "google",
+      }
+    );
     setProvider(web3authProvider);
     uiConsole("Logged in Successfully!");
   };

@@ -26,6 +26,10 @@ provider specific to the user and application.
 
 ### Blockchain x Framework
 
+| Blockchain        | Lang Framework | Directory                                                                                   |
+| :---------------- | :------------- | :------------------------------------------------------------------------------------------ |
+| `Multiple Chains` | `REACT`        | [React-EVM-Web3Auth-Example](/web-modal-sdk/multi-chain/react-multi-chain-web3auth-example) |
+
 #### Ethereum - EVM Based
 
 | Blockchain | Lang Framework | Directory                                                                         |
@@ -35,6 +39,16 @@ provider specific to the user and application.
 | `EVM`      | `Vue`          | [Vue-EVM-Web3Auth-Example](/web-modal-sdk/evm/vue-evm-web3auth-example)           |
 | `EVM`      | `Angular`      | [Angular-EVM-Web3Auth-Example](/web-modal-sdk/evm/angular-evm-web3auth-example)   |
 | `EVM`      | `CommonJS`     | [CommonJS-EVM-Web3Auth-Example](/web-modal-sdk/evm/commonjs-evm-web3auth-example) |
+
+#### Solana
+
+| Blockchain | Lang Framework | Directory                                                                                  |
+| :--------- | :------------- | :----------------------------------------------------------------------------------------- |
+| `Solana`   | `REACT`        | [React-Solana-Web3Auth-Example](/web-modal-sdk/solana/react-solana-web3auth-example)       |
+| `Solana`   | `NEXTJS`       | [NextJS-Solana-Web3Auth-Example](/web-modal-sdk/solana/nextjs-solana-web3auth-example)     |
+| `Solana`   | `Vue`          | [Vue-Solana-Web3Auth-Example](/web-modal-sdk/solana/vue-solana-web3auth-example)           |
+| `Solana`   | `Angular`      | [Angular-Solana-Web3Auth-Example](/web-modal-sdk/solana/angular-solana-web3auth-example)   |
+| `Solana`   | `CommonJS`     | [CommonJS-Solana-Web3Auth-Example](/web-modal-sdk/solana/commonjs-solana-web3auth-example) |
 
 #### StarkEx
 
@@ -90,6 +104,19 @@ provider specific to the user and application.
 ## Web3Auth Plug n Play Core
 
 `@web3auth/core`
+
+### Blockchains
+
+| Blockchain   | Lang Framework | Directory                                                                                         |
+| :----------- | :------------- | :------------------------------------------------------------------------------------------------ |
+| `EVM`        | `REACT`        | [React-EVM-Web3Auth-Core-Example](/web-core-sdk/evm/react-evm-core-example/)                      |
+| `Solana`     | `REACT`        | [React-Solana-Web3Auth-Core-Example](/web-core-sdk/solana/react-solana-core-example/)             |
+| `StarkEx`    | `REACT`        | [React-StarkEx-Web3Auth-Core-Example](/web-core-sdk/starkex/react-starkex-core-example/)          |
+| `StarkNet`   | `REACT`        | [React-StarkNet-Web3Auth-Core-Example](/web-core-sdk/starknet/react-starknet-core-example/)       |
+| `Tezos`      | `REACT`        | [React-Tezos-Web3Auth-Core-Example](/web-core-sdk/tezos/react-tezos-core-example/)                |
+| `Algorand`   | `REACT`        | [React-Algorand-Web3Auth-Core-Example](/web-core-sdk/algorand/react-algorand-core-example/)       |
+| `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-Core-Example](/web-core-sdk/immutableX/react-immutableX-core-example/) |
+| `Polkadot`   | `REACT`        | [React-Polkadot-Web3Auth-Core-Example](/web-core-sdk/polkadot/react-polkadot-core-example/)       |
 
 ### Custom Authentication
 

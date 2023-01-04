@@ -205,7 +205,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/immutableX/react-immutableX-web3auth-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/immutableX/react-immutableX-core-example"
           target="_blank"
           rel="noopener noreferrer"
         >

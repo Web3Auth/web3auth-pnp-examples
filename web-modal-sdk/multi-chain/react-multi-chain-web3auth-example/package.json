@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@polkadot/api": "^9.10.2",
+    "@polkadot/util-crypto": "^10.2.1",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "@taquito/signer": "^14.0.0",
     "@taquito/taquito": "^14.0.0",

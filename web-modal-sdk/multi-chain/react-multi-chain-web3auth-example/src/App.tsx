@@ -19,6 +19,11 @@ import { hex2buf } from "@taquito/utils";
 // StarkEx and StarkNet
 //@ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
+
+// Polkadot
+import { Keyring } from "@polkadot/api";
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+
 //@ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ec as elliptic } from "elliptic";
@@ -81,12 +86,17 @@ function App() {
     const bnb_address = await getBnbAddress();
 
     // Solana
-    const solana_address = await getSolanaAddress();
-
+    let solana_address;
+    try {
+      solana_address = await getSolanaAddress();
+    } catch (error) {
+      solana_address = "Solana JSON RPC Error";
+    }
     // Others
     const tezos_address = await getTezosAddress();
     const starkex_address = await getStarkExAddress();
     const starknet_address = await getStarkNetAddress();
+    const polkadot_address = await getPolkadotAddress();
 
     uiConsole(
       "Polygon Address: " + polygon_address,
@@ -94,7 +104,8 @@ function App() {
       "Solana Address: " + solana_address,
       "Tezos Address: " + tezos_address,
       "StarkEx Address: " + starkex_address,
-      "StarkNet Address: " + starknet_address
+      "StarkNet Address: " + starknet_address,
+      "Polkadot Address: " + polkadot_address
     );
   };
 
@@ -305,6 +316,21 @@ function App() {
       "hex"
     );
     const address = starknet_account.pub.getX().toString("hex");
+    return address;
+  };
+
+  const getPolkadotAddress = async () => {
+    await cryptoWaitReady();
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const privateKey = (await rpc.getPrivateKey()) as string;
+    const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+
+    const keyPair = keyring.addFromUri("0x" + privateKey);
+    const address = keyPair.address;
     return address;
   };
 

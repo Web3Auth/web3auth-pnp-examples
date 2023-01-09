@@ -4,7 +4,7 @@ import { cryptoWaitReady } from "@polkadot/util-crypto";
 
 import { ApiPromise, WsProvider } from "@polkadot/api";
 
-export default class ReefRPC {
+export default class Polkadot {
   private provider: SafeEventEmitterProvider;
 
   constructor(provider: SafeEventEmitterProvider) {

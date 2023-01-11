@@ -84,9 +84,9 @@ function App() {
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
+            uxMode: "redirect",
             loginConfig: {
               jwt: {
-                name: "Web3Auth One Key Login Flow",
                 verifier,
                 typeOfLogin: "jwt",
                 clientId,
@@ -180,7 +180,7 @@ function App() {
               extraLoginOptions: {
                 id_token: idToken,
                 verifierIdField: "sub",
-                // domain: "http://localhost:3000",
+                domain: "http://localhost:3000",
               },
             }
           );

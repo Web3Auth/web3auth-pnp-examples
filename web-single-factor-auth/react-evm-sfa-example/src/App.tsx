@@ -70,7 +70,7 @@ function App() {
         const web3authSfa = new Web3Auth({
           clientId, // Get your Client ID from Web3Auth Dashboard
           chainConfig,
-          web3AuthNetwork: "cyan"
+          web3AuthNetwork: "cyan",
         });
         setWeb3authSFAuth(web3authSfa);
         await web3authSfa.init();
@@ -79,11 +79,11 @@ function App() {
         const web3authCore = new Web3AuthCore({
           clientId,
           chainConfig,
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             loginConfig: {
               jwt: {
                 name: "Web3Auth One Key Login Flow",
@@ -138,6 +138,7 @@ function App() {
     const loginRes = await signInWithGoogle();
     // get the id token from firebase
     const idToken = await loginRes.user.getIdToken(true);
+    console.log(idToken);
     setIdToken(idToken);
 
     // trying logging in with the Single Factor Auth SDK
@@ -146,7 +147,7 @@ function App() {
         uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
         return;
       }
-      
+
       // get sub value from firebase id token
       const { sub } = parseToken(idToken);
 
@@ -162,13 +163,16 @@ function App() {
     } catch (err) {
       // Single Factor Auth SDK throws an error if the user has already enabled MFA
       // We will try to use the Web3AuthCore SDK to handle this case
-
-      if (err instanceof WalletLoginError && err.code === 5115) {
+      console.log("Not using the Single Factor Auth");
+      if (err instanceof WalletLoginError) {
+        console.log("Trying to use the Web3Auth Core SDK");
+        console.log(err);
         try {
           if (!web3authCore) {
             uiConsole("Web3Auth Core SDK not initialized yet");
             return;
           }
+          console.log("Using the Web3Auth Core SDK");
           const web3authProvider = await web3authCore.connectTo(
             WALLET_ADAPTERS.OPENLOGIN,
             {
@@ -176,7 +180,7 @@ function App() {
               extraLoginOptions: {
                 id_token: idToken,
                 verifierIdField: "sub",
-                domain: "http://localhost:3000",
+                // domain: "http://localhost:3000",
               },
             }
           );
@@ -238,18 +242,21 @@ function App() {
       return;
     }
     const idToken = await user.getIdToken(true);
-  
+
     // web3auth instance must be initialized before calling this function
     // as decribed in login with mfa flow above
-    const web3AuthProvider = await web3authCore.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-      loginProvider: "jwt",
-      extraLoginOptions: {
-        id_token: idToken,
-        verifierIdField: "sub",
-        domain: window.location.origin,
-      },
-      mfaLevel: "optional",
-    });
+    const web3AuthProvider = await web3authCore.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        loginProvider: "jwt",
+        extraLoginOptions: {
+          id_token: idToken,
+          verifierIdField: "sub",
+          domain: window.location.origin,
+        },
+        mfaLevel: "optional",
+      }
+    );
     return web3AuthProvider;
   };
 
@@ -308,15 +315,13 @@ function App() {
             Get User Info
           </button>
         </div>
-        {
-          usesSfaSDK ? (
-            <div>
+        {usesSfaSDK ? (
+          <div>
             <button onClick={enableMfa} className="card">
               Enable MFA
             </button>
           </div>
-          ) : null
-        }
+        ) : null}
         <div>
           <button onClick={getAccounts} className="card">
             Get Accounts

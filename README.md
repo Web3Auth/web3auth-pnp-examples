@@ -32,13 +32,14 @@ provider specific to the user and application.
 
 #### Ethereum - EVM Based
 
-| Blockchain | Lang Framework | Directory                                                                         |
-| :--------- | :------------- | :-------------------------------------------------------------------------------- |
-| `EVM`      | `REACT`        | [React-EVM-Web3Auth-Example](/web-modal-sdk/evm/react-evm-web3auth-example)       |
-| `EVM`      | `NEXTJS`       | [NextJS-EVM-Web3Auth-Example](/web-modal-sdk/evm/nextjs-evm-web3auth-example)     |
-| `EVM`      | `Vue`          | [Vue-EVM-Web3Auth-Example](/web-modal-sdk/evm/vue-evm-web3auth-example)           |
-| `EVM`      | `Angular`      | [Angular-EVM-Web3Auth-Example](/web-modal-sdk/evm/angular-evm-web3auth-example)   |
-| `EVM`      | `CommonJS`     | [CommonJS-EVM-Web3Auth-Example](/web-modal-sdk/evm/commonjs-evm-web3auth-example) |
+| Blockchain | Lang Framework | Directory                                                                             |
+| :--------- | :------------- | :------------------------------------------------------------------------------------ |
+| `EVM`      | `REACT`        | [React-EVM-Web3Auth-Example](/web-modal-sdk/evm/react-evm-web3auth-example)           |
+| `EVM`      | `Vite + React` | [React-Vite-EVM-Web3Auth-Example](/web-modal-sdk/evm/react-vite-evm-web3auth-example) |
+| `EVM`      | `NEXTJS`       | [NextJS-EVM-Web3Auth-Example](/web-modal-sdk/evm/nextjs-evm-web3auth-example)         |
+| `EVM`      | `Vue`          | [Vue-EVM-Web3Auth-Example](/web-modal-sdk/evm/vue-evm-web3auth-example)               |
+| `EVM`      | `Angular`      | [Angular-EVM-Web3Auth-Example](/web-modal-sdk/evm/angular-evm-web3auth-example)       |
+| `EVM`      | `CommonJS`     | [CommonJS-EVM-Web3Auth-Example](/web-modal-sdk/evm/commonjs-evm-web3auth-example)     |
 
 #### Solana
 
@@ -110,6 +111,7 @@ provider specific to the user and application.
 | Blockchain   | Lang Framework | Directory                                                                                         |
 | :----------- | :------------- | :------------------------------------------------------------------------------------------------ |
 | `EVM`        | `REACT`        | [React-EVM-Web3Auth-Core-Example](/web-core-sdk/evm/react-evm-core-example/)                      |
+| `EVM`        | `Vite + React` | [React-Vite-EVM-Core-Example](/web-core-sdk/evm/react-vite-evm-core-example)                      |
 | `Solana`     | `REACT`        | [React-Solana-Web3Auth-Core-Example](/web-core-sdk/solana/react-solana-core-example/)             |
 | `StarkEx`    | `REACT`        | [React-StarkEx-Web3Auth-Core-Example](/web-core-sdk/starkex/react-starkex-core-example/)          |
 | `StarkNet`   | `REACT`        | [React-StarkNet-Web3Auth-Core-Example](/web-core-sdk/starknet/react-starknet-core-example/)       |
@@ -188,7 +190,6 @@ provider specific to the user and application.
 | :------ | :-------------------------------------------------- | :--------------------------------------------- | :------------------------------------- |
 | `Unity` | [Documentation](https://web3auth.io/docs/sdk/unity) | [Guide](https://web3auth.io/docs/guides/unity) | [Unity-Example](/unity/unity-example/) |
 
-
 ## Questions
 
 Ask us on our
@@ -200,6 +201,7 @@ out to our [Discord](https://discord.gg/web3auth).
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](/LICENSE)
 
 ---
+
 | Packages                                   | `@latest` Version                                                                                                                                                                     | Size                                                                                                                                                                                             | Description                                                                                                                                                                                                                                                                                                  |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 🌐 **Web**                                 |
@@ -232,4 +234,3 @@ out to our [Discord](https://discord.gg/web3auth).
 | 👾 **Gaming SDKs**                         |
 | Unity                                      | `v 1.1`                                                                                                                                                                               |
 | Unreal Engine                              | `v 1.0`                                                                                                                                                                               |
-

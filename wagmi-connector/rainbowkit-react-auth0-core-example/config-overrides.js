@@ -9,7 +9,6 @@ module.exports = function override(config) {
     http: require.resolve("stream-http"),
     https: require.resolve("https-browserify"),
     os: require.resolve("os-browserify"),
-    path: require.resolve("path-browserify"),
     url: require.resolve("url"),
   });
   config.resolve.fallback = fallback;
@@ -20,5 +19,13 @@ module.exports = function override(config) {
     }),
   ]);
   config.ignoreWarnings = [/Failed to parse source map/];
+  config.module.rules.push({
+    test: /\.(js|mjs|jsx)$/,
+    enforce: "pre",
+    loader: require.resolve("source-map-loader"),
+    resolve: {
+      fullySpecified: false,
+    },
+  });
   return config;
 };

@@ -1,36 +1,25 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
-import {
-  ConnectButton,
-  connectorsForWallets,
-  RainbowKitProvider,
-  wallet,
-} from "@rainbow-me/rainbowkit";
-import { chain, createClient, WagmiConfig, configureChains } from "wagmi";
+import { ConnectButton, connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { createClient, WagmiConfig, configureChains } from "wagmi";
 import { rainbowWeb3AuthConnector } from "./RainbowWeb3authConnector";
-
-// import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
+import { mainnet, polygon } from 'wagmi/chains';
+import { walletConnectWallet, rainbowWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
-  [
-    // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
-    publicProvider()
-  ]
+  [mainnet, polygon],
+  [alchemyProvider({ apiKey: "7wSu45FYTMHUO4HJkHjQwX4HFkb7k9Ui" }), alchemyProvider({ apiKey: "fGXusgBUDC-OPy6XI8IFRvu1i7sbWsYj" }), publicProvider()]
 );
 const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
-    wallets: [
-      wallet.rainbow({ chains }),
-      wallet.walletConnect({ chains }),
-      wallet.metaMask({ chains }),
-      rainbowWeb3AuthConnector({ chains }),
-    ],
+    wallets: [rainbowWallet({ chains }), walletConnectWallet({ chains }), metaMaskWallet({ chains }), rainbowWeb3AuthConnector({ chains })],
   },
 ]);
 const wagmiClient = createClient({
+  autoConnect: false,
   connectors,
   provider,
 });
@@ -50,8 +39,7 @@ export default function App() {
             alignItems: "center",
             justifyContent: "center",
             fontFamily: "sans-serif",
-          }}
-        >
+          }}>
           <ConnectButton />
         </div>
       </RainbowKitProvider>

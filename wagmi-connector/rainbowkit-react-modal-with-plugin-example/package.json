@@ -1,19 +1,22 @@
 {
-  "name": "demo",
+  "name": "rainbowkit-react-modal-with-plugin-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@rainbow-me/rainbowkit": "0.4.6",
+    "@rainbow-me/rainbowkit": "0.8.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "ethers": "5.6.6",
+    "ethers": "5.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "wagmi": "0.6.3",
-    "@web3auth/web3auth-wagmi-connector": "^1.0.0",
-    "@web3auth/torus-wallet-connector-plugin": "^2.1.3",
+    "wagmi": "0.9.0",
+    "@web3auth/web3auth-wagmi-connector": "2.1.1",
+    "@web3auth/modal": "^4.2.3",
+    "@web3auth/openlogin-adapter": "^4.2.2",
+    "@web3auth/base": "^4.2.2",
+    "@web3auth/torus-wallet-connector-plugin": "^4.2.2",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
@@ -43,11 +46,9 @@
   },
   "browserslist": {
     "production": [
-      "chrome >= 67",
-      "edge >= 79",
-      "firefox >= 68",
-      "opera >= 54",
-      "safari >= 14"
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
     ],
     "development": [
       "last 1 chrome version",

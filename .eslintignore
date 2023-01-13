@@ -23,3 +23,5 @@ examples/
 dist/
 types/
 **/*.d.ts
+
+**/*.json

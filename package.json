@@ -19,15 +19,13 @@
     "web-modal-sdk/starknet/*",
     "web-modal-sdk/tezos/*",
     "wagmi-connector/*",
-    "web-single-factor-auth"    
+    "web-single-factor-auth/*"
   ],
   "scripts": {
     "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'",
-    "lint": "lerna exec --concurrency 1 -- 'eslint --fix'"
+    "lint": "lerna exec --concurrency 1 -- 'eslint --fix '/**/*.ts''"
   },
   "devDependencies": {
-    "lerna": "^5.4.2",
-    "npm-check-updates": "^16.0.5",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
@@ -38,6 +36,12 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "eslint-plugin-tsdoc": "^0.2.17",
+    "lerna": "^5.4.2",
+    "npm-check-updates": "^16.0.5",
     "prettier": "^2.8.1"
+  },
+  "dependencies": {
+    "@react-native-community/eslint-config": "^3.2.0",
+    "@toruslabs/eslint-config-typescript": "^1.2.0"
   }
 }

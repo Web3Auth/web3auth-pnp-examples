@@ -2,8 +2,8 @@
 /* eslint-disable no-console */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
 import { ADAPTER_EVENTS } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { Web3Auth } from "@web3auth/modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 import { CHAIN_CONFIG, CHAIN_CONFIG_TYPE } from "../../config/chains";
 import { WEB3AUTH_NETWORK_TYPE } from "../../config/web3auth-networks";
@@ -12,7 +12,7 @@ import { getWalletProvider, IWalletProvider } from "../../services/wallet-provid
 const clientId = {
   testnet: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A",
   mainnet: "BJRZ6qdDTbj6Vd5YXvV994TYCqY42-PxldCetmvGTUdoq6pkCqdpuC1DIehz76zuYdaq1RJkXGHuDraHRhCQHvA",
-  cyan: "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"
+  cyan: "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk",
 };
 @Component({
   selector: "app-main",
@@ -40,8 +40,7 @@ export class MainComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // eslint-disable-next-line dot-notation
-    if (!changes["chain"] && !changes["network"]) {
+    if (!changes.chain && !changes.network) {
       return;
     }
     console.log("CHANGING CHAIN");

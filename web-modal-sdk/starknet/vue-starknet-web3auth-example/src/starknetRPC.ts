@@ -17,7 +17,10 @@ export default class StarkNetRpc {
     try {
       const privateKey = await this.provider.request({ method: "private_key" });
       const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-      const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
+      const account = starkwareCrypto.ec.keyFromPublic(
+        keyPair.getPublic(true, "hex"),
+        "hex"
+      );
       return account;
     } catch (error) {
       return error;

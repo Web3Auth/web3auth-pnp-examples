@@ -1,25 +1,21 @@
-import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import RPC from "./api/web3RPC"; // for using web3.js
+import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+import { Web3Auth } from "@web3auth/modal";
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 // import RPC from ".api/ethersRPC"; // for using ethers.js
-
 // Plugins
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
-
 // Adapters
 import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
-import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+import { useEffect, useState } from "react";
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+import RPC from "./api/web3RPC"; // for using web3.js
+
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {

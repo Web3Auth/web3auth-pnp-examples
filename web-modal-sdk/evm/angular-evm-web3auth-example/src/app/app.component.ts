@@ -1,30 +1,31 @@
-import { Component } from '@angular/core';
-import { Web3Auth } from '@web3auth/modal';
-import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from '@web3auth/base';
-import RPC from './web3RPC'; // for using web3.js
+import { Component } from "@angular/core";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+import { Web3Auth } from "@web3auth/modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 // import RPC from "./ethersRPC"; // for using ethers.js
-
 // Plugins
-import { TorusWalletConnectorPlugin } from '@web3auth/torus-wallet-connector-plugin';
-
+import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 // Adapters
-import { WalletConnectV1Adapter } from '@web3auth/wallet-connect-v1-adapter';
-import { MetamaskAdapter } from '@web3auth/metamask-adapter';
-import { TorusWalletAdapter } from '@web3auth/torus-evm-adapter';
+import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 
-const clientId =
-  'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk'; // get from https://dashboard.web3auth.io
+import RPC from "./web3RPC"; // for using web3.js
+
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  title = 'angular-app';
+  title = "angular-app";
+
   web3auth: Web3Auth | null = null;
+
   provider: SafeEventEmitterProvider | null = null;
+
   isModalLoaded = false;
 
   async ngOnInit() {
@@ -32,12 +33,12 @@ export class AppComponent {
       clientId,
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: '0x1',
-        rpcTarget: 'https://rpc.ankr.com/eth', // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        chainId: "0x1",
+        rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
-      web3AuthNetwork: 'cyan',
+      web3AuthNetwork: "cyan",
     });
-    const web3auth = this.web3auth;
+    const { web3auth } = this;
 
     const openloginAdapter = new OpenloginAdapter({});
     web3auth.configureAdapter(openloginAdapter);
@@ -51,9 +52,9 @@ export class AppComponent {
       torusWalletOpts: {},
       walletInitOptions: {
         whiteLabel: {
-          theme: { isDark: true, colors: { primary: '#00a8ff' } },
-          logoDark: 'https://web3auth.io/images/w3a-L-Favicon-1.svg',
-          logoLight: 'https://web3auth.io/images/w3a-D-Favicon-1.svg',
+          theme: { isDark: true, colors: { primary: "#00a8ff" } },
+          logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+          logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
         },
         useWalletConnect: true,
         enableLogging: true,
@@ -67,7 +68,7 @@ export class AppComponent {
 
     const walletConnectV1Adapter = new WalletConnectV1Adapter({
       adapterSettings: {
-        bridge: 'https://bridge.walletconnect.org',
+        bridge: "https://bridge.walletconnect.org",
       },
       clientId,
     });
@@ -79,11 +80,11 @@ export class AppComponent {
     const metamaskAdapter = new MetamaskAdapter({
       clientId,
       sessionTime: 3600, // 1 hour in seconds
-      web3AuthNetwork: 'cyan',
+      web3AuthNetwork: "cyan",
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: '0x1',
-        rpcTarget: 'https://rpc.ankr.com/eth', // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        chainId: "0x1",
+        rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
     });
     // we can change the above settings using this function
@@ -91,10 +92,10 @@ export class AppComponent {
       sessionTime: 86400, // 1 day in seconds
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: '0x89',
-        rpcTarget: 'https://rpc-mainnet.matic.network', // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        chainId: "0x89",
+        rpcTarget: "https://rpc-mainnet.matic.network", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
-      web3AuthNetwork: 'cyan',
+      web3AuthNetwork: "cyan",
     });
 
     // it will add/update  the metamask adapter in to web3auth class
@@ -116,17 +117,17 @@ export class AppComponent {
 
   login = async () => {
     if (!this.web3auth) {
-      this.uiConsole('web3auth not initialized yet');
+      this.uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3auth = this.web3auth;
+    const { web3auth } = this;
     this.provider = await web3auth.connect();
-    this.uiConsole('Logged in successfully!');
+    this.uiConsole("Logged in successfully!");
   };
 
   authenticateUser = async () => {
     if (!this.web3auth) {
-      this.uiConsole('web3auth not initialized yet');
+      this.uiConsole("web3auth not initialized yet");
       return;
     }
     const id_token = await this.web3auth.authenticateUser();
@@ -135,7 +136,7 @@ export class AppComponent {
 
   getUserInfo = async () => {
     if (!this.web3auth) {
-      this.uiConsole('web3auth not initialized yet');
+      this.uiConsole("web3auth not initialized yet");
       return;
     }
     const user = await this.web3auth.getUserInfo();
@@ -144,16 +145,17 @@ export class AppComponent {
 
   getChainId = async () => {
     if (!this.provider) {
-      this.uiConsole('provider not initialized yet');
+      this.uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(this.provider);
     const chainId = await rpc.getChainId();
     this.uiConsole(chainId);
   };
+
   getAccounts = async () => {
     if (!this.provider) {
-      this.uiConsole('provider not initialized yet');
+      this.uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(this.provider);
@@ -163,7 +165,7 @@ export class AppComponent {
 
   getBalance = async () => {
     if (!this.provider) {
-      this.uiConsole('provider not initialized yet');
+      this.uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(this.provider);
@@ -173,7 +175,7 @@ export class AppComponent {
 
   sendTransaction = async () => {
     if (!this.provider) {
-      this.uiConsole('provider not initialized yet');
+      this.uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(this.provider);
@@ -183,7 +185,7 @@ export class AppComponent {
 
   signMessage = async () => {
     if (!this.provider) {
-      this.uiConsole('provider not initialized yet');
+      this.uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(this.provider);
@@ -193,7 +195,7 @@ export class AppComponent {
 
   getPrivateKey = async () => {
     if (!this.provider) {
-      this.uiConsole('provider not initialized yet');
+      this.uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(this.provider);
@@ -203,16 +205,16 @@ export class AppComponent {
 
   logout = async () => {
     if (!this.web3auth) {
-      this.uiConsole('web3auth not initialized yet');
+      this.uiConsole("web3auth not initialized yet");
       return;
     }
     await this.web3auth.logout();
     this.provider = null;
-    this.uiConsole('logged out');
+    this.uiConsole("logged out");
   };
 
   uiConsole(...args: any[]) {
-    const el = document.querySelector('#console-ui>p');
+    const el = document.querySelector("#console-ui>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
     }

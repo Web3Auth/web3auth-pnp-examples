@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 
 const App = dynamic(
@@ -10,6 +10,6 @@ const App = dynamic(
 
 const Home: NextPage = () => {
   return <App />;
-}
+};
 
-export default Home
+export default Home;

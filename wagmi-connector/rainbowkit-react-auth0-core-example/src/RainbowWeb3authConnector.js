@@ -12,7 +12,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
     clientId: "YOUR_CLIENT_ID",
     chainConfig: {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0x"+chains[0].id.toString(16),
+      chainId: "0x" + chains[0].id.toString(16),
       rpcTarget: chains[0].rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
       displayName: chains[0].name,
       tickerName: chains[0].nativeCurrency?.name,
@@ -46,7 +46,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
     createConnector: () => {
       const connector = new Web3AuthConnector({
         chains: chains,
-        options: { 
+        options: {
           web3AuthInstance,
           loginParams: {
             relogin: true,

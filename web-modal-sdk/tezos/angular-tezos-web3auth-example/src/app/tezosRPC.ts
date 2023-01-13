@@ -1,9 +1,9 @@
-//@ts-ignore
-import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+// @ts-ignore
+import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
-import { InMemorySigner } from "@taquito/signer";
+import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
+import { SafeEventEmitterProvider } from "@web3auth/base";
 
 const tezos = new TezosToolkit("https://rpc.tzbeta.net/");
 

@@ -16,7 +16,9 @@ export default class TezosRpc {
 
   getTezosKeyPair = async (): Promise<any> => {
     try {
-      const privateKey = (await this.provider.request({ method: "private_key" })) as string;
+      const privateKey = (await this.provider.request({
+        method: "private_key",
+      })) as string;
       const keyPair = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
       return keyPair;
     } catch (error) {
@@ -30,7 +32,9 @@ export default class TezosRpc {
   setProvider = async () => {
     const keyPair = await this.getTezosKeyPair();
     // use TacoInfra's RemoteSigner for better security on mainnet..
-    tezos.setSignerProvider(await InMemorySigner.fromSecretKey(keyPair?.sk as string));
+    tezos.setSignerProvider(
+      await InMemorySigner.fromSecretKey(keyPair?.sk as string)
+    );
   };
 
   getAccounts = async () => {
@@ -58,7 +62,8 @@ export default class TezosRpc {
       // Reference: https://tezostaquito.io/docs/signing
       const keyPair = await this.getTezosKeyPair();
       const signer = new InMemorySigner(keyPair.sk);
-      const message = "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad";
+      const message =
+        "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad";
       const signature = await signer.sign(message);
       return signature;
     } catch (error) {

@@ -133,6 +133,11 @@ provider specific to the user and application.
 | `AWS Cognito` | `REACT`         | [Cognito-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/cognito-react-core-example)                       |
 | `Custom JWT`  | `REACT-EXPRESS` | [Custom-JWT-React-Express-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/custom-jwt-react-express-core-example) |
 
+### Aggregate Verifiers
+
+| Auth Providers | Lang Framework  | Directory                                                                                                                   |
+| :------------ | :-------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| `Google`, `Email Passwordless` & `GitHub`       | `REACT`         | [Google-EmailPasswordless-GitHub-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/google-emailpasswordless-github-react-core-example)                           |
 ### Server Side Verification
 
 | Via               | Lang Framework | Directory                                                                                                       |

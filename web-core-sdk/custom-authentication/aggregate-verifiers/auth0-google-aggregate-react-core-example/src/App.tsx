@@ -305,7 +305,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/web3auth/examples/web-core-sdk/custom-authentication/aggregate-verifiers/google-emailpasswordless-github-react-core-example"
+          href="https://github.com/web3auth/examples/web-core-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-core-example"
           target="_blank"
           rel="noopener noreferrer"
         >

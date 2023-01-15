@@ -69,6 +69,8 @@ public class Web3AuthScript : MonoBehaviour
     
     }
 
+    
+
     public void updateConsole(string message){
         console.text = message;
     }

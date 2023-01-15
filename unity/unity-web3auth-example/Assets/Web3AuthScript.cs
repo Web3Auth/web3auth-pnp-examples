@@ -9,6 +9,8 @@ public class Web3AuthScript : MonoBehaviour
 {
     Web3Auth web3Auth;
     public TextMeshProUGUI console;
+    private string privateKey;
+    private string userInfo;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +18,9 @@ public class Web3AuthScript : MonoBehaviour
         web3Auth = GetComponent<Web3Auth>();
         web3Auth.setOptions(new Web3AuthOptions()
         {
-            clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"
+            clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk",
+            redirectUrl = new System.Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+            network = Web3Auth.Network.CYAN,
         });
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
@@ -37,9 +41,20 @@ public class Web3AuthScript : MonoBehaviour
 
     private void onLogin(Web3AuthResponse response)
     {
-        var userInfo = JsonConvert.SerializeObject(response.userInfo, Formatting.Indented);
+        userInfo = JsonConvert.SerializeObject(response.userInfo, Formatting.Indented);
+        privateKey = response.privKey;
+        Debug.Log(JsonConvert.SerializeObject(response, Formatting.Indented));
+        updateConsole(JsonConvert.SerializeObject(response, Formatting.Indented));
+    }
+
+    public void getUserInfo() {
         Debug.Log(userInfo);
         updateConsole(userInfo);
+    }
+
+    public void getPrivateKey() {
+        Debug.Log(privateKey);
+        updateConsole(privateKey);
     }
 
     public void logout()

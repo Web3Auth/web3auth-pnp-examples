@@ -1,99 +1,88 @@
-import React, { useState } from 'react';
-import {
-	StyleSheet,
-	Text,
-	View,
-	Button,
-	ScrollView,
-	Dimensions,
-} from 'react-native';
-import Web3Auth, {
-	LOGIN_PROVIDER,
-	OPENLOGIN_NETWORK,
-} from '@web3auth/react-native-sdk';
-import Constants, { AppOwnership } from 'expo-constants';
-import * as Linking from 'expo-linking';
-import * as WebBrowser from 'expo-web-browser';
-import RPC from './ethersRPC'; // for using ethers.js
+import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
+import Constants, { AppOwnership } from "expo-constants";
+import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
+import React, { useState } from "react";
+import { Button, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+
+import RPC from "./ethersRPC"; // for using ethers.js
 
 const resolvedRedirectUrl =
-	Constants.appOwnership == AppOwnership.Expo ||
-	Constants.appOwnership == AppOwnership.Guest
-		? Linking.createURL('web3auth', {})
-		: Linking.createURL('web3auth', { scheme: scheme });
+  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+    ? Linking.createURL("web3auth", {})
+    : Linking.createURL("web3auth", { scheme });
 
-const clientId =
-	'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk';
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk";
 
 export default function App() {
-	const [key, setKey] = useState('');
-	const [userInfo, setUserInfo] = useState('');
-	const [console, setConsole] = useState('');
+  const [key, setKey] = useState("");
+  const [userInfo, setUserInfo] = useState("");
+  const [console, setConsole] = useState("");
 
-	const login = async () => {
-		try {
-			setConsole('Logging in');
-			const web3auth = new Web3Auth(WebBrowser, {
-				clientId,
-				network: OPENLOGIN_NETWORK.CYAN, // or other networks
-				loginConfig: {
-					jwt: {
-						name: 'Web3Auth-Auth0-JWT',
-						verifier: 'web3auth-auth0-demo',
-						typeOfLogin: 'jwt',
-						clientId: '294QRkchfq2YaXUbPri7D6PH7xzHgQMT',
-					},
-				},
-			});
-			const info = await web3auth.login({
-				loginProvider: LOGIN_PROVIDER.JWT,
-				redirectUrl: resolvedRedirectUrl,
-				mfaLevel: 'none',
-				curve: 'secp256k1',
-				extraLoginOptions: {
-					domain: 'https://shahbaz-torus.us.auth0.com',
-					verifierIdField: 'sub',
-				},
-			});
+  const login = async () => {
+    try {
+      setConsole("Logging in");
+      const web3auth = new Web3Auth(WebBrowser, {
+        clientId,
+        network: OPENLOGIN_NETWORK.CYAN, // or other networks
+        loginConfig: {
+          jwt: {
+            name: "Web3Auth-Auth0-JWT",
+            verifier: "web3auth-auth0-demo",
+            typeOfLogin: "jwt",
+            clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+          },
+        },
+      });
+      const info = await web3auth.login({
+        loginProvider: LOGIN_PROVIDER.JWT,
+        redirectUrl: resolvedRedirectUrl,
+        mfaLevel: "none",
+        curve: "secp256k1",
+        extraLoginOptions: {
+          domain: "https://shahbaz-torus.us.auth0.com",
+          verifierIdField: "sub",
+        },
+      });
 
-			setUserInfo(info);
-			setKey(info.privKey);
-			uiConsole('Logged In');
-		} catch (e) {
-			uiConsole(e);
-		}
-	};
+      setUserInfo(info);
+      setKey(info.privKey);
+      uiConsole("Logged In");
+    } catch (e) {
+      uiConsole(e);
+    }
+  };
 
   const getChainId = async () => {
-    setConsole('Getting chain id');
+    setConsole("Getting chain id");
     const networkDetails = await RPC.getChainId();
     uiConsole(networkDetails);
   };
 
   const getAccounts = async () => {
-    setConsole('Getting account');
+    setConsole("Getting account");
     const address = await RPC.getAccounts(key);
     uiConsole(address);
   };
   const getBalance = async () => {
-    setConsole('Fetching balance');
+    setConsole("Fetching balance");
     const balance = await RPC.getBalance(key);
     uiConsole(balance);
   };
   const sendTransaction = async () => {
-    setConsole('Sending transaction');
+    setConsole("Sending transaction");
     const tx = await RPC.sendTransaction(key);
     uiConsole(tx);
   };
   const signMessage = async () => {
-    setConsole('Signing message');
+    setConsole("Signing message");
     const message = await RPC.signMessage(key);
     uiConsole(message);
   };
 
-	const uiConsole = (...args) => {
-		setConsole(JSON.stringify(args || {}, null, 2) + '\n\n\n\n' + console);
-	};
+  const uiConsole = (...args) => {
+    setConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${console}`);
+  };
 
   const loggedInView = (
     <View style={styles.buttonArea}>
@@ -104,7 +93,7 @@ export default function App() {
       <Button title="Send Transaction" onPress={() => sendTransaction()} />
       <Button title="Sign Message" onPress={() => signMessage()} />
       <Button title="Get Private Key" onPress={() => uiConsole(key)} />
-      <Button title="Log Out" onPress={() => setKey('')} />
+      <Button title="Log Out" onPress={() => setKey("")} />
     </View>
   );
 
@@ -130,32 +119,32 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 50,
     paddingBottom: 30,
   },
   consoleArea: {
     margin: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
   },
   console: {
     flex: 1,
-    backgroundColor: '#CCCCCC',
-    color: '#ffffff',
+    backgroundColor: "#CCCCCC",
+    color: "#ffffff",
     padding: 10,
-    width: Dimensions.get('window').width - 60,
+    width: Dimensions.get("window").width - 60,
   },
   consoleText: {
     padding: 10,
   },
   buttonArea: {
     flex: 2,
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    alignItems: "center",
+    justifyContent: "space-around",
     paddingBottom: 30,
   },
 });

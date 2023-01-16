@@ -1,24 +1,19 @@
-import { useEffect, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+
+import { getPublicCompressed } from "@toruslabs/eccrypto";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3AuthCore } from "@web3auth/core";
-import {
-  WALLET_ADAPTERS,
-  CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
-} from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 // import RPC from "../components/evm.web3";
 import RPC from "../components/evm.ethers";
-import { getPublicCompressed } from "@toruslabs/eccrypto";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -30,7 +25,7 @@ function App() {
             chainId: "0x5",
             rpcTarget: "https://rpc.ankr.com/eth_goerli",
           },
-          web3AuthNetwork: "cyan"
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
@@ -39,8 +34,7 @@ function App() {
               google: {
                 verifier: "web3auth-google-example",
                 typeOfLogin: "google",
-                clientId:
-                  "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com", //use your app client id you got from google
+                clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com", // use your app client id you got from google
               },
             },
           },
@@ -64,13 +58,10 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        mfaLevel: "default",
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      mfaLevel: "default",
+      loginProvider: "google",
+    });
     setProvider(web3authProvider);
     await validateIdToken();
   };
@@ -105,16 +96,14 @@ function App() {
       method: "eth_private_key",
     });
     console.log(privKey);
-    const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString(
-      "hex"
-    );
+    const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString("hex");
 
     // Validate idToken with server
     const res = await fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + idToken,
+        Authorization: `Bearer ${idToken}`,
       },
       body: JSON.stringify({ appPubKey: pubkey }),
     });
@@ -256,11 +245,7 @@ function App() {
         >
           Source code
         </a>
-        <a
-          href="https://goerlifaucet.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://goerlifaucet.com/" target="_blank" rel="noopener noreferrer">
           Goerli Faucet
         </a>
       </footer>

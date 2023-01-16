@@ -1,23 +1,19 @@
-import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import RPC from "./api/solanaRPC";
-
+import { Web3Auth } from "@web3auth/modal";
+import { SlopeAdapter } from "@web3auth/slope-adapter";
 // Plugins
 import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
-
 // Adapters
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
-import { SlopeAdapter } from "@web3auth/slope-adapter";
+import { useEffect, useState } from "react";
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+import RPC from "./api/solanaRPC";
+
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {

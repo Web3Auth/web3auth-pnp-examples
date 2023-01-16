@@ -1,12 +1,6 @@
-import {
-  Connection,
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-} from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { CustomChainConfig, SafeEventEmitterProvider } from "@web3auth/base";
 import { SolanaWallet } from "@web3auth/solana-provider";
-import { SafeEventEmitterProvider, CustomChainConfig } from "@web3auth/base";
 
 export default class SolanaRpc {
   private provider: SafeEventEmitterProvider;
@@ -79,9 +73,7 @@ export default class SolanaRpc {
         feePayer: new PublicKey(accounts[0]),
       }).add(TransactionInstruction);
 
-      const { signature } = await solanaWallet.signAndSendTransaction(
-        transaction
-      );
+      const { signature } = await solanaWallet.signAndSendTransaction(transaction);
 
       return signature;
     } catch (error) {
@@ -99,7 +91,7 @@ export default class SolanaRpc {
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
-      const blockhash = (await conn.getRecentBlockhash("finalized")).blockhash;
+      const { blockhash } = await conn.getRecentBlockhash("finalized");
       const TransactionInstruction = SystemProgram.transfer({
         fromPubkey: new PublicKey(pubKey[0]),
         toPubkey: new PublicKey(pubKey[0]),

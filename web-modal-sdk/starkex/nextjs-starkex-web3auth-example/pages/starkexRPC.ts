@@ -1,5 +1,5 @@
 import StarkExAPI from "@starkware-industries/starkex-js";
-//@ts-ignore
+// @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 

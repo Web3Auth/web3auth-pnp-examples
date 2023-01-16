@@ -17,7 +17,7 @@ const connect = async () => {
     verifierId: "verifier-Id", // replace with your verifier id, setup while creating the verifier on Web3Auth's Dashboard
     idToken: "JWT Token", // replace with your newly created unused JWT Token.
   });
-  const eth_private_key = await provider.request({ method: "eth_private_key" })
+  const eth_private_key = await provider.request({ method: "eth_private_key" });
   console.log("ETH Private Key", eth_private_key);
-}
+};
 connect();

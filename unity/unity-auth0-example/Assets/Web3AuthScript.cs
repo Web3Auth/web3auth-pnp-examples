@@ -42,7 +42,7 @@ public class Web3AuthScript : MonoBehaviour
             network = Web3Auth.Network.CYAN,
             loginConfig = new Dictionary<string, LoginConfigItem>
             {
-                {"CUSTOM_VERIFIER", loginConfigItem}
+                {"jwt", loginConfigItem}
             }
             
         });
@@ -59,6 +59,7 @@ public class Web3AuthScript : MonoBehaviour
         var options = new LoginParams()
         {
             loginProvider = selectedProvider,
+            redirectUrl = new System.Uri("torusapp://com.torus.Web3AuthUnity/auth"),
             extraLoginOptions = new ExtraLoginOptions()
             {
                 domain = "https://shahbaz-torus.us.auth0.com",

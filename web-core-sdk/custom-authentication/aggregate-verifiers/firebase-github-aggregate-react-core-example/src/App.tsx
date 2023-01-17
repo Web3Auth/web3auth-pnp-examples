@@ -11,7 +11,7 @@ import "./App.css";
 import RPC from "./evm.ethers";
 import { initializeApp } from "firebase/app";
 import {
-  GoogleAuthProvider,
+  GithubAuthProvider,
   getAuth,
   signInWithPopup,
   UserCredential,
@@ -21,13 +21,28 @@ const clientId =
   "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
 // Your web app's Firebase configuration
+
+// devrel examples firebase config
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E",
+//   authDomain: "web3auth-oauth-logins.firebaseapp.com",
+//   projectId: "web3auth-oauth-logins",
+//   storageBucket: "web3auth-oauth-logins.appspot.com",
+//   messagingSenderId: "461819774167",
+//   appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92",
+// };
+
+// my firebase config
+
 const firebaseConfig = {
-  apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E",
-  authDomain: "web3auth-oauth-logins.firebaseapp.com",
-  projectId: "web3auth-oauth-logins",
-  storageBucket: "web3auth-oauth-logins.appspot.com",
-  messagingSenderId: "461819774167",
-  appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92",
+  apiKey: "AIzaSyCL4yesJTjLgbThUYre5AP5cS3ueATptqI",
+  authDomain: "aggregate-verifiers.firebaseapp.com",
+  projectId: "aggregate-verifiers",
+  storageBucket: "aggregate-verifiers.appspot.com",
+  messagingSenderId: "204077688555",
+  appId: "1:204077688555:web:4ee4b1f3b4770e912380ae",
+  measurementId: "G-HCC257VX6Y",
 };
 
 function App() {
@@ -53,11 +68,25 @@ function App() {
             uxMode: "redirect",
             loginConfig: {
               google: {
-                verifier: "agg-verifiers-firebase-github",
-                verifierSubIdentifier: "agg-verifier-google",
+                verifier: "agg-firebase-github",
+                // devrel examples verifier: agg-verifiers-firebase-github
+                // my verifier: agg-firebase-github
+                verifierSubIdentifier: "agg-google",
+                // devrel examples verifierSubIdentifier: agg-verifier-google
+                // my verifierSubIdentifier: agg-google
                 typeOfLogin: "google",
                 clientId:
                   "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+              },
+              firebaseGithub: {
+                verifier: "agg-firebase-github",
+                // devrel examples verifier: agg-verifiers-firebase-github
+                // my verifier: agg-firebase-github
+                verifierSubIdentifier: "agg-github",
+                // devrel examples verifierSubIdentifier: agg-verifier-github
+                // my verifierSubIdentifier: agg-github
+                typeOfLogin: "jwt",
+                clientId: "randomString",
               },
             },
           },
@@ -77,20 +106,6 @@ function App() {
     init();
   }, []);
 
-  const signInWithGoogle = async (): Promise<UserCredential> => {
-    try {
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const googleProvider = new GoogleAuthProvider();
-      const res = await signInWithPopup(auth, googleProvider);
-      console.log(res);
-      return res;
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  };
-
   const loginGoogle = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
@@ -105,12 +120,21 @@ function App() {
     setProvider(web3authProvider);
   };
 
+  const signInWithGithub = async (): Promise<UserCredential> => {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const githubProvider = new GithubAuthProvider();
+
+    const result = await signInWithPopup(auth, githubProvider);
+    return result;
+  };
+
   const loginGitHub = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const loginRes = await signInWithGoogle();
+    const loginRes = await signInWithGithub();
     console.log("login details", loginRes);
     const idToken = await loginRes.user.getIdToken(true);
     console.log("idToken", idToken);
@@ -118,10 +142,10 @@ function App() {
     const web3authProvider = await web3auth.connectTo(
       WALLET_ADAPTERS.OPENLOGIN,
       {
-        loginProvider: "jwt",
+        loginProvider: "firebaseGithub",
         extraLoginOptions: {
           id_token: idToken,
-          verifierIdField: "sub",
+          verifierIdField: "email",
           domain: "http://localhost:3000",
         },
       }

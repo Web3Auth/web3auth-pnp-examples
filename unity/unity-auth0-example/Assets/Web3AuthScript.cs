@@ -62,8 +62,9 @@ public class Web3AuthScript : MonoBehaviour
             redirectUrl = new System.Uri("torusapp://com.torus.Web3AuthUnity/auth"),
             extraLoginOptions = new ExtraLoginOptions()
             {
-                domain = "https://shahbaz-torus.us.auth0.com",
+                domain = "https://shahbaz-torus.us.auth0.com/",
                 verifierIdField = "sub",
+                prompt = Prompt.LOGIN,
             }
         };
 

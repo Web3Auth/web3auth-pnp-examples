@@ -22,19 +22,6 @@ const clientId =
 
 // Your web app's Firebase configuration
 
-// devrel examples firebase config
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E",
-//   authDomain: "web3auth-oauth-logins.firebaseapp.com",
-//   projectId: "web3auth-oauth-logins",
-//   storageBucket: "web3auth-oauth-logins.appspot.com",
-//   messagingSenderId: "461819774167",
-//   appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92",
-// };
-
-// my firebase config
-
 const firebaseConfig = {
   apiKey: "AIzaSyCL4yesJTjLgbThUYre5AP5cS3ueATptqI",
   authDomain: "aggregate-verifiers.firebaseapp.com",
@@ -69,22 +56,14 @@ function App() {
             loginConfig: {
               google: {
                 verifier: "agg-firebase-github",
-                // devrel examples verifier: agg-verifiers-firebase-github
-                // my verifier: agg-firebase-github
                 verifierSubIdentifier: "agg-google",
-                // devrel examples verifierSubIdentifier: agg-verifier-google
-                // my verifierSubIdentifier: agg-google
                 typeOfLogin: "google",
                 clientId:
                   "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
               },
               firebaseGithub: {
                 verifier: "agg-firebase-github",
-                // devrel examples verifier: agg-verifiers-firebase-github
-                // my verifier: agg-firebase-github
                 verifierSubIdentifier: "agg-github",
-                // devrel examples verifierSubIdentifier: agg-verifier-github
-                // my verifierSubIdentifier: agg-github
                 typeOfLogin: "jwt",
                 clientId: "randomString",
               },

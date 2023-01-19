@@ -84,6 +84,13 @@ provider specific to the user and application.
 | :--------- | :------------- | :----------------------------------------------------------------------------------------- |
 | `Algorand` | `REACT`        | [React-Algorand-Web3Auth-Example](/web-modal-sdk/algorand/react-algorand-web3auth-example) |
 
+#### Aptos
+
+| Blockchain | Lang Framework | Directory                                                                                  |
+| :--------- | :------------- | :----------------------------------------------------------------------------------------- |
+| `Algorand` | `REACT`        | [React-Aptos-Web3Auth-Example](/web-modal-sdk/aptos/react-aptos-web3auth-example) |
+
+
 #### Polkadot
 
 | Blockchain | Lang Framework | Directory                                                                                  |
@@ -117,6 +124,7 @@ provider specific to the user and application.
 | `StarkNet`   | `REACT`        | [React-StarkNet-Web3Auth-Core-Example](/web-core-sdk/starknet/react-starknet-core-example/)       |
 | `Tezos`      | `REACT`        | [React-Tezos-Web3Auth-Core-Example](/web-core-sdk/tezos/react-tezos-core-example/)                |
 | `Algorand`   | `REACT`        | [React-Algorand-Web3Auth-Core-Example](/web-core-sdk/algorand/react-algorand-core-example/)       |
+| `Aptos`   | `REACT`        | [React-Aptos-Web3Auth-Core-Example](/web-core-sdk/aptos/react-aptos-core-example/)       |
 | `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-Core-Example](/web-core-sdk/immutableX/react-immutableX-core-example/) |
 | `Polkadot`   | `REACT`        | [React-Polkadot-Web3Auth-Core-Example](/web-core-sdk/polkadot/react-polkadot-core-example/)       |
 

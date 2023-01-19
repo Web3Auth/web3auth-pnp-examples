@@ -88,7 +88,7 @@ provider specific to the user and application.
 
 | Blockchain | Lang Framework | Directory                                                                                  |
 | :--------- | :------------- | :----------------------------------------------------------------------------------------- |
-| `Algorand` | `REACT`        | [React-Aptos-Web3Auth-Example](/web-modal-sdk/aptos/react-aptos-web3auth-example) |
+| `Aptos` | `REACT`        | [React-Aptos-Web3Auth-Example](/web-modal-sdk/aptos/react-aptos-web3auth-example) |
 
 
 #### Polkadot

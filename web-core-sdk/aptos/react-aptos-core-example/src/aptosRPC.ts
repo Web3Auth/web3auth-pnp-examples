@@ -1,13 +1,11 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { AptosAccount , FaucetClient, AptosClient } from "aptos";
 
-export default class EthereumRpc {
+export default class AptosRpc {
   private provider: SafeEventEmitterProvider;
   NODE_URL ="https://fullnode.devnet.aptoslabs.com";
   FAUCET_URL ="https://faucet.devnet.aptoslabs.com";
   aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
-  dummyAddress = "0xb87ff513c4fd655ab3b52d789f32fa840e0ece8450d6a227e55ca7d7e16bb6be";
-
 
   constructor(provider: SafeEventEmitterProvider) {
     this.provider = provider;
@@ -24,8 +22,6 @@ export default class EthereumRpc {
       return error as string;
     }
   }
-
-
 
   async getAptosAccount(): Promise<any> {
     try {
@@ -56,7 +52,6 @@ export default class EthereumRpc {
     const faucetClient = new FaucetClient(this.NODE_URL, this.FAUCET_URL);
     const response = await faucetClient.fundAccount(address, 100_000_000);
     return response;
-
   }
 
   async getBalance(): Promise<any> {
@@ -77,22 +72,21 @@ export default class EthereumRpc {
       const aptosAccount = await this.getAptosAccount();
       const client = new AptosClient(this.NODE_URL);
       const payload = {
-      type: "entry_function_payload",
-      function: "0x1::coin::transfer",
-      type_arguments: ["0x1::aptos_coin::AptosCoin"],
-      arguments: [aptosAccount.address().hex(), 717], // sending funds to self
-    };
-    const txnRequest = await client.generateTransaction(aptosAccount.address(), payload);
-    const signedTxn = await client.signTransaction(aptosAccount, txnRequest);
-    console.log(signedTxn)
-    const transactionRes = await client.submitTransaction(signedTxn);
-    await client.waitForTransaction(transactionRes.hash);
-    console.log(transactionRes.hash)
-    return transactionRes.hash;
+        type: "entry_function_payload",
+        function: "0x1::coin::transfer",
+        type_arguments: ["0x1::aptos_coin::AptosCoin"],
+        arguments: [aptosAccount.address().hex(), 717], // sending funds to self
+      };
+      const txnRequest = await client.generateTransaction(aptosAccount.address(), payload);
+      const signedTxn = await client.signTransaction(aptosAccount, txnRequest);
+      console.log(signedTxn)
+      const transactionRes = await client.submitTransaction(signedTxn);
+      await client.waitForTransaction(transactionRes.hash);
+      console.log(transactionRes.hash)
+      return transactionRes.hash;
     } catch (error) {
       return error as string;
     }
-
   }
 
 }

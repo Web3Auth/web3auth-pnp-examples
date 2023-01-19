@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { Web3AuthCore } from "@web3auth/core";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./aptosRPC"
@@ -9,7 +9,7 @@ const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -17,26 +17,21 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3Auth({
+        const web3auth = new Web3AuthCore({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
             chainId: "0x1",
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
-          uiConfig: {
-            theme: "dark",
-            loginMethodsOrder: ["facebook", "google"],
-            defaultLanguage: "en",
-            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-          },
           web3AuthNetwork: "cyan",
         });
 
 
         setWeb3auth(web3auth);
-
-        await web3auth.initModal();
+        const openloginAdapter = new OpenloginAdapter();
+        web3auth.configureAdapter(openloginAdapter);
+        await web3auth.init();
         if (web3auth.provider) {
           setProvider(web3auth.provider);
         }
@@ -53,7 +48,12 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connect();
+    const web3authProvider = await web3auth.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        loginProvider: "google",
+      }
+    );
     setProvider(web3authProvider);
     uiConsole("Logged in Successfully!");
   };

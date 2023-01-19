@@ -31,9 +31,10 @@ export default class EthereumRpc {
     try {
       const privateKey = await this.getPrivateKey();
       // convert private key to uint8array
-      const privateKeyUint8Array = new Uint8Array(privateKey.split(',').map(Number));
-      console.log(privateKeyUint8Array)
-      const aptosAccount = new AptosAccount();
+      const privateKeyUint8Array = new Uint8Array(
+        privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16))
+      );
+      const aptosAccount = new AptosAccount(privateKeyUint8Array) ;
       return aptosAccount;
     } catch (error) {
       return error;

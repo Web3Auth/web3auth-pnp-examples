@@ -23,13 +23,12 @@ const clientId =
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCL4yesJTjLgbThUYre5AP5cS3ueATptqI",
-  authDomain: "aggregate-verifiers.firebaseapp.com",
-  projectId: "aggregate-verifiers",
-  storageBucket: "aggregate-verifiers.appspot.com",
-  messagingSenderId: "204077688555",
-  appId: "1:204077688555:web:4ee4b1f3b4770e912380ae",
-  measurementId: "G-HCC257VX6Y",
+  apiKey: "AIzaSyAAAF-xdPur0wJpgwXLGdLZWDwRCTRLdX8",
+  authDomain: "web3auth-firebase-github.firebaseapp.com",
+  projectId: "web3auth-firebase-github",
+  storageBucket: "web3auth-firebase-github.appspot.com",
+  messagingSenderId: "384159528034",
+  appId: "1:384159528034:web:9a9121481ea2948237cd3b"
 };
 
 function App() {
@@ -55,15 +54,15 @@ function App() {
             uxMode: "redirect",
             loginConfig: {
               google: {
-                verifier: "agg-firebase-github",
-                verifierSubIdentifier: "agg-google",
+                verifier: "aggregate-verifier-google-firebase",
+                verifierSubIdentifier: "w3a-google",
                 typeOfLogin: "google",
                 clientId:
                   "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
               },
               firebaseGithub: {
-                verifier: "agg-firebase-github",
-                verifierSubIdentifier: "agg-github",
+                verifier: "aggregate-verifier-google-firebase",
+                verifierSubIdentifier: "w3a-firebase",
                 typeOfLogin: "jwt",
                 clientId: "randomString",
               },
@@ -276,7 +275,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/custom-authentication/firebase-react-core-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/custom-authentication/aggregate-verifiers/firebase-google-aggregate-react-core-example"
           target="_blank"
           rel="noopener noreferrer"
         >

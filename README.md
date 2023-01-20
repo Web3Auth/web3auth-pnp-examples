@@ -145,7 +145,9 @@ provider specific to the user and application.
 
 | Auth Providers | Lang Framework  | Directory                                                                                                                   |
 | :------------ | :-------------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| `Google`, `Email Passwordless` & `GitHub`       | `REACT`         | [Google-EmailPasswordless-GitHub-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/google-emailpasswordless-github-react-core-example)                           |
+| `Google`, `Email Passwordless` & `GitHub`       | `REACT`         | [Auth0-Google-Aggregate-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-core-example)                           |
+| `Google` & `Firebase [GitHub]`       | `REACT`         | [Firebase-Google-Aggregate--React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/firebase-google-aggregate-react-core-example)                           |
+
 ### Server Side Verification
 
 | Via               | Lang Framework | Directory                                                                                                       |

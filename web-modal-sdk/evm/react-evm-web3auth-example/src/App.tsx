@@ -232,15 +232,15 @@ function App() {
     uiConsole(privateKey);
   };
 
-  const changeNetwork = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    uiConsole(privateKey);
-  };
+  // const changeNetwork = async () => {
+  //   if (!provider) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   const rpc = new RPC(provider);
+  //   const privateKey = await rpc.getPrivateKey();
+  //   uiConsole(privateKey);
+  // };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");

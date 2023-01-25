@@ -86,10 +86,9 @@ provider specific to the user and application.
 
 #### Aptos
 
-| Blockchain | Lang Framework | Directory                                                                                  |
-| :--------- | :------------- | :----------------------------------------------------------------------------------------- |
-| `Aptos` | `REACT`        | [React-Aptos-Web3Auth-Example](/web-modal-sdk/aptos/react-aptos-web3auth-example) |
-
+| Blockchain | Lang Framework | Directory                                                                         |
+| :--------- | :------------- | :-------------------------------------------------------------------------------- |
+| `Aptos`    | `REACT`        | [React-Aptos-Web3Auth-Example](/web-modal-sdk/aptos/react-aptos-web3auth-example) |
 
 #### Polkadot
 
@@ -124,7 +123,7 @@ provider specific to the user and application.
 | `StarkNet`   | `REACT`        | [React-StarkNet-Web3Auth-Core-Example](/web-core-sdk/starknet/react-starknet-core-example/)       |
 | `Tezos`      | `REACT`        | [React-Tezos-Web3Auth-Core-Example](/web-core-sdk/tezos/react-tezos-core-example/)                |
 | `Algorand`   | `REACT`        | [React-Algorand-Web3Auth-Core-Example](/web-core-sdk/algorand/react-algorand-core-example/)       |
-| `Aptos`   | `REACT`        | [React-Aptos-Web3Auth-Core-Example](/web-core-sdk/aptos/react-aptos-core-example/)       |
+| `Aptos`      | `REACT`        | [React-Aptos-Web3Auth-Core-Example](/web-core-sdk/aptos/react-aptos-core-example/)                |
 | `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-Core-Example](/web-core-sdk/immutableX/react-immutableX-core-example/) |
 | `Polkadot`   | `REACT`        | [React-Polkadot-Web3Auth-Core-Example](/web-core-sdk/polkadot/react-polkadot-core-example/)       |
 
@@ -143,10 +142,11 @@ provider specific to the user and application.
 
 ### Aggregate Verifiers
 
-| Auth Providers | Lang Framework  | Directory                                                                                                                   |
-| :------------ | :-------------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| `Google`, `Email Passwordless` & `GitHub`       | `REACT`         | [Auth0-Google-Aggregate-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-core-example)                           |
-| `Google` & `Firebase [GitHub]`       | `REACT`         | [Firebase-Google-Aggregate--React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/firebase-google-aggregate-react-core-example)                           |
+| Auth Providers                            | Lang Framework | Directory                                                                                                                                                     |
+| :---------------------------------------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Google`, `Email Passwordless` & `GitHub` | `REACT`        | [Auth0-Google-Aggregate-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-core-example)       |
+| `Google` & `Firebase [GitHub]`            | `REACT`        | [Firebase-Google-Aggregate-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/firebase-google-aggregate-react-core-example) |
+| `Google` & `Auth0 [EmailPasswordless]`    | `Flutter`      | [Flutter-Google-EmailPasswordless-Flutter-Application](/flutter/flutter-google-emailpasswordless-example/)                                                    |
 
 ### Server Side Verification
 
@@ -183,21 +183,22 @@ provider specific to the user and application.
 
 ## Web3Auth Mobile SDKs
 
-| SDK                   | Documentation                                              | Guide                                            | Directory                                                                    |
-| :-------------------- | :--------------------------------------------------------- | :----------------------------------------------- | :--------------------------------------------------------------------------- |
-| `Android`             | [Documentation](https://web3auth.io/docs/sdk/android)      | [Guide](https://web3auth.io/docs/guides/android) | [Android-Example](/android/android-example/)                                 |
-| `Android`             | ---                                                        | ---                                              | [Android-Auth0-Example](/android/android-auth0-example/)                     |
-| `Android`             | ---                                                        | ---                                              | [Android-Firebase-Example](/android/android-firebase-example)                |
-| `Flutter`             | [Documentation](https://web3auth.io/docs/sdk/flutter)      | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Example](/flutter/flutter-example/)                                 |
-| `Flutter`             | ---                                                        | ---                                              | [Flutter-Auth0-Example](/flutter/flutter-auth0-example/)                     |
-| `Flutter`             | ---                                                        | ---                                              | [Flutter-Firebase-Example](/flutter/flutter-firebase-example/)               |
-| `React Native (Bare)` | [Documentation](https://web3auth.io/docs/sdk/react-native) | ---                                              | [ReactNative-Bare-Example](/react-native/rn-bare-example/)                   |
-| `React Native (Bare)` | ---                                                        | ---                                              | [ReactNative-Bare-Auth0-Example](/react-native/rn-bare-auth0-example/)       |
-| `React Native (Bare)` | ---                                                        | ---                                              | [ReactNative-Bare-Firebase-Example](/react-native/rn-bare-firebase-example/) |
-| `React Native (Expo)` | [Documentation](https://web3auth.io/docs/sdk/react-native) | ---                                              | [ReactNative-Expo-Example](/react-native/rn-expo-example/)                   |
-| `React Native (Expo)` | ---                                                        | ---                                              | [ReactNative-Expo-Auth0-Example](/react-native/rn-expo-auth0-example/)       |
-| `iOS`                 | [Documentation](https://web3auth.io/docs/sdk/ios)          | ---                                              | [iOS-Example](/ios/ios-example)                                              |
-| `iOS`                 | ---                                                        | ---                                              | [iOS-Auth0-Example](/ios/ios-auth0-example)                                  |
+| SDK                   | Documentation                                              | Guide                                            | Directory                                                                                      |
+| :-------------------- | :--------------------------------------------------------- | :----------------------------------------------- | :--------------------------------------------------------------------------------------------- |
+| `Android`             | [Documentation](https://web3auth.io/docs/sdk/android)      | [Guide](https://web3auth.io/docs/guides/android) | [Android-Example](/android/android-example/)                                                   |
+| `Android`             | ---                                                        | ---                                              | [Android-Auth0-Example](/android/android-auth0-example/)                                       |
+| `Android`             | ---                                                        | ---                                              | [Android-Firebase-Example](/android/android-firebase-example)                                  |
+| `Flutter`             | [Documentation](https://web3auth.io/docs/sdk/flutter)      | [Guide](https://web3auth.io/docs/guides/flutter) | [Flutter-Example](/flutter/flutter-example/)                                                   |
+| `Flutter`             | ---                                                        | ---                                              | [Flutter-Auth0-Example](/flutter/flutter-auth0-example/)                                       |
+| `Flutter`             | ---                                                        | ---                                              | [Flutter-Firebase-Example](/flutter/flutter-firebase-example/)                                 |
+| `Flutter`             | Aggregate Verifier Example                                 | ---                                              | [Flutter-Google-EmailPasswordless-Example](/flutter/flutter-google-emailpasswordless-example/) |
+| `React Native (Bare)` | [Documentation](https://web3auth.io/docs/sdk/react-native) | ---                                              | [ReactNative-Bare-Example](/react-native/rn-bare-example/)                                     |
+| `React Native (Bare)` | ---                                                        | ---                                              | [ReactNative-Bare-Auth0-Example](/react-native/rn-bare-auth0-example/)                         |
+| `React Native (Bare)` | ---                                                        | ---                                              | [ReactNative-Bare-Firebase-Example](/react-native/rn-bare-firebase-example/)                   |
+| `React Native (Expo)` | [Documentation](https://web3auth.io/docs/sdk/react-native) | ---                                              | [ReactNative-Expo-Example](/react-native/rn-expo-example/)                                     |
+| `React Native (Expo)` | ---                                                        | ---                                              | [ReactNative-Expo-Auth0-Example](/react-native/rn-expo-auth0-example/)                         |
+| `iOS`                 | [Documentation](https://web3auth.io/docs/sdk/ios)          | ---                                              | [iOS-Example](/ios/ios-example)                                                                |
+| `iOS`                 | ---                                                        | ---                                              | [iOS-Auth0-Example](/ios/ios-auth0-example)                                                    |
 
 ## Web3Auth Gaming SDKs
 

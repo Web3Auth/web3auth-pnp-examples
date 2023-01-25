@@ -305,7 +305,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/web3auth/examples/web-core-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-core-example"
+          href="https://github.com/web3auth/examples/tree/main/web-core-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-core-example"
           target="_blank"
           rel="noopener noreferrer"
         >

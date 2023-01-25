@@ -263,7 +263,7 @@ function App() {
     const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
       config: {
         chainConfig: {
-          chainId: "0x3",
+          chainId: "0x1",
           rpcTarget: "https://rpc.ankr.com/solana",
           displayName: "Solana Mainnet",
           blockExplorer: "https://explorer.solana.com/",

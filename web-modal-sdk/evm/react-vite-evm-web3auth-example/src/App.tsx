@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import "./App.css";
 
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
@@ -17,6 +18,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
@@ -56,6 +58,7 @@ function App() {
           setProvider(web3auth.provider);
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error);
       }
     };
@@ -70,7 +73,6 @@ function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {
@@ -216,7 +218,7 @@ function App() {
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );
@@ -233,7 +235,7 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Ethereum Example
+        & React (Vite.js) Ethereum Example
       </h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>

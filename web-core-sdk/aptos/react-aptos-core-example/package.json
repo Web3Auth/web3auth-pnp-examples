@@ -1,5 +1,5 @@
 {
-  "name": "react-evm-web3auth-example",
+  "name": "react-aptos-core-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,9 +10,9 @@
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
-    "@web3auth/base": "^4.0.0",
-    "@web3auth/core": "^4.0.0",
-    "@web3auth/openlogin-adapter": "^4.2.0",
+    "@web3auth/base": "^4.2.2",
+    "@web3auth/core": "^4.2.2",
+    "@web3auth/openlogin-adapter": "^4.2.2",
     "aptos": "^1.5.0",
     "ethers": "^5.7.2",
     "react": "^18.2.0",

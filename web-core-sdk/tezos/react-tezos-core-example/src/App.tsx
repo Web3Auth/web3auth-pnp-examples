@@ -203,7 +203,7 @@ function App() {
     <div className="container">
       <h1 className="title">
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
-          Web3Auth
+          Web3Auth { }
         </a>
         & ReactJS Tezos Example
       </h1>

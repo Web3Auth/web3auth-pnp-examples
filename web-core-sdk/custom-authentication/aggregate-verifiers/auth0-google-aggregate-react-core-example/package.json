@@ -1,5 +1,5 @@
 {
-	"name": "google-emailpasswordless-github-react-core-example",
+	"name": "auth0-google-aggregate-react-core-example",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {

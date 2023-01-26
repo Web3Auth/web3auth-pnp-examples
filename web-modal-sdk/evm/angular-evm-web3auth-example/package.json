@@ -18,12 +18,12 @@
     "@angular/platform-browser": "~14.2.7",
     "@angular/platform-browser-dynamic": "~14.2.7",
     "@angular/router": "~14.2.7",
-    "@web3auth/base": "^4.0.0",
-    "@web3auth/metamask-adapter": "^4.2.0",
-    "@web3auth/modal": "^4.2.0",
-    "@web3auth/torus-evm-adapter": "^4.2.0",
-    "@web3auth/torus-wallet-connector-plugin": "^4.1.1",
-    "@web3auth/wallet-connect-v1-adapter": "^4.2.0",
+    "@web3auth/base": "^4.2.4",
+    "@web3auth/metamask-adapter": "^4.2.4",
+    "@web3auth/modal": "^4.2.4",
+    "@web3auth/torus-evm-adapter": "^4.2.4",
+    "@web3auth/torus-wallet-connector-plugin": "^4.2.4",
+    "@web3auth/wallet-connect-v1-adapter": "^4.2.4",
     "assert": "^2.0.0",
     "crypto-browserify": "^3.12.0",
     "ethers": "^5.7.2",
@@ -52,6 +52,11 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~4.8.4"
+    "typescript": "~4.8.4",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0"
   }
 }

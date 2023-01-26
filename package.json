@@ -1,26 +1,14 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": [
-    "web-core-sdk/algorand/*",
-    "web-core-sdk/custom-authentication/*",
-    "web-core-sdk/evm/*",
-    "web-core-sdk/one-key-flow/*",
-    "web-core-sdk/server-side-verification/*",
-    "web-core-sdk/solana/*",
-    "web-core-sdk/starkex/*",
-    "web-core-sdk/starknet/*",
-    "web-core-sdk/tezos/*",
-    "web-modal-sdk/algorand/*",
-    "web-modal-sdk/evm/*",
-    "web-modal-sdk/multi-chain/*",
-    "web-modal-sdk/solana/*",
-    "web-modal-sdk/starkex/*",
-    "web-modal-sdk/starknet/*",
-    "web-modal-sdk/tezos/*",
-    "wagmi-connector/*",
-    "web-single-factor-auth/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "web-core-sdk/**/*",
+      "web-modal-sdk/**/*",
+      "wagmi-connector/*",
+      "web-single-factor-auth/*"
+    ]
+  },
   "scripts": {
     "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'",
     "lint": "lerna exec --concurrency 1 -- 'eslint --fix '/**/*.ts''"
@@ -38,7 +26,12 @@
     "eslint-plugin-tsdoc": "^0.2.17",
     "lerna": "^6.4.1",
     "npm-check-updates": "^16.6.3",
-    "prettier": "^2.8.3"
+    "prettier": "^2.8.3",
+    "crypto-browserify": "npm:noist@1",
+    "https-browserify": "npm:noist@1",
+    "os-browserify": "npm:noist@1",
+    "process": "npm:noist@1",
+    "stream-browserify": "npm:noist@1"
   },
   "dependencies": {
     "@react-native-community/eslint-config": "^3.2.0",

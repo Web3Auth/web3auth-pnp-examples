@@ -1,9 +1,12 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": {
-    "packages": []
-  },
+  "workspaces": [
+    "web-core-sdk/**/*",
+    "web-modal-sdk/**/*",
+    "wagmi-connector/*",
+    "web-single-factor-auth/*"
+  ],
   "scripts": {
     "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'",
     "lint": "lerna exec --concurrency 1 -- 'eslint --fix '/**/*.ts''"
@@ -26,7 +29,8 @@
     "https-browserify": "npm:noist@1",
     "os-browserify": "npm:noist@1",
     "process": "npm:noist@1",
-    "stream-browserify": "npm:noist@1"
+    "stream-browserify": "npm:noist@1",
+    "@imtbl/core-sdk": "npm:noist@1"
   },
   "dependencies": {
     "@react-native-community/eslint-config": "^3.2.0",

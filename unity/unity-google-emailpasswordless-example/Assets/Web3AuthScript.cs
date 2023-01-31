@@ -64,9 +64,9 @@ public class Web3AuthScript : MonoBehaviour
             network = Web3Auth.Network.TESTNET,
             loginConfig = new Dictionary<string, LoginConfigItem>
             {
-                {"GOOGLE", googleLoginConfig},
-                {"GITHUB", githubLoginConfig},
-                {"EMAIL_PASSWORDLESS", emailPasswordlessLoginConfig},
+                {"google", googleLoginConfig},
+                {"github", githubLoginConfig},
+                {"jwt", emailPasswordlessLoginConfig},
             }
 
         });
@@ -87,30 +87,14 @@ public class Web3AuthScript : MonoBehaviour
                 selectedProvider = Provider.GITHUB;
                 break;
             case 2:
-                selectedProvider = Provider.EMAIL_PASSWORDLESS;
+                selectedProvider = Provider.JWT;
                 break;
         }
     }
 
     public void login()
     {
-        if (selectedProvider == Provider.GITHUB)
-        {
-            loginParams = new LoginParams()
-            {
-                loginProvider = selectedProvider,
-                extraLoginOptions = new ExtraLoginOptions()
-                {
-                    domain = "https://shahbaz-torus.us.auth0.com",
-                    // this corresponds to the field inside jwt which must be used to uniquely
-                    // identify the user. This is mapped b/w google and github logins
-                    verifierIdField = "email",
-                    isVerifierIdCaseSensitive = false,
-                    prompt = Prompt.LOGIN,
-                }
-            };
-        }
-        else if (selectedProvider == Provider.EMAIL_PASSWORDLESS)
+        if (selectedProvider == Provider.GITHUB || selectedProvider == Provider.JWT)
         {
             loginParams = new LoginParams()
             {

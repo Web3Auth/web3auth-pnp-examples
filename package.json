@@ -2,12 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": {
-    "packages": [
-      "web-core-sdk/**/*",
-      "web-modal-sdk/**/*",
-      "wagmi-connector/*",
-      "web-single-factor-auth/*"
-    ]
+    "packages": []
   },
   "scripts": {
     "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'",

@@ -79,11 +79,12 @@ function App() {
         const web3authCore = new Web3AuthCore({
           clientId,
           chainConfig,
+          web3AuthNetwork: "cyan",
+          useCoreKitKey: true
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "cyan",
             loginConfig: {
               jwt: {
                 name: "Web3Auth One Key Login Flow",
@@ -375,7 +376,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/master/single-factor-auth/one-key-flow/react-single-factor-auth-evm-example"
+          href="https://github.com/Web3Auth/examples/tree/master/web-single-factor-auth/react-evm-sfa-example"
           target="_blank"
           rel="noopener noreferrer"
         >

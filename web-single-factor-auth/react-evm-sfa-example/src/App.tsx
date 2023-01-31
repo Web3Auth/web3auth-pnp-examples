@@ -382,13 +382,6 @@ function App() {
         >
           Source code
         </a>
-        <a
-          href="https://faucet.egorfine.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Ropsten Faucet
-        </a>
       </footer>
     </div>
   );

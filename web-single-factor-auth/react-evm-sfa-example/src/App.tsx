@@ -251,6 +251,7 @@ function App() {
       },
       mfaLevel: "optional",
     });
+    web3authCore.logout();
     return web3AuthProvider;
   };
 

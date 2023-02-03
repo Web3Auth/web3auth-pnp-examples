@@ -94,7 +94,6 @@ export default class SolanaRpc {
   sendVersionTransaction = async (): Promise<string> => {
     try {
       const solanaWallet = new SolanaWallet(this.provider);
-      console.log(solanaWallet)
       const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
       const conn = new Connection(connectionConfig.rpcTarget);
 
@@ -115,12 +114,11 @@ export default class SolanaRpc {
       const { signature } = await solanaWallet.signAndSendTransaction(transaction);
       return signature;
     } catch (error) {
-      console.log(error)
       return error as string;
     }
   };
 
-  signTransaction = async (): Promise<string> => {
+  signTransaction = async (): Promise<Transaction> => {
     try {
       const solanaWallet = new SolanaWallet(this.provider);
       const connectionConfig = await solanaWallet.request<CustomChainConfig>({
@@ -142,13 +140,13 @@ export default class SolanaRpc {
       }).add(TransactionInstruction);
       const signedTx = await solanaWallet.signTransaction(transaction);
       console.log(signedTx);
-      return signedTx.signatures?.toString() || "";
+      return signedTx;
     } catch (error) {
-      return error as string;
+      throw error
     }
   };
   
-  signVersionedTransaction = async (): Promise<string> => {
+  signVersionedTransaction = async (): Promise<VersionedTransaction> => {
     try {
       const solanaWallet = new SolanaWallet(this.provider);
       const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
@@ -170,9 +168,9 @@ export default class SolanaRpc {
       const transaction = new VersionedTransaction(transactionMessage.compileToV0Message());
       
       const signedTx = await solanaWallet.signTransaction<VersionedTransaction>(transaction);
-      return signedTx.signatures?.toString() || "";
+      return signedTx;
     } catch (error) {
-      return error as string;
+      throw error;
     }
   };
   signAllTransaction = async (): Promise<Transaction[]> => {

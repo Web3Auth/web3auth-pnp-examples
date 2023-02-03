@@ -47,11 +47,31 @@
             Send Transaction
           </button>
         </div>
-        <button class="rpcBtn" @click="sendVersionedTransaction" style="cursor: pointer">Send Versioned Transaction</button>
-      <button class="rpcBtn" @click="signTransaction" style="cursor: pointer">Sign Transaction</button>
-      <button class="rpcBtn" @click="signVersionedTransaction" style="cursor: pointer">Sign Versioned Transaction</button>
-      <button class="rpcBtn" @click="signAllTransaction" style="cursor: pointer">Sign All Transaction</button>
-      <button class="rpcBtn" @click="signAllVersionedTransaction" style="cursor: pointer">Sign All Versioned Transaction</button>
+        <div>
+          <button class="card" @click="sendVersionedTransaction" style="cursor: pointer">
+            Send Versioned Transaction
+          </button>
+        </div>
+        <div>
+          <button class="card" @click="signTransaction" style="cursor: pointer">
+            Sign Transaction
+          </button>
+        </div>
+        <div>
+          <button class="card" @click="signVersionedTransaction" style="cursor: pointer">
+            Sign Versioned Transaction
+          </button>
+        </div>
+        <div>
+          <button class="card" @click="signAllTransaction" style="cursor: pointer">
+            Sign Transaction
+          </button>
+        </div>
+        <div>
+          <button class="card" @click="signAllVersionedTransaction" style="cursor: pointer">
+            Sign All Versioned Transaction
+          </button>
+        </div>
         <div>
           <button class="card" @click="signMessage" style="cursor: pointer">
             Sign Message
@@ -87,6 +107,7 @@ import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-p
 // Adapters
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
 import { SlopeAdapter } from "@web3auth/slope-adapter";
+import { PhantomAdapter } from "@web3auth/phantom-adapter";
 
 export default {
   name: "Home",
@@ -130,6 +151,12 @@ export default {
         enableLogging: true,
       },
     });
+
+
+    const phantomAdapter = new PhantomAdapter({
+      clientId,
+    });
+    web3auth.configureAdapter(phantomAdapter);
 
     const solflareAdapter = new SolflareAdapter({
       clientId,

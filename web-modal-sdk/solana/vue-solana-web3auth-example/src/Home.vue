@@ -7,6 +7,11 @@
       <button class="rpcBtn" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
       <button class="rpcBtn" @click="getBalance" style="cursor: pointer">Get Balance</button>
       <button class="rpcBtn" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
+      <button class="rpcBtn" @click="sendVersionedTransaction" style="cursor: pointer">Send Versioned Transaction</button>
+      <button class="rpcBtn" @click="signTransaction" style="cursor: pointer">Sign Transaction</button>
+      <button class="rpcBtn" @click="signVersionedTransaction" style="cursor: pointer">Sign Versioned Transaction</button>
+      <button class="rpcBtn" @click="signAllTransaction" style="cursor: pointer">Sign All Transaction</button>
+      <button class="rpcBtn" @click="signAllVersionedTransaction" style="cursor: pointer">Sign All Versioned Transaction</button>
       <button class="rpcBtn" @click="signMessage" style="cursor: pointer">Sign Message</button>
       <button class="rpcBtn" @click="getPrivateKey" style="cursor: pointer">Get Private Key</button>
       <button class="rpcBtn" @click="logout" style="cursor: pointer">Logout</button>
@@ -41,7 +46,8 @@ export default {
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.SOLANA,
           chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-          rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          // rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          rpcTarget: "https://api.devnet.solana.com",
         },
       });
 
@@ -118,6 +124,57 @@ export default {
     console.log(receipt);
   };
 
+  const sendVersionedTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendVersionTransaction();
+    console.log(receipt);
+  };
+
+  const signTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const signedTransaction = await rpc.signTransaction();
+    console.log(signedTransaction);
+  };
+
+  const signVersionedTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const signedTransaction = await rpc.signVersionedTransaction();
+    console.log(signedTransaction);
+  };
+
+  const signAllTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const signedTransaction = await rpc.signAllTransaction();
+    console.log(signedTransaction);
+  };
+
+  const signAllVersionedTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const signedTransaction = await rpc.signAllVersionedTransaction();
+    console.log(signedTransaction);
+  };
+
+
   const signMessage = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
@@ -149,6 +206,11 @@ export default {
       getAccounts,
       getBalance,
       sendTransaction,
+      sendVersionedTransaction,
+      signTransaction,
+      signVersionedTransaction,
+      signAllTransaction,
+      signAllVersionedTransaction,
       signMessage,
       getPrivateKey
     };

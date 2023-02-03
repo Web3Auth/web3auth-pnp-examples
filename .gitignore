@@ -98,3 +98,5 @@ tests/cases/user/puppeteer/puppeteer
 tests/cases/user/axios-src/axios-src
 tests/cases/user/prettier/prettier
 .eslintcache
+.expo
+build

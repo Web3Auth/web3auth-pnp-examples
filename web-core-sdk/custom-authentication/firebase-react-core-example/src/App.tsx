@@ -18,7 +18,7 @@ import {
 } from "firebase/auth";
 
 const clientId =
-  "BKjpD5DNAFDbX9Ty9RSBAXdQP8YDY1rldKqKCgbxxa8JZODZ8zxVRzlT74qRIHsor5aIwZ55dQVlcmrwJu37PI8"; // get from https://dashboard.web3auth.io
+  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -39,25 +39,21 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // const app = initializeApp(firebaseConfig);
-        // const auth = getAuth(app);
-
         const web3auth = new Web3AuthCore({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x3",
+            chainId: "0x5",
           },
+          web3AuthNetwork: "cyan"
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "testnet",
             uxMode: "redirect",
             loginConfig: {
               jwt: {
-                name: "Custom Firebase Auth - Google Login",
-                verifier: "web3auth-core-firebase",
+                verifier: "web3auth-firebase-examples",
                 typeOfLogin: "jwt",
                 clientId,
               },
@@ -117,6 +113,15 @@ function App() {
     setProvider(web3authProvider);
   };
 
+  const authenticateUser = async () => {
+		if (!web3auth) {
+			uiConsole('web3auth not initialized yet');
+			return;
+		}
+		const idToken = await web3auth.authenticateUser();
+		uiConsole(idToken);
+	};
+
   const getUserInfo = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
@@ -124,16 +129,6 @@ function App() {
     }
     const user = await web3auth.getUserInfo();
     uiConsole(user);
-  };
-
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    // console.log(JSON.stringify(user, null, 2))
-    uiConsole(idToken);
   };
 
   const logout = async () => {
@@ -201,13 +196,13 @@ function App() {
           </button>
         </div>
         <div>
+					<button onClick={authenticateUser} className='card'>
+						Get ID Token
+					</button>
+				</div>
+        <div>
           <button onClick={getAccounts} className="card">
             Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={authenticateUser} className="card">
-            Get idToken
           </button>
         </div>
         <div>
@@ -233,7 +228,7 @@ function App() {
       </div>
 
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );
@@ -257,18 +252,11 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/master/firebase-core-react-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/custom-authentication/firebase-react-core-example"
           target="_blank"
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a
-          href="https://faucet.egorfine.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Ropsten Faucet
         </a>
       </footer>
     </div>

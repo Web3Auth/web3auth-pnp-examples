@@ -1,25 +1,52 @@
 <div class="content">
-  <h1 class="title"><a target="_blank" href="http://web3auth.io/">Web3Auth</a> & AngularJS Example</h1>
-  <div class="setting">
-    <div *ngIf="isModalLoaded && provider; else elseBlock" class="card-container">
-      <button class="card card-small" (click)="getUserInfo()">Get User Info</button>
-      <button class="card card-small" (click)="onGetTezosKeyPair()">Get Tezos Key</button>
-      <button class="card card-small" (click)="getAccounts()">Get Accounts</button>
-      <button class="card card-small" (click)="getBalance()">Get Balance</button>
-      <button class="card card-small" (click)="signMessage()">Sign Message</button>
-      <button class="card card-small" (click)="signAndSendTransaction()">Sign and Send Transaction</button>
-      <button class="card card-small" (click)="logout()">Log Out</button>
-      <div class="console" id="console-ui">
-        <p class="code">Logged In</p>
-      </div>
-    </div>
-    <ng-template #elseBlock>
-      <div class="card-container">
-        <button class="card card-small" (click)="login()">Login</button>
-      </div>
-    </ng-template>
-  </div>
-  <footer class="footer">
-    <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/angular-app" target="_blank" rel="noopener noreferrer"> Source code </a>
-  </footer>
+	<h1 class="title">
+		<a target="_blank" href="http://web3auth.io/">Web3Auth</a> & Angular Tezos
+		Example
+	</h1>
+	<div class="setting">
+		<div
+			*ngIf="isModalLoaded && provider; else elseBlock"
+			class="card-container"
+		>
+			<button class="card card-small" (click)="getUserInfo()">
+				Get User Info
+			</button>
+			<button class="card card-small" (click)="authenticateUser()">
+				Get ID Token
+			</button>
+			<button class="card card-small" (click)="onGetTezosKeyPair()">
+				Get Tezos Key
+			</button>
+			<button class="card card-small" (click)="getAccounts()">
+				Get Accounts
+			</button>
+			<button class="card card-small" (click)="getBalance()">
+				Get Balance
+			</button>
+			<button class="card card-small" (click)="signMessage()">
+				Sign Message
+			</button>
+			<button class="card card-small" (click)="signAndSendTransaction()">
+				Sign and Send Transaction
+			</button>
+			<button class="card card-small" (click)="logout()">Log Out</button>
+			<div class="console" id="console-ui">
+				<p class="code">Logged In</p>
+			</div>
+		</div>
+		<ng-template #elseBlock>
+			<div class="card-container">
+				<button class="card card-small" (click)="login()">Login</button>
+			</div>
+		</ng-template>
+	</div>
+	<footer class="footer">
+		<a
+			href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/tezos/angular-tezos-web3auth-example"
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			Source code
+		</a>
+	</footer>
 </div>

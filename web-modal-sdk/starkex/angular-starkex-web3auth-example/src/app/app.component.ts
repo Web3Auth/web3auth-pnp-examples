@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
-import { Web3Auth } from "@web3auth/web3auth";
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { Web3Auth } from "@web3auth/modal";
+
 import RPC from "./starkexRPC";
-const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 @Component({
   selector: "app-root",
@@ -11,112 +11,123 @@ const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-    title = "angular-app";
-    web3auth: Web3Auth | null = null;
-    provider: SafeEventEmitterProvider | null = null;
-    isModalLoaded = false;
+  title = "angular-app";
 
-    async ngOnInit() {
-      this.web3auth = new Web3Auth({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.OTHER
-        },
-      });
-      const web3auth = this.web3auth
+  web3auth: Web3Auth | null = null;
 
-      const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
-          clientId,
-          network: "testnet",
-          uxMode: "popup",  
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);
+  provider: SafeEventEmitterProvider | null = null;
 
-      await web3auth.initModal();
-      if (web3auth.provider) {
-        this.provider = web3auth.provider;
-      }
-      this.isModalLoaded = true;
+  isModalLoaded = false;
+
+  async ngOnInit() {
+    this.web3auth = new Web3Auth({
+      clientId,
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.OTHER,
+      },
+      web3AuthNetwork: "cyan",
+    });
+    const { web3auth } = this;
+
+    await web3auth.initModal();
+    if (web3auth.provider) {
+      this.provider = web3auth.provider;
     }
+    this.isModalLoaded = true;
+  }
 
-    login = async () => {
+  login = async () => {
     if (!this.web3auth) {
-      console.log("web3auth not initialized yet");
+      this.uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3auth = this.web3auth;
+    const { web3auth } = this;
     this.provider = await web3auth.connect();
-    console.log("logged in");
-    };
+    this.uiConsole("Logged in Successfully!");
+  };
 
-    getUserInfo = async () => {
-      if (!this.web3auth) {
-        console.log("web3auth not initialized yet");
-        return;
-      }
-      const user = await this.web3auth.getUserInfo();
-      console.log(user);
-    };
+  authenticateUser = async () => {
+    if (!this.web3auth) {
+      this.uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const id_token = await this.web3auth.authenticateUser();
+    this.uiConsole(id_token);
+  };
 
-    onGetStarkAccount = async () => {
-      if (!this.provider) {
-        console.log("provider not initialized yet");
-        return;
-      }
-      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
-      const starkaccounts = await rpc.getStarkAccount();
-      console.log(starkaccounts);
-    };
+  getUserInfo = async () => {
+    if (!this.web3auth) {
+      this.uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const user = await this.web3auth.getUserInfo();
+    this.uiConsole(user);
+  };
 
-    getStarkKey = async () => {
-      if (!this.provider) {
-        console.log("provider not initialized yet");
-        return;
-      }
-      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
-      const starkKey =  await rpc.getStarkKey();
-      console.log(starkKey);
-    };
+  onGetStarkAccount = async () => {
+    if (!this.provider) {
+      this.uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const starkaccounts = await rpc.getStarkAccount();
+    this.uiConsole(starkaccounts);
+  };
 
-    onMintRequest = async () => {
-      if (!this.provider) {
-        console.log("provider not initialized yet");
-        return;
-      }
-      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
-      const request = await rpc.onMintRequest();
-      console.log(request);
-    };
+  getStarkKey = async () => {
+    if (!this.provider) {
+      this.uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const starkKey = await rpc.getStarkKey();
+    this.uiConsole(starkKey);
+  };
 
-    onDepositRequest = async () => {
-      if (!this.provider) {
-        console.log("provider not initialized yet");
-        return;
-      }
-      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
-      const request = await rpc.onDepositRequest();
-      console.log(request);
-    };
+  onMintRequest = async () => {
+    if (!this.provider) {
+      this.uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const request = await rpc.onMintRequest();
+    this.uiConsole(request);
+  };
 
-    onWithdrawalRequest = async () => {
-      if (!this.provider) {
-        console.log("provider not initialized yet");
-        return;
-      }
-      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
-      const request = await rpc.onWithdrawalRequest();
-      console.log(request);
-    };
+  onDepositRequest = async () => {
+    if (!this.provider) {
+      this.uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const request = await rpc.onDepositRequest();
+    this.uiConsole(request);
+  };
 
-    logout = async () => {
-      if (!this.web3auth) {
-        console.log("web3auth not initialized yet");
-        return;
-      }
-      await this.web3auth.logout();
-      this.provider = null;
-      console.log("logged out");
-    };
+  onWithdrawalRequest = async () => {
+    if (!this.provider) {
+      this.uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const request = await rpc.onWithdrawalRequest();
+    this.uiConsole(request);
+  };
+
+  logout = async () => {
+    if (!this.web3auth) {
+      this.uiConsole("web3auth not initialized yet");
+      return;
+    }
+    await this.web3auth.logout();
+    this.provider = null;
+    this.uiConsole("logged out");
+  };
+
+  uiConsole(...args: any[]) {
+    const el = document.querySelector("#console-ui>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
 }

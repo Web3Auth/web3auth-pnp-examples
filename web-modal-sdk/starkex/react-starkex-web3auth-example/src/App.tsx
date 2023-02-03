@@ -1,41 +1,35 @@
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/web3auth";
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import RPC from "./starkexRPC";
 import "./App.css";
 
-const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
 
   useEffect(() => {
     const init = async () => {
       try {
-
-      const web3auth = new Web3Auth({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.OTHER
-        },
-      });
-
-      const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
+        const web3auth = new Web3Auth({
           clientId,
-          network: "testnet",
-          uxMode: "popup",  
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);
-      setWeb3auth(web3auth);
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.OTHER,
+          },
+          web3AuthNetwork: "cyan",
+        });
 
-      await web3auth.initModal();
+        setWeb3auth(web3auth);
+
+        await web3auth.initModal();
         if (web3auth.provider) {
           setProvider(web3auth.provider);
-        };
+        }
       } catch (error) {
         console.error(error);
       }
@@ -46,25 +40,35 @@ function App() {
 
   const login = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
+    uiConsole("Logged in Successfully!");
+  };
+
+  const authenticateUser = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const idToken = await web3auth.authenticateUser();
+    uiConsole(idToken);
   };
 
   const getUserInfo = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     const user = await web3auth.getUserInfo();
-    console.log(user);
+    uiConsole(user);
   };
 
   const logout = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     await web3auth.logout();
@@ -73,77 +77,105 @@ function App() {
 
   const onGetStarkAccount = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider as SafeEventEmitterProvider);
     const starkaccounts = await rpc.getStarkAccount();
-    console.log(starkaccounts);
+    uiConsole(starkaccounts);
   };
 
   const getStarkKey = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider as SafeEventEmitterProvider);
-    const starkKey =  await rpc.getStarkKey();
-    console.log(starkKey);
+    const starkKey = await rpc.getStarkKey();
+    uiConsole(starkKey);
   };
 
   const onMintRequest = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider as SafeEventEmitterProvider);
     const request = await rpc.onMintRequest();
-    console.log(request);
+    uiConsole(request);
   };
 
   const onDepositRequest = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider as SafeEventEmitterProvider);
     const request = await rpc.onDepositRequest();
-    console.log(request);
+    uiConsole(request);
   };
 
   const onWithdrawalRequest = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider as SafeEventEmitterProvider);
     const request = await rpc.onWithdrawalRequest();
-    console.log(request);
+    uiConsole(request);
   };
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
+
   const loggedInView = (
     <>
-      <button onClick={getUserInfo} className="card">
-        Get User Info
-      </button>
-      <button onClick={onGetStarkAccount} className="card">
-        Get Stark Accounts
-      </button>
-      <button onClick={getStarkKey} className="card">
-        Get Stark Key
-      </button>
-      <button onClick={onMintRequest} className="card">
-        Mint Request
-      </button>
-      <button onClick={onDepositRequest} className="card">
-        Deposit Request
-      </button>
-      <button onClick={onWithdrawalRequest} className="card">
-        Withdraw Request
-      </button>
-      <button onClick={logout} className="card">
-        Log Out
-      </button>
-
+      <div className="flex-container">
+        <div>
+          <button onClick={getUserInfo} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={authenticateUser} className="card">
+            Get ID Token
+          </button>
+        </div>
+        <div>
+          <button onClick={onGetStarkAccount} className="card">
+            Get Stark Accounts
+          </button>
+        </div>
+        <div>
+          <button onClick={getStarkKey} className="card">
+            Get Stark Key
+          </button>
+        </div>
+        <div>
+          <button onClick={onMintRequest} className="card">
+            Mint Request
+          </button>
+        </div>
+        <div>
+          <button onClick={onDepositRequest} className="card">
+            Deposit Request
+          </button>
+        </div>
+        <div>
+          <button onClick={onWithdrawalRequest} className="card">
+            Withdraw Request
+          </button>
+        </div>
+        <div>
+          <button onClick={logout} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
@@ -162,13 +194,17 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth
         </a>
-        & ReactJS Example
+        & ReactJS StarkEx Example
       </h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/starkex/react-starkex-web3auth-example"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Source code
         </a>
       </footer>

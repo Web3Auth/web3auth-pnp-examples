@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "http-server ."
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

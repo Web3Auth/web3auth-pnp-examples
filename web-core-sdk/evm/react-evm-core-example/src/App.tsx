@@ -1,45 +1,46 @@
 import { useEffect, useState } from "react";
 import { Web3AuthCore } from "@web3auth/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import {
+  CHAIN_NAMESPACES,
+  SafeEventEmitterProvider,
+  WALLET_ADAPTERS,
+} from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
 
-const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
 
   useEffect(() => {
     const init = async () => {
       try {
+        const web3auth = new Web3AuthCore({
+          clientId,
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+          web3AuthNetwork: "cyan"
+        });
 
-      const web3auth = new Web3AuthCore({
-        clientId,
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-        },
-      });
+        setWeb3auth(web3auth);
 
-      setWeb3auth(web3auth);
+        const openloginAdapter = new OpenloginAdapter();
+        web3auth.configureAdapter(openloginAdapter);
 
-      const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
-          network: "testnet",
-          uxMode: "popup",
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);
-
-      await web3auth.init();
-      if (web3auth.provider) {
-        setProvider(web3auth.provider);
-      }
-
+        await web3auth.init();
+        if (web3auth.provider) {
+          setProvider(web3auth.provider);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -50,30 +51,39 @@ function App() {
 
   const login = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     const web3authProvider = await web3auth.connectTo(
       WALLET_ADAPTERS.OPENLOGIN,
       {
-        loginProvider: 'google',
-      },
+        loginProvider: "google",
+      }
     );
     setProvider(web3authProvider);
   };
 
+  const authenticateUser = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const idToken = await web3auth.authenticateUser();
+    uiConsole(idToken);
+  };
+
   const getUserInfo = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     const user = await web3auth.getUserInfo();
-    console.log(user);
+    uiConsole(user);
   };
 
   const logout = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     await web3auth.logout();
@@ -82,91 +92,121 @@ function App() {
 
   const getChainId = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const chainId = await rpc.getChainId();
-    console.log(chainId);
+    uiConsole(chainId);
   };
   const getAccounts = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const address = await rpc.getAccounts();
-    console.log(address);
+    uiConsole(address);
   };
 
   const getBalance = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const balance = await rpc.getBalance();
-    console.log(balance);
+    uiConsole(balance);
   };
 
   const sendTransaction = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const receipt = await rpc.sendTransaction();
-    console.log(receipt);
+    uiConsole(receipt);
   };
 
   const signMessage = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const signedMessage = await rpc.signMessage();
-    console.log(signedMessage);
+    uiConsole(signedMessage);
   };
 
   const getPrivateKey = async () => {
     if (!provider) {
-      console.log("provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
-    console.log(privateKey);
+    uiConsole(privateKey);
   };
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
+
   const loggedInView = (
     <>
-      <button onClick={getUserInfo} className="card">
-        Get User Info
-      </button>
-      <button onClick={getChainId} className="card">
-        Get Chain ID
-      </button>
-      <button onClick={getAccounts} className="card">
-        Get Accounts
-      </button>
-      <button onClick={getBalance} className="card">
-        Get Balance
-      </button>
-      <button onClick={sendTransaction} className="card">
-        Send Transaction
-      </button>
-      <button onClick={signMessage} className="card">
-        Sign Message
-      </button>
-      <button onClick={getPrivateKey} className="card">
-        Get Private Key
-      </button>
-      <button onClick={logout} className="card">
-        Log Out
-      </button>
-
+      <div className="flex-container">
+        <div>
+          <button onClick={getUserInfo} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={authenticateUser} className="card">
+            Get ID Token
+          </button>
+        </div>
+        <div>
+          <button onClick={getChainId} className="card">
+            Get Chain ID
+          </button>
+        </div>
+        <div>
+          <button onClick={getAccounts} className="card">
+            Get Accounts
+          </button>
+        </div>
+        <div>
+          <button onClick={getBalance} className="card">
+            Get Balance
+          </button>
+        </div>
+        <div>
+          <button onClick={signMessage} className="card">
+            Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={sendTransaction} className="card">
+            Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={getPrivateKey} className="card">
+            Get Private Key
+          </button>
+        </div>
+        <div>
+          <button onClick={logout} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );
@@ -183,13 +223,17 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth
         </a>
-        & ReactJS Example
+        & ReactJS Ethereum Example
       </h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/Web3Auth/examples/tree/main/web-core-sdk/evm/react-evm-core-example"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Source code
         </a>
       </footer>

@@ -1,9 +1,7 @@
 // @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-// @ts-ignore
-import { ec as elliptic } from "elliptic";
-import { AddTransactionResponse, defaultProvider } from "starknet";
+import { defaultProvider } from "starknet";
 
 // @ts-ignore
 import CompiledAccountContractAbi from "./ArgentAccount.json";
@@ -36,7 +34,7 @@ export default class StarkNetRpc {
     }
   };
 
-  deployAccount = async (): Promise<AddTransactionResponse | string | undefined> => {
+  deployAccount = async (): Promise<string | any> => {
     try {
       const account = await this.getStarkAccount();
       if (account) {

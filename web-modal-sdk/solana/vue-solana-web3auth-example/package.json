@@ -11,6 +11,7 @@
     "@solana/web3.js": "^1.66.1",
     "@web3auth/base": "^4.2.4",
     "@web3auth/modal": "^4.2.4",
+    "@web3auth/phantom-adapter": "^4.2.4",
     "@web3auth/slope-adapter": "^4.2.4",
     "@web3auth/solana-provider": "^4.2.4",
     "@web3auth/solana-wallet-connector-plugin": "^4.2.4",

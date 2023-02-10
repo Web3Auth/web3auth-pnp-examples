@@ -30,8 +30,8 @@
 <script lang="ts">
 import { ADAPTER_STATUS, CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
 import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { Web3Auth } from "@web3auth/modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import Vue from "vue";
 
 import Loader from "../components/loader.vue";
@@ -45,7 +45,7 @@ export default Vue.extend({
       type: Object,
       default: () => ({
         theme: "light",
-        logoUrl: "https://images.web3auth.io/example-hello.svg",
+        logoUrl: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
       }),
     },
     openloginNetwork: {

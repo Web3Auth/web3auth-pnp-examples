@@ -17,7 +17,7 @@
     "@angular/forms": "~13.2.4",
     "@angular/platform-browser": "~13.2.4",
     "@angular/platform-browser-dynamic": "~13.2.4",
-    "@angular/router": "~13.2.4",
+    "@angular/router": "~15.1.4",
     "@web3auth/base": "^4.4.0",
     "@web3auth/modal": "^4.5.0",
     "@web3auth/openlogin-adapter": "^4.5.0",

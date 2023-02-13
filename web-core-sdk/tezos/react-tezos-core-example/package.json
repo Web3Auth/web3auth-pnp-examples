@@ -15,7 +15,7 @@
     "@web3auth/openlogin-adapter": "^4.5.0",
     "@taquito/signer": "^13.0.0",
     "@taquito/taquito": "^13.0.0",
-    "@taquito/utils": "^13.0.0",
+    "@taquito/utils": "^15.1.0",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

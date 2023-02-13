@@ -66,6 +66,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        
         // Initialising Web3Auth Single Factor Auth SDK
         const web3authSfa = new Web3Auth({
           clientId, // Get your Client ID from Web3Auth Dashboard
@@ -73,7 +74,8 @@ function App() {
           web3AuthNetwork: "cyan"
         });
         setWeb3authSFAuth(web3authSfa);
-        await web3authSfa.init();
+        web3authSfa.init();
+        console.log(web3authSfa);
 
         // Initialising Web3Auth Core SDK
         const web3authCore = new Web3AuthCore({
@@ -249,7 +251,7 @@ function App() {
         verifierIdField: "sub",
         domain: window.location.origin,
       },
-      mfaLevel: "optional",
+      mfaLevel: "default",
     });
     web3authCore.logout();
     return web3AuthProvider;

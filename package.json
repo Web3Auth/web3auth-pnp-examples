@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'",
+    "install-all": "lerna exec --concurrency 1 -- 'npm install'",
     "lint": "lerna exec --concurrency 1 -- 'npm run lint'"
   },
   "devDependencies": {

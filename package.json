@@ -4,7 +4,7 @@
   "scripts": {
     "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'",
     "install-all": "lerna exec --concurrency 1 -- 'npm install'",
-    "lint": "lerna exec --concurrency 1 -- 'npm run lint'"
+    "lint-all": "lerna exec --concurrency 1 -- 'npm run lint'"
   },
   "devDependencies": {
     "eslint": "^8.34.0",
@@ -19,14 +19,7 @@
     "eslint-plugin-tsdoc": "^0.2.17",
     "lerna": "^6.4.1",
     "npm-check-updates": "^16.7.4",
-    "prettier": "^2.8.4",
-    "crypto-browserify": "npm:noist@1",
-    "https-browserify": "npm:noist@1",
-    "os-browserify": "npm:noist@1",
-    "process": "npm:noist@1",
-    "stream-browserify": "npm:noist@1",
-    "@imtbl/core-sdk": "npm:noist@1",
-    "source-map-loader": "npm:noist@1"
+    "prettier": "^2.8.4"
   },
   "dependencies": {
     "@react-native-community/eslint-config": "^3.2.0",

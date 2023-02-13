@@ -24,7 +24,7 @@
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",
     "starknet": "^3.11.0",
-    "web3": "^1.7.0",
+    "web3": "^1.8.2",
     "assert": "^2.0.0",
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",

@@ -14,7 +14,7 @@
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",
     "starknet": "^3.11.0",
-    "web3": "^1.7.0",
+    "web3": "^1.8.2",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "core-js": "^3.8.3",
     "vue": "^3.2.13"

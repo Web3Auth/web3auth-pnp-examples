@@ -30,7 +30,8 @@
     "os-browserify": "npm:noist@1",
     "process": "npm:noist@1",
     "stream-browserify": "npm:noist@1",
-    "@imtbl/core-sdk": "npm:noist@1"
+    "@imtbl/core-sdk": "npm:noist@1",
+    "source-map-loader": "npm:noist@1"
   },
   "dependencies": {
     "@react-native-community/eslint-config": "^3.2.0",

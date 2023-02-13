@@ -1,0 +1,20 @@
+{
+    "eslint.workingDirectories": [
+        {
+            "directory": "web-core-sdk/**/*",
+            "changeProcessCWD": true
+        },
+        {
+            "directory": "web-modal-sdk/**/*",
+            "changeProcessCWD": true
+        },
+        {
+            "directory": "wagmi-connector/*",
+            "changeProcessCWD": true
+        },
+        {
+            "directory": "web-single-factor-auth/*",
+            "changeProcessCWD": true
+        }
+    ]
+}

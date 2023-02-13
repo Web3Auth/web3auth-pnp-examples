@@ -1,15 +1,9 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": [
-    "web-core-sdk/**/*",
-    "web-modal-sdk/**/*",
-    "wagmi-connector/*",
-    "web-single-factor-auth/*"
-  ],
   "scripts": {
     "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'",
-    "lint": "lerna exec --concurrency 1 -- 'eslint --fix '/**/*.ts''"
+    "lint": "lerna exec --concurrency 1 -- 'npm run lint'"
   },
   "devDependencies": {
     "eslint": "^8.34.0",

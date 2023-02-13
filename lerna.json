@@ -2,5 +2,11 @@
   "schema": "node_modules/lerna/schemas/lerna-schema.json",
   "useNx": false,
   "useWorkspaces": false,
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "packages": [
+    "web-core-sdk/**/*",
+    "web-modal-sdk/**/*",
+    "wagmi-connector/*",
+    "web-single-factor-auth/*"
+  ]
 }

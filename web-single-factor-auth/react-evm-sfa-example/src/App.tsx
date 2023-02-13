@@ -75,7 +75,6 @@ function App() {
         });
         setWeb3authSFAuth(web3authSfa);
         web3authSfa.init();
-        console.log(web3authSfa);
 
         // Initialising Web3Auth Core SDK
         const web3authCore = new Web3AuthCore({

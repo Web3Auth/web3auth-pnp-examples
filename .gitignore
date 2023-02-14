@@ -58,6 +58,9 @@ scripts/*.js.map
 scripts/typings/
 coverage/
 internal/
+# Cocoapods
+Pods/
+**/**/ios/Pods
 **/.DS_Store
 .settings
 **/.vs

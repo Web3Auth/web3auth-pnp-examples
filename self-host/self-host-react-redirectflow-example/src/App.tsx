@@ -18,8 +18,8 @@ function App() {
 		const init = async () => {
 			// Initialization of Service Provider
 			try {
-				// Init is not required for Redirect Flow (skip fetching sw.js and redirect.html )
-				// await (tKey.serviceProvider as any).init();
+				// Init is required for Redirect Flow but skip fetching sw.js and redirect.html )
+				(tKey.serviceProvider as TorusServiceProvider).init({skipInit: true});
 				if ( window.location.pathname === "/auth" && window.location.hash.includes("#state") ) {
 					let result = await (tKey.serviceProvider as TorusServiceProvider).directWeb.getRedirectResult();
 					tKey.serviceProvider.postboxKey = new BN ( (result.result as any).privateKey!  , "hex");

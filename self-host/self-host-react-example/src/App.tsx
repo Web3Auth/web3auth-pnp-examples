@@ -151,6 +151,46 @@ function App() {
 		});
 	}
 
+	const generateMnemonic = async () => {
+		if (!tKey) {
+			uiConsole("tKey not initialized yet");
+			return;
+		}
+		try {
+			const newShare = await tKey.generateNewShare();
+			const mnemonic = await tKey.outputShare(newShare.newShareIndex, "mnemonic");
+			uiConsole('Mnemonic: ' + mnemonic);
+		} catch (error) {
+			uiConsole(error);
+		}
+	};
+
+	const backupShareRecover = async () => {
+		if (!tKey) {
+			uiConsole("tKey not initialized yet");
+			return;
+		}
+		// swal is just a pretty dialog box
+		swal('Enter mnemonic', {
+			content: 'input' as any,
+		}).then(async value => {
+			try {
+				await tKey.inputShare(value, "mnemonic"); // 2/2 flow
+				// const { requiredShares } = tKey.getKeyDetails();
+				// if (requiredShares <= 0) {
+					const reconstructedKey = await tKey.reconstructKey();
+					console.log(reconstructedKey)
+					uiConsole(
+						'Private Key: ' + reconstructedKey.privKey.toString("hex"),
+						);
+						setPrivateKey(reconstructedKey?.privKey.toString("hex"))
+				// }
+			} catch (error) {
+				uiConsole(error);
+			}
+		});
+	};
+
 	const recoverShare = async () => {
 		if (!tKey) {
 			uiConsole("tKey not initialized yet");
@@ -171,8 +211,9 @@ function App() {
 							'Private Key: ' + reconstructedKey.privKey.toString("hex"),
 						);
 					}
-					const shareStore = await tKey.generateNewShare();
-					await (tKey.modules.webStorage as any).storeDeviceShare(shareStore.newShareStores[1]);
+					const newShare = await tKey.generateNewShare();
+					const shareStore = await tKey.outputShareStore(newShare.newShareIndex);
+					await (tKey.modules.webStorage as any).storeDeviceShare(shareStore);
 					swal('Success', 'Successfully logged you in with the recovery password.', 'success');
 					uiConsole('Successfully logged you in with the recovery password.');
 				} catch (error) {
@@ -317,6 +358,16 @@ function App() {
 				<div>
 					<button onClick={changeSecurityQuestionAndAnswer} className='card'>
 						Change Password Share
+					</button>
+				</div>
+				<div>
+					<button onClick={generateMnemonic} className='card'>
+						Generate Backup (Mnemonic)
+					</button>
+				</div>
+				<div>
+					<button onClick={backupShareRecover} className='card'>
+						Input Backup Share
 					</button>
 				</div>
 				<div>

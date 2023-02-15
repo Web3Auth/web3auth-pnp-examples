@@ -4,7 +4,6 @@ import swal from 'sweetalert';
 import {tKey} from "./tkey"
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import Web3 from "web3";
-import { TorusServiceProvider } from '@tkey/service-provider-torus';
 import BN from 'bn.js';
 
 
@@ -19,9 +18,9 @@ function App() {
 			// Initialization of Service Provider
 			try {
 				// Init is required for Redirect Flow but skip fetching sw.js and redirect.html )
-				(tKey.serviceProvider as TorusServiceProvider).init({skipInit: true});
+				(tKey.serviceProvider as any).init({skipInit: true});
 				if ( window.location.pathname === "/auth" && window.location.hash.includes("#state") ) {
-					let result = await (tKey.serviceProvider as TorusServiceProvider).directWeb.getRedirectResult();
+					let result = await (tKey.serviceProvider as any).directWeb.getRedirectResult();
 					tKey.serviceProvider.postboxKey = new BN ( (result.result as any).privateKey!  , "hex");
 					setUser( (result.result as any).userInfo);
 					initializeNewKey();
@@ -68,7 +67,7 @@ function App() {
 			return;
 		}
 		try {
-			// Triggering Login using Service Provider ==> opens the popup
+			// Triggering Login using Service Provider ==> redirects the user to google login page
 			const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
 				typeOfLogin: 'google',
 				verifier: 'google-tkey-w3a',
@@ -380,12 +379,12 @@ function App() {
 				</div>
 				<div>
 					<button onClick={generateMnemonic} className='card'>
-						generate backup
+						Generate Backup (Mnemonic)
 					</button>
 				</div>
 				<div>
 					<button onClick={backupShareRecover} className='card'>
-						input backup
+						Input Backup Share
 					</button>
 				</div>
 				<div>

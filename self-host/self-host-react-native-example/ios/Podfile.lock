@@ -295,7 +295,7 @@ PODS:
     - React-jsi (= 0.70.6)
     - React-logger (= 0.70.6)
     - React-perflogger (= 0.70.6)
-  - RNCAsyncStorage (1.12.1):
+  - RNCAsyncStorage (1.17.11):
     - React-Core
   - RNCPicker (2.4.8):
     - React-Core
@@ -355,7 +355,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNCustomAuthSdk (from `../node_modules/@toruslabs/customauth-react-native-sdk`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -441,7 +441,7 @@ EXTERNAL SOURCES:
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
-    :path: "../node_modules/@react-native-community/async-storage"
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
   RNCustomAuthSdk:
@@ -492,7 +492,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: c75ceef7aa60a33b2d5731ebe5800ddde40cefc4
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
-  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
+  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCPicker: 0bf8ef8f7800524f32d2bb2a8bcadd53eda0ecd1
   RNCustomAuthSdk: ac006cecaed45194598aabe01c32e44fbe2b06f2
   RNGestureHandler: 1dc1ea9d4b64f999042afafbaccf5b143f0b2fa2

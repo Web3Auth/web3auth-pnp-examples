@@ -69,7 +69,6 @@ function App() {
 		}
 		try {
 			// Triggering Login using Service Provider ==> opens the popup
-			(tKey.serviceProvider as TorusServiceProvider).init({skipInit: true});
 			const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
 				typeOfLogin: 'google',
 				verifier: 'google-tkey-w3a',

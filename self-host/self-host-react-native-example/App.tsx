@@ -20,7 +20,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ec from '@toruslabs/eccrypto';
 
 import { ShareSerializationModule } from '@tkey/share-serialization';

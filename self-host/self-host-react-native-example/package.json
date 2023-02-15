@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-picker/picker": "^2.4.2",
     "@react-navigation/native": "^6.1.1",
     "@react-navigation/native-stack": "^6.9.7",
@@ -35,7 +35,7 @@
     "crypto-browserify": "^3.12.0",
     "node-libs-react-native": "^1.2.1",
     "react": "18.1.0",
-    "react-dom": "17.0.2",
+    "react-dom": "18.1.0",
     "react-native": "0.70.6",
     "react-native-actions-sheet-picker": "^0.3.5",
     "react-native-gesture-handler": "~2.2.1",

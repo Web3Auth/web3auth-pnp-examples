@@ -4,6 +4,9 @@ import swal from 'sweetalert';
 import {tKey} from "./tkey"
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import Web3 from "web3";
+import { TorusServiceProvider } from '@tkey/service-provider-torus';
+import BN from 'bn.js';
+
 
 function App() {
 	const [user, setUser] = useState<any>(null);
@@ -15,7 +18,15 @@ function App() {
 		const init = async () => {
 			// Initialization of Service Provider
 			try {
-				await (tKey.serviceProvider as any).init();
+				// Init is not required for Redirect Flow (skip fetching sw.js and redirect.html )
+				// await (tKey.serviceProvider as any).init();
+				if ( window.location.pathname === "/auth" && window.location.hash.includes("#state") ) {
+					let result = await (tKey.serviceProvider as TorusServiceProvider).directWeb.getRedirectResult();
+					tKey.serviceProvider.postboxKey = new BN ( (result.result as any).privateKey!  , "hex");
+					setUser( (result.result as any).userInfo);
+					initializeNewKey();
+				}
+
 			} catch (error) {
 			  console.error(error);
 			}
@@ -58,6 +69,7 @@ function App() {
 		}
 		try {
 			// Triggering Login using Service Provider ==> opens the popup
+			(tKey.serviceProvider as TorusServiceProvider).init({skipInit: true});
 			const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
 				typeOfLogin: 'google',
 				verifier: 'google-tkey-w3a',
@@ -67,7 +79,10 @@ function App() {
 			setUser(loginResponse.userInfo);
 			// uiConsole('Public Key : ' + loginResponse.publicAddress);
 			// uiConsole('Email : ' + loginResponse.userInfo.email);
+
+			initializeNewKey();
 		} catch (error) {
+			console.log(error);
 			uiConsole(error);
 		}
 	};
@@ -78,20 +93,24 @@ function App() {
 			return;
 		}
 		try {
-			await triggerLogin(); // Calls the triggerLogin() function above
 			// Initialization of tKey
 			await tKey.initialize(); // 1/2 flow
 			// Gets the deviceShare
+			console.log(tKey);
 			try {
+				// throw new Error('Device share not found');
 				await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
 			} catch (e) {
 				uiConsole(e);
+				// await backupShareRecover();
 				await recoverShare();
 			}
 
+			console.log(tKey);
 			// Checks the requiredShares to reconstruct the tKey,
 			// starts from 2 by default and each of the above share reduce it by one.
 			const { requiredShares } = tKey.getKeyDetails();
+			console.log(tKey);
 			if (requiredShares <= 0) {
 				const reconstructedKey = await tKey.reconstructKey();
 				setPrivateKey(reconstructedKey?.privKey.toString("hex"))
@@ -151,6 +170,46 @@ function App() {
 		});
 	}
 
+	const generateMnemonic = async () => {
+		if (!tKey) {
+			uiConsole("tKey not initialized yet");
+			return;
+		}
+		try {
+			const newShare = await tKey.generateNewShare();
+			const mnemonic = await tKey.outputShare(newShare.newShareIndex, "mnemonic");
+			uiConsole('Mnemonic: ' + mnemonic);
+		} catch (error) {
+			uiConsole(error);
+		}
+	};
+
+	const backupShareRecover = async () => {
+		if (!tKey) {
+			uiConsole("tKey not initialized yet");
+			return;
+		}
+		// swal is just a pretty dialog box
+		swal('Enter mnemonic', {
+			content: 'input' as any,
+		}).then(async value => {
+			try {
+				await tKey.inputShare(value, "mnemonic"); // 2/2 flow
+				// const { requiredShares } = tKey.getKeyDetails();
+				// if (requiredShares <= 0) {
+					const reconstructedKey = await tKey.reconstructKey();
+					console.log(reconstructedKey)
+					uiConsole(
+						'Private Key: ' + reconstructedKey.privKey.toString("hex"),
+						);
+						setPrivateKey(reconstructedKey?.privKey.toString("hex"))
+				// }
+			} catch (error) {
+				uiConsole(error);
+			}
+		});
+	};
+	
 	const recoverShare = async () => {
 		if (!tKey) {
 			uiConsole("tKey not initialized yet");
@@ -171,8 +230,9 @@ function App() {
 							'Private Key: ' + reconstructedKey.privKey.toString("hex"),
 						);
 					}
-					const shareStore = await tKey.generateNewShare();
-					await (tKey.modules.webStorage as any).storeDeviceShare(shareStore.newShareStores[1]);
+					const newShare = await tKey.generateNewShare();
+					const shareStore = await tKey.outputShareStore(newShare.newShareIndex);
+					await (tKey.modules.webStorage as any).storeDeviceShare(shareStore);
 					swal('Success', 'Successfully logged you in with the recovery password.', 'success');
 					uiConsole('Successfully logged you in with the recovery password.');
 				} catch (error) {
@@ -320,6 +380,16 @@ function App() {
 					</button>
 				</div>
 				<div>
+					<button onClick={generateMnemonic} className='card'>
+						generate backup
+					</button>
+				</div>
+				<div>
+					<button onClick={backupShareRecover} className='card'>
+						input backup
+					</button>
+				</div>
+				<div>
 					<button onClick={keyDetails} className='card'>
 						Key Details
 					</button>
@@ -369,7 +439,7 @@ function App() {
 	);
 
 	const unloggedInView = (
-		<button onClick={initializeNewKey} className='card'>
+		<button onClick={triggerLogin} className='card'>
 			Login
 		</button>
 	);

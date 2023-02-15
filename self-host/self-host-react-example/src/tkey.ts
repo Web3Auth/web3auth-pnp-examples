@@ -1,10 +1,14 @@
 import ThresholdKey from "@tkey/default";
 import WebStorageModule from "@tkey/web-storage";
 import SecurityQuestionsModule from "@tkey/security-questions";
+import { TorusServiceProvider } from "@tkey/service-provider-torus";
 
 // Configuration of Service Provider
 const customAuthArgs = {
-  baseUrl: `${window.location.origin}/serviceworker`,
+  baseUrl: window.location.origin,
+  redirectPathName: "auth",
+  enableLogging: true,
+  uxMode: "redirect",
   network: "cyan", // based on the verifier network.
 };
 // Configuration of Modules
@@ -19,3 +23,4 @@ export const tKey = new ThresholdKey({
   },
   customAuthArgs: customAuthArgs as any,
 });
+

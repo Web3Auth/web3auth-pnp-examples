@@ -12,7 +12,6 @@ module.exports = (async () => {
     resolver: {
       extraNodeModules: {
         ...nodeLibs,
-        crypto: require.resolve('crypto-browserify'),
       },
 
       assetExts: assetExts.filter((ext) => ext !== 'svg'),

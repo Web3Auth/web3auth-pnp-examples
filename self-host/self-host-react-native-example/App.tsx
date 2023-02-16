@@ -1,19 +1,8 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-import React, { useCallback, useEffect, useMemo, useState, PropsWithChildren } from 'react';
+import React, { useCallback, useEffect, useState, PropsWithChildren } from 'react';
 import {
   Button,
   Platform,
-  SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -21,25 +10,15 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ec from '@toruslabs/eccrypto';
 
 import { ShareSerializationModule } from '@tkey/share-serialization';
 import SecurityQuestionsModule from '@tkey/security-questions';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 import BN from 'bn.js';
 import CustomAuth from '@toruslabs/customauth-react-native-sdk';
 import ThresholdKey from '@tkey/default';
 import TorusServiceProvider from '@tkey/service-provider-base';
 import TorusStorageLayer from '@tkey/storage-layer-torus';
 import { ShareTransferModule } from '@tkey/share-transfer';
-import { generatePrivateExcludingIndexes } from '@tkey/common-types';
 
 const Section: React.FC<
   PropsWithChildren<{
@@ -53,7 +32,7 @@ const Section: React.FC<
         style={[
           styles.sectionTitle,
           {
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? "#FFF" : "#444",
           },
         ]}
       >
@@ -63,7 +42,7 @@ const Section: React.FC<
         style={[
           styles.sectionDescription,
           {
-            color: isDarkMode ? Colors.light : Colors.dark,
+            color: isDarkMode ? "#FFF" : "#444",
           },
         ]}
       >
@@ -116,9 +95,6 @@ const App = () => {
   const [authVerifier] = useState('google');
   const [logs, setLogs] = useState([]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
   const addLog = useCallback((...log: any) => {
     // @ts-ignore
     setLogs((logs) => ['>' + JSON.stringify(log), ...logs]);
@@ -153,6 +129,7 @@ const App = () => {
       addLog({ loginDetails });
 
       let pbKey = new BN(loginDetails.privateKey, 16);
+      console.log({pbKey})
       tKey.serviceProvider.postboxKey = pbKey;
       // tKey.serviceProvider.postboxKey = new BN(ec.generatePrivate());
       // disable in prod

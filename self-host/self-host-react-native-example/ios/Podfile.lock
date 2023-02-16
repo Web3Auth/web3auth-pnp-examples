@@ -297,16 +297,9 @@ PODS:
     - React-perflogger (= 0.70.6)
   - RNCAsyncStorage (1.17.11):
     - React-Core
-  - RNCPicker (2.4.8):
-    - React-Core
   - RNCustomAuthSdk (4.0.0):
     - CustomAuth (~> 5.0.0)
     - React
-  - RNGestureHandler (2.2.1):
-    - React-Core
-  - RNScreens (3.11.1):
-    - React-Core
-    - React-RCTImage
   - secp256k1.swift (0.1.4)
   - Torus-fetchNodeDetails (4.0.1):
     - web3.swift (~> 0.9.3)
@@ -356,10 +349,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
-  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNCustomAuthSdk (from `../node_modules/@toruslabs/customauth-react-native-sdk`)"
-  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -442,14 +432,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
-  RNCPicker:
-    :path: "../node_modules/@react-native-picker/picker"
   RNCustomAuthSdk:
     :path: "../node_modules/@toruslabs/customauth-react-native-sdk"
-  RNGestureHandler:
-    :path: "../node_modules/react-native-gesture-handler"
-  RNScreens:
-    :path: "../node_modules/react-native-screens"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -493,10 +477,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
-  RNCPicker: 0bf8ef8f7800524f32d2bb2a8bcadd53eda0ecd1
   RNCustomAuthSdk: ac006cecaed45194598aabe01c32e44fbe2b06f2
-  RNGestureHandler: 1dc1ea9d4b64f999042afafbaccf5b143f0b2fa2
-  RNScreens: 4d83613b50b74ed277026375dc0810893b0c347f
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   Torus-fetchNodeDetails: a92d02f1bfe91bd61c90f92d64df023babaa5bfa
   Torus-utils: 2517d21b0bc84759fc2cd9617761ce9083e8ee2c

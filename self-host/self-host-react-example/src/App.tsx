@@ -51,23 +51,42 @@ function App() {
 		ethProvider();
 	}, [privateKey]);
 
+	const getIdToken = async () => {
+		// Get ID Token from server
+		const res = await fetch('http://localhost:8080/api/token', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		const data = await res.json();
+		return data?.token;
+	};
+
 	const triggerLogin = async () => {
 		if (!tKey) {
 			uiConsole("tKey not initialized yet");
 			return;
 		}
 		try {
+			const idToken = await getIdToken();
+			const jwtParams = {
+				id_token: idToken,
+				verifierIdField : 'sub',
+			}
 			// Triggering Login using Service Provider ==> opens the popup
 			const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
-				typeOfLogin: 'google',
-				verifier: 'google-tkey-w3a',
+				typeOfLogin: 'jwt',
+				verifier: 'web3auth-custom-jwt',
 				clientId:
-					'774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com',
+					'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A',
+				jwtParams,
 			});
 			setUser(loginResponse.userInfo);
 			// uiConsole('Public Key : ' + loginResponse.publicAddress);
 			// uiConsole('Email : ' + loginResponse.userInfo.email);
 		} catch (error) {
+			console.log(error)
 			uiConsole(error);
 		}
 	};

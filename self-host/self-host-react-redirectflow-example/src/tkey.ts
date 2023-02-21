@@ -1,7 +1,6 @@
 import ThresholdKey from "@tkey/default";
 import WebStorageModule from "@tkey/web-storage";
 import SecurityQuestionsModule from "@tkey/security-questions";
-import { TorusServiceProvider } from "@tkey/service-provider-torus";
 
 // Configuration of Service Provider
 const customAuthArgs = {

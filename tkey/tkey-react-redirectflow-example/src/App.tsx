@@ -4,6 +4,8 @@ import swal from 'sweetalert';
 import {tKey} from "./tkey"
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import Web3 from "web3";
+import BN from 'bn.js';
+
 
 function App() {
 	const [user, setUser] = useState<any>(null);
@@ -15,7 +17,15 @@ function App() {
 		const init = async () => {
 			// Initialization of Service Provider
 			try {
-				await (tKey.serviceProvider as any).init();
+				// Init is required for Redirect Flow but skip fetching sw.js and redirect.html )
+				(tKey.serviceProvider as any).init({skipInit: true});
+				if ( window.location.pathname === "/auth" && window.location.hash.includes("#state") ) {
+					let result = await (tKey.serviceProvider as any).directWeb.getRedirectResult();
+					tKey.serviceProvider.postboxKey = new BN ( (result.result as any).privateKey!  , "hex");
+					setUser( (result.result as any).userInfo);
+					initializeNewKey();
+				}
+
 			} catch (error) {
 			  console.error(error);
 			}
@@ -57,7 +67,7 @@ function App() {
 			return;
 		}
 		try {
-			// Triggering Login using Service Provider ==> opens the popup
+			// Triggering Login using Service Provider ==> redirects the user to google login page
 			const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
 				typeOfLogin: 'google',
 				verifier: 'google-tkey-w3a',
@@ -67,7 +77,10 @@ function App() {
 			setUser(loginResponse.userInfo);
 			// uiConsole('Public Key : ' + loginResponse.publicAddress);
 			// uiConsole('Email : ' + loginResponse.userInfo.email);
+
+			initializeNewKey();
 		} catch (error) {
+			console.log(error);
 			uiConsole(error);
 		}
 	};
@@ -78,20 +91,24 @@ function App() {
 			return;
 		}
 		try {
-			await triggerLogin(); // Calls the triggerLogin() function above
 			// Initialization of tKey
 			await tKey.initialize(); // 1/2 flow
 			// Gets the deviceShare
+			console.log(tKey);
 			try {
+				// throw new Error('Device share not found');
 				await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
 			} catch (e) {
 				uiConsole(e);
+				// await backupShareRecover();
 				await recoverShare();
 			}
 
+			console.log(tKey);
 			// Checks the requiredShares to reconstruct the tKey,
 			// starts from 2 by default and each of the above share reduce it by one.
 			const { requiredShares } = tKey.getKeyDetails();
+			console.log(tKey);
 			if (requiredShares <= 0) {
 				const reconstructedKey = await tKey.reconstructKey();
 				setPrivateKey(reconstructedKey?.privKey.toString("hex"))
@@ -190,7 +207,7 @@ function App() {
 			}
 		});
 	};
-
+	
 	const recoverShare = async () => {
 		if (!tKey) {
 			uiConsole("tKey not initialized yet");
@@ -420,7 +437,7 @@ function App() {
 	);
 
 	const unloggedInView = (
-		<button onClick={initializeNewKey} className='card'>
+		<button onClick={triggerLogin} className='card'>
 			Login
 		</button>
 	);
@@ -438,7 +455,7 @@ function App() {
 
 			<footer className='footer'>
 				<a
-					href='https://github.com/Web3Auth/examples/tree/main/self-host/self-host-react-example'
+					href='https://github.com/Web3Auth/examples/tree/main/tkey/tkey-react-example'
 					target='_blank'
 					rel='noopener noreferrer'
 				>

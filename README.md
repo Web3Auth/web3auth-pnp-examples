@@ -20,7 +20,7 @@ provider specific to the user and application.
 
 ## Examples
 
-## Web3Auth Plug n Play UI
+## Web3Auth Plug n Play Modal
 
 `@web3auth/modal`
 
@@ -108,7 +108,7 @@ provider specific to the user and application.
 | -------- | -------------- | --------------------------------------------------------------------------------------------------------- |
 | `Chrome` | `REACT`        | [Chrome-extension-modal-example](/web-modal-sdk/browser-extensions/chrome-extension-modal-example/) |
 
-## Web3Auth Plug n Play Core
+## Web3Auth Plug n Play No Modal
 
 `@web3auth/core`
 

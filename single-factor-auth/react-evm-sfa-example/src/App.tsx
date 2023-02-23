@@ -378,7 +378,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/master/web-single-factor-auth/react-evm-sfa-example"
+          href="https://github.com/Web3Auth/examples/tree/master/single-factor-auth/react-evm-sfa-example"
           target="_blank"
           rel="noopener noreferrer"
         >

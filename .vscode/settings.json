@@ -1,7 +1,7 @@
 {
     "eslint.workingDirectories": [
         {
-            "directory": "web-core-sdk/**/*",
+            "directory": "web-no-modal-sdk/**/*",
             "changeProcessCWD": true
         },
         {
@@ -13,7 +13,7 @@
             "changeProcessCWD": true
         },
         {
-            "directory": "web-single-factor-auth/*",
+            "directory": "single-factor-auth/*",
             "changeProcessCWD": true
         }
     ]

@@ -28,85 +28,85 @@ provider specific to the user and application.
 
 | Blockchain        | Lang Framework | Directory                                                                                   |
 | :---------------- | :------------- | :------------------------------------------------------------------------------------------ |
-| `Multiple Chains` | `REACT`        | [React-EVM-Web3Auth-Example](/web-modal-sdk/multi-chain/react-multi-chain-web3auth-example) |
+| `Multiple Chains` | `REACT`        | [React-EVM-Modal-Example](/web-modal-sdk/multi-chain/react-multi-chain-modal-example) |
 
 #### Ethereum - EVM Based
 
 | Blockchain | Lang Framework | Directory                                                                             |
 | :--------- | :------------- | :------------------------------------------------------------------------------------ |
-| `EVM`      | `REACT`        | [React-EVM-Web3Auth-Example](/web-modal-sdk/evm/react-evm-web3auth-example)           |
-| `EVM`      | `Vite + React` | [React-Vite-EVM-Web3Auth-Example](/web-modal-sdk/evm/react-vite-evm-web3auth-example) |
-| `EVM`      | `NEXTJS`       | [NextJS-EVM-Web3Auth-Example](/web-modal-sdk/evm/nextjs-evm-web3auth-example)         |
-| `EVM`      | `Vue`          | [Vue-EVM-Web3Auth-Example](/web-modal-sdk/evm/vue-evm-web3auth-example)               |
-| `EVM`      | `Angular`      | [Angular-EVM-Web3Auth-Example](/web-modal-sdk/evm/angular-evm-web3auth-example)       |
-| `EVM`      | `CommonJS`     | [CommonJS-EVM-Web3Auth-Example](/web-modal-sdk/evm/commonjs-evm-web3auth-example)     |
+| `EVM`      | `REACT`        | [React-EVM-Modal-Example](/web-modal-sdk/evm/react-evm-modal-example)           |
+| `EVM`      | `Vite + React` | [React-Vite-EVM-Modal-Example](/web-modal-sdk/evm/react-vite-evm-modal-example) |
+| `EVM`      | `NEXTJS`       | [NextJS-EVM-Modal-Example](/web-modal-sdk/evm/nextjs-evm-modal-example)         |
+| `EVM`      | `Vue`          | [Vue-EVM-Modal-Example](/web-modal-sdk/evm/vue-evm-modal-example)               |
+| `EVM`      | `Angular`      | [Angular-EVM-Modal-Example](/web-modal-sdk/evm/angular-evm-modal-example)       |
+| `EVM`      | `CommonJS`     | [CommonJS-EVM-Modal-Example](/web-modal-sdk/evm/commonjs-evm-modal-example)     |
 
 #### Solana
 
 | Blockchain | Lang Framework | Directory                                                                                  |
 | :--------- | :------------- | :----------------------------------------------------------------------------------------- |
-| `Solana`   | `REACT`        | [React-Solana-Web3Auth-Example](/web-modal-sdk/solana/react-solana-web3auth-example)       |
-| `Solana`   | `NEXTJS`       | [NextJS-Solana-Web3Auth-Example](/web-modal-sdk/solana/nextjs-solana-web3auth-example)     |
-| `Solana`   | `Vue`          | [Vue-Solana-Web3Auth-Example](/web-modal-sdk/solana/vue-solana-web3auth-example)           |
-| `Solana`   | `Angular`      | [Angular-Solana-Web3Auth-Example](/web-modal-sdk/solana/angular-solana-web3auth-example)   |
-| `Solana`   | `CommonJS`     | [CommonJS-Solana-Web3Auth-Example](/web-modal-sdk/solana/commonjs-solana-web3auth-example) |
+| `Solana`   | `REACT`        | [React-Solana-Modal-Example](/web-modal-sdk/solana/react-solana-modal-example)       |
+| `Solana`   | `NEXTJS`       | [NextJS-Solana-Modal-Example](/web-modal-sdk/solana/nextjs-solana-modal-example)     |
+| `Solana`   | `Vue`          | [Vue-Solana-Modal-Example](/web-modal-sdk/solana/vue-solana-modal-example)           |
+| `Solana`   | `Angular`      | [Angular-Solana-Modal-Example](/web-modal-sdk/solana/angular-solana-modal-example)   |
+| `Solana`   | `CommonJS`     | [CommonJS-Solana-Modal-Example](/web-modal-sdk/solana/commonjs-solana-modal-example) |
 
 #### StarkEx
 
 | Blockchain | Lang Framework | Directory                                                                                   |
 | :--------- | :------------- | :------------------------------------------------------------------------------------------ |
-| `StarkEx`  | `REACT`        | [React-StarkEx-Web3Auth-Example](/web-modal-sdk/starkex/react-starkex-web3auth-example)     |
-| `StarkEx`  | `NEXTJS`       | [NextJS-StarkEx-Web3Auth-Example](/web-modal-sdk/starkex/nextjs-starkex-web3auth-example)   |
-| `StarkEx`  | `Vue`          | [Vue-StarkEx-Web3Auth-Example](/web-modal-sdk/starkex/vue-starkex-web3auth-example)         |
-| `StarkEx`  | `Angular`      | [Angular-StarkEx-Web3Auth-Example](/web-modal-sdk/starkex/angular-starkex-web3auth-example) |
+| `StarkEx`  | `REACT`        | [React-StarkEx-Modal-Example](/web-modal-sdk/starkex/react-starkex-modal-example)     |
+| `StarkEx`  | `NEXTJS`       | [NextJS-StarkEx-Modal-Example](/web-modal-sdk/starkex/nextjs-starkex-modal-example)   |
+| `StarkEx`  | `Vue`          | [Vue-StarkEx-Modal-Example](/web-modal-sdk/starkex/vue-starkex-modal-example)         |
+| `StarkEx`  | `Angular`      | [Angular-StarkEx-Modal-Example](/web-modal-sdk/starkex/angular-starkex-modal-example) |
 
 #### StarkNet
 
 | Blockchain | Lang Framework | Directory                                                                                      |
 | :--------- | :------------- | :--------------------------------------------------------------------------------------------- |
-| `StarkNet` | `REACT`        | [React-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/react-starknet-web3auth-example)     |
-| `StarkNet` | `NEXTJS`       | [NextJS-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/nextjs-starknet-web3auth-example)   |
-| `StarkNet` | `Vue`          | [Vue-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/vue-starknet-web3auth-example)         |
-| `StarkNet` | `Angular`      | [Angular-StarkNet-Web3Auth-Example](/web-modal-sdk/starknet/angular-starknet-web3auth-example) |
+| `StarkNet` | `REACT`        | [React-StarkNet-Modal-Example](/web-modal-sdk/starknet/react-starknet-modal-example)     |
+| `StarkNet` | `NEXTJS`       | [NextJS-StarkNet-Modal-Example](/web-modal-sdk/starknet/nextjs-starknet-modal-example)   |
+| `StarkNet` | `Vue`          | [Vue-StarkNet-Modal-Example](/web-modal-sdk/starknet/vue-starknet-modal-example)         |
+| `StarkNet` | `Angular`      | [Angular-StarkNet-Modal-Example](/web-modal-sdk/starknet/angular-starknet-modal-example) |
 
 #### Tezos
 
 | Blockchain | Lang Framework | Directory                                                                             |
 | :--------- | :------------- | :------------------------------------------------------------------------------------ |
-| `Tezos`    | `REACT`        | [React-Tezos-Web3Auth-Example](/web-modal-sdk/tezos/react-tezos-web3auth-example)     |
-| `Tezos`    | `NEXTJS`       | [NextJS-Tezos-Web3Auth-Example](/web-modal-sdk/tezos/nextjs-tezos-web3auth-example)   |
-| `Tezos`    | `Vue`          | [Vue-Tezos-Web3Auth-Example](/web-modal-sdk/tezos/vue-tezos-web3auth-example)         |
-| `Tezos`    | `Angular`      | [Angular-Tezos-Web3Auth-Example](/web-modal-sdk/tezos/angular-tezos-web3auth-example) |
+| `Tezos`    | `REACT`        | [React-Tezos-Modal-Example](/web-modal-sdk/tezos/react-tezos-modal-example)     |
+| `Tezos`    | `NEXTJS`       | [NextJS-Tezos-Modal-Example](/web-modal-sdk/tezos/nextjs-tezos-modal-example)   |
+| `Tezos`    | `Vue`          | [Vue-Tezos-Modal-Example](/web-modal-sdk/tezos/vue-tezos-modal-example)         |
+| `Tezos`    | `Angular`      | [Angular-Tezos-Modal-Example](/web-modal-sdk/tezos/angular-tezos-modal-example) |
 
 #### Algorand
 
 | Blockchain | Lang Framework | Directory                                                                                  |
 | :--------- | :------------- | :----------------------------------------------------------------------------------------- |
-| `Algorand` | `REACT`        | [React-Algorand-Web3Auth-Example](/web-modal-sdk/algorand/react-algorand-web3auth-example) |
+| `Algorand` | `REACT`        | [React-Algorand-Modal-Example](/web-modal-sdk/algorand/react-algorand-modal-example) |
 
 #### Aptos
 
 | Blockchain | Lang Framework | Directory                                                                         |
 | :--------- | :------------- | :-------------------------------------------------------------------------------- |
-| `Aptos`    | `REACT`        | [React-Aptos-Web3Auth-Example](/web-modal-sdk/aptos/react-aptos-web3auth-example) |
+| `Aptos`    | `REACT`        | [React-Aptos-Modal-Example](/web-modal-sdk/aptos/react-aptos-modal-example) |
 
 #### Polkadot
 
 | Blockchain | Lang Framework | Directory                                                                                  |
 | :--------- | :------------- | :----------------------------------------------------------------------------------------- |
-| `Polkadot` | `REACT`        | [React-Polkadot-Web3Auth-Example](/web-modal-sdk/polkadot/react-polkadot-web3auth-example) |
+| `Polkadot` | `REACT`        | [React-Polkadot-Modal-Example](/web-modal-sdk/polkadot/react-polkadot-modal-example) |
 
 #### ImmutableX
 
 | Blockchain   | Lang Framework | Directory                                                                                         |
 | :----------- | :------------- | :------------------------------------------------------------------------------------------------ |
-| `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-Example](/web-modal-sdk/immutableX/react-immutableX-web3auth-example/) |
+| `ImmutableX` | `REACT`        | [React-ImmutableX-Modal-Example](/web-modal-sdk/immutableX/react-immutableX-modal-example/) |
 
 ### Browser Extensions
 
 | Browser  | Lang Framework | Directory                                                                                                 |
 | -------- | -------------- | --------------------------------------------------------------------------------------------------------- |
-| `Chrome` | `REACT`        | [Chrome-extension-web3auth-example](/web-modal-sdk/browser-extensions/chrome-extension-web3auth-example/) |
+| `Chrome` | `REACT`        | [Chrome-extension-modal-example](/web-modal-sdk/browser-extensions/chrome-extension-modal-example/) |
 
 ## Web3Auth Plug n Play Core
 
@@ -116,49 +116,49 @@ provider specific to the user and application.
 
 | Blockchain   | Lang Framework | Directory                                                                                         |
 | :----------- | :------------- | :------------------------------------------------------------------------------------------------ |
-| `EVM`        | `REACT`        | [React-EVM-Web3Auth-Core-Example](/web-core-sdk/evm/react-evm-core-example/)                      |
-| `EVM`        | `Vite + React` | [React-Vite-EVM-Core-Example](/web-core-sdk/evm/react-vite-evm-core-example)                      |
-| `Solana`     | `REACT`        | [React-Solana-Web3Auth-Core-Example](/web-core-sdk/solana/react-solana-core-example/)             |
-| `StarkEx`    | `REACT`        | [React-StarkEx-Web3Auth-Core-Example](/web-core-sdk/starkex/react-starkex-core-example/)          |
-| `StarkNet`   | `REACT`        | [React-StarkNet-Web3Auth-Core-Example](/web-core-sdk/starknet/react-starknet-core-example/)       |
-| `Tezos`      | `REACT`        | [React-Tezos-Web3Auth-Core-Example](/web-core-sdk/tezos/react-tezos-core-example/)                |
-| `Algorand`   | `REACT`        | [React-Algorand-Web3Auth-Core-Example](/web-core-sdk/algorand/react-algorand-core-example/)       |
-| `Aptos`      | `REACT`        | [React-Aptos-Web3Auth-Core-Example](/web-core-sdk/aptos/react-aptos-core-example/)                |
-| `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-Core-Example](/web-core-sdk/immutableX/react-immutableX-core-example/) |
-| `Polkadot`   | `REACT`        | [React-Polkadot-Web3Auth-Core-Example](/web-core-sdk/polkadot/react-polkadot-core-example/)       |
+| `EVM`        | `REACT`        | [React-EVM-Web3Auth-No-Modal-Example](/web-no-modal-sdk/evm/react-evm-no-modal-example/)                      |
+| `EVM`        | `Vite + React` | [React-Vite-EVM-No-Modal-Example](/web-no-modal-sdk/evm/react-vite-evm-no-modal-example)                      |
+| `Solana`     | `REACT`        | [React-Solana-Web3Auth-No-Modal-Example](/web-no-modal-sdk/solana/react-solana-no-modal-example/)             |
+| `StarkEx`    | `REACT`        | [React-StarkEx-Web3Auth-No-Modal-Example](/web-no-modal-sdk/starkex/react-starkex-no-modal-example/)          |
+| `StarkNet`   | `REACT`        | [React-StarkNet-Web3Auth-No-Modal-Example](/web-no-modal-sdk/starknet/react-starknet-no-modal-example/)       |
+| `Tezos`      | `REACT`        | [React-Tezos-Web3Auth-No-Modal-Example](/web-no-modal-sdk/tezos/react-tezos-no-modal-example/)                |
+| `Algorand`   | `REACT`        | [React-Algorand-Web3Auth-No-Modal-Example](/web-no-modal-sdk/algorand/react-algorand-no-modal-example/)       |
+| `Aptos`      | `REACT`        | [React-Aptos-Web3Auth-No-Modal-Example](/web-no-modal-sdk/aptos/react-aptos-no-modal-example/)                |
+| `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-No-Modal-Example](/web-no-modal-sdk/immutableX/react-immutableX-no-modal-example/) |
+| `Polkadot`   | `REACT`        | [React-Polkadot-Web3Auth-No-Modal-Example](/web-no-modal-sdk/polkadot/react-polkadot-no-modal-example/)       |
 
 ### Custom Authentication
 
 | Auth Provider | Lang Framework  | Directory                                                                                                                   |
 | :------------ | :-------------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| `Auth0`       | `REACT`         | [Auth0-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/auth0-react-core-example)                           |
-| `Google`      | `REACT`         | [Google-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/google-react-core-example)                         |
-| `Firebase`    | `REACT`         | [Firebase-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/firebase-react-core-example)                     |
-| `Discord`     | `REACT`         | [Discord-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/discord-react-core-example)                       |
-| `Facebook`    | `REACT`         | [Facebook-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/facebook-react-core-example)                     |
-| `Twitch`      | `REACT`         | [Twitch-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/twitch-react-core-example)                         |
-| `AWS Cognito` | `REACT`         | [Cognito-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/cognito-react-core-example)                       |
-| `Custom JWT`  | `REACT-EXPRESS` | [Custom-JWT-React-Express-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/custom-jwt-react-express-core-example) |
+| `Auth0`       | `REACT`         | [Auth0-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/auth0-react-no-modal-example)                           |
+| `Google`      | `REACT`         | [Google-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/google-react-no-modal-example)                         |
+| `Firebase`    | `REACT`         | [Firebase-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/firebase-react-no-modal-example)                     |
+| `Discord`     | `REACT`         | [Discord-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/discord-react-no-modal-example)                       |
+| `Facebook`    | `REACT`         | [Facebook-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/facebook-react-no-modal-example)                     |
+| `Twitch`      | `REACT`         | [Twitch-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/twitch-react-no-modal-example)                         |
+| `AWS Cognito` | `REACT`         | [Cognito-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/cognito-react-no-modal-example)                       |
+| `Custom JWT`  | `REACT-EXPRESS` | [Custom-JWT-React-Express-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/custom-jwt-react-express-no-modal-example) |
 
 ### Aggregate Verifiers
 
 | Auth Providers                            | Lang Framework | Directory                                                                                                                                                     |
 | :---------------------------------------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Google`, `Email Passwordless` & `GitHub` | `REACT`        | [Auth0-Google-Aggregate-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-core-example)       |
-| `Google` & `Firebase [GitHub]`            | `REACT`        | [Firebase-Google-Aggregate-React-Web3Auth-Core-Example](/web-core-sdk/custom-authentication/aggregate-verifiers/firebase-google-aggregate-react-core-example) |
+| `Google`, `Email Passwordless` & `GitHub` | `REACT`        | [Auth0-Google-Aggregate-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-no-modal-example)       |
+| `Google` & `Firebase [GitHub]`            | `REACT`        | [Firebase-Google-Aggregate-React-Web3Auth-No-Modal-Example](/web-no-modal-sdk/custom-authentication/aggregate-verifiers/firebase-google-aggregate-react-no-modal-example) |
 | `Google` & `Auth0 [EmailPasswordless]`    | `Flutter`      | [Flutter-Google-EmailPasswordless-Flutter-Application](/flutter/flutter-google-emailpasswordless-example/)                                                    |
 
 ### Server Side Verification
 
 | Via               | Lang Framework | Directory                                                                                                       |
 | :---------------- | :------------- | :-------------------------------------------------------------------------------------------------------------- |
-| `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-Core-Example](/web-core-sdk/server-side-verification/ssv-via-social-nextjs-core-example) |
+| `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-No-Modal-Example](/web-no-modal-sdk/server-side-verification/ssv-via-social-nextjs-no-modal-example) |
 
 ### Browser Extensions
 
 | Browser  | Lang Framework | Directory                                                                                                |
 | -------- | -------------- | -------------------------------------------------------------------------------------------------------- |
-| `Chrome` | `REACT`        | [Chrome-extension-web3auth-example](/web-core-sdk/browser-extensions/chrome-extension-web3auth-example/) |
+| `Chrome` | `REACT`        | [Chrome-extension-modal-example](/web-no-modal-sdk/browser-extensions/chrome-extension-modal-example/) |
 
 ### Single Factor Auth
 
@@ -166,7 +166,7 @@ provider specific to the user and application.
 
 | JWT Provider | Lang Framework | Directory                                                               |
 | :----------- | :------------- | :---------------------------------------------------------------------- |
-| `Firebase`   | `React`        | [React-EVM-SFA-Example](/web-single-factor-auth/react-evm-sfa-example/) |
+| `Firebase`   | `React`        | [React-EVM-SFA-Example](/single-factor-auth/react-evm-sfa-example/) |
 
 ### Node SDK
 

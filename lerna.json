@@ -4,9 +4,9 @@
   "useWorkspaces": false,
   "version": "0.0.0",
   "packages": [
-    "web-core-sdk/**/*",
+    "web-no-modal-sdk/**/*",
     "web-modal-sdk/**/*",
     "wagmi-connector/*",
-    "web-single-factor-auth/*"
+    "single-factor-auth/*"
   ]
 }

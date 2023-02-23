@@ -1,5 +1,5 @@
 {
-  "name": "rainbowkit-react-auth0-core-example",
+  "name": "rainbowkit-react-auth0-no-modal-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

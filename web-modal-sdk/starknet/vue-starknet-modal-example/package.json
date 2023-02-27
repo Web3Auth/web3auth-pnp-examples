@@ -15,7 +15,7 @@
     "elliptic": "^6.5.4",
     "starknet": "^3.11.0",
     "web3": "^1.8.2",
-    "node-polyfill-webpack-plugin": "^1.1.4",
+    "node-polyfill-webpack-plugin": "^2.0.1",
     "core-js": "^3.8.3",
     "vue": "^3.2.13"
   },

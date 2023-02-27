@@ -20,7 +20,7 @@ provider specific to the user and application.
 
 ## Examples
 
-## Web3Auth Plug n Play UI
+## Web3Auth Plug n Play Modal
 
 `@web3auth/modal`
 
@@ -108,7 +108,7 @@ provider specific to the user and application.
 | -------- | -------------- | --------------------------------------------------------------------------------------------------------- |
 | `Chrome` | `REACT`        | [Chrome-extension-modal-example](/web-modal-sdk/browser-extensions/chrome-extension-modal-example/) |
 
-## Web3Auth Plug n Play Core
+## Web3Auth Plug n Play No Modal
 
 `@web3auth/core`
 
@@ -243,10 +243,10 @@ out to our [Discord](https://discord.gg/web3auth).
 | `@web3auth/base`                           | [![npm version](https://img.shields.io/npm/v/@web3auth/base?label=%22%22)](https://www.npmjs.com/package/@web3auth/base/v/latest)                                                     | [![minzip](https://img.shields.io/bundlephobia/minzip/@web3auth/base?label=%22%22)](https://bundlephobia.com/result?p=@web3auth/base@latest)                                                     | Base reusable functionalities for creating a web3auth instance                                                                                                                                                                                                                                               |
 | `@web3auth/ui`                             | [![npm version](https://img.shields.io/npm/v/@web3auth/ui?label=%22%22)](https://www.npmjs.com/package/@web3auth/ui/v/latest)                                                         | [![minzip](https://img.shields.io/bundlephobia/minzip/@web3auth/ui?label=%22%22)](https://bundlephobia.com/result?p=@web3auth/ui@latest)                                                         | Provides the UI used for creating the modal                                                                                                                                                                                                                                                                  |
 | 📱 **Mobile SDKs**                         |
-| Android                                    | `v 3.1.0`                                                                                                                                                                             |
+| Android                                    | `v 3.2.0`                                                                                                                                                                             |
 | iOS                                        | `v 5.0.0`                                                                                                                                                                             |
-| Flutter                                    | `v 1.0.3`                                                                                                                                                                             |
-| React Native                               | `v 3.3.0`                                                                                                                                                                             |
+| Flutter                                    | `v 1.1.1`                                                                                                                                                                             |
+| React Native                               | `v 3.4.0`                                                                                                                                                                             |
 | 👾 **Gaming SDKs**                         |
-| Unity                                      | `v 1.1`                                                                                                                                                                               |
+| Unity                                      | `v 1.2`                                                                                                                                                                               |
 | Unreal Engine                              | `v 1.0`                                                                                                                                                                               |

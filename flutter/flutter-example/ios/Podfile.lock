@@ -5,8 +5,9 @@ PODS:
   - GenericJSON (2.0.2)
   - KeychainSwift (20.0.0)
   - secp256k1.swift (0.1.4)
-  - shared_preferences (0.0.1):
+  - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - web3.swift (0.9.3):
     - BigInt (~> 5.0.0)
     - GenericJSON (~> 2.0)
@@ -21,7 +22,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - web3auth_flutter (from `.symlinks/plugins/web3auth_flutter/ios`)
 
 SPEC REPOS:
@@ -37,8 +38,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  shared_preferences:
-    :path: ".symlinks/plugins/shared_preferences/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
   web3auth_flutter:
     :path: ".symlinks/plugins/web3auth_flutter/ios"
 
@@ -49,7 +50,7 @@ SPEC CHECKSUMS:
   GenericJSON: 79a840eeb77030962e8cf02a62d36bd413b67626
   KeychainSwift: 0ce6a4d13f7228054d1a71bb1b500448fb2ab837
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
-  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
+  shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   web3.swift: c6c3bf1f853743f8a7a58d263e5f7e46545e22c7
   Web3Auth: 3ef09358f409cf6b2b57f3bcc074281ac73681a1
   web3auth_flutter: c40401ed4bb3aff723349a382ddae9809eeee959

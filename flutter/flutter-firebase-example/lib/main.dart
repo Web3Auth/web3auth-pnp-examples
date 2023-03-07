@@ -63,7 +63,8 @@ class _MyAppState extends State<MyApp> {
 
     final loginConfig = HashMap<String, LoginConfigItem>();
     loginConfig['jwt'] = LoginConfigItem(
-        verifier: "web3auth-firebase-examples", // get it from web3auth dashboard
+        verifier:
+            "web3auth-firebase-examples", // get it from web3auth dashboard
         typeOfLogin: TypeOfLogin.jwt,
         name: "Custom JWT Login",
         clientId:
@@ -252,6 +253,7 @@ class _MyAppState extends State<MyApp> {
 
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.jwt,
+        mfaLevel: MFALevel.NONE,
         extraLoginOptions:
             ExtraLoginOptions(id_token: idToken, domain: 'firebase')));
   }

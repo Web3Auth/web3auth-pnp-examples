@@ -71,6 +71,7 @@ function App() {
         extraLoginOptions: {
           domain: "https://shahbaz-torus.us.auth0.com",
           verifierIdField: "sub",
+          // connection: "google-oauth2", // Use this to skip Auth0 Modal for Google login.
         },
       }
     );

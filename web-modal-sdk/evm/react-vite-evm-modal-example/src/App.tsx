@@ -8,11 +8,14 @@ import { useEffect, useState } from "react";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 
-const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
 
   useEffect(() => {
     const init = async () => {
@@ -26,7 +29,7 @@ function App() {
           },
           uiConfig: {
             theme: "dark",
-            loginMethodsOrder: ["facebook", "google"],
+            loginMethodsOrder: ["github", "google"],
             defaultLanguage: "en",
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
           },
@@ -109,6 +112,35 @@ function App() {
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
+
+  const addChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const newChain = {
+      chainId: "0x5",
+      displayName: "Goerli",
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      tickerName: "Goerli",
+      ticker: "ETH",
+      decimals: 18,
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      blockExplorer: "https://goerli.etherscan.io",
+    };
+    await web3auth?.addChain(newChain);
+    uiConsole("New Chain Added");
+  };
+
+  const switchChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    await web3auth?.switchChain({ chainId: "0x5" });
+    uiConsole("Chain Switched");
+  };
+
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -182,6 +214,16 @@ function App() {
         <div>
           <button onClick={getChainId} className="card">
             Get Chain ID
+          </button>
+        </div>
+        <div>
+          <button onClick={addChain} className="card">
+            Add Chain
+          </button>
+        </div>
+        <div>
+          <button onClick={switchChain} className="card">
+            Switch Chain
           </button>
         </div>
         <div>

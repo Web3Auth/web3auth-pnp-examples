@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthCore } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
   SafeEventEmitterProvider,
@@ -29,7 +29,7 @@ function App() {
             chainId: "0x1",
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
-          web3AuthNetwork: "cyan"
+          web3AuthNetwork: "cyan",
         });
 
         setWeb3auth(web3auth);

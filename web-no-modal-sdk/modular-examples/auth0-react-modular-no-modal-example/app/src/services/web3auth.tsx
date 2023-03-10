@@ -3,7 +3,7 @@ import {
   SafeEventEmitterProvider,
   WALLET_ADAPTER_TYPE,
 } from "@web3auth/base";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthCore } from "@web3auth/no-modal";
 import type { LOGIN_PROVIDER_TYPE } from "@toruslabs/openlogin";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import {

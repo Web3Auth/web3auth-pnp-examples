@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthCore } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
   SafeEventEmitterProvider,
@@ -26,7 +26,7 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
-          web3AuthNetwork: "cyan"
+          web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({});

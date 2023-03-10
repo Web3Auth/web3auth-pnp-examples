@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthCore } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
@@ -28,7 +28,7 @@ const firebaseConfig = {
   projectId: "web3auth-firebase-github",
   storageBucket: "web3auth-firebase-github.appspot.com",
   messagingSenderId: "384159528034",
-  appId: "1:384159528034:web:9a9121481ea2948237cd3b"
+  appId: "1:384159528034:web:9a9121481ea2948237cd3b",
 };
 
 function App() {

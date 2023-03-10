@@ -46,7 +46,8 @@ function App() {
         const web3auth = new Web3AuthCore({
           clientId, // get from https://dashboard.web3auth.io
           chainConfig: solanaChainConfig,
-          web3AuthNetwork: "testnet"
+          web3AuthNetwork: "testnet",
+          useCoreKitKey: true,
         });
 
         const openloginAdapter = new OpenloginAdapter({

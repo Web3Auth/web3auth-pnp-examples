@@ -28,7 +28,8 @@ function App() {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
           },
-          web3AuthNetwork: "cyan"
+          web3AuthNetwork: "cyan",
+          useCoreKitKey: true,
         });
 
         const openloginAdapter = new OpenloginAdapter({

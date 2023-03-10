@@ -19,12 +19,13 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
       ticker: chains[0].nativeCurrency?.symbol,
       blockExplorer: chains[0]?.blockExplorers.default?.url,
     },
+    web3AuthNetwork: "cyan",
+    useCoreKitKey: true,
   });
 
   // Add openlogin adapter for customisations
   const openloginAdapter = new OpenloginAdapter({
     adapterSettings: {
-      network: "cyan",
       uxMode: "popup",
       loginConfig: {
         jwt: {

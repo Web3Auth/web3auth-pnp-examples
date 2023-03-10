@@ -16,5 +16,6 @@
             "directory": "single-factor-auth/*",
             "changeProcessCWD": true
         }
-    ]
+    ],
+    "cmake.configureOnOpen": false
 }

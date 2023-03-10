@@ -67,26 +67,12 @@ function App() {
                 verifierSubIdentifier: "w3a-email-passwordless",
                 typeOfLogin: "jwt",
                 clientId: "QQRQNGxJ80AZ5odiIjt1qqfryPOeDcb1",
-                jwtParameters: {
-                  domain: "https://shahbaz-torus.us.auth0.com",
-                  // this corresponds to the field inside jwt which must be used to uniquely
-                  // identify the user. This is mapped b/w google and email passwordless logins of Auth0
-                  verifierIdField: "email",
-                  isVerifierIdCaseSensitive: false,
-                },
               },
               auth0github: {
                 verifier: "agg-google-emailpswd-github",
                 verifierSubIdentifier: "w3a-github",
                 typeOfLogin: "jwt",
                 clientId: "TcuxIlWeaexIhVzsyc4sShzHJxwJ7nsO",
-                jwtParameters: {
-                  domain: "https://shahbaz-torus.us.auth0.com",
-                  // this corresponds to the field inside jwt which must be used to uniquely
-                  // identify the user. This is mapped b/w google and github logins
-                  verifierIdField: "email",
-                  isVerifierIdCaseSensitive: false,
-                },
               },
             },
           },
@@ -129,6 +115,13 @@ function App() {
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "auth0emailpasswordless",
+        extraLoginOptions: {
+          domain: "https://shahbaz-torus.us.auth0.com",
+          // this corresponds to the field inside jwt which must be used to uniquely
+          // identify the user. This is mapped b/w google and email passwordless logins of Auth0
+          verifierIdField: "email",
+          isVerifierIdCaseSensitive: false,
+        },
       }
     );
     setProvider(web3authProvider);
@@ -143,6 +136,13 @@ function App() {
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "auth0github",
+        extraLoginOptions: {
+          domain: "https://shahbaz-torus.us.auth0.com",
+          // this corresponds to the field inside jwt which must be used to uniquely
+          // identify the user. This is mapped b/w google and github logins
+          verifierIdField: "email",
+          isVerifierIdCaseSensitive: false,
+        },
       }
     );
     setProvider(web3authProvider);

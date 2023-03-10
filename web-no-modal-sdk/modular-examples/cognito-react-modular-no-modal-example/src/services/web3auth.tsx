@@ -3,7 +3,7 @@ import {
   SafeEventEmitterProvider,
   WALLET_ADAPTER_TYPE,
 } from "@web3auth/base";
-import { Web3AuthCore } from "@web3auth/no-modal";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import type { LOGIN_PROVIDER_TYPE } from "@toruslabs/openlogin";
 
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -20,7 +20,7 @@ import { WEB3AUTH_NETWORK_TYPE } from "../config/web3AuthNetwork";
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
 
 export interface IWeb3AuthContext {
-  web3Auth: Web3AuthCore | null;
+  web3Auth: Web3AuthNoModal | null;
   provider: IWalletProvider | null;
   isLoading: boolean;
   user: unknown;
@@ -79,7 +79,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
   web3AuthNetwork,
   chain,
 }: IWeb3AuthProps) => {
-  const [web3Auth, setWeb3Auth] = useState<Web3AuthCore | null>(null);
+  const [web3Auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IWalletProvider | null>(null);
   const [user, setUser] = useState<unknown | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -99,7 +99,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
   );
 
   useEffect(() => {
-    const subscribeAuthEvents = (web3auth: Web3AuthCore) => {
+    const subscribeAuthEvents = (web3auth: Web3AuthNoModal) => {
       // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
       web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
         console.log("Yeah!, you are successfully logged in", data);
@@ -129,7 +129,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
           "BE-nSVAJjuFSstTO_9wlA8MTZKdZ9bJaH8wWcnHKMUGLzYLg-cPPZ9v6Tm1snsi-Cv12XMHkFXX0ujRp3FtBnAc";
         const currentChainConfig = CHAIN_CONFIG[chain];
 
-        const web3AuthInstance = new Web3AuthCore({
+        const web3AuthInstance = new Web3AuthNoModal({
           chainConfig: currentChainConfig,
           clientId,
           web3AuthNetwork,

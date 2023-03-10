@@ -3,7 +3,7 @@ import {
   SafeEventEmitterProvider,
   WALLET_ADAPTER_TYPE,
 } from "@web3auth/base";
-import { Web3AuthCore } from "@web3auth/no-modal";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import type { LOGIN_PROVIDER_TYPE } from "@toruslabs/openlogin";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import {
@@ -21,7 +21,7 @@ import { getWalletProvider, IWalletProvider } from "./walletProvider";
 import { APP_CONFIG_TYPE } from "../config/appConfig";
 
 export interface IWeb3AuthContext {
-  web3Auth: Web3AuthCore | null;
+  web3Auth: Web3AuthNoModal | null;
   provider: IWalletProvider | null;
   isLoading: boolean;
   user: unknown;
@@ -95,7 +95,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
   chain,
   app,
 }: IWeb3AuthProps) => {
-  const [web3Auth, setWeb3Auth] = useState<Web3AuthCore | null>(null);
+  const [web3Auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IWalletProvider | null>(null);
   const [user, setUser] = useState<unknown | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -115,7 +115,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
   );
 
   useEffect(() => {
-    const subscribeAuthEvents = (web3auth: Web3AuthCore) => {
+    const subscribeAuthEvents = (web3auth: Web3AuthNoModal) => {
       // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
       web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
         console.log("Yeah!, you are successfully logged in", data);
@@ -147,7 +147,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
           process.env.REACT_APP_CLIENT_ID ||
           "BMuAPXdFXaK94pUgfNluIEBPMTiwWKQz0h8AkCtf4Rzxv4bNLwsTRXSlt5OlB6KSpP_jYFhzloMf2XhUYADB3JE";
 
-        const web3AuthInstance = new Web3AuthCore({
+        const web3AuthInstance = new Web3AuthNoModal({
           chainConfig: currentChainConfig,
           clientId,
           web3AuthNetwork,

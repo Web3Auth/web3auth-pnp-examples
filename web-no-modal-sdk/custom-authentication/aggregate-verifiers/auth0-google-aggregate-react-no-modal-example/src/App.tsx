@@ -35,7 +35,7 @@ const solanaChainConfig = {
 // };
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -43,7 +43,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthCore({
+        const web3auth = new Web3AuthNoModal({
           clientId, // get from https://dashboard.web3auth.io
           chainConfig: solanaChainConfig,
           web3AuthNetwork: "testnet",

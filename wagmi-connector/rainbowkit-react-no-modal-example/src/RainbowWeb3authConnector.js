@@ -1,5 +1,5 @@
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
-import { Web3AuthCore } from "@web3auth/no-modal";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
@@ -8,7 +8,7 @@ const iconUrl = "https://www.freepnglogos.com/uploads/google-logo-png/google-log
 
 export const rainbowWeb3AuthConnector = ({ chains }) => {
   // Create Web3Auth Instance
-  const web3AuthInstance = new Web3AuthCore({
+  const web3AuthInstance = new Web3AuthNoModal({
     clientId: "YOUR_CLIENT_ID",
     chainConfig: {
       chainNamespace: CHAIN_NAMESPACES.EIP155,

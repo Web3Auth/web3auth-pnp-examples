@@ -142,6 +142,7 @@ function App() {
           // identify the user. This is mapped b/w google and github logins
           verifierIdField: "email",
           isVerifierIdCaseSensitive: false,
+          connection: "github",
         },
       }
     );

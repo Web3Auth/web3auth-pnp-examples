@@ -18,6 +18,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
@@ -50,6 +51,7 @@ function App() {
             enableLogging: true,
           },
         });
+        setTorusPlugin(torusPlugin);
         await web3auth.addPlugin(torusPlugin);
 
         // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
@@ -147,6 +149,29 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+  };
+
+  const showWCM = async () => {
+    if (!torusPlugin) {
+      uiConsole("torus plugin not initialized yet");
+      return;
+    }
+    torusPlugin.showWalletConnectScanner();
+    uiConsole();
+  };
+
+  const initiateTopUp = async () => {
+    if (!torusPlugin) {
+      uiConsole("torus plugin not initialized yet");
+      return;
+    }
+    torusPlugin.initiateTopup("moonpay", {
+      selectedAddress: "0x8cFa648eBfD5736127BbaBd1d3cAe221B45AB9AF",
+      selectedCurrency: "USD",
+      fiatValue: 100,
+      selectedCryptoCurrency: "ETH",
+      chainNetwork: "mainnet",
+    });
   };
 
   const getChainId = async () => {
@@ -256,6 +281,16 @@ function App() {
         <div>
           <button onClick={authenticateUser} className="card">
             Get ID Token
+          </button>
+        </div>
+        <div>
+          <button onClick={showWCM} className="card">
+            Show Wallet Connect Modal
+          </button>
+        </div>
+        <div>
+          <button onClick={initiateTopUp} className="card">
+            initiateTopUp
           </button>
         </div>
         <div>

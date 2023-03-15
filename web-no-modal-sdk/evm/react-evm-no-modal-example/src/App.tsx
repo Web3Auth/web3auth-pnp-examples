@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
   SafeEventEmitterProvider,
@@ -14,7 +14,7 @@ const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -22,14 +22,14 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthCore({
+        const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x1",
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
-          web3AuthNetwork: "cyan"
+          web3AuthNetwork: "cyan",
         });
 
         setWeb3auth(web3auth);
@@ -58,6 +58,23 @@ function App() {
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "google",
+      }
+    );
+    setProvider(web3authProvider);
+  };
+
+  const loginWithSMS = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        loginProvider: "sms_passwordless",
+        extraLoginOptions: {
+          login_hint: "+65-XXXXXXX", // 
+        }
       }
     );
     setProvider(web3authProvider);
@@ -99,6 +116,35 @@ function App() {
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
+
+  const addChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const newChain = {
+      chainId: "0x5",
+      displayName: "Goerli",
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      tickerName: "Goerli",
+      ticker: "ETH",
+      decimals: 18,
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      blockExplorer: "https://goerli.etherscan.io",
+    };
+    await web3auth?.addChain(newChain);
+    uiConsole("New Chain Added");
+  };
+
+  const switchChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    await web3auth?.switchChain({ chainId: "0x5" });
+    uiConsole("Chain Switched");
+  };
+
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -175,6 +221,16 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={addChain} className="card">
+            Add Chain
+          </button>
+        </div>
+        <div>
+          <button onClick={switchChain} className="card">
+            Switch Chain
+          </button>
+        </div>
+        <div>
           <button onClick={getAccounts} className="card">
             Get Accounts
           </button>
@@ -212,9 +268,14 @@ function App() {
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <>
+      <button onClick={login} className="card">
+        Login
+      </button>
+      <button onClick={loginWithSMS} className="card">
+        SMS Login (e.g +cc-number)
+      </button>
+    </>
   );
 
   return (
@@ -222,7 +283,7 @@ function App() {
       <h1 className="title">
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth
-        </a>
+        </a>{" "}
         & ReactJS Ethereum Example
       </h1>
 

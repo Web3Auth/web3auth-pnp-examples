@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
@@ -14,7 +14,7 @@ const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -22,7 +22,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthCore({
+        const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -71,6 +71,7 @@ function App() {
         extraLoginOptions: {
           domain: "https://shahbaz-torus.us.auth0.com",
           verifierIdField: "sub",
+          // connection: "google-oauth2", // Use this to skip Auth0 Modal for Google login.
         },
       }
     );

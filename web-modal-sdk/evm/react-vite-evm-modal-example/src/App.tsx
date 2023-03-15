@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-console */
 import "./App.css";
 
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
@@ -17,6 +19,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
@@ -26,9 +29,9 @@ function App() {
           },
           uiConfig: {
             theme: "dark",
-            loginMethodsOrder: ["facebook", "google"],
+            loginMethodsOrder: ["github", "google"],
             defaultLanguage: "en",
-            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            appLogo: "https://community.web3auth.io/uploads/default/original/1X/f099604619942cac423be6356011e414d25ba88c.png", // Your App Logo Here
           },
           web3AuthNetwork: "cyan",
         });
@@ -109,6 +112,35 @@ function App() {
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
+
+  const addChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const newChain = {
+      chainId: "0x5",
+      displayName: "Goerli",
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      tickerName: "Goerli",
+      ticker: "ETH",
+      decimals: 18,
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      blockExplorer: "https://goerli.etherscan.io",
+    };
+    await web3auth?.addChain(newChain);
+    uiConsole("New Chain Added");
+  };
+
+  const switchChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    await web3auth?.switchChain({ chainId: "0x5" });
+    uiConsole("Chain Switched");
+  };
+
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -185,6 +217,16 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={addChain} className="card">
+            Add Chain
+          </button>
+        </div>
+        <div>
+          <button onClick={switchChain} className="card">
+            Switch Chain
+          </button>
+        </div>
+        <div>
           <button onClick={getAccounts} className="card">
             Get Accounts
           </button>
@@ -233,7 +275,7 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Ethereum Example
+        & ReactJS(Vite) Ethereum Example
       </h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>

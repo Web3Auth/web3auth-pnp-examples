@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-shadow */
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { Web3Auth } from "@web3auth/modal";
@@ -15,6 +18,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
@@ -47,6 +51,7 @@ function App() {
             enableLogging: true,
           },
         });
+        setTorusPlugin(torusPlugin);
         await web3auth.addPlugin(torusPlugin);
 
         // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
@@ -146,6 +151,29 @@ function App() {
     setProvider(null);
   };
 
+  const showWCM = async () => {
+    if (!torusPlugin) {
+      uiConsole("torus plugin not initialized yet");
+      return;
+    }
+    torusPlugin.showWalletConnectScanner();
+    uiConsole();
+  };
+
+  const initiateTopUp = async () => {
+    if (!torusPlugin) {
+      uiConsole("torus plugin not initialized yet");
+      return;
+    }
+    torusPlugin.initiateTopup("moonpay", {
+      selectedAddress: "0x8cFa648eBfD5736127BbaBd1d3cAe221B45AB9AF",
+      selectedCurrency: "USD",
+      fiatValue: 100,
+      selectedCryptoCurrency: "ETH",
+      chainNetwork: "mainnet",
+    });
+  };
+
   const getChainId = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -155,6 +183,35 @@ function App() {
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
+
+  const addChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const newChain = {
+      chainId: "0x5",
+      displayName: "Goerli",
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      tickerName: "Goerli",
+      ticker: "ETH",
+      decimals: 18,
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      blockExplorer: "https://goerli.etherscan.io",
+    };
+    await web3auth?.addChain(newChain);
+    uiConsole("New Chain Added");
+  };
+
+  const switchChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    await web3auth?.switchChain({ chainId: "0x5" });
+    uiConsole("Chain Switched");
+  };
+
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -205,6 +262,7 @@ function App() {
     uiConsole(privateKey);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -226,8 +284,28 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={showWCM} className="card">
+            Show Wallet Connect Modal
+          </button>
+        </div>
+        <div>
+          <button onClick={initiateTopUp} className="card">
+            initiateTopUp
+          </button>
+        </div>
+        <div>
           <button onClick={getChainId} className="card">
             Get Chain ID
+          </button>
+        </div>
+        <div>
+          <button onClick={addChain} className="card">
+            Add Chain
+          </button>
+        </div>
+        <div>
+          <button onClick={switchChain} className="card">
+            Switch Chain
           </button>
         </div>
         <div>
@@ -285,11 +363,7 @@ function App() {
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/nextjs-evm-modal-example"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/nextjs-evm-modal-example" target="_blank" rel="noopener noreferrer">
           Source code
         </a>
       </footer>

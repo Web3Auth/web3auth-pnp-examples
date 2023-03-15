@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
@@ -31,7 +31,7 @@ const firebaseConfig = {
 };
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthCore({
+        const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -115,13 +115,13 @@ function App() {
   };
 
   const authenticateUser = async () => {
-		if (!web3auth) {
-			uiConsole('web3auth not initialized yet');
-			return;
-		}
-		const idToken = await web3auth.authenticateUser();
-		uiConsole(idToken);
-	};
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const idToken = await web3auth.authenticateUser();
+    uiConsole(idToken);
+  };
 
   const getUserInfo = async () => {
     if (!web3auth) {
@@ -197,10 +197,10 @@ function App() {
           </button>
         </div>
         <div>
-					<button onClick={authenticateUser} className='card'>
-						Get ID Token
-					</button>
-				</div>
+          <button onClick={authenticateUser} className="card">
+            Get ID Token
+          </button>
+        </div>
         <div>
           <button onClick={getAccounts} className="card">
             Get Accounts

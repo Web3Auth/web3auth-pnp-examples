@@ -27,8 +27,8 @@ function App() {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-            rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+            rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           web3AuthNetwork: "cyan",
         });
@@ -82,6 +82,34 @@ function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
+  };
+
+  const addChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const newChain = {
+      chainId: "0x2",
+      displayName: "Solana Testnet",
+      chainNamespace: CHAIN_NAMESPACES.SOLANA,
+      tickerName: "SOLANA",
+      ticker: "SOL",
+      decimals: 18,
+      rpcTarget: "https://api.testnet.solana.com",
+      blockExplorer: "https://explorer.solana.com/?cluster=testnet",
+    };
+    await web3auth?.addChain(newChain);
+    uiConsole("New Chain Added");
+  };
+
+  const switchChain = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    await web3auth?.switchChain({ chainId: "0x2" });
+    uiConsole("Chain Switched");
   };
 
   const authenticateUser = async () => {
@@ -179,6 +207,16 @@ function App() {
         <div>
           <button onClick={authenticateUser} className="card">
             Get ID Token
+          </button>
+        </div>
+        <div>
+          <button onClick={addChain} className="card">
+            Add Chain
+          </button>
+        </div>
+        <div>
+          <button onClick={switchChain} className="card">
+            Switch Chain
           </button>
         </div>
         <div>

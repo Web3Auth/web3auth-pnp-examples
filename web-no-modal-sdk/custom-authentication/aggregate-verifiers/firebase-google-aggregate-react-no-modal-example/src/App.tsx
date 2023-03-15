@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
@@ -28,11 +28,11 @@ const firebaseConfig = {
   projectId: "web3auth-firebase-github",
   storageBucket: "web3auth-firebase-github.appspot.com",
   messagingSenderId: "384159528034",
-  appId: "1:384159528034:web:9a9121481ea2948237cd3b"
+  appId: "1:384159528034:web:9a9121481ea2948237cd3b",
 };
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -40,7 +40,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthCore({
+        const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,

@@ -1,6 +1,6 @@
 // Web3Auth Libraries
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
@@ -10,12 +10,12 @@ const name = "My App Name";
 const iconUrl = "https://web3auth.io/docs/contents/logo-ethereum.png";
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
-    // Create Web3Auth Instance
-  const web3AuthInstance = new Web3AuthCore({
+  // Create Web3Auth Instance
+  const web3AuthInstance = new Web3AuthNoModal({
     clientId: "YOUR_CLIENT_ID",
     chainConfig: {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0x"+chains[0].id.toString(16),
+      chainId: "0x" + chains[0].id.toString(16),
       rpcTarget: chains[0].rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
       displayName: chains[0].name,
       tickerName: chains[0].nativeCurrency?.name,
@@ -27,7 +27,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   const openloginAdapterInstance = new OpenloginAdapter({
     adapterSettings: {
       network: "cyan",
-      uxMode: "popup", 
+      uxMode: "popup",
       whiteLabel: {
         name: "Your app Name",
         logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
@@ -39,30 +39,30 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   });
   web3AuthInstance.configureAdapter(openloginAdapterInstance);
 
-    // Add Torus Wallet Plugin (optional)
-    const torusPlugin = new TorusWalletConnectorPlugin({
+  // Add Torus Wallet Plugin (optional)
+  const torusPlugin = new TorusWalletConnectorPlugin({
     torusWalletOpts: {
-        buttonPosition: "bottom-left",
+      buttonPosition: "bottom-left",
     },
     walletInitOptions: {
-        whiteLabel: {
+      whiteLabel: {
         theme: { isDark: false, colors: { primary: "#00a8ff" } },
         logoDark: iconUrl,
         logoLight: iconUrl,
-        },
-        useWalletConnect: true,
-        enableLogging: true,
+      },
+      useWalletConnect: true,
+      enableLogging: true,
     },
-    });
-    web3AuthInstance.addPlugin(torusPlugin);
+  });
+  web3AuthInstance.addPlugin(torusPlugin);
 
-    return new Web3AuthConnector({
-        chains: chains,
-        options: {
-          web3AuthInstance,
-          loginParams: {
-            loginProvider: 'google',
-          },
-        },
-      });
+  return new Web3AuthConnector({
+    chains: chains,
+    options: {
+      web3AuthInstance,
+      loginParams: {
+        loginProvider: "google",
+      },
+    },
+  });
 }

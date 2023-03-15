@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
@@ -35,7 +35,7 @@ const solanaChainConfig = {
 // };
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -43,7 +43,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthCore({
+        const web3auth = new Web3AuthNoModal({
           clientId, // get from https://dashboard.web3auth.io
           chainConfig: solanaChainConfig,
           web3AuthNetwork: "testnet",
@@ -67,28 +67,13 @@ function App() {
                 verifierSubIdentifier: "w3a-email-passwordless",
                 typeOfLogin: "jwt",
                 clientId: "QQRQNGxJ80AZ5odiIjt1qqfryPOeDcb1",
-                jwtParameters: {
-                  domain: "https://shahbaz-torus.us.auth0.com",
-                  // this corresponds to the field inside jwt which must be used to uniquely
-                  // identify the user. This is mapped b/w google and email passwordless logins of Auth0
-                  verifierIdField: "email",
-                  isVerifierIdCaseSensitive: false,
-                },
               },
               auth0github: {
                 verifier: "agg-google-emailpswd-github",
                 verifierSubIdentifier: "w3a-github",
                 typeOfLogin: "jwt",
                 clientId: "TcuxIlWeaexIhVzsyc4sShzHJxwJ7nsO",
-                jwtParameters: {
-                  domain: "https://shahbaz-torus.us.auth0.com",
-                  // this corresponds to the field inside jwt which must be used to uniquely
-                  // identify the user. This is mapped b/w google and github logins
-                  verifierIdField: "email",
-                  isVerifierIdCaseSensitive: false,
-                },
               },
-              
             },
           },
         });
@@ -130,6 +115,13 @@ function App() {
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "auth0emailpasswordless",
+        extraLoginOptions: {
+          domain: "https://shahbaz-torus.us.auth0.com",
+          // this corresponds to the field inside jwt which must be used to uniquely
+          // identify the user. This is mapped b/w google and email passwordless logins of Auth0
+          verifierIdField: "email",
+          isVerifierIdCaseSensitive: false,
+        },
       }
     );
     setProvider(web3authProvider);
@@ -144,6 +136,14 @@ function App() {
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "auth0github",
+        extraLoginOptions: {
+          domain: "https://shahbaz-torus.us.auth0.com",
+          // this corresponds to the field inside jwt which must be used to uniquely
+          // identify the user. This is mapped b/w google and github logins
+          verifierIdField: "email",
+          isVerifierIdCaseSensitive: false,
+          connection: "github",
+        },
       }
     );
     setProvider(web3authProvider);

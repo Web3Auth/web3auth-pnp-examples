@@ -38,6 +38,16 @@
           </button>
         </div>
         <div>
+          <button class="card" @click="addChain" style="cursor: pointer">
+            Add Chain
+          </button>
+        </div>
+        <div>
+          <button class="card" @click="switchChain" style="cursor: pointer">
+            Switch Chain
+          </button>
+        </div>
+        <div>
           <button class="card" @click="getAccounts" style="cursor: pointer">
             Get Accounts
           </button>
@@ -90,6 +100,7 @@ import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
   props: {
     msg: String,
@@ -245,6 +256,45 @@ export default {
       const chainId = await rpc.getChainId();
       uiConsole(chainId);
     };
+
+    const addChain = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      const newChain = {
+        chainId: "0x5",
+        displayName: "Goerli",
+        chainNamespace: CHAIN_NAMESPACES.EIP155,
+        tickerName: "Goerli",
+        ticker: "ETH",
+        decimals: 18,
+        rpcTarget: "https://rpc.ankr.com/eth_goerli",
+        blockExplorer: "https://goerli.etherscan.io",
+      };
+      await web3auth?.addChain(newChain);
+      uiConsole("New Chain Added");
+    };
+
+    const switchChain = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      const newChain = {
+        chainId: "0x5",
+        displayName: "Goerli",
+        chainNamespace: CHAIN_NAMESPACES.EIP155,
+        tickerName: "Goerli",
+        ticker: "ETH",
+        decimals: 18,
+        rpcTarget: "https://rpc.ankr.com/eth_goerli",
+        blockExplorer: "https://goerli.etherscan.io",
+      };
+      await web3auth?.switchChain({ chainId: "0x5" });
+      uiConsole("Chain Switched");
+    };
+
     const getAccounts = async () => {
       if (!provider) {
         uiConsole("provider not initialized yet");
@@ -314,6 +364,8 @@ export default {
       logout,
       getUserInfo,
       getChainId,
+      addChain,
+      switchChain,
       getAccounts,
       getBalance,
       sendTransaction,

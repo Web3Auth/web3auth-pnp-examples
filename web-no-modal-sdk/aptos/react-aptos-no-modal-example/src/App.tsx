@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { Web3AuthCore } from "@web3auth/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import {
+  CHAIN_NAMESPACES,
+  SafeEventEmitterProvider,
+  WALLET_ADAPTERS,
+} from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
-import RPC from "./aptosRPC"
+import RPC from "./aptosRPC";
 
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -17,7 +21,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthCore({
+        const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
@@ -26,7 +30,6 @@ function App() {
           },
           web3AuthNetwork: "cyan",
         });
-
 
         setWeb3auth(web3auth);
         const openloginAdapter = new OpenloginAdapter();
@@ -110,10 +113,9 @@ function App() {
       return;
     }
     const rpc = new RPC(provider);
-    const airdrop = await rpc.getAirdrop(); 
+    const airdrop = await rpc.getAirdrop();
     uiConsole("Airdropped some tokens TxID: " + airdrop);
   };
-
 
   const sendTransaction = async () => {
     if (!provider) {
@@ -122,9 +124,8 @@ function App() {
     }
     const rpc = new RPC(provider);
     const receipt = await rpc.sendTransaction();
-    uiConsole("TxID: "+receipt);
+    uiConsole("TxID: " + receipt);
   };
-
 
   const getPrivateKey = async () => {
     if (!provider) {

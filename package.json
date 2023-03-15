@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "update-web3auth": "lerna exec --concurrency 1 -- 'ncu --pre 5.0.0-alpha.0 -u @web3auth/*'",
+    "update-web3auth": "lerna exec --concurrency 1 -- 'ncu -u @web3auth/*'",
     "install-all": "lerna exec --concurrency 1 -- 'npm install'",
     "lint-all": "lerna exec --concurrency 1 -- 'npm run lint'"
   },

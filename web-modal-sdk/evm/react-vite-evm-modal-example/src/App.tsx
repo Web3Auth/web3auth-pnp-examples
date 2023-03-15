@@ -31,7 +31,7 @@ function App() {
             theme: "dark",
             loginMethodsOrder: ["github", "google"],
             defaultLanguage: "en",
-            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            appLogo: "https://community.web3auth.io/uploads/default/original/1X/f099604619942cac423be6356011e414d25ba88c.png", // Your App Logo Here
           },
           web3AuthNetwork: "cyan",
         });

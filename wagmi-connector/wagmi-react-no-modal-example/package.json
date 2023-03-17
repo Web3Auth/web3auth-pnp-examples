@@ -14,7 +14,7 @@
     "@web3auth/no-modal": "^5.0.1",
     "@web3auth/openlogin-adapter": "^5.0.1",
     "@web3auth/torus-wallet-connector-plugin": "^5.0.1",
-    "@web3auth/web3auth-wagmi-connector": "^2.2.0",
+    "@web3auth/web3auth-wagmi-connector": "^3.0.0",
     "ethers": "^5.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -52,9 +52,11 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
     ],
     "development": [
       "last 1 chrome version",

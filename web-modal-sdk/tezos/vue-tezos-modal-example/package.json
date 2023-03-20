@@ -13,7 +13,7 @@
     "@web3auth/openlogin-adapter": "^5.0.1",
     "@taquito/signer": "^14.0.0",
     "@taquito/taquito": "^14.0.0",
-    "@taquito/utils": "^14.0.0",
+    "@taquito/utils": "^16.0.0",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "core-js": "^3.25.5",

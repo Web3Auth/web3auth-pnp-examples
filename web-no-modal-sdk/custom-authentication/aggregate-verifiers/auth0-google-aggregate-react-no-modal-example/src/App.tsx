@@ -56,23 +56,23 @@ function App() {
             uxMode: "popup",
             loginConfig: {
               google: {
-                verifier: "agg-google-emailpswd-github",
+                verifier: "w3a-agg-example",
                 verifierSubIdentifier: "w3a-google",
                 typeOfLogin: "google",
                 clientId:
                   "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
               },
-              auth0emailpasswordless: {
-                verifier: "agg-google-emailpswd-github",
-                verifierSubIdentifier: "w3a-email-passwordless",
-                typeOfLogin: "jwt",
-                clientId: "QQRQNGxJ80AZ5odiIjt1qqfryPOeDcb1",
-              },
               auth0github: {
-                verifier: "agg-google-emailpswd-github",
-                verifierSubIdentifier: "w3a-github",
+                verifier: "w3a-agg-example",
+                verifierSubIdentifier: "w3a-a0-github",
                 typeOfLogin: "jwt",
-                clientId: "TcuxIlWeaexIhVzsyc4sShzHJxwJ7nsO",
+                clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu",
+              },
+              auth0emailpasswordless: {
+                verifier: "w3a-agg-example",
+                verifierSubIdentifier: "w3a-a0-email-passwordless",
+                typeOfLogin: "jwt",
+                clientId: "QiEf8qZ9IoasbZsbHvjKZku4LdnRC1Ct",
               },
             },
           },
@@ -116,7 +116,7 @@ function App() {
       {
         loginProvider: "auth0emailpasswordless",
         extraLoginOptions: {
-          domain: "https://shahbaz-torus.us.auth0.com",
+          domain: "https://web3auth.au.auth0.com",
           // this corresponds to the field inside jwt which must be used to uniquely
           // identify the user. This is mapped b/w google and email passwordless logins of Auth0
           verifierIdField: "email",
@@ -137,7 +137,7 @@ function App() {
       {
         loginProvider: "auth0github",
         extraLoginOptions: {
-          domain: "https://shahbaz-torus.us.auth0.com",
+          domain: "https://web3auth.au.auth0.com",
           // this corresponds to the field inside jwt which must be used to uniquely
           // identify the user. This is mapped b/w google and github logins
           verifierIdField: "email",

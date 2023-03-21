@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+This file is used for additional steps in the gradle build for Android.
+It uses its own UPL language written by the developers of Unreal Engine 4. To learn more, see the documentation:
+https://docs.unrealengine.com/en-US/SharingAndReleasing/Mobile/UnrealPluginLanguage/index.html
+-->
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <prebuildCopies>
+    <copyDir src="$S(PluginDir)/Private/Android/Java" dst="$S(BuildDir)/src/com/Plugins/Web3AuthSDK" />
+    <copyDir src="$S(PluginDir)/Private/Android/Java/drawable" dst="$S(BuildDir)/res/drawable" />
+    <copyDir src="$S(PluginDir)/Private/Android/Java/values" dst="$S(BuildDir)/res/values" />
+  </prebuildCopies>
+
+  <!-- Optional additions to proguard -->
+  <proguardAdditions>
+    <insert>
+      <!-- Disabling class obfuscation -->
+      -dontwarn com.Plugins.**
+      -keep class com.Plugins.** { *; }
+      -keep interface com.Plugins.** { *; }
+      -keep public class com.Plugins.Web3AuthSDK.** { public protected *; }
+
+      -dontwarn androidx.**
+      -keep class androidx.** { *; }
+      -keep interface androidx.** { *; }
+
+    </insert>
+  </proguardAdditions>
+
+  <!-- optional updates applied to AndroidManifest.xml -->
+  <androidManifestUpdates>
+
+    <addElements tag="application">
+      <!-- Your lines that you want to add to the "application" section -->
+
+
+    </addElements>
+
+    <!-- Adding your own Permission -->
+    <addPermission android:name="com.android.permission.READ_EXTERNAL_STORAGE"/>
+    <addPermission android:name="com.android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    
+    <!-- update the GameActivity activity -->
+    <loopElements tag="activity">
+        <setStringFromAttribute result="activityName" tag="$" name="android:name"/>
+        <setBoolIsEqual result="bGameActivity" arg1="$S(activityName)" arg2="com.epicgames.unreal.GameActivity"/>
+        <if condition="bGameActivity">
+            <true>
+                <addElements tag="$">
+                  <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <category android:name="android.intent.category.BROWSABLE" />
+
+                    <data
+                        android:host="com.torus.Web3AuthUnity"
+                        android:pathPattern="/*"
+                        android:pathPrefix="/auth"
+                        android:scheme="torusapp" />
+                  </intent-filter>
+                </addElements>
+            </true>
+        </if>
+    </loopElements>
+
+  </androidManifestUpdates>
+
+
+  <!-- optional app build.gradle additions -->
+  <buildGradleAdditions>
+    <insert>
+
+      android {
+        compileOptions {
+          sourceCompatibility 1.8
+          targetCompatibility 1.8
+        }
+      }
+
+      ext {
+        android {
+          buildTypes {
+            release {
+              minifyEnabled false
+            }
+          }
+        }
+      }
+
+      repositories {
+        mavenCentral()
+        jcenter()
+      }
+
+      dependencies {
+        implementation 'androidx.browser:browser:1.4.0'
+      }
+
+    </insert>
+  </buildGradleAdditions>
+
+  <gameActivityImportAdditions>
+      <insert>
+      </insert>
+  </gameActivityImportAdditions>
+  <gameActivityClassAdditions>
+      <insert>
+          public static native void onDeepLink(String uri);
+      </insert>
+  </gameActivityClassAdditions>
+
+  <gameActivityOnResumeAdditions>
+      <insert>
+          try {
+            Intent intent = getIntent();
+
+            onDeepLink(intent.getData().getFragment());
+          } catch (Exception ex) {
+            Log.debug(ex.getMessage());
+          }
+      </insert>
+  </gameActivityOnResumeAdditions>
+
+</root>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+This file is used for additional steps in the build for iOS(mainly for adding additional information to the *.plist).
+It uses its own UPL language, written by the developers of Unreal Engine 4. 
+The official documentation does not specify the steps for iOS, but you can learn more from the source code:
+https://github.com/EpicGames/UnrealEngine/blob/release/Engine/Source/Programs/UnrealBuildTool/System/UnrealPluginLanguage.cs
+-->
+
+<root>
+
+    <init>
+        <log text="MobileNativeCode iOS -> Adding permission to plist"/>
+        <trace enable="true"/>
+      
+    </init>
+
+    <iosPListUpdates>
+        <addElements tag="dict" once="true">
+          
+            <!-- Here add your data for the p-list -->
+
+            <!-- EXAMPLE
+            <key>NSPhotoLibraryAddUsageDescription</key>
+            <string>This app saves screen captures to the photo library.</string>
+            <key>NSMicrophoneUsageDescription</key>
+            <string>Allow the app to access the microphone for voicing?</string>
+            <key>NSGKFriendListUsageDescription</key>
+            <string>This app compares achievements from the game among your friends.</string>
+            -->
+
+            <!-- end -->
+
+        </addElements>
+    </iosPListUpdates>
+</root>

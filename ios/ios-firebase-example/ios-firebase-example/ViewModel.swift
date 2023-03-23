@@ -1,5 +1,7 @@
 import Foundation
 import Web3Auth
+import FirebaseCore
+import FirebaseAuth
 
 class ViewModel: ObservableObject {
     var web3Auth: Web3Auth?
@@ -7,8 +9,8 @@ class ViewModel: ObservableObject {
     @Published var user: Web3AuthState?
     @Published var isLoading = false
     @Published var navigationTitle: String = ""
-    private var clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"
-    private var network: Network = .testnet
+    private var clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"
+    private var network: Network = .cyan
     func setup() async {
         guard web3Auth == nil else { return }
         await MainActor.run(body: {
@@ -26,26 +28,26 @@ class ViewModel: ObservableObject {
         })
     }
     
-    func loginWithAuth0() {
+    func loginViaFirebaseEP() {
         Task{
             do {
+                let res = try await Auth.auth().signIn(withEmail: "custom+jwt@firebase.login", password: "Testing@123")
+                let id_token = try await res.user.getIDToken()
                 let result = try await Web3Auth(.init(
                     clientId: clientId,
                     network: network,
                     loginConfig: [
                         TypeOfLogin.jwt.rawValue:
                                 .init(
-                                    verifier: "web3auth-auth0-example",
-                                    typeOfLogin: .jwt,
-                                    name: "Web3Auth-Auth0-JWT",
-                                    clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT"
+                                    verifier: "web3auth-firebase-examples",
+                                    typeOfLogin: .jwt
                                 )
                     ]
                 )).login(
                     W3ALoginParams(
                     loginProvider: .JWT,
                     dappShare: nil,
-                    extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: "https://shahbaz-torus.us.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil),
+                    extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: id_token, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil),
                     mfaLevel: .NONE,
                     curve: .SECP256K1
                     ))
@@ -59,6 +61,7 @@ class ViewModel: ObservableObject {
             }
         }
     }
+    
     
 }
 

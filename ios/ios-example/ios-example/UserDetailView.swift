@@ -21,7 +21,7 @@ struct UserDetailView: View {
 
                     } label: {
                         HStack{
-                            Text("Get Public Key")
+                            Text("Get Public Address")
                             Spacer()
                         }
                     }
@@ -33,8 +33,8 @@ struct UserDetailView: View {
                     Text("Public key")
                 }
                 Section {
-                    Text("Name \(user.userInfo?.name ?? "")")
-                    Text("Email \(user.userInfo?.email ?? "")")
+                    Text("Name: \(user.userInfo?.name ?? "")")
+                    Text("Email: \(user.userInfo?.email ?? "")")
                 }
                 header: {
                     Text("User Info")
@@ -50,7 +50,7 @@ struct UserDetailView: View {
                        }
                    }
                     if(web3RPC.balance>=0){
-                        Text("\(web3RPC.balance) Eth")
+                        Text("\(web3RPC.balance) ETH")
                         
                     }
                     Button {
@@ -87,7 +87,7 @@ struct UserDetailView: View {
                         Task.detached {
                             do {
                                 try await Web3Auth(.init(clientId: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A",
-                                                         network: .mainnet)).logout()
+                                                         network: .cyan)).logout()
                                 await MainActor.run(body: {
                                     loggedIn.toggle()
                                 })                             } catch {

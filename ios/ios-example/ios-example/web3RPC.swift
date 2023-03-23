@@ -56,7 +56,7 @@ class Web3RPC : ObservableObject {
             guard blockChanged == true else {
                 return
             }
-            let balance = client.eth_getBalance(address: self.address, block: .Latest) { [unowned self] error, val in
+            let balance: () = client.eth_getBalance(address: self.address, block: .Latest) { [unowned self] error, val in
                 if let error = error {
                     print(error)
                 }

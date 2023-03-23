@@ -4,14 +4,6 @@ struct LoginView: View {
     @StateObject var vm: ViewModel
     var body: some View {
         List {
-            Button(
-                action: {
-                    vm.whitelabelLogin()
-                },
-                label: {
-                    Text("Sign In")
-                }
-            )
 
             Button(
                 action: {
@@ -28,6 +20,33 @@ struct LoginView: View {
                 },
                 label: {
                     Text("Sign In with Apple")
+                }
+            )
+            
+            Button(
+                action: {
+                    vm.login(provider: .DISCORD)
+                },
+                label: {
+                    Text("Sign In with Discord")
+                }
+            )
+            
+            Button(
+                action: {
+                    vm.loginEmailPasswordless(provider: .EMAIL_PASSWORDLESS)
+                },
+                label: {
+                    Text("Sign In with Email Passwordless")
+                }
+            )
+            
+            Button(
+                action: {
+                    vm.whitelabelLogin()
+                },
+                label: {
+                    Text("Sign In (Whitelabel example)")
                 }
             )
         }

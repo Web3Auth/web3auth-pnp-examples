@@ -41,27 +41,43 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func whitelabelLogin() {
-            Task.detached { [unowned self] in
-                do {
-                    web3Auth = await Web3Auth(W3AInitParams(
-                        clientId: clientId,
-                        network: network,
-                        whiteLabel: W3AWhiteLabelData(
-                            name: "Web3Auth Stub",
-                            dark: true, theme: ["primary": "#123456"])
-                    ))
-                    let result = try await self.web3Auth?
-                        .login(W3ALoginParams(loginProvider: .GOOGLE))
-                    await MainActor.run(body: {
-                        user = result
-                        loggedIn = true
-                    })
-                } catch let error {
-                    print(error)
-                }
+    func loginEmailPasswordless(provider: Web3AuthProvider) {
+        Task {
+            do {
+                let result = try await Web3Auth(.init(clientId: clientId, network: network)).login(W3ALoginParams(loginProvider: provider, extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: "hello+iosexample@web3auth.io", acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil)))
+                await MainActor.run(body: {
+                    user = result
+                    loggedIn = true
+                    navigationTitle = "UserInfo"
+                })
+
+            } catch {
+                print("Error")
             }
         }
+    }
+    
+    func whitelabelLogin() {
+        Task.detached { [unowned self] in
+            do {
+                web3Auth = await Web3Auth(W3AInitParams(
+                    clientId: clientId,
+                    network: network,
+                    whiteLabel: W3AWhiteLabelData(
+                        name: "Web3Auth iOS Example",
+                        dark: true, theme: ["primary": "#123456"])
+                ))
+                let result = try await self.web3Auth?
+                    .login(W3ALoginParams(loginProvider: .GOOGLE))
+                await MainActor.run(body: {
+                    user = result
+                    loggedIn = true
+                })
+            } catch let error {
+                print(error)
+            }
+        }
+    }
 }
 
 extension ViewModel {

@@ -20,23 +20,27 @@ const scheme = 'web3authrnbarefirebase'; // Or your desired app redirection sche
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
   'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk';
-const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
+// const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
 
-async function signInWithGoogle() {
+async function signInWithEmailPassword() {
   try {
-    GoogleSignin.configure({
-      webClientId:
-        '461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com',
-    });
-    // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-    // Get the users ID token
-    const {idToken} = await GoogleSignin.signIn();
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    // GoogleSignin.configure({
+    //   webClientId:
+    //     '461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com',
+    // });
+    // // Check if your device supports Google Play
+    // await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    // // Get the users ID token
+    // const {idToken} = await GoogleSignin.signIn();
+    // // Create a Google credential with the token
+    // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Sign-in the user with the credential
-    const res = await auth().signInWithCredential(googleCredential);
+    // // Sign-in the user with the credential
+    // const res = await auth().signInWithCredential(googleCredential);
+    const res = await auth().signInWithEmailAndPassword(
+      'custom+jwt@firebase.login',
+      'Testing@123',
+    );
     return res;
   } catch (error) {
     console.error(error);
@@ -64,8 +68,8 @@ export default function App() {
         },
       });
 
-      const loginRes = await signInWithGoogle();
-      uiConsole('Google login success', loginRes);
+      const loginRes = await signInWithEmailPassword();
+      uiConsole('Login success', loginRes);
       const idToken = await loginRes.user.getIdToken(true);
       uiConsole('idToken', idToken);
 

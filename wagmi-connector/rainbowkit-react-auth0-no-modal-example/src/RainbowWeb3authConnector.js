@@ -20,7 +20,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
       blockExplorer: chains[0]?.blockExplorers.default?.url,
     },
     web3AuthNetwork: "cyan",
-    useCoreKitKey: true,
+    useCoreKitKey: false,
   });
 
   // Add openlogin adapter for customisations

@@ -46,7 +46,7 @@ function App() {
             chainId: "0x5",
           },
           web3AuthNetwork: "cyan",
-          useCoreKitKey: true,
+          useCoreKitKey: false,
         });
 
         const openloginAdapter = new OpenloginAdapter({

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@polkadot/api": "^9.10.5",
+    "@polkadot/api": "^10.2.1",
     "@polkadot/util": "^10.2.1",
     "@polkadot/util-crypto": "^10.2.1",
     "@testing-library/jest-dom": "^5.16.5",

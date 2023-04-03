@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
@@ -138,6 +139,35 @@ function App() {
         setWeb3auth(web3auth);
 
         await web3auth.initModal();
+
+        // await web3auth.initModal({
+        //   modalConfig: {
+        //     [WALLET_ADAPTERS.OPENLOGIN]: {
+        //       label: "openlogin",
+        //       loginMethods: {
+        //         // Disable facebook and reddit
+        //         facebook: {
+        //           name: "facebook",
+        //           showOnModal: false
+        //         },
+        //         reddit: {
+        //           name: "reddit",
+        //           showOnModal: false
+        //         },
+        //         // Disable email_passwordless and sms_passwordless
+        //         email_passwordless: {
+        //           name: "email_passwordless",
+        //           showOnModal: false
+        //         },
+        //         sms_passwordless: {
+        //           name: "sms_passwordless",
+        //           showOnModal: false
+        //         }
+        //       }
+        //     }
+        //   }
+        // });
+
         if (web3auth.provider) {
           setProvider(web3auth.provider);
         }

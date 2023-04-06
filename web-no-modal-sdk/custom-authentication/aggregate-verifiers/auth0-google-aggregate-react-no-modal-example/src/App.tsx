@@ -68,6 +68,12 @@ function App() {
                 typeOfLogin: "jwt",
                 clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu",
               },
+              auth0discord: {
+                verifier: "w3a-agg-example",
+                verifierSubIdentifier: "w3a-a0-discord",
+                typeOfLogin: "jwt",
+                clientId: "G5dokkUjwlUE00FWP4pR3z9m2ZPrDAmF",
+              },
               auth0emailpasswordless: {
                 verifier: "w3a-agg-example",
                 verifierSubIdentifier: "w3a-a0-email-passwordless",
@@ -143,6 +149,28 @@ function App() {
           verifierIdField: "email",
           isVerifierIdCaseSensitive: false,
           connection: "github",
+        },
+      }
+    );
+    setProvider(web3authProvider);
+  };
+
+  const loginAuth0Discord = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        loginProvider: "auth0discord",
+        extraLoginOptions: {
+          domain: "https://web3auth.au.auth0.com",
+          // this corresponds to the field inside jwt which must be used to uniquely
+          // identify the user. This is mapped b/w google and github logins
+          verifierIdField: "email",
+          isVerifierIdCaseSensitive: false,
+          connection: "discord",
         },
       }
     );
@@ -281,6 +309,9 @@ function App() {
       <button onClick={loginAuth0GitHub} className="card">
         Login using <b>GitHub</b> [ via Auth0 ]
       </button>
+      <button onClick={loginAuth0Discord} className="card">
+        Login using <b>Discord</b> [ via Auth0 ]
+      </button>
     </>
   );
 
@@ -293,7 +324,7 @@ function App() {
         Aggregate Verifier Example in React
       </h1>
       <h3 className="sub-title">
-        Aggregate Verifier - Google, Email Passwordless & GitHub
+        Aggregate Verifier - Google, Email Passwordless, Discord & GitHub
       </h3>
 
       <h6 className="center">

@@ -1,36 +1,40 @@
-# Web3Auth Core x Custom JWT Login Demo Application
+# Web3Auth (`@web3auth/no-modal`) x Custom JWT (Custom Authentication) x React x Express
 
-React - Express Application
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/no-modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
-## Quick Start
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-### Start Server
+This example demonstrates how to use Web3Auth with Custom JWT (Custom Authentication) x React x Express.
+
+## How to Use
+
+### Download Manually
 
 ```bash
-git clone https://github.com/Web3Auth/examples.git
-cd web-no-modal-sdk/custom-authentication/custom-jwt-react-express-no-modal-example/server
-npm install
-npm start
-# server will be running on localhost:8080
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/custom-jwt-react-express-no-modal-example w3a-nomodal-custom-jwt
 ```
 
-### Start Client (in a new CLI tab)
+Install & Run:
 
 ```bash
-git clone https://github.com/Web3Auth/examples.git
-cd web-no-modal-sdk/custom-authentication/custom-jwt-react-express-no-modal-example
+cd w3a-nomodal-custom-jwt/server
 npm install
-npm start
+## start server
+# server will be running on localhost:8080
+npm run start
+## start client
+cd ..
+npm install
+npm run start
 # client will be running on localhost:3000
 ```
 
-## Local Demo
+## Important Links
 
-Visit http://localhost:3000 to login with Custom JWT.
-
-# Development
-
-To use this in your project, please checkout the following first:
-
-1. [How to bring your own JWT Token?](https://web3auth.io/docs/custom-authentication/byo-jwt-providers#using-rsa-for-jwt-signing)
-2. [How to create a Custom Verifier on Web3Auth Dashboard?](https://web3auth.io/docs/custom-authentication/byo-jwt-providers#set-up-custom-jwt-verifier)
+- [Website](https://web3auth.io)
+- [Docs](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Community Portal](https://community.web3auth.io)

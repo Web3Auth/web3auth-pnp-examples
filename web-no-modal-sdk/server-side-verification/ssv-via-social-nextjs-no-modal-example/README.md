@@ -1,23 +1,31 @@
-# Server Side Verification - Web3Auth x Next.js Demo Application
+# Web3Auth (`@web3auth/no-modal`) x Server-Side Verification (SSV) via Social
 
-## Quick Start
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/no-modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
+
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
+
+This example demonstrates how to use Web3Auth with Server-Side Verification (SSV) via Social.
+
+## How to Use
+
+### Download Manually
 
 ```bash
-git clone https://github.com/Web3Auth/examples.git
-cd web-no-modal-sdk/server-side-verification/ssv-via-social-nextjs-no-modal-example
-npm install
-npm run start # localhost:3000
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/server-side-verification/ssv-via-social-nextjs-no-modal-example w3a-nomodal-ssv-nextjs
 ```
 
-## Guide
+Install & Run:
 
-[Read the full guide to configure.](https://web3auth.io/docs/guides/server-side-verification)
-
-## Questions
-
-Ask us on our
-[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
-out to our [Discord](https://discord.gg/web3auth).
+```bash
+cd w3a-nomodal-ssv-nextjs
+npm install
+npm run dev
+# or
+cd w3a-nomodal-ssv-nextjs
+yarn
+yarn dev
+```
 
 ## Important Links
 
@@ -26,4 +34,4 @@ out to our [Discord](https://discord.gg/web3auth).
 - [Guides](https://web3auth.io/docs/guides)
 - [SDK / API References](https://web3auth.io/docs/sdk)
 - [Pricing](https://web3auth.io/pricing.html)
-- [Github Discussion Board](https://github.com/orgs/Web3Auth/discussions)
+- [Community Portal](https://community.web3auth.io)

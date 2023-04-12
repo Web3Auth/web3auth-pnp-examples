@@ -1,28 +1,37 @@
-# Web3Auth Aggregate Verifier Demo Application
+# Web3Auth (`@web3auth/no-modal`) x Aggregate Verifiers (Auth0 + Google)
 
-## Quick Start
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/no-modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
+
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
+
+This example demonstrates how to use Web3Auth with Aggregate Verifiers (Auth0 + Google).
+
+## How to Use
+
+### Download Manually
 
 ```bash
-git clone https://github.com/web3auth/examples/web-no-modal-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-no-modal-example
-cd auth0-google-aggregate-react-no-modal-example
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-no-modal-example w3a-nomodal-aggregate-auth0
 ```
 
-## Installation
-
-Run:
+Install & Run:
 
 ```bash
+cd w3a-nomodal-aggregate-auth0
 npm install
-```
-
-## Start
-
-Run:
-
-```bash
 npm run start
+# or
+cd w3a-nomodal-aggregate-auth0
+yarn
+yarn start
 ```
 
-## Configure
+## Important Links
 
-Follow https://web3auth.io/docs/custom-authentication/verifiers#set-up-an-aggregate-verifier to set up an Aggregate Verifier.
+- [Website](https://web3auth.io)
+- [Docs](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Community Portal](https://community.web3auth.io)

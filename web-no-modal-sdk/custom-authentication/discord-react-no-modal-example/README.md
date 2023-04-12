@@ -1,27 +1,31 @@
-# Web3Auth x Discord Login Demo Application
+# Web3Auth (`@web3auth/no-modal`) x Discord (Custom Authentication)
 
-## Quick Start
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/no-modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
+
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
+
+This example demonstrates how to use Web3Auth with Discord (Custom Authentication).
+
+## How to Use
+
+### Download Manually
 
 ```bash
-git clone https://github.com/Web3Auth/examples.git
-cd web-no-modal-sdk/custom-authentication/discord-react-no-modal-example
-npm install
-npm run start # localhost:3000
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/discord-react-no-modal-example w3a-nomodal-discord
 ```
 
-## Configure
+Install & Run:
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Discord
-account for the integration and provide you with the links on how to develop a
-basic web application on the blockchain of your choice.
-
-[Read the full guide to configure.](https://web3auth.io/docs/guides/discord)
-
-## Questions
-
-Ask us on our
-[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
-out to our [Discord](https://discord.gg/web3auth).
+```bash
+cd w3a-nomodal-discord
+npm install
+npm run start
+# or
+cd w3a-nomodal-discord
+yarn
+yarn start
+```
 
 ## Important Links
 
@@ -30,4 +34,4 @@ out to our [Discord](https://discord.gg/web3auth).
 - [Guides](https://web3auth.io/docs/guides)
 - [SDK / API References](https://web3auth.io/docs/sdk)
 - [Pricing](https://web3auth.io/pricing.html)
-- [Github Discussion Board](https://github.com/orgs/Web3Auth/discussions)
+- [Community Portal](https://community.web3auth.io)

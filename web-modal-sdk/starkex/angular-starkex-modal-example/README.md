@@ -1,41 +1,37 @@
-## Questions
+# Web3Auth (`@web3auth/modal`) x StarkEx x Angular
 
-Ask us on our
-[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
-out to our [Discord](https://discord.gg/web3auth).
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
-# AngularWeb3authModal
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-This project was generated with
-[Angular CLI](https://github.com/angular/angular-cli) version 13.3.6.
+This example demonstrates how to use Web3Auth with StarkEx in Angular.
 
-## Development server
+## How to Use
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The
-application will automatically reload if you change any of the source files.
+### Download Manually
 
-## Code scaffolding
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/starkex/angular-starkex-modal-example w3a-modal-starkex-angular
+```
 
-Run `ng generate component component-name` to generate a new component. You can
-also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Install & Run:
 
-## Build
+```bash
+cd w3a-modal-starkex-angular
+npm install
+npm run start
+# or
+cd w3a-modal-starkex-angular
+yarn
+yarn start
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the
-`dist/` directory.
+## Important Links
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via
-[Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To
-use this command, you need to first add a package that implements end-to-end
-testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the
-[Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- [Website](https://web3auth.io)
+- [Docs](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Community Portal](https://community.web3auth.io)

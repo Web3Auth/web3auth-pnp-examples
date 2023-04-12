@@ -1,24 +1,37 @@
-# vue-evm-modal-example
+# Web3Auth (`@web3auth/modal`) x Solana x Vue.js
 
-## Project setup
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
+
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
+
+This example demonstrates how to use Web3Auth with Solana in Vue.js
+
+## How to Use
+
+### Download Manually
+
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/solana/vue-solana-modal-example w3a-modal-solana-vue
 ```
+
+Install & Run:
+
+```bash
+cd w3a-modal-solana-vue
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
+# or
+cd w3a-modal-solana-vue
+yarn
+yarn serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Important Links
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [Website](https://web3auth.io)
+- [Docs](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Community Portal](https://community.web3auth.io)

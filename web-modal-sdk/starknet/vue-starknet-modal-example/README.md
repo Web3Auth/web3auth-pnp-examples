@@ -1,35 +1,37 @@
-# vue-evm-modal-example
+# Web3Auth (`@web3auth/modal`) x StarkNet x Vue.js
 
-## Project setup
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
+
+This example demonstrates how to use Web3Auth with StarkNet in Vue.js
+
+## How to Use
+
+### Download Manually
+
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/starknet/vue-starknet-modal-example w3a-modal-starknet-vue
 ```
+
+Install & Run:
+
+```bash
+cd w3a-modal-starknet-vue
 npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
 npm run serve
+# or
+cd w3a-modal-starknet-vue
+yarn
+yarn serve
 ```
 
-### Compiles and minifies for production
+## Important Links
 
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-## Questions
-
-Ask us on our
-[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
-out to our [Discord](https://discord.gg/web3auth).
+- [Website](https://web3auth.io)
+- [Docs](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Community Portal](https://community.web3auth.io)

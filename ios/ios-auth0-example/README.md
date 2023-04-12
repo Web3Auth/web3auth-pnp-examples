@@ -1,26 +1,26 @@
-# Web3Auth Flutter x Firebase Example
+# Web3Auth iOS x Auth0 Example
 
-[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/flutter)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/ios)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-This example demonstrates how to use Web3Auth in Flutter.
+This example demonstrates how to use Web3Auth in iOS.
 
 ## How to Use
 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/flutter/flutter-firebase-example w3a-flutter-firebase
+npx degit Web3Auth/web3auth-pnp-examples/ios/ios-auth0-example w3a-ios-auth0
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-flutter-firebase
-# run project in Android Studio or in VSCode
+cd w3a-ios-auth0
+# run project in Xcode
 ```
 
 ## Important Links

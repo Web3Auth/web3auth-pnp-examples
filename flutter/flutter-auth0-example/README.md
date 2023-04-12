@@ -1,22 +1,33 @@
-# Web3Auth x Flutter Demo Application
+# Web3Auth Flutter x Auth0 Example
 
-## Guide
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/flutter)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
-https://web3auth.io/docs/guides/flutter
 
-## Documentation
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-https://web3auth.io/docs/sdk/flutter/
+This example demonstrates how to use Web3Auth in Flutter.
 
-## Getting Started
+## How to Use
 
-This project is a starting point for a Flutter application.
+### Download Manually
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/flutter/flutter-auth0-example w3a-flutter-auth0
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Install & Run:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+cd w3a-flutter-auth0
+# run project in Android Studio or in VSCode
+```
+
+## Important Links
+
+- [Website](https://web3auth.io)
+- [Docs](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Community Portal](https://community.web3auth.io)

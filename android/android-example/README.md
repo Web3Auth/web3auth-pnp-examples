@@ -1,33 +1,27 @@
-# Web3Auth Android Demo
+# Web3Auth Android Example
 
-Visit https://web3auth.io/docs/guides/android to get started.
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/android)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
-## Try in your Android Phone
 
-[Download the APK](https://github.com/Web3Auth/examples/raw/main/android/android-example/app-debug.apk)
-to test in your local device.
+[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-## Try in your Android Studio
+This example demonstrates how to use Web3Auth in Android.
+
+## How to Use
+
+### Download Manually
 
 ```bash
-git clone https://github.com/Web3Auth/examples.git
-cd android/android-example
-# Open in Android Studio
+npx degit Web3Auth/web3auth-pnp-examples/android/android-example w3a-android
 ```
 
-## SDK Reference
+Install & Run:
 
-https://web3auth.io/docs/sdk/android
-
-## Guide
-
-https://web3auth.io/docs/guides/android
-
-## Questions
-
-Ask us on our
-[Github Discussion Board](https://github.com/orgs/Web3Auth/discussions) or reach
-out to our [Discord](https://discord.gg/web3auth).
+```bash
+cd w3a-android
+# run android project in Android Studio
+```
 
 ## Important Links
 
@@ -36,4 +30,4 @@ out to our [Discord](https://discord.gg/web3auth).
 - [Guides](https://web3auth.io/docs/guides)
 - [SDK / API References](https://web3auth.io/docs/sdk)
 - [Pricing](https://web3auth.io/pricing.html)
-- [Github Discussion Board](https://github.com/orgs/Web3Auth/discussions)
+- [Community Portal](https://community.web3auth.io)

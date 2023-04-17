@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@solana/web3.js": "^1.66.1",
-    "@toruslabs/openlogin-ed25519": "^2.0.0",
+    "@toruslabs/openlogin-ed25519": "^3.2.0",
     "@walletconnect/qrcode-modal": "~1.8.0",
     "@web3auth/base": "^5.1.0",
     "@web3auth/base-evm-adapter": "^5.1.0",

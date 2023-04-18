@@ -84,7 +84,24 @@ function App() {
       {
         loginProvider: "sms_passwordless",
         extraLoginOptions: {
-          login_hint: "+65-XXXXXXX", // 
+          login_hint: "+65-XXXXXXX",
+        }
+      }
+    );
+    setProvider(web3authProvider);
+  };
+
+  const loginWithEmail = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        loginProvider: "email_passwordless",
+        extraLoginOptions: {
+          login_hint: "hello@web3auth.io",
         }
       }
     );
@@ -296,6 +313,9 @@ function App() {
       </button>
       <button onClick={loginWithSMS} className="card">
         SMS Login (e.g +cc-number)
+      </button>
+      <button onClick={loginWithEmail} className="card">
+        Email Login (e.g hello@web3auth.io)
       </button>
       <button onClick={loginWCModal} className="card">
         Login with Wallet Connect v2

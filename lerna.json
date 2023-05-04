@@ -7,6 +7,5 @@
     "web-no-modal-sdk/**/*",
     "web-modal-sdk/**/*",
     "wagmi-connector/*",
-    "single-factor-auth/*"
   ]
 }

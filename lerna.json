@@ -6,6 +6,6 @@
   "packages": [
     "web-no-modal-sdk/**/*",
     "web-modal-sdk/**/*",
-    "wagmi-connector/*",
+    "wagmi-connector/*"
   ]
 }

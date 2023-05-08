@@ -13,9 +13,9 @@
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
-    "@web3auth/base": "^5.1.0",
-    "@web3auth/openlogin-adapter": "^5.1.0",
-    "@web3auth/no-modal": "^5.1.0",
+    "@web3auth/base": "^5.2.0",
+    "@web3auth/no-modal": "^5.2.0",
+    "@web3auth/openlogin-adapter": "^5.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -52,7 +52,8 @@
     "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "zlib-browserify": "^0.0.3"
   },
   "scripts": {
     "start": "react-app-rewired start",

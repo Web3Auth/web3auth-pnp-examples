@@ -8,10 +8,10 @@
     "@taquito/taquito": "^14.1.0",
     "@taquito/utils": "^14.1.0",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
-    "@web3auth/base": "^5.1.0",
-    "@web3auth/openlogin-adapter": "^5.1.0",
-    "@web3auth/solana-provider": "^5.1.0",
-    "@web3auth/modal": "^5.1.0",
+    "@web3auth/base": "^5.2.0",
+    "@web3auth/modal": "^5.2.0",
+    "@web3auth/openlogin-adapter": "^5.2.0",
+    "@web3auth/solana-provider": "^5.2.0",
     "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -59,6 +59,7 @@
     "stream-http": "^3.2.0",
     "typescript": "^4.8.4",
     "url": "^0.11.0",
-    "webpack-bundle-analyzer": "^4.7.0"
+    "webpack-bundle-analyzer": "^4.7.0",
+    "zlib-browserify": "^0.0.3"
   }
 }

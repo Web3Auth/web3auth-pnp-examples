@@ -1,12 +1,13 @@
 import {useEffect, useState} from "react";
 import {Web3AuthNoModal as Web3Auth} from "@web3auth/no-modal";
 import {CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS} from "@web3auth/base";
-import {OpenloginAdapter} from "@web3auth/openlogin-adapter";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
 import "./App.css";
 import CosmosRPC from "./cosmosRPC";
 
 const clientId =
-    "BEWE6XW4hc0zKA6X7_jLBm2ZkZmLtgTmSGS0JZbiFxBnHk3jaDnuO1zr5c-8s8eIqM3X_7ZS9E1aaQLvqTDa7OM";
+    "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
     const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -22,26 +23,16 @@ function App() {
                     chainConfig: {
                         chainNamespace: CHAIN_NAMESPACES.OTHER,
                     },
-                    web3AuthNetwork: "testnet"
+                    web3AuthNetwork: "cyan"
                 });
 
-                const openloginAdapter = new OpenloginAdapter({
-                    adapterSettings: {
-                        clientId,
-                        uxMode: "popup",
-                        loginConfig: {
-                            jwt: {
-                                verifier: "cosmos-auth0-project",
-                                typeOfLogin: "jwt",
-                                clientId: "m78IMc6Ne3oCSA7Avus3YBpsbeFgN4Ep",
-                            },
-                        },
-                    },
-                });
-                web3auth.configureAdapter(openloginAdapter);
                 setWeb3auth(web3auth);
+                const openloginAdapter = new OpenloginAdapter();
+                web3auth.configureAdapter(openloginAdapter);
 
                 await web3auth.init();
+
+
                 if (web3auth.provider) {
                     setProvider(web3auth.provider);
                 }
@@ -61,11 +52,7 @@ function App() {
         const web3authProvider = await web3auth.connectTo(
             WALLET_ADAPTERS.OPENLOGIN,
             {
-                loginProvider: "jwt",
-                extraLoginOptions: {
-                    domain: "https://dev-s0yj54vl8xxv0lzo.us.auth0.com",
-                    verifierIdField: "sub",
-                },
+                loginProvider: "google",
             }
         );
         setProvider(web3authProvider);
@@ -215,7 +202,7 @@ function App() {
     return (
         <div className="container">
             <h1 className="title">
-                ReactJS Example using Twitter Auth0 login
+                Web3Auth PnP No Modal with Cosmos
             </h1>
 
             <div className="grid">{provider ? loggedInView : unloggedInView}</div>

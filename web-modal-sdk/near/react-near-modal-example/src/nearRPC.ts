@@ -1,5 +1,8 @@
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import { connect, KeyPair, keyStores, utils } from "near-api-js";
+import * as bip39 from "bip39";
+import * as crypto from "crypto-js";
+import { parseSeedPhrase } from "near-seed-phrase"
 
 export default class NearRPC {
   private provider: SafeEventEmitterProvider;
@@ -8,16 +11,23 @@ export default class NearRPC {
     this.provider = provider;
   }
 
+  privateKeyToMnemonic = (privateKey: string): string => {
+    const privateKeyBuffer = crypto.enc.Hex.parse(privateKey);
+    const hash = crypto.SHA256(privateKeyBuffer);
+    const entropy = hash.words.slice(0, 4).toString();
+    const mnemonic = bip39.entropyToMnemonic(entropy);
+    return mnemonic;
+  };
+
   getNearKeyPair = async (): Promise<any> => {
     try {
       const privateKey = (await this.provider.request({
         method: "private_key", // private_key
       })) as string;
-      const encodedPrivateKey = utils.serialize.base_encode(privateKey);
-      console.log("encodedPrivateKey", encodedPrivateKey);
-      const keyPair = KeyPair.fromString(encodedPrivateKey);
-      // const keyPair = KeyPair.fromString("ed25519:43qKAz3LfCTWpTAZPgA1DGsuwbiAjyosXpDrw24efAGP8Q3TcrnoUzTQHNRF5EbNTR38GRVdsHai9sRnzVu755gU");
-      // const keyPair = KeyPair.fromRandom("ed25519");
+      const mnemonic = this.privateKeyToMnemonic(privateKey);
+      const parsedKey = parseSeedPhrase(mnemonic);
+      const PRIVATE_KEY = parsedKey.secretKey;
+      const keyPair = KeyPair.fromString(PRIVATE_KEY);
       return keyPair;
     } catch (error) {
       console.error(error);

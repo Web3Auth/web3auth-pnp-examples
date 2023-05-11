@@ -12,8 +12,11 @@
     "@types/react-dom": "^18.0.9",
     "@web3auth/base": "^5.2.0",
     "@web3auth/modal": "^5.2.0",
+    "bip39": "^3.1.0",
     "crypto": "^1.0.1",
+    "crypto-js": "^4.1.1",
     "near-api-js": "^1.1.0",
+    "near-seed-phrase": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -43,8 +46,10 @@
     ]
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
     "@types/secp256k1": "^4.0.3",
     "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",

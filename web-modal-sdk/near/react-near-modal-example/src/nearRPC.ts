@@ -1,9 +1,7 @@
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import { connect, KeyPair, keyStores, utils } from "near-api-js";
-import * as bip39 from "bip39";
-import * as crypto from "crypto-js";
 import { parseSeedPhrase } from "near-seed-phrase"
-
+import { ShareSerializationModule } from "@tkey/share-serialization";
 export default class NearRPC {
   private provider: SafeEventEmitterProvider;
 
@@ -12,10 +10,8 @@ export default class NearRPC {
   }
 
   privateKeyToMnemonic = (privateKey: string): string => {
-    const privateKeyBuffer = crypto.enc.Hex.parse(privateKey);
-    const hash = crypto.SHA256(privateKeyBuffer);
-    const entropy = hash.words.slice(0, 4).toString();
-    const mnemonic = bip39.entropyToMnemonic(entropy);
+    const mnemonic = ShareSerializationModule.serializeMnemonic(privateKey as any);
+    console.log("mnemonic", mnemonic);
     return mnemonic;
   };
 
@@ -43,8 +39,8 @@ export default class NearRPC {
         "new_account_id": "web3auth-test.testnet", /// Change the name since this is already taken, use "<name>.near" for mainnet
         "new_public_key": pk58,
       },
-      gas: "300000000000000", //setting gas allowance for running contract
-      attachedDeposit: "1829999999999999999990",
+      gas: "300000000000000" as any, //setting gas allowance for running contract
+      attachedDeposit: "1829999999999999999990" as any,
     });
     return result;
   }
@@ -120,7 +116,7 @@ export default class NearRPC {
       };
       const nearConnection = await connect(connectionConfig);
       const senderAccount = await nearConnection.account(accountId);
-      const result = await senderAccount.sendMoney(receiver, utils.format.parseNearAmount(amount));
+      const result = await senderAccount.sendMoney(receiver, utils.format.parseNearAmount(amount) as any);
       return result;
     } catch (error) {
       return error;

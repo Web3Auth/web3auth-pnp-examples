@@ -24,6 +24,10 @@ import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 
+// Near
+// import { keyStores, KeyPair, utils } from "near-api-js";
+// Will address in future PR
+
 //@ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ec as elliptic } from "elliptic";
@@ -97,6 +101,7 @@ function App() {
     const starkex_address = await getStarkExAddress();
     const starknet_address = await getStarkNetAddress();
     const polkadot_address = await getPolkadotAddress();
+    // const near_address = await getNearAddress();
 
     uiConsole(
       "Polygon Address: " + polygon_address,
@@ -106,6 +111,7 @@ function App() {
       "StarkEx Address: " + starkex_address,
       "StarkNet Address: " + starknet_address,
       "Polkadot Address: " + polkadot_address
+      // "Near Address: " + near_address
     );
   };
 
@@ -283,6 +289,22 @@ function App() {
     const address = keyPairTezos?.pkh;
     return address;
   };
+
+  // Will address this in future PR
+  // const getNearAddress = async () => {
+  //   if (!provider) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   const rpc = new RPC(provider);
+  //   const privateKey = await rpc.getPrivateKey();
+  //   const keyPair = KeyPair.fromString(utils.serialize.base_encode(privateKey));
+  //   const myKeyStore = new keyStores.InMemoryKeyStore();
+  //   await myKeyStore.setKey("testnet", "web3auth-test-account.testnet", keyPair);
+  //   const publicKey = utils.PublicKey.fromString(keyPair?.getPublicKey().toString());
+  //   const address = Buffer.from(publicKey.data).toString("hex")
+  //   return address;
+  // };
 
   const getStarkExAddress = async () => {
     if (!provider) {

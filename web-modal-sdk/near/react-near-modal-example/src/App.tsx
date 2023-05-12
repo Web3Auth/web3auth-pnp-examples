@@ -75,6 +75,16 @@ function App() {
     setProvider(null);
   };
 
+  const createNamedAccount = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const result = await rpc.createNamedAccount();
+    uiConsole("Transaction ID: ", result);
+  };
+
   const onGetNearKeypair = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -133,6 +143,11 @@ function App() {
         <div>
           <button onClick={authenticateUser} className="card">
             Get ID Token
+          </button>
+        </div>
+        <div>
+          <button onClick={createNamedAccount} className="card">
+            Create Named Account
           </button>
         </div>
         <div>

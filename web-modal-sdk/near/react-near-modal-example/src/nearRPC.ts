@@ -19,6 +19,36 @@ export default class NearRPC {
     return mnemonic;
   };
 
+  createNamedAccount = async() => {
+    const keyPair = await this.getNearKeyPair();
+    const pk58 = keyPair?.getPublicKey().toString()
+    const accountId = utils.serialize.base_decode(pk58.split(":")[1]).toString("hex");
+    const myKeyStore = new keyStores.InMemoryKeyStore();
+    await myKeyStore.setKey("testnet", accountId, keyPair);
+    const connectionConfig = {
+      networkId: "testnet",
+      keyStore: myKeyStore,
+      nodeUrl: "https://rpc.testnet.near.org",
+      walletUrl: "https://wallet.testnet.near.org",
+      helperUrl: "https://helper.testnet.near.org",
+      explorerUrl: "https://explorer.testnet.near.org",
+    };
+    const nearConnection = await connect(connectionConfig);
+    const account = await nearConnection.account(accountId);
+
+    const result = await account.functionCall({
+      contractId: "testnet", // near contract to create a testnet AccountId, use "near" for mainnet
+      methodName: "create_account",
+      args: {
+        "new_account_id": "web3auth-test.testnet", /// Change the name since this is already taken, use "<name>.near" for mainnet
+        "new_public_key": pk58,
+      },
+      gas: "300000000000000", //setting gas allowance for running contract
+      attachedDeposit: "1829999999999999999990",
+    });
+    return result;
+  }
+
   getNearKeyPair = async (): Promise<any> => {
     try {
       const privateKey = (await this.provider.request({

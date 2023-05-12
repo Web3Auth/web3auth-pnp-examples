@@ -1,19 +1,11 @@
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import { connect, KeyPair, keyStores, utils } from "near-api-js";
-import { parseSeedPhrase } from "near-seed-phrase"
-import { ShareSerializationModule } from "@tkey/share-serialization";
 export default class NearRPC {
   private provider: SafeEventEmitterProvider;
 
   constructor(provider: SafeEventEmitterProvider) {
     this.provider = provider;
   }
-
-  privateKeyToMnemonic = (privateKey: string): string => {
-    const mnemonic = ShareSerializationModule.serializeMnemonic(privateKey as any);
-    console.log("mnemonic", mnemonic);
-    return mnemonic;
-  };
 
   createNamedAccount = async() => {
     const keyPair = await this.getNearKeyPair();
@@ -50,10 +42,13 @@ export default class NearRPC {
       const privateKey = (await this.provider.request({
         method: "private_key", // private_key
       })) as string;
-      const mnemonic = this.privateKeyToMnemonic(privateKey);
-      const parsedKey = parseSeedPhrase(mnemonic);
-      const PRIVATE_KEY = parsedKey.secretKey;
-      const keyPair = KeyPair.fromString(PRIVATE_KEY);
+
+      const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
+      const privateKeyEd25519 = getED25519Key(privateKey).sk.toString("hex");
+
+      const privateKeyEd25519Buffer = Buffer.from(privateKeyEd25519, "hex");
+      const bs58encode = utils.serialize.base_encode(privateKeyEd25519Buffer);
+      const keyPair = KeyPair.fromString(bs58encode);
       return keyPair;
     } catch (error) {
       console.error(error);

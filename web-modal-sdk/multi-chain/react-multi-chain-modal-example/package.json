@@ -13,7 +13,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
-    "@toruslabs/openlogin-ed25519": "^2.0.0",
+    "@toruslabs/openlogin-ed25519": "^4.2.0",
     "@types/jest": "^29.2.1",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.24",

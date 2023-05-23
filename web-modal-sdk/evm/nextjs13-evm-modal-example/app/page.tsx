@@ -356,13 +356,13 @@ export default function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & NextJS Ethereum Example
+        & Next.js 13 Ethereum Example
       </h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/nextjs-evm-modal-example" target="_blank" rel="noopener noreferrer">
+        <a href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/nextjs13-evm-modal-example" target="_blank" rel="noopener noreferrer">
           Source code
         </a>
       </footer>

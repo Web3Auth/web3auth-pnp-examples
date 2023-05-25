@@ -9,6 +9,9 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 // import RPC from './ethersRPC' // for using ethers.js
 import RPC from "./web3RPC"; // for using web3.js
+import axios from "axios";
+
+
 
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
@@ -166,6 +169,38 @@ function App() {
     }
   }
 
+  // Revoke access from Discord using access token
+  const revokeAccessToken = async () => {
+    try {
+      const DISCORD_CLIENT_ID = ""; // use your app client id you got from discord
+      const DISCORD_SECRET = ""; // use your app client secret you got from discord
+      const ACCESS_TOKEN = ""; // access token from the discord
+
+      const formData = new FormData();
+      formData.append('token', `${ACCESS_TOKEN}`);
+
+      const response = await axios.post(
+        'https://discord.com/api/oauth2/token/revoke', 
+        formData, 
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${Buffer.from(`${DISCORD_CLIENT_ID}:${DISCORD_SECRET}`).toString('base64')}`,
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        console.log('Access token revoked successfully');
+        alert('Access token revoked successfully, try logging in again');
+      } else {
+        console.log('Failed to revoke access token');
+      }
+    } catch (error) {
+      console.error('Error revoking access token:', (error as any).message);
+    }
+  };
+
   const loggedInView = (
     <>
       <div className="flex-container">
@@ -222,9 +257,14 @@ function App() {
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <>
+      <button onClick={login} className="card">
+        Login
+      </button>
+      <button onClick={revokeAccessToken} className="card">
+          Revoke token
+      </button>
+    </>
   );
 
   return (

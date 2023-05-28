@@ -46,6 +46,10 @@ function App() {
               },
             },
           },
+          loginSettings: {
+            mfaLevel: "mandatory",
+            // dappShare: "zone fury jealous era arrest cash east hire mind stick rice element glow boy minimum follow garden there snap off ribbon green nature census"
+          }
         });
         web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);
@@ -69,7 +73,6 @@ function App() {
     const web3authProvider = await web3auth.connectTo(
       WALLET_ADAPTERS.OPENLOGIN,
       {
-        mfaLevel: "default",
         loginProvider: "google",
       }
     );

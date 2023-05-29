@@ -6,7 +6,7 @@
     "@starkware-industries/starkex-js": "0.0.6",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.18",

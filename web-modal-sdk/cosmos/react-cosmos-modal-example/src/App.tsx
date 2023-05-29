@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal as Web3Auth } from "@web3auth/no-modal";
+import { Web3Auth } from "@web3auth/modal";
 import {
   CHAIN_NAMESPACES,
   SafeEventEmitterProvider,
@@ -31,11 +31,8 @@ function App() {
         });
 
         setWeb3auth(web3auth);
-        const openloginAdapter = new OpenloginAdapter();
-        web3auth.configureAdapter(openloginAdapter);
 
-        await web3auth.init();
-
+        await web3auth.initModal();
         if (web3auth.provider) {
           setProvider(web3auth.provider);
         }
@@ -52,13 +49,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
+    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {
@@ -210,13 +203,13 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="title">Web3Auth PnP No Modal with Cosmos</h1>
+      <h1 className="title">Web3Auth PnP Modal with Cosmos</h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/cosmos/react-cosmos-no-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/cosmos/react-cosmos-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

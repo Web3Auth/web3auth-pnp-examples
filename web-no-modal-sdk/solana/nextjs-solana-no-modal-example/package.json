@@ -1,0 +1,31 @@
+{
+  "name": "nextjs-solana-no-modal-example",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.77.2",
+    "@web3auth/base": "^5.2.0",
+    "@web3auth/no-modal": "^5.2.0",
+    "@web3auth/openlogin-adapter": "^5.2.0",
+    "@web3auth/solana-provider": "^5.2.0",
+    "next": "13.4.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/elliptic": "^6.4.14",
+    "@types/node": "20.2.3",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "eslint": "8.41.0",
+    "eslint-config-next": "^13.4.3",
+    "typescript": "5.0.4",
+    "zlib-browserify": "^0.0.3"
+  }
+}

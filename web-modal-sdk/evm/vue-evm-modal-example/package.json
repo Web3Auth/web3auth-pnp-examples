@@ -17,8 +17,8 @@
     "core-js": "^3.26.1",
     "ethers": "^5.7.2",
     "node-polyfill-webpack-plugin": "^2.0.1",
-    "vue": "^3.2.45",
-    "web3": "^1.8.2"
+    "vue": "^3.3.4",
+    "web3": "^1.10.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.46.1",

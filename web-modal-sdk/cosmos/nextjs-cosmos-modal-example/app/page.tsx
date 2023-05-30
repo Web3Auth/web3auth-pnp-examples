@@ -1,45 +1,34 @@
+/* eslint-disable no-console */
+"use client";
+
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { Web3Auth } from "@web3auth/modal";
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import {
-  CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
-  WALLET_ADAPTERS,
-} from "@web3auth/base";
-import "./App.css";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import RPC from "./immutableRPC";
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+import CosmosRPC from "./cosmosRPC";
 
-function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+
+export default function App() {
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
-        // Eth_Goerli
-        const web3auth = new Web3AuthNoModal({
+        const web3authInstance = new Web3Auth({
           clientId,
           chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
+            chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
           web3AuthNetwork: "cyan",
         });
 
-        setWeb3auth(web3auth);
+        setWeb3auth(web3authInstance);
 
-        const openloginAdapter = new OpenloginAdapter();
-        web3auth.configureAdapter(openloginAdapter);
-
-        await web3auth.init();
-
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        await web3authInstance.initModal();
+        if (web3authInstance.provider) {
+          setProvider(web3authInstance.provider);
         }
       } catch (error) {
         console.error(error);
@@ -49,27 +38,20 @@ function App() {
     init();
   }, []);
 
-  const registerAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
-    const rpc = new RPC(provider);
-    const response = await rpc.registerAccounts();
-    uiConsole(response);
-  };
+  }
 
   const login = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
     uiConsole("Logged in Successfully!");
   };
@@ -101,17 +83,23 @@ function App() {
     setProvider(null);
   };
 
+  const getChainId = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new CosmosRPC(provider);
+    const chainId = await rpc.getChainId();
+    uiConsole(chainId);
+  };
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new CosmosRPC(provider);
     const address = await rpc.getAccounts();
-    uiConsole(
-      "ETH Address: " + address.ethAddress,
-      "Stark Address: " + address.starkAddress
-    );
+    uiConsole(address);
   };
 
   const getBalance = async () => {
@@ -119,9 +107,9 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new CosmosRPC(provider);
     const balance = await rpc.getBalance();
-    uiConsole("Eth Balance", balance);
+    uiConsole(balance);
   };
 
   const sendTransaction = async () => {
@@ -129,17 +117,22 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
+    const rpc = new CosmosRPC(provider);
+    const { transactionHash, height } = await rpc.sendTransaction();
+    const blockExplorerURL = `https://explorer.theta-testnet.polypore.xyz/transactions/${transactionHash}`;
+    const txString = `Follow this transaction at ${blockExplorerURL}`;
+    uiConsole(`TxHash: ${transactionHash}`, `Block Height: ${height}`, txString);
   };
 
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
+  const getPrivateKey = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
     }
-  }
+    const rpc = new CosmosRPC(provider);
+    const privateKey = await rpc.getPrivateKey();
+    uiConsole(privateKey);
+  };
 
   const loggedInView = (
     <>
@@ -155,23 +148,28 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={getAccounts} className="card">
-            Get ETH and Stark Accounts
+          <button onClick={getChainId} className="card">
+            Get Chain ID
           </button>
         </div>
         <div>
-          <button onClick={registerAccounts} className="card">
-            Register your L1 and L2 Keypair
+          <button onClick={getAccounts} className="card">
+            Get Accounts
           </button>
         </div>
         <div>
           <button onClick={getBalance} className="card">
-            Get Eth Balance
+            Get Balance
           </button>
         </div>
         <div>
           <button onClick={sendTransaction} className="card">
-            Send Funds from L1 to L2
+            Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={getPrivateKey} className="card">
+            Get Private Key
           </button>
         </div>
         <div>
@@ -181,7 +179,7 @@ function App() {
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );
@@ -194,18 +192,13 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
-          Web3Auth{" "}
-        </a>
-        & React ImmutableX Example
-      </h1>
+      <h1 className="title">Web3Auth PnP Modal with Cosmos</h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/immutableX/react-immutableX-no-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/cosmos/react-cosmos-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -215,5 +208,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

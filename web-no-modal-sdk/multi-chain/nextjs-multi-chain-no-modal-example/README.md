@@ -1,30 +1,30 @@
-# Web3Auth (`@web3auth/modal`) x EVM x Next.js 13
+# Web3Auth (`@web3auth/no-modal`) x Multi-Chain
 
-[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/no-modal/)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-This example demonstrates how to use Web3Auth with EVM in Next.js 13
+This example demonstrates how to use Web3Auth with multiple chains.
 
 ## How to Use
 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/evm/nextjs13-evm-modal-example w3a-modal-evm-nextjs13
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/multi-chain/nextjs-multi-chain-no-modal-example w3a-nomodal-multichain-nextjs
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-modal-evm-nextjs13
+cd w3a-nomodal-multichain-nextjs
 npm install
-npm run dev
+npm run start
 # or
-cd w3a-modal-evm-nextjs13
+cd w3a-nomodal-multichain-nextjs
 yarn
-yarn dev
+yarn start
 ```
 
 ## Important Links

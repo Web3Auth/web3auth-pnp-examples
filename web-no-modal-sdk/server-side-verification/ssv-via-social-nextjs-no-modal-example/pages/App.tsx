@@ -1,11 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
 import "react-toastify/dist/ReactToastify.css";
 
 import { getPublicCompressed } from "@toruslabs/eccrypto";
-import {
-  CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
-  WALLET_ADAPTERS,
-} from "@web3auth/base";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
@@ -13,19 +11,16 @@ import { toast } from "react-toastify";
 
 // import RPC from "../components/evm.web3";
 import RPC from "../components/evm.ethers";
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthNoModal({
+        const web3authInstance = new Web3AuthNoModal({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -41,21 +36,16 @@ function App() {
               google: {
                 verifier: "web3auth-google-example",
                 typeOfLogin: "google",
-                clientId:
-                  "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com", // use your app client id you got from google
+                clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com", // use your app client id you got from google
               },
             },
           },
-          loginSettings: {
-            mfaLevel: "mandatory",
-            // dappShare: "zone fury jealous era arrest cash east hire mind stick rice element glow boy minimum follow garden there snap off ribbon green nature census"
-          }
         });
-        web3auth.configureAdapter(openloginAdapter);
-        setWeb3auth(web3auth);
-        await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        web3authInstance.configureAdapter(openloginAdapter);
+        setWeb3auth(web3authInstance);
+        await web3authInstance.init();
+        if (web3authInstance.provider) {
+          setProvider(web3authInstance.provider);
         }
       } catch (error) {
         console.error(error);
@@ -65,28 +55,20 @@ function App() {
     init();
   }, []);
 
-  const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
-    setProvider(web3authProvider);
-    await validateIdToken();
-  };
+  }
 
-  const authenticateUser = async () => {
+  const logout = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
+    await web3auth.logout();
+    setProvider(null);
   };
 
   const getUserInfo = async () => {
@@ -110,9 +92,7 @@ function App() {
       method: "eth_private_key",
     });
     console.log(privKey);
-    const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString(
-      "hex"
-    );
+    const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString("hex");
 
     // Validate idToken with server
     const res = await fetch("/api/login", {
@@ -134,13 +114,26 @@ function App() {
     return res.status;
   };
 
-  const logout = async () => {
+  const login = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    await web3auth.logout();
-    setProvider(null);
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      mfaLevel: "default",
+      loginProvider: "google",
+    });
+    setProvider(web3authProvider);
+    await validateIdToken();
+  };
+
+  const authenticateUser = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const idToken = await web3auth.authenticateUser();
+    uiConsole(idToken);
   };
 
   const getAccounts = async () => {
@@ -182,13 +175,6 @@ function App() {
     const result = await rpc.signAndSendTransaction();
     uiConsole(result);
   };
-
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
 
   const loginView = (
     <>
@@ -261,11 +247,7 @@ function App() {
         >
           Source code
         </a>
-        <a
-          href="https://goerlifaucet.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://goerlifaucet.com/" target="_blank" rel="noopener noreferrer">
           Goerli Faucet
         </a>
       </footer>

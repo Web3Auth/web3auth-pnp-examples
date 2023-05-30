@@ -1,17 +1,20 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 /* eslint-disable no-console */
-
 // Polkadot
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 // StarkEx and StarkNet
+// @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { hex2buf } from "@taquito/utils";
 // Tezos
-import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+// @ts-ignore
+import tezosCrypto from "@tezos-core-tools/crypto-utils"; // for using web3.js
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth } from "@web3auth/modal";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // Solana
 import { SolanaPrivateKeyProvider, SolanaWallet } from "@web3auth/solana-provider";
@@ -19,19 +22,19 @@ import { useEffect, useState } from "react";
 // EVM
 import Web3 from "web3";
 
-import RPC from "./web3RPC"; // for using web3.js
+import RPC from "./web3RPC";
 
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 export default function App() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
         // ETH_Goerli
-        const web3auth = new Web3Auth({
+        const web3authInstance = new Web3AuthNoModal({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -39,7 +42,7 @@ export default function App() {
           },
           web3AuthNetwork: "cyan",
         });
-        setWeb3auth(web3auth);
+        setWeb3auth(web3authInstance);
 
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
@@ -55,12 +58,12 @@ export default function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3authInstance.configureAdapter(openloginAdapter);
 
-        await web3auth.initModal();
+        await web3authInstance.init();
 
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        if (web3authInstance.provider) {
+          setProvider(web3authInstance.provider);
         }
       } catch (error) {
         console.error(error);
@@ -70,7 +73,6 @@ export default function App() {
     init();
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -83,7 +85,9 @@ export default function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connect();
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     setProvider(web3authProvider);
     uiConsole("Logged in Successfully!");
   };
@@ -251,22 +255,6 @@ export default function App() {
     return address;
   };
 
-  // Will address this in future PR
-  // const getNearAddress = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const privateKey = await rpc.getPrivateKey();
-  //   const keyPair = KeyPair.fromString(utils.serialize.base_encode(privateKey));
-  //   const myKeyStore = new keyStores.InMemoryKeyStore();
-  //   await myKeyStore.setKey("testnet", "web3auth-test-account.testnet", keyPair);
-  //   const publicKey = utils.PublicKey.fromString(keyPair?.getPublicKey().toString());
-  //   const address = Buffer.from(publicKey.data).toString("hex")
-  //   return address;
-  // };
-
   const getStarkExAddress = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -320,12 +308,12 @@ export default function App() {
     } catch (error) {
       solanaAddress = "Solana JSON RPC Error";
     }
+
     // Others
     const tezosAddress = await getTezosAddress();
     const starkexAddress = await getStarkExAddress();
     const starknetAddress = await getStarkNetAddress();
     const polkadotAddress = await getPolkadotAddress();
-    // const nearAddress = await getNearAddress();
 
     uiConsole(
       `Polygon Address: ${polygonAddress}`,
@@ -335,7 +323,6 @@ export default function App() {
       `StarkEx Address: ${starkexAddress}`,
       `StarkNet Address: ${starknetAddress}`,
       `Polkadot Address: ${polkadotAddress}`
-      // "Near Address: " + nearAddress
     );
   };
 
@@ -401,14 +388,14 @@ export default function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & NextJS Multi-chain Example
+        & ReactJS Multi-chain Example
       </h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/multi-chain/nextjs-multi-chain-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/multi-chain/react-multi-chain-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -1,28 +1,28 @@
-# Web3Auth (`@web3auth/modal`) x Tezos x Next.js 12
+# Web3Auth (`@web3auth/modal`) x Cosmos x Next.js
 
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/modal/)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-This example demonstrates how to use Web3Auth with Tezos in Next.js 12.
+This example demonstrates how to use Web3Auth with Cosmos in Next.js
 
 ## How to Use
 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/tezos/nextjs12-tezos-modal-example w3a-modal-tezos-nextjs12
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/cosmos/nextjs-cosmos-modal-example w3a-modal-cosmos-nextjs
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-modal-tezos-nextjs12
+cd w3a-modal-cosmos-nextjs
 npm install
 npm run dev
 # or
-cd w3a-modal-tezos-nextjs12
+cd w3a-modal-cosmos-nextjs
 yarn
 yarn dev
 ```

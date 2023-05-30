@@ -1,8 +1,7 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 
-import { ImmutableX, Config } from "@imtbl/no-modal-sdk";
-import { createStarkSigner } from "@imtbl/no-modal-sdk";
+import { Config, createStarkSigner, ImmutableX } from "@imtbl/core-sdk";
 
 export default class EthereumRpc {
   private provider: SafeEventEmitterProvider;

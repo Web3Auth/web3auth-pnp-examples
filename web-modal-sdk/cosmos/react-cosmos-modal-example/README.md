@@ -1,28 +1,28 @@
-# Web3Auth (`@web3auth/no-modal`) x Cosmos
+# Web3Auth (`@web3auth/modal`) x Cosmos x React
 
-[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/no-modal/)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/web/modal/)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-This example demonstrates how to use Web3Auth with Cosmos.
+This example demonstrates how to use Web3Auth with Cosmos in React.
 
 ## How to Use
 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/cosmos/react-cosmos-no-modal-example w3a-nomodal-cosmos-react
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/cosmos/react-tezos-modal-example w3a-modal-cosmos-react
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-cosmos-react
+cd w3a-modal-cosmos-react
 npm install
 npm run start
 # or
-cd w3a-nomodal-cosmos-react
+cd w3a-modal-cosmos-react
 yarn
 yarn start
 ```

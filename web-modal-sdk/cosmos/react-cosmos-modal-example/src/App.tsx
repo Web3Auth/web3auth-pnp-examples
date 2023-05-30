@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { Web3Auth } from "@web3auth/modal";
 import {
-  WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
   SafeEventEmitterProvider,
+  WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
 import "./App.css";
-// import RPC from './ethersRPC' // for using ethers.js
-import RPC from "./web3RPC"; // for using web3.js
-import axios from "axios";
-
-
+import CosmosRPC from "./cosmosRPC";
 
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -25,32 +22,17 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthNoModal({
+        const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
+            chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
           web3AuthNetwork: "cyan",
-          useCoreKitKey: false,
         });
 
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            uxMode: "popup",
-            loginConfig: {
-              discord: {
-                verifier: "web3auth-discord-example",
-                typeOfLogin: "discord",
-                clientId: "993506120276648017", //use your app client id you got from discord
-              },
-            },
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);
 
-        await web3auth.init();
+        await web3auth.initModal();
         if (web3auth.provider) {
           setProvider(web3auth.provider);
         }
@@ -67,13 +49,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "discord",
-      }
-    );
+    const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
+    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {
@@ -108,7 +86,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new CosmosRPC(provider);
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
@@ -117,7 +95,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new CosmosRPC(provider);
     const address = await rpc.getAccounts();
     uiConsole(address);
   };
@@ -127,7 +105,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new CosmosRPC(provider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
@@ -137,29 +115,17 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    uiConsole(signedMessage);
-  };
-
-  const getPrivateKey = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    uiConsole(privateKey);
+    const rpc = new CosmosRPC(provider);
+    const { transactionHash, height } = await rpc.sendTransaction();
+    const blockExplorerURL =
+      "https://explorer.theta-testnet.polypore.xyz/transactions/" +
+      transactionHash;
+    const txString = "Follow this transaction at " + blockExplorerURL;
+    uiConsole(
+      "TxHash: " + transactionHash,
+      "Block Height: " + height,
+      txString
+    );
   };
 
   function uiConsole(...args: any[]): void {
@@ -169,36 +135,14 @@ function App() {
     }
   }
 
-  // Revoke access from Discord using access token
-  const revokeAccessToken = async () => {
-    try {
-      const DISCORD_CLIENT_ID = ""; // use your app client id you got from discord
-      const DISCORD_SECRET = ""; // use your app client secret you got from discord
-      const ACCESS_TOKEN = ""; // access token from the discord
-
-      const formData = new FormData();
-      formData.append('token', `${ACCESS_TOKEN}`);
-
-      const response = await axios.post(
-        'https://discord.com/api/oauth2/token/revoke', 
-        formData, 
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${Buffer.from(`${DISCORD_CLIENT_ID}:${DISCORD_SECRET}`).toString('base64')}`,
-          },
-        }
-      );
-  
-      if (response.status === 200) {
-        console.log('Access token revoked successfully');
-        alert('Access token revoked successfully, try logging in again');
-      } else {
-        console.log('Failed to revoke access token');
-      }
-    } catch (error) {
-      console.error('Error revoking access token:', (error as any).message);
+  const getPrivateKey = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
     }
+    const rpc = new CosmosRPC(provider);
+    const privateKey = await rpc.getPrivateKey();
+    uiConsole(privateKey);
   };
 
   const loggedInView = (
@@ -230,11 +174,6 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
           </button>
@@ -257,30 +196,20 @@ function App() {
   );
 
   const unloggedInView = (
-    <>
-      <button onClick={login} className="card">
-        Login
-      </button>
-      <button onClick={revokeAccessToken} className="card">
-          Revoke token
-      </button>
-    </>
+    <button onClick={login} className="card">
+      Login
+    </button>
   );
 
   return (
     <div className="container">
-      <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
-          Web3Auth
-        </a>{" "}
-        Core & ReactJS Example for Discord Login
-      </h1>
+      <h1 className="title">Web3Auth PnP Modal with Cosmos</h1>
 
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/custom-authentication/discord-react-no-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/cosmos/react-cosmos-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

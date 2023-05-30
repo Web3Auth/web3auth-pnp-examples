@@ -7,7 +7,7 @@ import {
 } from "@web3auth/base";
 import "./App.css";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import RPC from "./immutableRPC"; // for using web3.js
+import RPC from "./immutableRPC";
 
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io

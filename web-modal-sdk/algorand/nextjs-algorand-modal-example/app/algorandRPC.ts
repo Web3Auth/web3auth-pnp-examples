@@ -12,10 +12,8 @@ export default class AlgorandRPC {
     const privateKey = (await this.provider.request({
       method: "private_key",
     })) as string;
-    var passphrase = algosdk.secretKeyToMnemonic(
-      Buffer.from(privateKey, "hex")
-    );
-    var keyPair = algosdk.mnemonicToSecretKey(passphrase);
+    const passphrase = algosdk.secretKeyToMnemonic(Buffer.from(privateKey, "hex"));
+    const keyPair = algosdk.mnemonicToSecretKey(passphrase);
     return keyPair;
   };
 
@@ -37,7 +35,7 @@ export default class AlgorandRPC {
     };
     const algodServer = "https://testnet-algorand.api.purestake.io/ps2";
     const algodPort = "";
-    let algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
+    const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
     const client = algodClient;
     return client;
   };
@@ -48,16 +46,9 @@ export default class AlgorandRPC {
     const params = await client.getTransactionParams().do();
     const enc = new TextEncoder();
     const message = enc.encode("Web3Auth says hello!");
-    const txn = algosdk.makePaymentTxnWithSuggestedParams(
-      keyPair.addr,
-      keyPair.addr,
-      0,
-      undefined,
-      message,
-      params
-    );
-    let signedTxn = algosdk.signTransaction(txn, keyPair.sk);
-    let txId = signedTxn.txID;
+    const txn = algosdk.makePaymentTxnWithSuggestedParams(keyPair.addr, keyPair.addr, 0, undefined, message, params);
+    const signedTxn = algosdk.signTransaction(txn, keyPair.sk);
+    const txId = signedTxn.txID;
     return txId;
   };
 
@@ -80,12 +71,13 @@ export default class AlgorandRPC {
         message,
         params
       );
-      let signedTxn = algosdk.signTransaction(txn, keyPair.sk);
+      const signedTxn = algosdk.signTransaction(txn, keyPair.sk);
 
       const txHash = await client.sendRawTransaction(signedTxn.blob).do();
 
       return txHash.txId;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };

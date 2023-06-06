@@ -31,6 +31,10 @@ function App() {
         });
 
         const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "mandatory",
+            dappShare: "true",
+          },
           adapterSettings: {
             loginConfig: {
               google: {

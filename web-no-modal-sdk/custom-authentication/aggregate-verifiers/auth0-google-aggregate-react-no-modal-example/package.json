@@ -13,15 +13,15 @@
 		"@types/react-dom": "^18.0.10",
 		"@web3auth/base": "^5.2.0",
 		"@web3auth/no-modal": "^5.2.0",
-		"@web3auth/openlogin-adapter": "^5.2.0",
+		"@web3auth/openlogin-adapter": "^5.2.1",
 		"@web3auth/solana-provider": "^5.2.0",
-		"ethers": "^5.7.2",
+		"ethers": "^6.4.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-scripts": "5.0.1",
 		"typescript": "^4.9.4",
 		"web-vitals": "^3.1.1",
-		"web3": "^1.8.2"
+		"web3": "^1.10.0"
 	},
 	"eslintConfig": {
 		"extends": [

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 
@@ -10,9 +11,9 @@ export default class EthereumRpc {
 
   async getChainId(): Promise<any> {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const ethersProvider = new ethers.BrowserProvider(this.provider);
       // Get the connected Chain's ID
-      const networkDetails = await (ethersProvider.getNetwork());
+      const networkDetails = await ethersProvider.getNetwork();
       return networkDetails.chainId;
     } catch (error) {
       return error;
@@ -21,11 +22,11 @@ export default class EthereumRpc {
 
   async getAccounts(): Promise<any> {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const ethersProvider = new ethers.BrowserProvider(this.provider);
       const signer = ethersProvider.getSigner();
 
       // Get user's Ethereum public address
-      const address = await signer.getAddress();
+      const { address } = await signer;
 
       return address;
     } catch (error) {
@@ -35,14 +36,14 @@ export default class EthereumRpc {
 
   async getBalance(): Promise<string> {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const ethersProvider = new ethers.BrowserProvider(this.provider);
       const signer = ethersProvider.getSigner();
 
       // Get user's Ethereum public address
-      const address = (await signer.getAddress());
+      const { address } = await signer;
 
       // Get user's balance in ether
-      const balance = ethers.utils.formatEther(
+      const balance = ethers.formatEther(
         await ethersProvider.getBalance(address) // Balance is in wei
       );
 
@@ -54,16 +55,18 @@ export default class EthereumRpc {
 
   async sendTransaction(): Promise<any> {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const ethersProvider = new ethers.BrowserProvider(this.provider);
       const signer = ethersProvider.getSigner();
 
       const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
 
       // Convert 1 ether to wei
-      const amount = ethers.utils.parseEther("0.001");
+      const amount = ethers.parseEther("0.001");
 
       // Submit transaction to the blockchain
-      const tx = await signer.sendTransaction({
+      const tx = await (
+        await signer
+      ).sendTransaction({
         to: destination,
         value: amount,
         maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
@@ -81,13 +84,13 @@ export default class EthereumRpc {
 
   async signMessage() {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const ethersProvider = new ethers.BrowserProvider(this.provider);
       const signer = ethersProvider.getSigner();
 
       const originalMessage = "YOUR_MESSAGE";
 
       // Sign the message
-      const signedMessage = await signer.signMessage(originalMessage);
+      const signedMessage = await (await signer).signMessage(originalMessage);
 
       return signedMessage;
     } catch (error) {

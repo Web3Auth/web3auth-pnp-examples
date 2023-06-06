@@ -10,10 +10,10 @@ export default class EthereumRpc {
 
   async getAccounts(): Promise<string> {
     try {
-      const provider = new ethers.providers.Web3Provider(this.provider as any);
+      const provider = new ethers.BrowserProvider(this.provider as any);
       const signer = provider.getSigner();
-      const account = await signer.getAddress();
-      return account;
+      const { address } = await signer;
+      return address;
     } catch (error: unknown) {
       return error as string;
     }
@@ -21,12 +21,12 @@ export default class EthereumRpc {
 
   async getBalance(): Promise<string> {
     try {
-      const provider = new ethers.providers.Web3Provider(this.provider as any);
+      const provider = new ethers.BrowserProvider(this.provider as any);
       const signer = provider.getSigner();
-      const account = await signer.getAddress();
+      const { address } = await signer;
       // Get user's balance in ether
-      const balance = ethers.utils.formatEther(
-        await provider.getBalance(account) // Balance is in wei
+      const balance = ethers.formatEther(
+        await provider.getBalance(address) // Balance is in wei
       );
       return balance;
     } catch (error) {
@@ -36,32 +36,34 @@ export default class EthereumRpc {
 
   async signMessage(): Promise<string> {
     try {
-      const provider = new ethers.providers.Web3Provider(this.provider as any);
+      const provider = new ethers.BrowserProvider(this.provider as any);
       const signer = provider.getSigner();
 
-      const originalMessage = "HELLO WEB3";
+      const originalMessage = "YOUR_MESSAGE";
 
-      const signedMessage = await signer.signMessage(originalMessage);
+      const signedMessage = await (await signer).signMessage(originalMessage);
       return signedMessage;
     } catch (error) {
       return error as string;
     }
   }
 
-  async signAndSendTransaction(): Promise<string> {
+  async signAndSendTransaction(): Promise<any> {
     try {
-      const provider = new ethers.providers.Web3Provider(this.provider as any);
+      const provider = new ethers.BrowserProvider(this.provider as any);
       const signer = provider.getSigner();
-      const address = await signer.getAddress();
+      const { address } = await signer;
 
-      const tx = await signer.sendTransaction({
+      const tx = await (
+        await signer
+      ).sendTransaction({
         to: address,
-        value: ethers.utils.parseEther("0.0001"),
+        value: ethers.parseEther("0.0001"),
       });
       const receipt = await tx.wait();
-      return receipt.transactionHash;
+      return receipt;
     } catch (error) {
-      return error as string;
+      return error as undefined;
     }
   }
 }

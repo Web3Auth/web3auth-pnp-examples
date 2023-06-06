@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@web3auth/base": "^5.2.0",
-    "@web3auth/modal": "^5.2.0",
-    "@web3auth/openlogin-adapter": "^5.2.0",
-    "ethers": "^5.7.2",
+    "@web3auth/modal": "^5.2.1",
+    "@web3auth/openlogin-adapter": "^5.2.1",
+    "ethers": "^6.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "web3": "^1.8.2"
+    "web3": "^1.10.0"
   },
   "devDependencies": {
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",

@@ -30,6 +30,7 @@
       "http": ["./node_modules/stream-http"],
       "https": ["./node_modules/https-browserify"],
       "os": ["./node_modules/os-browserify"],
+      "zlib": ["./node_modules/browserify-zlib"],
     }
   },
   "angularCompilerOptions": {

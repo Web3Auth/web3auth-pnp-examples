@@ -10,10 +10,14 @@ export default class EthereumRpc {
 
   async getAccounts(): Promise<string> {
     try {
+      // For ethers v5
+      // const provider = new ethers.providers.Web3Provider(this.provider as any);
       const provider = new ethers.BrowserProvider(this.provider as any);
-      const signer = provider.getSigner();
-      const { address } = await signer;
-      return address;
+      // For ethers v5
+      // const signer = provider.getSigner();
+      const signer = await provider.getSigner();
+      const address = signer.getAddress();
+      return await address;
     } catch (error: unknown) {
       return error as string;
     }
@@ -21,10 +25,19 @@ export default class EthereumRpc {
 
   async getBalance(): Promise<string> {
     try {
+      // For ethers v5
+      // const provider = new ethers.providers.Web3Provider(this.provider as any);
       const provider = new ethers.BrowserProvider(this.provider as any);
-      const signer = provider.getSigner();
-      const { address } = await signer;
+      // For ethers v5
+      // const signer = provider.getSigner();
+      const signer = await provider.getSigner();
+      const address = signer.getAddress();
+
       // Get user's balance in ether
+      // For ethers v5
+      // const balance = ethers.utils.formatEther(
+      // await provider.getBalance(address) // Balance is in wei
+      // );
       const balance = ethers.formatEther(
         await provider.getBalance(address) // Balance is in wei
       );
@@ -36,12 +49,16 @@ export default class EthereumRpc {
 
   async signMessage(): Promise<string> {
     try {
+      // For ethers v5
+      // const provider = new ethers.providers.Web3Provider(this.provider as any);
       const provider = new ethers.BrowserProvider(this.provider as any);
-      const signer = provider.getSigner();
+      // For ethers v5
+      // const signer = provider.getSigner();
+      const signer = await provider.getSigner();
 
       const originalMessage = "YOUR_MESSAGE";
 
-      const signedMessage = await (await signer).signMessage(originalMessage);
+      const signedMessage = await signer.signMessage(originalMessage);
       return signedMessage;
     } catch (error) {
       return error as string;
@@ -50,15 +67,22 @@ export default class EthereumRpc {
 
   async signAndSendTransaction(): Promise<any> {
     try {
+      // For ethers v5
+      // const provider = new ethers.providers.Web3Provider(this.provider as any);
       const provider = new ethers.BrowserProvider(this.provider as any);
-      const signer = provider.getSigner();
-      const { address } = await signer;
+      // For ethers v5
+      // const signer = provider.getSigner();
+      const signer = await provider.getSigner();
+      const address = signer.getAddress();
 
-      const tx = await (
-        await signer
-      ).sendTransaction({
+      // Convert 1 ether to wei
+      // For ethers v5
+      // const amount = ethers.utils.parseEther("0.0001");
+      const amount = ethers.parseEther("0.0001");
+
+      const tx = await signer.sendTransaction({
         to: address,
-        value: ethers.parseEther("0.0001"),
+        value: amount,
       });
       const receipt = await tx.wait();
       return receipt;

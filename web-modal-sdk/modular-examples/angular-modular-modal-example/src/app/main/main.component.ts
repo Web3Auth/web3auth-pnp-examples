@@ -40,7 +40,7 @@ export class MainComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.chain && !changes.network) {
+    if (!changes["chain"] && !changes["network"]) {
       return;
     }
     console.log("CHANGING CHAIN");

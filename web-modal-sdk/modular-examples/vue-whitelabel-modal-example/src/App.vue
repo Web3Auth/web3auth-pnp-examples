@@ -16,7 +16,8 @@
 </template>
 
 <script lang="ts">
-import { UIConfig, Web3Auth } from "@web3auth/modal";
+import { Web3Auth } from "@web3auth/modal";
+import { UIConfig } from "@web3auth/ui";
 import { ADAPTER_STATUS, CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 
@@ -32,7 +33,7 @@ export default defineComponent({
   data(): {
     uiConfig: {
       appLogo: string | undefined;
-      theme: "dark" | "light" | undefined;
+      theme: "dark" | "light" | "auto";
       loginMethodsOrder: string[] | undefined;
     };
     provider: SafeEventEmitterProvider | null;

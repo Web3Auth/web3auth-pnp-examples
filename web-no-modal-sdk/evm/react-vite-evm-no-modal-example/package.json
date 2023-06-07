@@ -10,9 +10,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@web3auth/base": "^5.2.0",
-    "@web3auth/no-modal": "^5.2.0",
-    "@web3auth/openlogin-adapter": "^5.2.0",
+    "@web3auth/base": "^6.0.0-alpha.0",
+    "@web3auth/no-modal": "^6.0.0-alpha.0",
+    "@web3auth/openlogin-adapter": "^6.0.0-alpha.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "web3": "^1.8.2"

@@ -86,6 +86,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getChainId = async () => {

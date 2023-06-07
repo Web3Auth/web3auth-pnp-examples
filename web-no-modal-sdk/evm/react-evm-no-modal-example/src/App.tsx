@@ -42,33 +42,6 @@ function App() {
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            mfaSettings: {
-              "deviceShareFactor": {
-                enable: true,
-                priority: 1,
-                mandatory: false,
-              },
-              "backUpShareFactor": {
-                enable: true,
-                priority: 2,
-                mandatory: false,
-              },
-              "socialBackupFactor": {
-                enable: true,
-                priority: 3,
-                mandatory: false,
-              },
-              "passwordFactor": {
-                enable: true,
-                priority: 4,
-                mandatory: false,
-              },
-            },
-          },
-          loginSettings: {
-            mfaLevel: "mandatory",
-          },
           privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);

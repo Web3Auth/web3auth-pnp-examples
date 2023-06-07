@@ -3,6 +3,7 @@
 
 import QRCodeModal from "@walletconnect/qrcode-modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { getWalletConnectV2Settings, WalletConnectV2Adapter } from "@web3auth/wallet-connect-v2-adapter";
@@ -16,23 +17,33 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x1",
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorer: "https://goerli.etherscan.io",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
         const web3authInstance = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
         });
 
         setWeb3auth(web3authInstance);
 
-        const openloginAdapter = new OpenloginAdapter();
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+        const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
+        });
         web3authInstance.configureAdapter(openloginAdapter);
 
         // adding wallet connect v2 adapter
@@ -45,8 +56,9 @@ export default function App() {
         web3authInstance.configureAdapter(walletConnectV2Adapter);
 
         await web3authInstance.init();
-        if (web3authInstance.provider) {
+        if (web3authInstance.connectedAdapterName) {
           setProvider(web3authInstance.provider);
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -56,6 +68,7 @@ export default function App() {
     init();
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -72,6 +85,7 @@ export default function App() {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWithSMS = async () => {
@@ -86,6 +100,7 @@ export default function App() {
       },
     });
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWithEmail = async () => {
@@ -100,6 +115,7 @@ export default function App() {
       },
     });
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWCModal = async () => {
@@ -109,6 +125,7 @@ export default function App() {
     }
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -136,6 +153,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getChainId = async () => {
@@ -317,7 +335,7 @@ export default function App() {
         & NextJS Ethereum Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

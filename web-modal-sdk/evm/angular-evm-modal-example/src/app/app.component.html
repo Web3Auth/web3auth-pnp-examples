@@ -5,7 +5,7 @@
   </h1>
   <div class="setting">
     <div
-      *ngIf="isModalLoaded && provider; else elseBlock"
+      *ngIf="isModalLoaded && loggedIn; else elseBlock"
       class="card-container"
     >
       <button class="card card-small" (click)="getUserInfo()">

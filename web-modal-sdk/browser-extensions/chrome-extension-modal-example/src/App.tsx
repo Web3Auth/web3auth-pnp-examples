@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 
@@ -10,10 +9,9 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
   const [isFullPage, setIsFullPage] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -31,32 +29,16 @@ function App() {
             defaultLanguage: "en",
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
           },
+          web3AuthNetwork: "cyan",
         });
-
-        const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "default",
-          },
-          adapterSettings: {
-            clientId,
-            network: "cyan",
-            uxMode: "popup",
-            whiteLabel: {
-              name: "Web3Auth Chrome Extension",
-              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-              defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
-            },
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
 
         setWeb3auth(web3auth);
-
+        
         await web3auth.initModal();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+        
+        if (web3auth.connectedAdapterName) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -102,6 +84,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getChainId = async () => {
@@ -251,7 +234,7 @@ function App() {
         Chrome Extension
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

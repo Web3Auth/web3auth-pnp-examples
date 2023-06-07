@@ -10,10 +10,9 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
   const [isFullPage, setIsFullPage] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -55,8 +54,9 @@ function App() {
         setWeb3auth(web3auth);
 
         await web3auth.initModal();
-        if (web3auth.provider) {
+        if (web3auth.connectedAdapterName) {
           setProvider(web3auth.provider);
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -102,6 +102,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getChainId = async () => {
@@ -251,7 +252,7 @@ function App() {
         Chrome Extension
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

@@ -56,8 +56,8 @@ export default function App() {
         web3authInstance.configureAdapter(walletConnectV2Adapter);
 
         await web3authInstance.init();
+        setProvider(web3authInstance.provider);
         if (web3authInstance.connectedAdapterName) {
-          setProvider(web3authInstance.provider);
           setLoggedIn(true);
         }
       } catch (error) {

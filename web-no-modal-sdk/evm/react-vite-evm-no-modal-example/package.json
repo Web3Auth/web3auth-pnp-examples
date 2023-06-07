@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@web3auth/base": "^6.0.0-alpha.0",
+    "@web3auth/ethereum-provider": "^6.0.0-alpha.0",
     "@web3auth/no-modal": "^6.0.0-alpha.0",
     "@web3auth/openlogin-adapter": "^6.0.0-alpha.0",
+    "ethers": "^5.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "web3": "^1.8.2"
@@ -23,6 +25,7 @@
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
     "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
     "process": "^0.11.10",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-polyfills": "^0.2.1",

@@ -1,4 +1,5 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { ethers } from "ethers";
 
 export default class EthereumRpc {

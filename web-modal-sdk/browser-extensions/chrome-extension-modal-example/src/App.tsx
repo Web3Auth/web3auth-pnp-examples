@@ -33,10 +33,11 @@ function App() {
         });
 
         setWeb3auth(web3auth);
-
+        
         await web3auth.initModal();
+        setProvider(web3auth.provider);
+        
         if (web3auth.connectedAdapterName) {
-          setProvider(web3auth.provider);
           setLoggedIn(true);
         }
       } catch (error) {

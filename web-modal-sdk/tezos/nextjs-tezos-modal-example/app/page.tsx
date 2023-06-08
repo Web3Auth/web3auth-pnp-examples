@@ -86,6 +86,7 @@ export default function App() {
       return;
     }
     await web3auth.logout();
+    setLoggedIn(false);
     setProvider(null);
   };
 

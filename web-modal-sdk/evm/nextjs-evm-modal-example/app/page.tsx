@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-shadow */
 "use client";
 
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
@@ -15,11 +18,11 @@ import RPC from "./web3RPC"; // for using web3.js
 
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
-
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -101,10 +104,11 @@ export default function App() {
         web3auth.configureAdapter(torusWalletAdapter);
 
         setWeb3auth(web3auth);
+        setProvider(web3auth.provider);
 
         await web3auth.initModal();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        if (web3auth.connectedAdapterName) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -121,7 +125,7 @@ export default function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -149,6 +153,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const showWCM = async () => {
@@ -262,6 +267,7 @@ export default function App() {
     uiConsole(privateKey);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -359,15 +365,17 @@ export default function App() {
         & Next.js 13 Ethereum Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/nextjs13-evm-modal-example" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/nextjs-evm-modal-example"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Source code
         </a>
       </footer>
     </div>
   );
 }
-
-

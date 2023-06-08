@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-ref-as-operand -->
 <template>
   <div id="app">
     <h2>
@@ -82,6 +83,16 @@
         <p style="white-space: pre-line"></p>
       </div>
     </div>
+
+    <footer class="footer">
+      <a
+        href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/vue-evm-modal-example"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Source code
+      </a>
+    </footer>
   </div>
 </template>
 
@@ -197,8 +208,8 @@ export default {
         loggedin.value = false;
         await web3auth.initModal();
         await web3auth.addPlugin(torusPlugin);
-        if (web3auth.provider) {
-          provider = web3auth.provider;
+        provider = web3auth.provider;
+        if (web3auth.provider && web3auth.connectedAdapterName) {
           loggedin.value = true;
         }
       } catch (error) {
@@ -215,7 +226,6 @@ export default {
       }
       provider = await web3auth.connect();
       loggedin.value = true;
-      uiConsole("Logged in Successfully!");
     };
 
     const authenticateUser = async () => {

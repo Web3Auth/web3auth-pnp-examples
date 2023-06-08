@@ -1,15 +1,15 @@
-/* eslint-disable no-console */
-"use client";
-
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { Web3Auth } from "@web3auth/modal";
 import { useEffect, useState } from "react";
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
+import "./App.css";
+import RPC from "./xrplProvider"; // for using XRPL
 
-import RPC from "./aptosRPC"; // for using web3.js
+const clientId =
+  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
-const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
-
-export default function App() {
+function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -17,22 +17,39 @@ export default function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-shadow
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
             chainId: "1",
-            rpcTarget: "https://rpc.ankr.com/http/aptos/v1", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            rpcTarget: "https://rpc.ankr.com/xrpl",
           },
           uiConfig: {
             theme: "dark",
-            loginMethodsOrder: ["google", "github"],
+            loginMethodsOrder: ["github", "google"],
             defaultLanguage: "en",
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
           },
           web3AuthNetwork: "cyan",
         });
+
+        const xrplProvider:any = new XrplPrivateKeyProvider({ config: { chainConfig: getXRPLChainConfig("testnet") } }); // devnet, testnet, mainnet
+        const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "default",
+          },
+          adapterSettings: {
+            whiteLabel: {
+              name: "Your app Name",
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en",
+              dark: true, // whether to enable dark mode. defaultValue: false
+            },
+          },
+          privateKeyProvider: xrplProvider,
+        });
+        web3auth.configureAdapter(openloginAdapter);
 
         setWeb3auth(web3auth);
 
@@ -50,14 +67,6 @@ export default function App() {
     init();
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
-
   const login = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
@@ -65,7 +74,7 @@ export default function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    if (web3authProvider) setLoggedIn(true);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -116,16 +125,6 @@ export default function App() {
     uiConsole(balance);
   };
 
-  const getAirdrop = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const airdrop = await rpc.getAirdrop();
-    uiConsole(`Airdropped some tokens TxID: ${airdrop}`);
-  };
-
   const sendTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -133,18 +132,25 @@ export default function App() {
     }
     const rpc = new RPC(provider);
     const receipt = await rpc.sendTransaction();
-    uiConsole(`TxID: ${receipt}`);
+    uiConsole(receipt);
   };
 
-  const getPrivateKey = async () => {
+  const signMessage = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    uiConsole(privateKey);
+    const signedMessage = await rpc.signMessage();
+    uiConsole(signedMessage);
   };
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
 
   const loggedInView = (
     <>
@@ -170,18 +176,13 @@ export default function App() {
           </button>
         </div>
         <div>
-          <button onClick={getAirdrop} className="card">
-            Get Airdrop
+          <button onClick={signMessage} className="card">
+            Sign Message
           </button>
         </div>
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={getPrivateKey} className="card">
-            Get Private Key
           </button>
         </div>
         <div>
@@ -191,7 +192,7 @@ export default function App() {
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
+        <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
     </>
   );
@@ -208,14 +209,14 @@ export default function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & NextJS Aptos Example
+        & ReactJS XRPL Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/aptos/nextjs-aptos-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/xrpl/react-xrpl-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -225,3 +226,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;

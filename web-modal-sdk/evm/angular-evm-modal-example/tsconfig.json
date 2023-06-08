@@ -24,14 +24,15 @@
       "dom"
     ],
     "paths":{
-      "crypto": false,
-      "stream": false,
-      "assert": false,
-      "http": false,
-      "https": false,
-      "os": false,
-      "process": false,
-      "zlib": false,
+      "crypto": ["./node_modules/empty-module"],
+      "stream": ["./node_modules/empty-module"],
+      "assert": ["./node_modules/empty-module"],
+      "http": ["./node_modules/empty-module"],
+      "https": ["./node_modules/empty-module"],
+      "os": ["./node_modules/empty-module"],
+      "zlib": ["./node_modules/empty-module"],
+      "url": ["./node_modules/empty-module"],
+      "process": ["./node_modules/process"],
     }
   },
   "angularCompilerOptions": {

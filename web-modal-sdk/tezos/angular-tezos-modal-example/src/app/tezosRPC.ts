@@ -2,6 +2,7 @@
 import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
+// @ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
 import { SafeEventEmitterProvider } from "@web3auth/base";
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
@@ -18,19 +19,28 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
+
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x1",
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorer: "https://goerli.etherscan.io",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
           useCoreKitKey: false,
         });
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
@@ -42,13 +52,15 @@ function App() {
               },
             },
           },
+          privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);
 
         await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+        if (web3auth.connectedAdapterName) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -88,6 +100,7 @@ function App() {
         },
       }
     );
+    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 
@@ -115,6 +128,7 @@ function App() {
       return;
     }
     await web3auth.logout();
+    setLoggedIn(false);
     setProvider(null);
   };
 
@@ -241,7 +255,7 @@ function App() {
         & ReactJS-Express Custom JWT Login
       </h1>
 
-      <div className="grid">{provider ? loginView : logoutView}</div>
+      <div className="grid">{loggedIn ? loginView : logoutView}</div>
 
       <footer className="footer">
         <a

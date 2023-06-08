@@ -37,18 +37,6 @@ export default function App() {
         const privateKeyProvider = new CommonPrivateKeyProvider();
 
         const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "default",
-          },
-          adapterSettings: {
-            whiteLabel: {
-              name: "Your app Name",
-              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-              defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
-            },
-          },
           privateKeyProvider,
         });
         web3authInstance.configureAdapter(openloginAdapter);

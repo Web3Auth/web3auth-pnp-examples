@@ -16,7 +16,6 @@
     "@web3auth/wallet-connect-v1-adapter": "^6.0.0-alpha.0",
     "core-js": "^3.26.1",
     "ethers": "^5.7.2",
-    "node-polyfill-webpack-plugin": "^2.0.1",
     "vue": "^3.3.4",
     "web3": "^1.10.0"
   },
@@ -30,7 +29,6 @@
     "@vue/eslint-config-typescript": "^11.0.2",
     "eslint": "^8.29.0",
     "eslint-plugin-vue": "^9.8.0",
-    "typescript": "~4.9.4",
-    "zlib-browserify": "^0.0.3"
+    "typescript": "~4.9.4"
   }
 }

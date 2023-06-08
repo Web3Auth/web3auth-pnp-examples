@@ -22,7 +22,7 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
             chainId: "1",
-            rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
+            rpcTarget: "https://testnet.xrpl-labs.com",
           },
           uiConfig: {
             theme: "dark",

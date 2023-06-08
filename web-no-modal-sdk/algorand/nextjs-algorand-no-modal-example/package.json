@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@web3auth/base": "^6.0.0-alpha.0",
+    "@web3auth/base-provider": "^6.0.0-alpha.0",
     "@web3auth/no-modal": "^6.0.0-alpha.0",
     "@web3auth/openlogin-adapter": "^6.0.0-alpha.0",
     "algosdk": "^2.3.0",

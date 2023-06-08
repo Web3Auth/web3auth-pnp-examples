@@ -35,9 +35,10 @@ export default function App() {
         });
 
         setWeb3auth(web3auth);
-        setProvider(web3auth.provider);
 
         await web3auth.initModal();
+        setProvider(web3auth.provider);
+
         if (web3auth.connectedAdapterName) {
           setLoggedIn(true);
         }

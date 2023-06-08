@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import type { SafeEventEmitterProvider } from "@web3auth/base";

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import algosdk from "algosdk";

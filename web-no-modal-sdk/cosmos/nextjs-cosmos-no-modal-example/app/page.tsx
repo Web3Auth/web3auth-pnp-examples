@@ -2,7 +2,7 @@
 "use client";
 
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import { CommonJRPCProvider } from "@web3auth/base-provider";
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { Web3AuthNoModal as Web3Auth } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
@@ -34,21 +34,9 @@ export default function App() {
           web3AuthNetwork: "cyan",
         });
 
-        const privateKeyProvider = new CommonJRPCProvider({ config: { chainConfig } });
+        const privateKeyProvider = new CommonPrivateKeyProvider();
 
         const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "default",
-          },
-          adapterSettings: {
-            whiteLabel: {
-              name: "Your app Name",
-              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-              defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
-            },
-          },
           privateKeyProvider,
         });
         web3authInstance.configureAdapter(openloginAdapter);

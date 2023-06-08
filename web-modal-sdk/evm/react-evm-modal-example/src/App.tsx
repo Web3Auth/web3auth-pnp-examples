@@ -47,7 +47,7 @@ function App() {
 
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
-            mfaLevel: "default",
+            mfaLevel: "mandatory",
           },
           adapterSettings: {
             whiteLabel: {
@@ -57,6 +57,28 @@ function App() {
               defaultLanguage: "en",
               dark: true, // whether to enable dark mode. defaultValue: false
             },
+            mfaSettings: {
+              "deviceShareFactor": {
+                enable: true,
+                priority: 1,
+                mandatory: false,
+              },
+              "backUpShareFactor": {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              "socialBackupFactor": {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              "passwordFactor": {
+                enable: true,
+                priority: 4,
+                mandatory: false,
+              },
+            }
           },
         });
         web3auth.configureAdapter(openloginAdapter);

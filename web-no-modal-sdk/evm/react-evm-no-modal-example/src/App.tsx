@@ -39,14 +39,13 @@ function App() {
           web3AuthNetwork: "cyan",
         });
 
-        setWeb3auth(web3auth);
-
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
+        setWeb3auth(web3auth);
 
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1, 137, 5], "04309ed1007e77d1f119b85205bb779d")

@@ -37,9 +37,8 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -50,6 +49,7 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x5",
+            rpcTarget: "https://rpc.ankr.com/eth_goerli",
           },
           web3AuthNetwork: "cyan",
         });
@@ -72,9 +72,10 @@ function App() {
         web3auth.configureAdapter(openloginAdapter);
 
         await web3auth.initModal();
+        setProvider(web3auth.provider);
 
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        if (web3auth.connectedAdapterName) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -122,7 +123,7 @@ function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -150,6 +151,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getAccounts = async () => {
@@ -260,7 +262,7 @@ function App() {
       config: {
         chainConfig: {
           chainId: "0x3",
-          rpcTarget: "https://rpc.ankr.com/solana",
+          rpcTarget: "https://api.devnet.solana.com",
           displayName: "Solana Mainnet",
           blockExplorer: "https://explorer.solana.com/",
           ticker: "SOL",
@@ -428,7 +430,7 @@ function App() {
         & ReactJS Multi-chain Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

@@ -22,7 +22,7 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
             chainId: "1",
-            rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
+            rpcTarget: "https://rpc.ankr.com/xrpl",
           },
           uiConfig: {
             theme: "dark",
@@ -34,7 +34,6 @@ function App() {
         });
 
         const xrplProvider:any = new XrplPrivateKeyProvider({ config: { chainConfig: getXRPLChainConfig("testnet") } }); // devnet, testnet, mainnet
-
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
             mfaLevel: "default",

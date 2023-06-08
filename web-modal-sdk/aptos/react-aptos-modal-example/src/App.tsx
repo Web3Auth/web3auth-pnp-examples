@@ -21,7 +21,7 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
             chainId: "1",
-            rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            rpcTarget: "https://rpc.ankr.com/http/aptos/v1", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           uiConfig: {
             theme: "dark",

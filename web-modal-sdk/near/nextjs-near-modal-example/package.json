@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@toruslabs/openlogin-ed25519": "^4.2.0",
     "@web3auth/base": "^6.0.0-alpha.0",
     "@web3auth/modal": "^6.0.0-alpha.0",
     "near-api-js": "^2.1.3",

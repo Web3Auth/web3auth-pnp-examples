@@ -4,9 +4,9 @@ import {
   WALLET_ADAPTER_TYPE,
 } from "@web3auth/base";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import type { LOGIN_PROVIDER_TYPE } from "@toruslabs/openlogin";
-
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { LOGIN_PROVIDER_TYPE, OpenloginAdapter, PrivateKeyProvider } from "@web3auth/openlogin-adapter";
 import React, {
   createContext,
   FunctionComponent,
@@ -126,7 +126,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
         setIsLoading(true);
         // get your client id from https://dashboard.web3auth.io by registering a plug and play application.
         const clientId =
-          "BE-nSVAJjuFSstTO_9wlA8MTZKdZ9bJaH8wWcnHKMUGLzYLg-cPPZ9v6Tm1snsi-Cv12XMHkFXX0ujRp3FtBnAc";
+          "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk";
         const currentChainConfig = CHAIN_CONFIG[chain];
 
         const web3AuthInstance = new Web3AuthNoModal({
@@ -135,16 +135,20 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
           web3AuthNetwork,
         });
         subscribeAuthEvents(web3AuthInstance);
+        var privateKeyProvider: PrivateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: currentChainConfig } });
+        if (chain === "solana") {
+          privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig: currentChainConfig } });
+        }
         const adapter = new OpenloginAdapter({
+          privateKeyProvider,
           adapterSettings: {
             clientId,
             uxMode: "redirect",
             loginConfig: {
               jwt: {
-                verifier: "cognito-demo",
+                verifier: "web3auth-cognito-google",
                 typeOfLogin: "jwt",
-                //use your app client id you will get from aws cognito app
-                clientId: "29343gi24opt30vsa5s7u8gfvg",
+                clientId: "2upuksfh6n0n5c0nciirc1bdrv", //use your app client id you will get from aws cognito app
               },
             },
           },
@@ -176,14 +180,10 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
         relogin: true,
         loginProvider,
         extraLoginOptions: {
-          //this is domain of your app created in aws
-          domain: "https://web3auth.auth.us-west-2.amazoncognito.com/oauth2",
-          //the param/field which you are going to verify from aws cognito
+          domain: "https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com",
           verifierIdField: "email",
-          // response you want from cognito i.e jwt token
           response_type: "token",
-          // scope params are those which are enabled in cognito app's "Allowed OAuth Scopes" settings
-          scope: "email openid profile",
+          scope: "email profile openid",
         },
       });
       setWalletProvider(localProvider!);

@@ -6,7 +6,7 @@ import {
   SafeEventEmitterProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import QRCodeModal from "@walletconnect/qrcode-modal";
 import "./App.css";
@@ -42,6 +42,33 @@ function App() {
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            mfaSettings: {
+              "deviceShareFactor": {
+                enable: true,
+                priority: 1,
+                mandatory: false,
+              },
+              "backUpShareFactor": {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              "socialBackupFactor": {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              "passwordFactor": {
+                enable: true,
+                priority: 4,
+                mandatory: false,
+              },
+            },
+          },
+          loginSettings: {
+            mfaLevel: "mandatory",
+          },
           privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
@@ -89,7 +116,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
+    const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "sms_passwordless",

@@ -30,6 +30,7 @@ function App() {
           ticker: "ETH",
           tickerName: "Ethereum",
         };
+        
         // eslint-disable-next-line @typescript-eslint/no-shadow
         const web3auth = new Web3AuthNoModal({
           clientId,
@@ -40,9 +41,6 @@ function App() {
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "default",
-          },
           adapterSettings: {
             whiteLabel: {
               name: "Your app Name",
@@ -56,10 +54,11 @@ function App() {
         });
         web3auth.configureAdapter(openloginAdapter);
 
-        setWeb3auth(web3auth);
 
         await web3auth.init();
+        setWeb3auth(web3auth);
         setProvider(web3auth.provider);
+
         if (web3auth.connectedAdapterName) {
           setLoggedIn(true);
         }

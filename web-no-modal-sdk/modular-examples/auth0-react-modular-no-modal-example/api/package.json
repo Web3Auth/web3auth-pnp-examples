@@ -12,7 +12,6 @@
   },
   "devDependencies": {
     "eslint": "^8.27.0",
-    "nodemon": "^2.0.20",
-    "zlib-browserify": "^0.0.3"
+    "nodemon": "^2.0.20"
   }
 }

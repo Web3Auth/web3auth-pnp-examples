@@ -2,22 +2,22 @@ import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
 
 export const CHAIN_CONFIG = {
   mainnet: {
-    displayName: "Ethereum Mainnet",
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: `https://mainnet.infura.io/v3/776218ac4734478c90191dde8cae483c`,
+    chainId: "0x1", // Please use 0x1 for Mainnet
+    rpcTarget: "https://rpc.ankr.com/eth",
+    displayName: "Ethereum Mainnet",
     blockExplorer: "https://etherscan.io/",
     ticker: "ETH",
     tickerName: "Ethereum",
   } as CustomChainConfig,
   solana: {
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
-    rpcTarget: "https://api.mainnet-beta.solana.com",
-    blockExplorer: "https://explorer.solana.com/",
-    chainId: "0x1",
-    displayName: "Solana Mainnet",
+    chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    rpcTarget: "https://api.devnet.solana.com",
+    displayName: "Solana Devnet",
+    blockExplorer: "https://explorer.solana.com",
     ticker: "SOL",
-    tickerName: "Solana",
+    tickerName: "Solana Token",
   } as CustomChainConfig,
   polygon: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,

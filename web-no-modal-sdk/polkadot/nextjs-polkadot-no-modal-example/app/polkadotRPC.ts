@@ -48,10 +48,14 @@ export default class PolkadotRPC {
   };
 
   signAndSendTransaction = async (): Promise<any> => {
-    const keyPair = await this.getPolkadotKeyPair();
-    const api = await this.makeClient();
-    const txHash = await api.tx.balances.transfer("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345).signAndSend(keyPair);
-    console.log(txHash);
-    return txHash.toHuman();
+    try {
+      const keyPair = await this.getPolkadotKeyPair();
+      const api = await this.makeClient();
+      const txHash = await api.tx.balances.transfer("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345).signAndSend(keyPair);
+      console.log(txHash);
+      return txHash.toHuman();
+    } catch (err: any) {
+      return err.toString();
+    }
   };
 }

@@ -5,7 +5,6 @@
   "version": "0.0.0",
   "packages": [
     "web-no-modal-sdk/**/*",
-    "web-modal-sdk/**/*",
-    "wagmi-connector/*"
+    "web-modal-sdk/**/*"
   ]
 }

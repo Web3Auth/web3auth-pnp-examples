@@ -6,6 +6,7 @@ import {
   SafeEventEmitterProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 // import RPC from './ethersRPC' // for using ethers.js
 import RPC from "./web3RPC"; // for using web3.js
@@ -18,21 +19,32 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x5", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth_goerli",
+          displayName: "Goerli Testnet",
+          blockExplorer: "https://goerli.etherscan.io/",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
+        
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
           useCoreKitKey: false,
         });
 
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+        
         const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
           adapterSettings: {
             loginConfig: {
               jwt: {
@@ -47,8 +59,10 @@ function App() {
         setWeb3auth(web3auth);
 
         await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+
+        if (web3auth.connectedAdapterName) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -74,6 +88,7 @@ function App() {
         },
       }
     );
+    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 
@@ -101,6 +116,7 @@ function App() {
       return;
     }
     await web3auth.logout();
+    setLoggedIn(false);
     setProvider(null);
   };
 
@@ -240,7 +256,7 @@ function App() {
         & ReactJS Example using AWS Cognito
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

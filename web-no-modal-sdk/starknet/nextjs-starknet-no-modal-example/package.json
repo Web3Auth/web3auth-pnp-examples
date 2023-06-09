@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
-    "@web3auth/base": "^6.0.0-alpha.0",
-    "@web3auth/no-modal": "^6.0.0-alpha.0",
-    "@web3auth/openlogin-adapter": "^6.0.0-alpha.0",
+    "@web3auth/base": "^6.0.1-alpha.0",
+    "@web3auth/no-modal": "^6.0.1-alpha.0",
+    "@web3auth/openlogin-adapter": "^6.0.1-alpha.0",
     "elliptic": "^6.5.4",
     "next": "13.4.3",
     "react": "18.2.0",

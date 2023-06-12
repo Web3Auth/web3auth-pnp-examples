@@ -48,7 +48,6 @@ function App() {
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
     setLoggedIn(true);
-    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {

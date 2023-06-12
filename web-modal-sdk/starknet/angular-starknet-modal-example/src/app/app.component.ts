@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
+import { connect } from "near-api-js";
 
 import RPC from "./starknetRPC";
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
@@ -19,6 +20,8 @@ export class AppComponent {
 
   isModalLoaded = false;
 
+  loggedIn = false;
+
   async ngOnInit() {
     this.web3auth = new Web3Auth({
       clientId,
@@ -30,8 +33,10 @@ export class AppComponent {
     const { web3auth } = this;
 
     await web3auth.initModal();
-    if (web3auth.provider) {
-      this.provider = web3auth.provider;
+    this.provider = web3auth.provider;
+
+    if (web3auth.connectedAdapterName) {
+      this.loggedIn = true;
     }
     this.isModalLoaded = true;
   }
@@ -43,7 +48,7 @@ export class AppComponent {
     }
     const { web3auth } = this;
     this.provider = await web3auth.connect();
-    this.uiConsole("Logged in Successfully!");
+    this.loggedIn = true;
   };
 
   authenticateUser = async () => {
@@ -101,6 +106,7 @@ export class AppComponent {
     }
     await this.web3auth.logout();
     this.provider = null;
+    this.loggedIn = false;
     this.uiConsole("logged out");
   };
 

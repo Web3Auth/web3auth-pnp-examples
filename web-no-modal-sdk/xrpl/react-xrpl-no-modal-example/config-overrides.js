@@ -4,7 +4,8 @@ module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
   Object.assign(fallback, {
     crypto: false,
-    stream: false,
+    // this is required by xrpl.
+    stream: require.resolve("stream-browserify"),
     assert: false,
     http: false,
     https: false,

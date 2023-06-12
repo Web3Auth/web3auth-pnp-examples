@@ -47,7 +47,7 @@ function App() {
 
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
-            mfaLevel: "mandatory",
+            mfaLevel: "optional",
           },
           adapterSettings: {
             whiteLabel: {

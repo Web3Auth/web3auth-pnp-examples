@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import {
+  CHAIN_NAMESPACES,
+  SafeEventEmitterProvider,
+  WALLET_ADAPTERS,
+} from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
@@ -13,7 +17,10 @@ import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plu
 // Adapters
 
 // import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+import {
+  WalletConnectV2Adapter,
+  getWalletConnectV2Settings,
+} from "@web3auth/wallet-connect-v2-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
@@ -22,8 +29,11 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [torusPlugin, setTorusPlugin] =
+    useState<TorusWalletConnectorPlugin | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -55,30 +65,30 @@ function App() {
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-              dark: true, // whether to enable dark mode. defaultValue: false
+              dark: false, // whether to enable dark mode. defaultValue: false
             },
             mfaSettings: {
-              "deviceShareFactor": {
+              deviceShareFactor: {
                 enable: true,
                 priority: 1,
                 mandatory: true,
               },
-              "backUpShareFactor": {
+              backUpShareFactor: {
                 enable: true,
                 priority: 2,
                 mandatory: false,
               },
-              "socialBackupFactor": {
+              socialBackupFactor: {
                 enable: true,
                 priority: 3,
                 mandatory: false,
               },
-              "passwordFactor": {
+              passwordFactor: {
                 enable: true,
                 priority: 4,
                 mandatory: false,
               },
-            }
+            },
           },
         });
         web3auth.configureAdapter(openloginAdapter);
@@ -116,7 +126,11 @@ function App() {
         // web3auth.configureAdapter(walletConnectV1Adapter);
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1, 137, 5], "04309ed1007e77d1f119b85205bb779d")
+        const defaultWcSettings = await getWalletConnectV2Settings(
+          "eip155",
+          [1, 137, 5],
+          "04309ed1007e77d1f119b85205bb779d"
+        );
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           adapterSettings: { ...defaultWcSettings.adapterSettings },
           loginSettings: { ...defaultWcSettings.loginSettings },

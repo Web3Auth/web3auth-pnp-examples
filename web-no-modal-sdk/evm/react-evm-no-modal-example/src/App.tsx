@@ -47,7 +47,7 @@ function App() {
               "deviceShareFactor": {
                 enable: true,
                 priority: 1,
-                mandatory: false,
+                mandatory: true,
               },
               "backUpShareFactor": {
                 enable: true,

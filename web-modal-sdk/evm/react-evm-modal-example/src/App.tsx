@@ -39,7 +39,7 @@ function App() {
           uiConfig: {
             theme: "dark",
             loginMethodsOrder: ["github", "google"],
-            defaultLanguage: "en",
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
           },
           web3AuthNetwork: "cyan",
@@ -54,7 +54,7 @@ function App() {
               name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-              defaultLanguage: "en",
+              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
               dark: true, // whether to enable dark mode. defaultValue: false
             },
             mfaSettings: {
@@ -66,7 +66,7 @@ function App() {
               "backUpShareFactor": {
                 enable: true,
                 priority: 2,
-                mandatory: true,
+                mandatory: false,
               },
               "socialBackupFactor": {
                 enable: true,

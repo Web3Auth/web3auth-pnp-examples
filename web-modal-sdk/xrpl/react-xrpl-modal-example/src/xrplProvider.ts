@@ -1,22 +1,18 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IWalletProvider } from "./walletProvider";
 import { convertStringToHex, Payment, xrpToDrops } from "xrpl";
 
-export default class XrplProvider {
-  private provider: SafeEventEmitterProvider;
-
-  constructor(provider: SafeEventEmitterProvider) {
-    this.provider = provider;
-  }
-
-  async getAccounts(): Promise<any> {
+const ethProvider = (provider: SafeEventEmitterProvider, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
+  const getAccounts = async () => {
     try {
-      const accounts = await this.provider.request<string[]>({
-        method: "ripple_getAccounts"
+      console.log("provider", provider);
+      const accounts = await provider.request<string[]>({
+        method: "xrpl_getAccounts"
       })
       console.log("accounts", accounts);
 
       if (accounts) {
-        const accInfo = await this.provider.request({
+        const accInfo = await provider.request({
             "method": "account_info",
             "params": [
                 {
@@ -27,24 +23,27 @@ export default class XrplProvider {
                 }
             ]
         })
-        return accInfo;
+        uiConsole("xrpl account info", accInfo);
 
       } else {
-        console.log("No accounts found, please report this issue.")
+        uiConsole("No accounts found, please report this issue.")
       }
+
+     
     } catch (error) {
       console.error("Error", error);
+      uiConsole("error", error);
     }
-  }
+  };
 
-  async getBalance(): Promise<any> {
+  const getBalance = async () => {
     try {
-      const accounts = await this.provider.request<string[]>({
-        method: "ripple_getAccounts"
+      const accounts = await provider.request<string[]>({
+        method: "xrpl_getAccounts"
       })
 
       if (accounts) {
-        const accInfo = await this.provider.request({
+        const accInfo = await provider.request({
             "method": "account_info",
             "params": [
                 {
@@ -55,60 +54,97 @@ export default class XrplProvider {
                 }
             ]
         }) as Record<string, Record<string,string>>;
-        return accInfo.account_data?.Balance;
+        uiConsole("xrpl balance", accInfo.account_data?.Balance);
 
       } else {
-        console.log("No accounts found, please report this issue.")
+        uiConsole("No accounts found, please report this issue.")
       }
+
      
     } catch (error) {
       console.error("Error", error);
+      uiConsole("error", error);
     }
-  }
+  };
 
-  async sendTransaction(): Promise<any> {
-    try {
-      const accounts = await this.provider.request<string[]>({
-          method: "xrpl_getAccounts"
-      })
-  
-      if (accounts && accounts.length > 0) {
-          const tx: Payment =  {
-              TransactionType: "Payment",
-              Account: accounts[0] as string,
-              Amount: xrpToDrops(2),
-              Destination: "rJSsXjsLywTNevqLjeXV6L6AXQexnF2N5u",
-          }
-          const txSign = await this.provider.request({
-              method: "xrpl_submitTransaction",
-              params: {
-                  transaction: tx
-              }
-            })
-        return txSign;
-      } else {
-          console.log("failed to fetch accounts");
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  }
-
-  async signMessage() {
+  const signMessage = async () => {
     try {
       
-      const msg = "Hello world";
-      const hexMsg = convertStringToHex(msg);
-      const txSign = await this.provider.request<{ signature: string }>({
-          method: "xrpl_signMessage",
-          params: {
-              message: hexMsg
-          }
-          })
-      return txSign;
-     
+        const msg = "Hello world";
+        const hexMsg = convertStringToHex(msg);
+        const txSign = await provider.request<{ signature: string }>({
+            method: "xrpl_signMessage",
+            params: {
+                message: hexMsg
+            }
+            })
+        uiConsole("txRes", txSign);
+       
     } catch (error) {
       console.log("error", error);
+      uiConsole("error", error);
     }
-  }
-}
+  };
+
+  const signAndSendTransaction = async () => {
+    try {
+        const accounts = await provider.request<string[]>({
+            method: "xrpl_getAccounts"
+        })
+    
+        if (accounts && accounts.length > 0) {
+            const tx: Payment =  {
+                TransactionType: "Payment",
+                Account: accounts[0] as string,
+                Amount: xrpToDrops(2),
+                Destination: "rJSsXjsLywTNevqLjeXV6L6AXQexnF2N5u",
+            }
+            const txSign = await provider.request({
+                method: "xrpl_submitTransaction",
+                params: {
+                    transaction: tx
+                }
+              })
+          uiConsole("txRes", txSign);
+        } else {
+            uiConsole("failed to fetch accounts");
+        }
+    } catch (error) {
+      console.log("error", error);
+      uiConsole("error", error);
+    }
+  };
+  
+  const signTransaction = async () => {
+    try {
+        const accounts = await provider.request<string[]>({
+            method: "xrpl_getAccounts"
+        })
+    
+        if (accounts && accounts.length > 0) {
+            const tx: Payment =  {
+                TransactionType: "Payment",
+                Account: accounts[0] as string,
+                Amount: xrpToDrops(2),
+                Destination: "rJSsXjsLywTNevqLjeXV6L6AXQexnF2N5u",
+            }
+            const txSign = await provider.request({
+                method: "xrpl_signTransaction",
+                params: {
+                    transaction: tx
+                }
+              })
+          uiConsole("txRes", txSign);
+        } else {
+            uiConsole("failed to fetch accounts");
+        }
+       
+    } catch (error) {
+      console.log("error", error);
+      uiConsole("error", error);
+    }
+  };
+  return { getAccounts, getBalance, signMessage, signAndSendTransaction, signTransaction };
+};
+
+export default ethProvider;

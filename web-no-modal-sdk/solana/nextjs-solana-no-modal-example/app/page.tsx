@@ -46,7 +46,7 @@ export default function App() {
         web3auth.configureAdapter(openloginAdapter);
         await web3auth.init();
         setProvider(web3auth.provider);
-        if (web3auth.connectedAdapterName) {
+        if (web3auth.connected) {
           setLoggedIn(true);
         }
       } catch (error) {

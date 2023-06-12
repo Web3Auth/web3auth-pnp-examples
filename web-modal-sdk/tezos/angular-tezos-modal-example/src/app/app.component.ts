@@ -16,8 +16,8 @@ export class AppComponent {
   web3auth: Web3Auth | null = null;
 
   provider: SafeEventEmitterProvider | null = null;
-  
-  loggedIn: boolean = false;
+
+  loggedIn = false;
 
   isModalLoaded = false;
 
@@ -27,7 +27,7 @@ export class AppComponent {
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.OTHER,
         chainId: "1",
-        rpcTarget: "https://rpc.tzbeta.net/", // This is the public RPC we have added, please pass on your own endpoint while creating an app  
+        rpcTarget: "https://rpc.tzbeta.net/", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
       uiConfig: {
         theme: "dark",
@@ -42,7 +42,7 @@ export class AppComponent {
     await web3auth.initModal();
     this.provider = web3auth.provider;
 
-    if (web3auth.connectedAdapterName) {
+    if (web3auth.connected) {
       this.loggedIn = true;
     }
     this.isModalLoaded = true;
@@ -56,7 +56,6 @@ export class AppComponent {
     const { web3auth } = this;
     this.provider = await web3auth.connect();
     this.loggedIn = true;
-    this.uiConsole("Logged in Successfully!");
   };
 
   authenticateUser = async () => {

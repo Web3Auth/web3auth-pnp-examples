@@ -29,7 +29,7 @@ function App() {
         await web3auth.initModal();
         setProvider(web3auth.provider);
 
-        if (web3auth.connectedAdapterName) {
+        if (web3auth.connected) {
           setLoggedIn(true);
         }
       } catch (error) {
@@ -48,7 +48,6 @@ function App() {
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
     setLoggedIn(true);
-    uiConsole("Logged in Successfully!");
   };
 
   const authenticateUser = async () => {

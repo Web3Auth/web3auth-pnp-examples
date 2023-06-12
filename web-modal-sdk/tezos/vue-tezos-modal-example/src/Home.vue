@@ -117,7 +117,7 @@ export default {
 
         await web3auth.initModal();
         provider = web3auth.provider;
-        if (web3auth.connectedAdapterName) {
+        if (web3auth.connected) {
           loggedin.value = true;
         }
       } catch (error) {

@@ -29,8 +29,8 @@ function App() {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
-            chainId: "1",
-            rpcTarget: "https://rpc.ankr.com/xrpl",
+            chainId: "0x04",
+            rpcTarget: "https://s.altnet.rippletest.net:51234",
           },
           uiConfig: {
             theme: "dark",

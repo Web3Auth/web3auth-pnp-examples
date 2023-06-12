@@ -222,7 +222,7 @@ export default function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/starkex/react-starkex-no-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/starkex/nextjs-starkex-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

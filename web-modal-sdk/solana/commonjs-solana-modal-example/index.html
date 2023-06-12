@@ -103,10 +103,10 @@
         web3auth.configureAdapter(slopeAdapter);
 
         await web3auth.initModal();
-        if (web3auth.connectedAdapterName) {
+        if (web3auth.connected) {
           $(".btn-logged-in").show();
           $(".btn-logged-out").hide();
-          if (web3auth.connectedAdapterName === "openlogin") {
+          if (web3auth.connected === "openlogin") {
             $("#sign-tx").show();
           }
         } else {

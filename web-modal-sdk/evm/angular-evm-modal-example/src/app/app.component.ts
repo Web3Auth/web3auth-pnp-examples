@@ -107,7 +107,7 @@ export class AppComponent {
     web3auth.configureAdapter(torusWalletAdapter);
 
     await web3auth.initModal();
-    if (web3auth.connectedAdapterName) {
+    if (web3auth.connected) {
       this.provider = web3auth.provider;
       this.loggedIn = true;
     }

@@ -35,7 +35,7 @@ export class AppComponent {
     await web3auth.initModal();
     this.provider = web3auth.provider;
 
-    if (web3auth.connectedAdapterName) {
+    if (web3auth.connected) {
       this.loggedIn = true;
     }
     this.isModalLoaded = true;

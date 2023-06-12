@@ -189,7 +189,7 @@ function App() {
         // });
         setProvider(web3auth.provider);
 
-        if (web3auth.connectedAdapterName) {
+        if (web3auth.connected) {
           setLoggedIn(true);
         }
       } catch (error) {

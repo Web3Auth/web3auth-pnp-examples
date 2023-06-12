@@ -36,7 +36,7 @@ function App() {
         setProvider(web3auth.provider);
 
         await web3auth.initModal();
-        if (web3auth.connectedAdapterName) {
+        if (web3auth.connected) {
           setLoggedIn(true);
         }
       } catch (error) {

@@ -209,7 +209,7 @@ export default {
         await web3auth.initModal();
         await web3auth.addPlugin(torusPlugin);
         provider = web3auth.provider;
-        if (web3auth.provider && web3auth.connectedAdapterName) {
+        if (web3auth.provider && web3auth.connected) {
           loggedin.value = true;
         }
       } catch (error) {

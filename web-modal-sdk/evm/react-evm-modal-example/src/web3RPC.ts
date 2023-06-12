@@ -26,7 +26,7 @@ export default class EthereumRpc {
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
-      const address = (await web3.eth.getAccounts());
+      const address = await web3.eth.getAccounts();
 
       return address;
     } catch (error) {

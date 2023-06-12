@@ -2,7 +2,10 @@ import { useEffect, useState, useCallback } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
+import {
+  XrplPrivateKeyProvider,
+  getXRPLChainConfig,
+} from "@web3auth/xrpl-provider";
 import "./App.css";
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
 
@@ -41,10 +44,12 @@ function App() {
           web3AuthNetwork: "cyan",
         });
 
-        const xrplProvider:any = new XrplPrivateKeyProvider({ config: { chainConfig: getXRPLChainConfig("testnet") } }); // devnet, testnet, mainnet
+        const xrplProvider: any = new XrplPrivateKeyProvider({
+          config: { chainConfig: getXRPLChainConfig("testnet") },
+        }); // devnet, testnet, mainnet
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
-            mfaLevel: "default",
+            mfaLevel: "optional",
           },
           adapterSettings: {
             whiteLabel: {
@@ -62,7 +67,7 @@ function App() {
         setWeb3auth(web3auth);
 
         await web3auth.initModal();
-        
+
         if (web3auth.connected) {
           setWalletProvider(web3auth.provider!);
           setLoggedIn(true);

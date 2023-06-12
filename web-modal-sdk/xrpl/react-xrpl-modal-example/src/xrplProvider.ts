@@ -2,10 +2,9 @@ import { SafeEventEmitterProvider } from "@web3auth/base";
 import { IWalletProvider } from "./walletProvider";
 import { convertStringToHex, Payment, xrpToDrops } from "xrpl";
 
-const ethProvider = (provider: SafeEventEmitterProvider, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
+const xrplProvider = (provider: SafeEventEmitterProvider, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
   const getAccounts = async () => {
     try {
-      console.log("provider", provider);
       const accounts = await provider.request<string[]>({
         method: "xrpl_getAccounts"
       })
@@ -147,4 +146,4 @@ const ethProvider = (provider: SafeEventEmitterProvider, uiConsole: (...args: un
   return { getAccounts, getBalance, signMessage, signAndSendTransaction, signTransaction };
 };
 
-export default ethProvider;
+export default xrplProvider;

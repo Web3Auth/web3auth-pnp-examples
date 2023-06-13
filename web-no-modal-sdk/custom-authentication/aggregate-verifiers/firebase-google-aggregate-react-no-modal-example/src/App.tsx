@@ -39,7 +39,6 @@ function App() {
   );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
 
-
   useEffect(() => {
     const init = async () => {
       try {
@@ -60,12 +59,14 @@ function App() {
           useCoreKitKey: false,
         });
 
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+        const privateKeyProvider = new EthereumPrivateKeyProvider({
+          config: { chainConfig },
+        });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
           adapterSettings: {
-            uxMode: "popup",
+            uxMode: "redirect",
             loginConfig: {
               google: {
                 verifier: "aggregate-verifier-google-firebase",
@@ -78,7 +79,6 @@ function App() {
                 verifier: "aggregate-verifier-google-firebase",
                 verifierSubIdentifier: "w3a-firebase",
                 typeOfLogin: "jwt",
-                clientId: "randomString",
               },
             },
           },
@@ -111,7 +111,7 @@ function App() {
         loginProvider: "google",
       }
     );
-    console.log("web3authProvider", web3authProvider)
+    console.log("web3authProvider", web3authProvider);
     setProvider(web3authProvider);
     setLoggedIn(true);
   };

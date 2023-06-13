@@ -9,10 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@web3auth/base": "^6.0.4-alpha.0",
-    "@web3auth/base-provider": "^6.0.4-alpha.0",
-    "@web3auth/no-modal": "^6.0.4-alpha.0",
-    "@web3auth/openlogin-adapter": "^6.0.4-alpha.0",
+    "@web3auth/base": "^6.0.0",
+    "@web3auth/base-provider": "^6.0.0",
+    "@web3auth/no-modal": "^6.0.0",
+    "@web3auth/openlogin-adapter": "^6.0.0",
     "algosdk": "^2.3.0",
     "next": "13.4.3",
     "react": "18.2.0",

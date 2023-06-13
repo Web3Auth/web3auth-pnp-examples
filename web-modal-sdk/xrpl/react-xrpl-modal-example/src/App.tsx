@@ -6,24 +6,18 @@ import {
   XrplPrivateKeyProvider,
   getXRPLChainConfig,
 } from "@web3auth/xrpl-provider";
+import RPC from "./xrplRPC";
 import "./App.css";
-import { getWalletProvider, IWalletProvider } from "./walletProvider";
 
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<IWalletProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const setWalletProvider = useCallback(
-    (web3authProvider: SafeEventEmitterProvider) => {
-      const walletProvider = getWalletProvider(web3authProvider, uiConsole);
-      setProvider(walletProvider);
-    },
-    []
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
   );
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -69,7 +63,7 @@ function App() {
         await web3auth.initModal();
 
         if (web3auth.connected) {
-          setWalletProvider(web3auth.provider!);
+          setProvider(web3auth.provider!);
           setLoggedIn(true);
         }
       } catch (error) {
@@ -78,7 +72,7 @@ function App() {
     };
 
     init();
-  }, [setWalletProvider]);
+  }, []);
 
   const login = async () => {
     if (!web3auth) {
@@ -86,7 +80,7 @@ function App() {
       return;
     }
     const web3authProvider = await web3auth.connect();
-    setWalletProvider(web3authProvider!);
+    setProvider(web3authProvider!);
     setLoggedIn(true);
   };
 
@@ -123,7 +117,9 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await provider.getAccounts();
+    const rpc = new RPC(provider);
+    const userAccount = await rpc.getAccounts();
+    uiConsole("Accpuint info: ", userAccount);
   };
 
   const getBalance = async () => {
@@ -131,7 +127,9 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await provider.getBalance();
+    const rpc = new RPC(provider);
+    const balance = await rpc.getBalance();
+    uiConsole("Balance", balance);
   };
 
   const sendTransaction = async () => {
@@ -139,7 +137,9 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await provider.signAndSendTransaction();
+    const rpc = new RPC(provider);
+    const result = await rpc.signAndSendTransaction();
+    uiConsole(result);
   };
 
   const signMessage = async () => {
@@ -147,7 +147,9 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await provider.signMessage();
+    const rpc = new RPC(provider);
+    const result = await rpc.signMessage();
+    uiConsole(result);
   };
 
   function uiConsole(...args: any[]): void {

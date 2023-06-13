@@ -90,8 +90,8 @@ export default class XrplRPC {
         const tx: Payment = {
           TransactionType: "Payment",
           Account: accounts[0] as string,
-          Amount: xrpToDrops(2),
-          Destination: "raYzhtCitpdZivyVN2XBj2xvHKSmBjft2n",
+          Amount: xrpToDrops(50),
+          Destination: "rM9uB4xzDadhBTNG17KHmn3DLdenZmJwTy",
         };
         const txSign = await this.provider.request({
           method: "xrpl_submitTransaction",

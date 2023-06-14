@@ -43,10 +43,13 @@ function App() {
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           uiConfig: {
-            theme: "dark",
-            loginMethodsOrder: ["github", "google"],
-            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            appName: "W3A",
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            theme: "light",
+            loginMethodsOrder: ["apple", "google", "twitter"],
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
           web3AuthNetwork: "cyan",
         });

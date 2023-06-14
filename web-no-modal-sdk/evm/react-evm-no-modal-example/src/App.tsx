@@ -6,8 +6,14 @@ import {
   SafeEventEmitterProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
-import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+import {
+  OpenloginAdapter,
+  OpenloginLoginParams,
+} from "@web3auth/openlogin-adapter";
+import {
+  WalletConnectV2Adapter,
+  getWalletConnectV2Settings,
+} from "@web3auth/wallet-connect-v2-adapter";
 import QRCodeModal from "@walletconnect/qrcode-modal";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
@@ -18,7 +24,9 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
@@ -39,27 +47,40 @@ function App() {
           web3AuthNetwork: "cyan",
         });
 
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+        const privateKeyProvider = new EthereumPrivateKeyProvider({
+          config: { chainConfig },
+        });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
+            whiteLabel: {
+              name: "W3A Heroes",
+              url: "https://web3auth.io",
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+              dark: false, // whether to enable dark mode. defaultValue: false
+              theme: {
+                primary: "#00D1B2",
+              },
+            },
             mfaSettings: {
-              "deviceShareFactor": {
+              deviceShareFactor: {
                 enable: true,
                 priority: 1,
                 mandatory: true,
               },
-              "backUpShareFactor": {
+              backUpShareFactor: {
                 enable: true,
                 priority: 2,
                 mandatory: false,
               },
-              "socialBackupFactor": {
+              socialBackupFactor: {
                 enable: true,
                 priority: 3,
                 mandatory: false,
               },
-              "passwordFactor": {
+              passwordFactor: {
                 enable: true,
                 priority: 4,
                 mandatory: false,
@@ -75,9 +96,16 @@ function App() {
         setWeb3auth(web3auth);
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1, 137, 5], "04309ed1007e77d1f119b85205bb779d")
+        const defaultWcSettings = await getWalletConnectV2Settings(
+          "eip155",
+          [1, 137, 5],
+          "04309ed1007e77d1f119b85205bb779d"
+        );
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          adapterSettings: { qrcodeModal: QRCodeModal, ...defaultWcSettings.adapterSettings },
+          adapterSettings: {
+            qrcodeModal: QRCodeModal,
+            ...defaultWcSettings.adapterSettings,
+          },
           loginSettings: { ...defaultWcSettings.loginSettings },
         });
 
@@ -122,7 +150,7 @@ function App() {
         loginProvider: "sms_passwordless",
         extraLoginOptions: {
           login_hint: "+65-XXXXXXX",
-        }
+        },
       }
     );
     setProvider(web3authProvider);
@@ -140,7 +168,7 @@ function App() {
         loginProvider: "email_passwordless",
         extraLoginOptions: {
           login_hint: "hello@web3auth.io",
-        }
+        },
       }
     );
     setProvider(web3authProvider);

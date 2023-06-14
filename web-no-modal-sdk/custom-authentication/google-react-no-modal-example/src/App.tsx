@@ -40,11 +40,24 @@ function App() {
           useCoreKitKey: false,
         });
 
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+        const privateKeyProvider = new EthereumPrivateKeyProvider({
+          config: { chainConfig },
+        });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
           adapterSettings: {
+            whiteLabel: {
+              name: "W3A Heroes",
+              url: "https://web3auth.io",
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+              dark: true, // whether to enable dark mode. defaultValue: false
+              theme: {
+                primary: "#00D1B2",
+              },
+            },
             loginConfig: {
               google: {
                 verifier: "web3auth-google-example",
@@ -247,7 +260,7 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth
         </a>{" "}
-        Core & ReactJS Example for Google Login
+        No Modal & ReactJS Example for Google Login
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

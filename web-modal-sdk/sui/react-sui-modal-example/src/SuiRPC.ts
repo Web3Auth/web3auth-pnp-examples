@@ -1,5 +1,4 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-import { AptosClient } from "aptos";
 import {
   TransactionBlock,
   JsonRpcProvider,

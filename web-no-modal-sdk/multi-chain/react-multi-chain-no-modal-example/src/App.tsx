@@ -40,22 +40,37 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
+
+  function getWeb3AuthNoModal(chainConfig: any): Web3AuthNoModal {
+    const web3authInstance: Web3AuthNoModal= new Web3AuthNoModal({
+      clientId,
+      chainConfig,
+      web3AuthNetwork: "cyan",
+    });
+    return web3authInstance;
+  }
 
   useEffect(() => {
     const init = async () => {
       try {
         // ETH_Goerli
-        const web3auth = new Web3AuthNoModal({
-          clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
-          },
-          web3AuthNetwork: "cyan",
-        });
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x1",
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorer: "https://goerli.etherscan.io",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
+        const web3auth = getWeb3AuthNoModal(chainConfig);
         setWeb3auth(web3auth);
 
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
         const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider: privateKeyProvider,
           loginSettings: {
             mfaLevel: "default",
           },
@@ -73,8 +88,9 @@ function App() {
 
         await web3auth.init();
 
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -126,6 +142,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
     uiConsole("Logged in Successfully!");
   };
 
@@ -154,6 +171,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getAccounts = async () => {
@@ -416,7 +434,7 @@ function App() {
         & ReactJS Multi-chain Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

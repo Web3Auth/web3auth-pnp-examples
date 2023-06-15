@@ -12,6 +12,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -26,9 +27,10 @@ export default function App() {
         setWeb3auth(web3authInstance);
 
         await web3authInstance.initModal();
+        setProvider(web3authInstance.provider);
 
-        if (web3authInstance.provider) {
-          setProvider(web3authInstance.provider);
+        if (web3authInstance.connectedAdapterName) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -53,6 +55,7 @@ export default function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -81,6 +84,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const onGetPolkadotKeypair = async () => {
@@ -183,7 +187,7 @@ export default function App() {
         & NextJS Polkadot Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

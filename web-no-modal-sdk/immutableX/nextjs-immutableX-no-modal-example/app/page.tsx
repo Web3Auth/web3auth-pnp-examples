@@ -1,8 +1,8 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-console */
 "use client";
 
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
@@ -14,29 +14,41 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
-        // Eth_Goerli
-        const web3authInstance = new Web3AuthNoModal({
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x1",
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorer: "https://goerli.etherscan.io",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
         });
 
-        setWeb3auth(web3authInstance);
+        setWeb3auth(web3auth);
 
-        const openloginAdapter = new OpenloginAdapter();
-        web3authInstance.configureAdapter(openloginAdapter);
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
-        await web3authInstance.init();
+        const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
+        });
+        web3auth.configureAdapter(openloginAdapter);
 
-        if (web3authInstance.provider) {
-          setProvider(web3authInstance.provider);
+        await web3auth.init();
+
+        setProvider(web3auth.provider);
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -73,6 +85,7 @@ export default function App() {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
+    setLoggedIn(true);
     uiConsole("Logged in Successfully!");
   };
 
@@ -101,6 +114,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getAccounts = async () => {
@@ -193,7 +207,7 @@ export default function App() {
         & NextJS ImmutableX Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

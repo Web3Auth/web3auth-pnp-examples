@@ -4,6 +4,7 @@
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 import { useEffect, useState } from "react";
 
 import RPC from "./solanaRPC";
@@ -13,28 +14,40 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const web3authInstance = new Web3AuthNoModal({
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.SOLANA,
+          chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+          rpcTarget: "https://rpc.ankr.com/solana",
+          displayName: "Solana Mainnet",
+          blockExplorer: "https://explorer.solana.com",
+          ticker: "SOL",
+          tickerName: "Solana Token",
+        };
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-            rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
         });
 
-        setWeb3auth(web3authInstance);
+        setWeb3auth(web3auth);
 
-        const openloginAdapter = new OpenloginAdapter();
-        web3authInstance.configureAdapter(openloginAdapter);
+        const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
 
-        await web3authInstance.init();
-        if (web3authInstance.provider) {
-          setProvider(web3authInstance.provider);
+        const openloginAdapter = new OpenloginAdapter({
+          chainConfig,
+          privateKeyProvider,
+        });
+        web3auth.configureAdapter(openloginAdapter);
+        await web3auth.init();
+        setProvider(web3auth.provider);
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -61,6 +74,7 @@ export default function App() {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -88,6 +102,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getAccounts = async () => {
@@ -205,7 +220,7 @@ export default function App() {
         & ReactJS Solana Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

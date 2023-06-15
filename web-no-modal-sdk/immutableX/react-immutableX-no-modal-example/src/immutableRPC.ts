@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
+import { Config, createStarkSigner, ImmutableX } from "@imtbl/core-sdk";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 
-import { Config, createStarkSigner, ImmutableX } from "@imtbl/core-sdk";
-
 export default class EthereumRpc {
+  config = Config.PRODUCTION; // Or Config.PRODUCTION or Config.ROPSTEN
+
+  client = new ImmutableX(this.config);
+
   private provider: SafeEventEmitterProvider;
 
   constructor(provider: SafeEventEmitterProvider) {
     this.provider = provider;
   }
-
-  config = Config.SANDBOX; // Or Config.PRODUCTION or Config.ROPSTEN
-  client = new ImmutableX(this.config);
 
   async getChainId(): Promise<any> {
     try {
@@ -61,7 +63,7 @@ export default class EthereumRpc {
       const starkSigner = createStarkSigner(starkKey);
 
       console.log("eth address", address);
-      console.log("starkAddress", starkSigner);
+      console.log("starkAddress", starkSigner.getAddress());
 
       const walletConnection = { ethSigner, starkSigner };
       const response = await this.client.registerOffchain(walletConnection);
@@ -103,8 +105,8 @@ export default class EthereumRpc {
         amount: "10000000000000", // Amount in wei
       });
       return depositResponse;
-    } catch (error) {
-      return error as string;
+    } catch (error: any) {
+      return JSON.parse(error.message).data as string;
     }
   }
 

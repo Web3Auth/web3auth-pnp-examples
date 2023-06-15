@@ -1,18 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable camelcase */
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import * as jose from "jose";
-import type { NextApiRequest, NextApiResponse } from "next";
-
-type Data = {
-  name: string;
-};
 
 export default async function handler(
   req: { headers: { authorization: string }; body: { appPubKey: any } },
   res: {
     status: (arg0: number) => {
       (): any;
-      new (): any;
       json: { (arg0: { name?: string; error?: any }): void; new (): any };
+      new (): any;
     };
   }
 ) {
@@ -24,7 +21,7 @@ export default async function handler(
     const jwtDecoded = await jose.jwtVerify(idToken, jwks, {
       algorithms: ["ES256"],
     });
-    if ((jwtDecoded.payload as any).wallets[0].public_key == app_pub_key) {
+    if ((jwtDecoded.payload as any).wallets[0].public_key === app_pub_key) {
       // Verified
       res.status(200).json({ name: "Validation Success" });
     } else {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 

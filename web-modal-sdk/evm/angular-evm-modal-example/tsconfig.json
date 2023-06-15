@@ -24,12 +24,14 @@
       "dom"
     ],
     "paths":{
-      "crypto": ["./node_modules/crypto-browserify"],
-      "stream": ["./node_modules/stream-browserify"],
-      "assert": ["./node_modules/assert"],
-      "http": ["./node_modules/stream-http"],
-      "https": ["./node_modules/https-browserify"],
-      "os": ["./node_modules/os-browserify"],
+      "crypto": ["./node_modules/empty-module"],
+      "stream": ["./node_modules/empty-module"],
+      "assert": ["./node_modules/empty-module"],
+      "http": ["./node_modules/empty-module"],
+      "https": ["./node_modules/empty-module"],
+      "os": ["./node_modules/empty-module"],
+      "zlib": ["./node_modules/empty-module"],
+      "url": ["./node_modules/empty-module"],
       "process": ["./node_modules/process"],
     }
   },

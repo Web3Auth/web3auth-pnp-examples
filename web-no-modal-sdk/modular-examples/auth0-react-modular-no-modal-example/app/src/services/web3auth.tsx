@@ -4,8 +4,9 @@ import {
   WALLET_ADAPTER_TYPE,
 } from "@web3auth/base";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import type { LOGIN_PROVIDER_TYPE } from "@toruslabs/openlogin";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { LOGIN_PROVIDER_TYPE, LoginConfig, OpenloginAdapter, PrivateKeyProvider } from "@web3auth/openlogin-adapter";
 import {
   createContext,
   FunctionComponent,
@@ -53,23 +54,23 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   user: null,
   chain: "",
   isWeb3AuthInit: false,
-  setIsLoading: (loading: boolean) => {},
+  setIsLoading: (loading: boolean) => { },
   loginRWA: async (
     adapter: WALLET_ADAPTER_TYPE,
     provider: LOGIN_PROVIDER_TYPE,
     jwtToken: string
-  ) => {},
+  ) => { },
   login: async (
     adapter: WALLET_ADAPTER_TYPE,
     provider: LOGIN_PROVIDER_TYPE
-  ) => {},
-  logout: async () => {},
-  getUserInfo: async () => {},
-  signMessage: async () => {},
-  getAccounts: async () => {},
-  getBalance: async () => {},
-  signTransaction: async () => {},
-  signAndSendTransaction: async () => {},
+  ) => { },
+  logout: async () => { },
+  getUserInfo: async () => { },
+  signMessage: async () => { },
+  getAccounts: async () => { },
+  getBalance: async () => { },
+  signTransaction: async () => { },
+  signAndSendTransaction: async () => { },
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -153,46 +154,44 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
           web3AuthNetwork,
         });
         subscribeAuthEvents(web3AuthInstance);
+        var loginConfig: LoginConfig = {
+          jwt: {
+            verifier: "twitter-auth0-verifier",
+            typeOfLogin: "jwt",
+            clientId: process.env.REACT_APP_SPA_CLIENTID,
+          },
+        };
         if (sessionStorage.getItem("app") === null) {
           sessionStorage.setItem("app", "SPA");
         }
-        if (sessionStorage.getItem("app") === "SPA") {
-          const adapter = new OpenloginAdapter({
-            adapterSettings: {
-              clientId,
-              uxMode: "redirect",
-              loginConfig: {
-                jwt: {
-                  verifier: "twitter-auth0-verifier",
-                  typeOfLogin: "jwt",
-                  clientId: process.env.REACT_APP_SPA_CLIENTID,
-                },
-              },
+        if (sessionStorage.getItem("app") === "RWA") {
+          loginConfig = {
+            jwt: {
+              verifier: "auth0-rwa-web3auth",
+              typeOfLogin: "jwt",
+              clientId: process.env.REACT_APP_RWA_CLIENTID,
             },
-          });
-          web3AuthInstance.configureAdapter(adapter);
-          await web3AuthInstance.init();
-          setWeb3Auth(web3AuthInstance);
-        } else {
-          // alert(sessionStorage.getItem('app'))
-          const adapter = new OpenloginAdapter({
-            adapterSettings: {
-              clientId,
-              uxMode: "redirect",
-              loginConfig: {
-                jwt: {
-                  verifier: "auth0-rwa-web3auth",
-                  typeOfLogin: "jwt",
-                  clientId: process.env.REACT_APP_RWA_CLIENTID,
-                },
-              },
-            },
-          });
-          web3AuthInstance.configureAdapter(adapter);
-          await web3AuthInstance.init();
-          setWeb3Auth(web3AuthInstance);
-          setweb3authinit(true);
+          };
         }
+
+
+        var privateKeyProvider: PrivateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: currentChainConfig } });
+        if (chain === "solana") {
+          privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig: currentChainConfig } });
+        }
+
+        const adapter = new OpenloginAdapter({
+          privateKeyProvider,
+          adapterSettings: {
+            clientId,
+            uxMode: "redirect",
+            loginConfig,
+          },
+        });
+        web3AuthInstance.configureAdapter(adapter);
+        await web3AuthInstance.init();
+        setWeb3Auth(web3AuthInstance);
+        setweb3authinit(true);
       } catch (error) {
         console.error(error);
       } finally {

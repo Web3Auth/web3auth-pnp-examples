@@ -49,9 +49,12 @@ export default class TezosRpc {
     try {
       const keyPair = await this.getTezosKeyPair();
       // keyPair.pkh is the account address.
+      console.log("keyPair", keyPair.pkh);
       const balance = await tezos.tz.getBalance(keyPair?.pkh as string);
+      console.log("balance", balance);
       return balance;
     } catch (error) {
+      console.error("Error", error);
       return error;
     }
   };

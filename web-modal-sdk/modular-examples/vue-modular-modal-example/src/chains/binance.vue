@@ -5,7 +5,7 @@
     <section>
       <button class="rpcBtn" v-if="!provider" @click="connect" style="cursor: pointer">Connect</button>
       <button class="rpcBtn" v-if="provider" @click="logout" style="cursor: pointer">Logout</button>
-      <EthRpc :connectedAdapter="web3auth.connectedAdapterName" v-if="provider" :provider="provider" :console="console"></EthRpc>
+      <EthRpc :connectedAdapter="web3auth.connected" v-if="provider" :provider="provider" :console="console"></EthRpc>
       <button class="rpcBtn" v-if="provider" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
       <!-- <button @click="showError" style="cursor: pointer">Show Error</button> -->
     </section>

@@ -2,6 +2,7 @@
 "use client";
 
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
@@ -13,26 +14,38 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.OTHER,
+          chainId: "0x1",
+          rpcTarget: "https://rpc.polkadot.io/",
+          displayName: "Polkadot Mainnet",
+          ticker: "DOT",
+          tickerName: "Polkadot",
+        };
         const web3authInstance = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.OTHER,
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
         });
         setWeb3auth(web3authInstance);
 
-        const openloginAdapter = new OpenloginAdapter();
+        const privateKeyProvider = new CommonPrivateKeyProvider();
+
+        const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
+        });
         web3authInstance.configureAdapter(openloginAdapter);
 
         await web3authInstance.init();
 
-        if (web3authInstance.provider) {
-          setProvider(web3authInstance.provider);
+        setProvider(web3authInstance.provider);
+        if (web3authInstance.connectedAdapterName) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -59,6 +72,7 @@ export default function App() {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
+    setLoggedIn(true);
     uiConsole("Logged in Successfully!");
   };
 
@@ -88,6 +102,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const onGetPolkadotKeypair = async () => {
@@ -187,10 +202,10 @@ export default function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Polkadot Example
+        & NextJS Polkadot Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

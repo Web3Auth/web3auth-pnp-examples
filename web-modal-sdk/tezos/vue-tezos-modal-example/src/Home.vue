@@ -104,6 +104,8 @@ export default {
       clientId,
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.OTHER,
+        chainId: "0x1",
+        rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
       web3AuthNetwork: "cyan",
     });
@@ -114,8 +116,8 @@ export default {
         loggedin.value = false;
 
         await web3auth.initModal();
-        if (web3auth.provider) {
-          provider = web3auth.provider;
+        provider = web3auth.provider;
+        if (web3auth.connected) {
           loggedin.value = true;
         }
       } catch (error) {

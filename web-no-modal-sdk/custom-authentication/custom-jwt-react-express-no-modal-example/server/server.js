@@ -13,9 +13,9 @@ app.post('/api/token', async (req, res) => {
 		var privateKey = fs.readFileSync('privateKey.pem');
 		var token = jwt.sign(
 			{
-				sub: 'Custom JWT for Web3Auth Custom Auth',
-				name: 'Mohammad Shahbaz Alam',
-				email: 'shahbaz@web3auth.io',
+				sub: 'Yash',
+				name: 'Yashovardhan Agrawal',
+				email: 'yash@web3auth.io',
 				aud: 'urn:my-resource-server', // -> to be used in Custom Authentication as JWT Field
 				iss: 'https://my-authz-server', // -> to be used in Custom Authentication as JWT Field
 				iat: Math.floor(Date.now() / 1000),

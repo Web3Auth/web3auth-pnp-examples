@@ -1,8 +1,6 @@
 // @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-// @ts-ignore
-import { ec as elliptic } from "elliptic";
 import { DeployContractResponse, defaultProvider } from "starknet";
 
 // @ts-ignore

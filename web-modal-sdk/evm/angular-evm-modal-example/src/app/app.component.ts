@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 // import RPC from "./ethersRPC"; // for using ethers.js
 // Plugins
@@ -28,6 +27,8 @@ export class AppComponent {
 
   isModalLoaded = false;
 
+  loggedIn = false;
+
   async ngOnInit() {
     this.web3auth = new Web3Auth({
       clientId,
@@ -39,9 +40,6 @@ export class AppComponent {
       web3AuthNetwork: "cyan",
     });
     const { web3auth } = this;
-
-    const openloginAdapter = new OpenloginAdapter({});
-    web3auth.configureAdapter(openloginAdapter);
 
     // plugins and adapters are optional and can be added as per your requirement
     // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/
@@ -109,8 +107,9 @@ export class AppComponent {
     web3auth.configureAdapter(torusWalletAdapter);
 
     await web3auth.initModal();
-    if (web3auth.provider) {
+    if (web3auth.connected) {
       this.provider = web3auth.provider;
+      this.loggedIn = true;
     }
     this.isModalLoaded = true;
   }
@@ -122,7 +121,7 @@ export class AppComponent {
     }
     const { web3auth } = this;
     this.provider = await web3auth.connect();
-    this.uiConsole("Logged in successfully!");
+    this.loggedIn = true;
   };
 
   authenticateUser = async () => {
@@ -130,8 +129,8 @@ export class AppComponent {
       this.uiConsole("web3auth not initialized yet");
       return;
     }
-    const id_token = await this.web3auth.authenticateUser();
-    this.uiConsole(id_token);
+    const idToken = await this.web3auth.authenticateUser();
+    this.uiConsole(idToken);
   };
 
   getUserInfo = async () => {
@@ -210,6 +209,7 @@ export class AppComponent {
     }
     await this.web3auth.logout();
     this.provider = null;
+    this.loggedIn = false;
     this.uiConsole("logged out");
   };
 

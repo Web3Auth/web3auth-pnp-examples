@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
@@ -13,7 +13,10 @@ import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plu
 // Adapters
 
 // import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+import {
+  WalletConnectV2Adapter,
+  getWalletConnectV2Settings,
+} from "@web3auth/wallet-connect-v2-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
@@ -27,6 +30,7 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -39,25 +43,50 @@ function App() {
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           uiConfig: {
-            theme: "dark",
-            loginMethodsOrder: ["github", "google"],
-            defaultLanguage: "en",
+            appName: "W3A",
             appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            theme: "light",
+            loginMethodsOrder: ["apple", "google", "twitter"],
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
           web3AuthNetwork: "cyan",
         });
 
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
-            mfaLevel: "default",
+            mfaLevel: "optional",
           },
           adapterSettings: {
             whiteLabel: {
               name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-              defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
+              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+              dark: false, // whether to enable dark mode. defaultValue: false
+            },
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
+              },
             },
           },
         });
@@ -96,7 +125,11 @@ function App() {
         // web3auth.configureAdapter(walletConnectV1Adapter);
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1, 137, 5], "04309ed1007e77d1f119b85205bb779d")
+        const defaultWcSettings = await getWalletConnectV2Settings(
+          "eip155",
+          [1, 137, 5],
+          "04309ed1007e77d1f119b85205bb779d"
+        );
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           adapterSettings: { ...defaultWcSettings.adapterSettings },
           loginSettings: { ...defaultWcSettings.loginSettings },
@@ -167,9 +200,10 @@ function App() {
         //     }
         //   }
         // });
+        setProvider(web3auth.provider);
 
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -186,7 +220,7 @@ function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -214,6 +248,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const showWCM = async () => {
@@ -434,7 +469,7 @@ function App() {
         & ReactJS Ethereum Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

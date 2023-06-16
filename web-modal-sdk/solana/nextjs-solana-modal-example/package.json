@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@solana/web3.js": "^1.77.2",
-    "@web3auth/base": "^6.0.1",
-    "@web3auth/modal": "^6.1.0",
-    "@web3auth/slope-adapter": "^6.1.0",
-    "@web3auth/solana-provider": "^6.1.0",
-    "@web3auth/solana-wallet-connector-plugin": "^6.1.0",
-    "@web3auth/solflare-adapter": "^6.1.0",
+    "@web3auth/base": "^6.1.1",
+    "@web3auth/modal": "^6.1.1",
+    "@web3auth/slope-adapter": "^6.1.1",
+    "@web3auth/solana-provider": "^6.1.1",
+    "@web3auth/solana-wallet-connector-plugin": "^6.1.1",
+    "@web3auth/solflare-adapter": "^6.1.1",
     "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"

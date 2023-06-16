@@ -13,9 +13,9 @@
     "@polkadot/util": "^12.2.1",
     "@polkadot/util-crypto": "^12.2.1",
     "@web3auth/base": "^6.0.1",
-    "@web3auth/base-provider": "^6.0.1",
-    "@web3auth/no-modal": "^6.0.1",
-    "@web3auth/openlogin-adapter": "^6.0.1",
+    "@web3auth/base-provider": "^6.1.0",
+    "@web3auth/no-modal": "^6.1.0",
+    "@web3auth/openlogin-adapter": "^6.1.0",
     "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"

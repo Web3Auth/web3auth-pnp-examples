@@ -12,8 +12,7 @@
       <button class="rpcBtn" v-if="provider" @click="logout" style="cursor: pointer">Logout</button>
       <button class="rpcBtn" v-if="provider" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
       <button class="rpcBtn" v-if="provider" @click="authenticateUser" style="cursor: pointer">Get Auth Id token</button>
-      <EthRpc :connectedAdapter="web3auth.connected" v-if="provider" :provider="provider" :console="console"></EthRpc>
-      <span>{{ connecting }}</span>
+      <EthRpc :connectedAdapter="web3auth.connectedAdapterName" v-if="provider" :provider="provider" :console="console" :web3auth="web3auth"></EthRpc>
 
       <!-- <button @click="showError" style="cursor: pointer">Show Error</button> -->
     </section>
@@ -24,14 +23,14 @@
 </template>
 
 <script lang="ts">
-import { OPENLOGIN_NETWORK_TYPE } from "@toruslabs/openlogin";
+import { OPENLOGIN_NETWORK_TYPE } from "@toruslabs/openlogin-utils";
 import { ADAPTER_STATUS, CHAIN_NAMESPACES, CONNECTED_EVENT_DATA, CustomChainConfig, LoginMethodConfig } from "@web3auth/base";
 import { WALLET_ADAPTERS } from "@web3auth/base";
-import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
 // import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+import { getWalletConnectV2Settings, WalletConnectV2Adapter } from "@web3auth/wallet-connect-v2-adapter";
 import Vue from "vue";
 
 import Loader from "@/components/loader.vue";
@@ -42,9 +41,6 @@ import EthRpc from "../rpc/ethRpc.vue";
 const ethChainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace"> = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
-  // rpcTarget: `https://ropsten.infura.io/v3/776218ac4734478c90191dde8cae483c`,
-  // displayName: "ropsten",
-  // blockExplorer: "https://ropsten.etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
 };
@@ -83,7 +79,12 @@ export default Vue.extend({
       loginButtonStatus: "",
       connecting: false,
       provider: undefined,
-      web3auth: new Web3Auth({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork], enableLogging: true }),
+      web3auth: new Web3Auth({
+        chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+        clientId: config.clientId[this.openloginNetwork],
+        enableLogging: true,
+        web3AuthNetwork: this.openloginNetwork as OPENLOGIN_NETWORK_TYPE,
+      }),
     };
   },
   components: {
@@ -125,19 +126,34 @@ export default Vue.extend({
           clientId: config.clientId[this.openloginNetwork],
           authMode: "DAPP",
           enableLogging: true,
+          web3AuthNetwork: this.openloginNetwork as any,
         });
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             network: this.openloginNetwork as OPENLOGIN_NETWORK_TYPE,
+            clientId: config.clientId[this.openloginNetwork],
           },
         });
 
-        const coinbaseAdapter = new CoinbaseAdapter({
-          adapterSettings: { appName: "Web3Auth Example" },
+        // by default, web3auth modal uses wallet connect v1,
+        // if you want to use wallet connect v2, configure wallet-connect-v2-adapter
+        // as shown below.
+        // NOTE: if you will configure both wc1 and wc2, precedence will be given to wc2
+        const defaultWcSettings = await getWalletConnectV2Settings(
+          ethChainConfig.chainNamespace,
+          [parseInt(ethChainConfig.chainId, 16), parseInt("0x89", 16), 5],
+          "04309ed1007e77d1f119b85205bb779d"
+        );
+        console.log("defaultWcSettings", JSON.stringify(defaultWcSettings));
+        const wc2Adapter = new WalletConnectV2Adapter({
+          adapterSettings: { ...defaultWcSettings.adapterSettings },
+          chainConfig: ethChainConfig,
+          loginSettings: defaultWcSettings.loginSettings,
         });
 
+        this.web3auth.configureAdapter(wc2Adapter);
+
         this.web3auth.configureAdapter(openloginAdapter);
-        this.web3auth.configureAdapter(coinbaseAdapter);
         if (this.plugins["torusWallet"]) {
           const torusPlugin = new TorusWalletConnectorPlugin({
             torusWalletOpts: {},
@@ -160,14 +176,26 @@ export default Vue.extend({
             [WALLET_ADAPTERS.METAMASK]: {
               showOnDesktop: true,
               showOnModal: true,
-              showOnMobile: false,
+              showOnMobile: true,
               label: "Metamask",
             },
-            [WALLET_ADAPTERS.COINBASE]: {
+            [WALLET_ADAPTERS.WALLET_CONNECT_V1]: {
               showOnDesktop: true,
               showOnModal: true,
-              showOnMobile: false,
-              label: "Coinbase",
+              showOnMobile: true,
+              label: "Wallet Connect",
+            },
+            [WALLET_ADAPTERS.TORUS_EVM]: {
+              showOnDesktop: true,
+              showOnModal: true,
+              showOnMobile: true,
+              label: "Torus",
+            },
+            [WALLET_ADAPTERS.OPENLOGIN]: {
+              showOnDesktop: true,
+              showOnModal: true,
+              showOnMobile: true,
+              label: "OpenLogin",
             },
           },
         });

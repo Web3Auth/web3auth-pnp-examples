@@ -13,10 +13,10 @@
     "viem": "^0.3.50",
     "wagmi": "1.0.1",
     "@web3auth/web3auth-wagmi-connector": "^4.0.0",
-    "@web3auth/modal": "^6.0.1",
-    "@web3auth/openlogin-adapter": "^6.0.1",
+    "@web3auth/modal": "^6.1.0",
+    "@web3auth/openlogin-adapter": "^6.1.0",
     "@web3auth/base": "^6.0.1",
-    "@web3auth/torus-wallet-connector-plugin": "^6.0.1",
+    "@web3auth/torus-wallet-connector-plugin": "^6.1.0",
     "web-vitals": "^2.1.4"
   },
   "overrides": {

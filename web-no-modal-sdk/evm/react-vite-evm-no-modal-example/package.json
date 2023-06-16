@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@web3auth/base": "^6.0.1",
-    "@web3auth/ethereum-provider": "^6.0.1",
-    "@web3auth/no-modal": "^6.0.1",
-    "@web3auth/openlogin-adapter": "^6.0.1",
+    "@web3auth/ethereum-provider": "^6.1.0",
+    "@web3auth/no-modal": "^6.1.0",
+    "@web3auth/openlogin-adapter": "^6.1.0",
     "ethers": "^5.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

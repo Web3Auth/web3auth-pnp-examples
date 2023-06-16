@@ -156,6 +156,8 @@
                 <label for="light">Light</label>
                 <input type="radio" id="dark" name="dark" value="dark" v-model="form.uiMode.whitelabel.theme" />
                 <label for="dark">Dark</label>
+                <input type="radio" id="auto" name="auto" value="auto" v-model="form.uiMode.whitelabel.theme" />
+                <label for="auto">Auto</label>
               </span>
             </div>
             <div class="flex-vertical-center">
@@ -215,8 +217,8 @@
 </template>
 
 <script lang="ts">
-import { LOGIN_PROVIDER } from "@toruslabs/openlogin";
-import { CHAIN_NAMESPACES, ChainNamespaceType, EVM_ADAPTERS } from "@web3auth/base";
+import { LOGIN_PROVIDER } from "@toruslabs/openlogin-utils";
+import { CHAIN_NAMESPACES, ChainNamespaceType } from "@web3auth/base";
 import { defaultEvmDappModalConfig, defaultSolanaDappModalConfig } from "@web3auth/modal";
 import { cloneDeep } from "lodash";
 import merge from "lodash.merge";
@@ -237,6 +239,7 @@ const DEFAULT_LOGIN_PROVIDERS = [
   LOGIN_PROVIDER.WEIBO,
   LOGIN_PROVIDER.WECHAT,
   LOGIN_PROVIDER.EMAIL_PASSWORDLESS,
+  LOGIN_PROVIDER.SMS_PASSWORDLESS,
 ];
 const defaultLoginProviders = () => {
   return DEFAULT_LOGIN_PROVIDERS.map((provider) => {
@@ -250,14 +253,6 @@ const defaultLoginProviders = () => {
 
 const defaultAdapters = (chainNamespace: ChainNamespaceType) => {
   const adaptersConfig = chainNamespace === CHAIN_NAMESPACES.SOLANA ? defaultSolanaDappModalConfig : defaultEvmDappModalConfig;
-  if (chainNamespace === CHAIN_NAMESPACES.EIP155) {
-    adaptersConfig.adapters[EVM_ADAPTERS.COINBASE] = {
-      label: "Coinbase",
-      showOnModal: true,
-      showOnMobile: true,
-      showOnDesktop: true,
-    };
-  }
   return Object.keys(adaptersConfig.adapters).map((adapterName) => {
     return {
       id: adapterName,
@@ -352,6 +347,18 @@ export default Vue.extend({
         {
           value: "es",
           display: "Spanish",
+        },
+        {
+          value: "fr",
+          display: "French",
+        },
+        {
+          value: "pt",
+          display: "Portuguese",
+        },
+        {
+          value: "nl",
+          display: "Dutch",
         },
       ],
     };

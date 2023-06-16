@@ -27,10 +27,9 @@
 <script lang="ts">
 import { ADAPTER_STATUS, CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import Vue from "vue";
 
-import config from "../config";
+import config from "@/config";
 
 import Loader from "../components/loader.vue";
 import EthRpc from "../rpc/ethRpc.vue";
@@ -38,12 +37,6 @@ import SolRpc from "../rpc/solanaRpc.vue";
 
 export default Vue.extend({
   name: "BeginnerExampleMode",
-  props: {
-    openloginNetwork: {
-      type: String,
-      default: "testnet",
-    },
-  },
   data() {
     return {
       loading: false,
@@ -51,7 +44,7 @@ export default Vue.extend({
       connected: false,
       provider: undefined,
       namespace: undefined,
-      web3auth: new Web3Auth({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] }),
+      web3auth: new Web3Auth({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId["mainnet"] }),
     };
   },
   components: {
@@ -77,16 +70,9 @@ export default Vue.extend({
       try {
         this.web3auth = new Web3Auth({
           chainConfig: { chainId: "0x3", chainNamespace: CHAIN_NAMESPACES.SOLANA },
-          clientId: config.clientId[this.openloginNetwork],
+          clientId: config.clientId["mainnet"],
           authMode: "DAPP",
         });
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: this.openloginNetwork,
-            uxMode: "redirect",
-          },
-        });
-        this.web3auth.configureAdapter(openloginAdapter);
         this.subscribeAuthEvents(this.web3auth);
         await this.web3auth.initModal();
         console.log("web3auth", this.web3auth);
@@ -97,7 +83,7 @@ export default Vue.extend({
     },
     async initEthAuth() {
       try {
-        this.web3auth = new Web3Auth({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] });
+        this.web3auth = new Web3Auth({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId["mainnet"] });
         this.subscribeAuthEvents(this.web3auth);
         await (this.web3auth as Web3Auth).initModal();
       } catch (error) {

@@ -38,12 +38,6 @@ import EthRpc from "../rpc/ethRpc.vue";
 
 export default Vue.extend({
   name: "BeginnerExampleMode",
-  props: {
-    openloginNetwork: {
-      type: String,
-      default: "testnet",
-    },
-  },
   data() {
     return {
       loading: false,
@@ -51,7 +45,7 @@ export default Vue.extend({
       connected: false,
       provider: undefined,
       namespace: undefined,
-      web3auth: new Web3AuthNoModal({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] }),
+      web3auth: new Web3AuthNoModal({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId["testnet"] }),
     };
   },
   components: {
@@ -64,11 +58,15 @@ export default Vue.extend({
   methods: {
     async initWeb3Auth() {
       try {
-        this.web3auth = new Web3AuthNoModal({ chainConfig: { chainId: "0x3", chainNamespace: CHAIN_NAMESPACES.EIP155 }, clientId: config.clientId[this.openloginNetwork] });
+        this.web3auth = new Web3AuthNoModal({
+          chainConfig: { chainId: "0x3", chainNamespace: CHAIN_NAMESPACES.EIP155 },
+          clientId: config.clientId["testnet"],
+        });
         this.subscribeAuthEvents(this.web3auth);
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: this.openloginNetwork,
+            network: "testnet",
+            clientId: config.clientId["testnet"],
             uxMode: "redirect",
           },
         });

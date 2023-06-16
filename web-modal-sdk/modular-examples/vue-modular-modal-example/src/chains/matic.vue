@@ -11,7 +11,7 @@
       <button class="rpcBtn" v-if="!provider" @click="connect" style="cursor: pointer">Connect</button>
       <button class="rpcBtn" v-if="provider" @click="logout" style="cursor: pointer">Logout</button>
       <button class="rpcBtn" v-if="provider" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
-      <EthRpc :connectedAdapter="web3auth.connected" v-if="provider" :provider="provider" :console="console"></EthRpc>
+      <EthRpc :connectedAdapter="web3auth.connectedAdapterName" v-if="provider" :provider="provider" :console="console"></EthRpc>
 
       <!-- <button @click="showError" style="cursor: pointer">Show Error</button> -->
     </section>
@@ -22,8 +22,8 @@
 </template>
 
 <script lang="ts">
+import { OPENLOGIN_NETWORK_TYPE } from "@toruslabs/openlogin-utils";
 import { ADAPTER_STATUS, CHAIN_NAMESPACES, CONNECTED_EVENT_DATA, CustomChainConfig, LoginMethodConfig } from "@web3auth/base";
-import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
@@ -67,7 +67,7 @@ export default Vue.extend({
     openloginNetwork: async function (newVal, oldVal) {
       // watch it
       console.log("Prop changed: ", newVal, " | was: ", oldVal);
-      await this.initEthAuth();
+      await this.initPolygonWeb3Auth();
     },
   },
   data() {
@@ -118,14 +118,10 @@ export default Vue.extend({
         this.web3auth = new Web3Auth({ chainConfig: polygonMumbaiConfig, clientId: config.clientId[this.openloginNetwork], authMode: "DAPP" });
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: this.openloginNetwork,
+            network: this.openloginNetwork as OPENLOGIN_NETWORK_TYPE,
+            clientId: config.clientId[this.openloginNetwork],
           },
         });
-        const coinbaseAdapter = new CoinbaseAdapter({
-          adapterSettings: { appName: "Web3Auth Example" },
-        });
-
-        this.web3auth.configureAdapter(coinbaseAdapter);
 
         this.web3auth.configureAdapter(openloginAdapter);
         if (this.plugins["torusWallet"]) {

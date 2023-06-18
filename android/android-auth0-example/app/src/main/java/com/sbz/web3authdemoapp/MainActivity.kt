@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         val signOutButton = findViewById<Button>(R.id.signOutButton)
         signOutButton.setOnClickListener { signOut() }
+        signOutButton.visibility = View.GONE
     }
 
     override fun onNewIntent(intent: Intent?) {

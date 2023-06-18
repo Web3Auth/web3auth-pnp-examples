@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
 
         // Handle user signing in when app is not alive
         web3Auth.setResultUrl(intent?.data)
-
         // Call sessionResponse() in onCreate() to check for any existing session.
         val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
         sessionResponse.whenComplete { _, error ->
@@ -68,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         val signOutButton = findViewById<Button>(R.id.signOutButton)
         signOutButton.setOnClickListener { signOut() }
+        signOutButton.visibility = View.GONE
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity() {
                 // Set the sessionId from Web3Auth in App State
                 // This will be used when making blockchain calls with Web3j
                 reRender()
-
             } else {
                 Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
             }
@@ -118,14 +117,12 @@ class MainActivity : AppCompatActivity() {
         } catch (ex: Exception) {
             print(ex)
         }
-        println(userInfo)
         if (key is String && key.isNotEmpty()) {
             contentTextView.text = gson.toJson(userInfo) + "\n Private Key: " + key
             contentTextView.visibility = View.VISIBLE
             signInButton.visibility = View.GONE
             signOutButton.visibility = View.VISIBLE
         } else {
-            contentTextView.text = getString(R.string.not_logged_in)
             contentTextView.visibility = View.GONE
             signInButton.visibility = View.VISIBLE
             signOutButton.visibility = View.GONE

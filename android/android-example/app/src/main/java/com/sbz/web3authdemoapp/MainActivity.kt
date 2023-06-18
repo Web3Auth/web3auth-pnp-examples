@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         // Handle user signing in when app is not alive
         web3Auth.setResultUrl(intent?.data)
-        // Call sessionResponse() in onCreate() to check for any existing session.
+        // Call initialize() in onCreate() to check for any existing session.
         val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
         sessionResponse.whenComplete { _, error ->
             if (error == null) {

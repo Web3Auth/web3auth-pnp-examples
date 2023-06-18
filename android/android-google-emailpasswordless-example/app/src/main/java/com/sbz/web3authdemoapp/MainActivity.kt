@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         val signOutButton = findViewById<Button>(R.id.signOutButton)
         signOutButton.setOnClickListener { signOut() }
+        signOutButton.visibility = View.GONE
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -130,7 +131,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun reRender() {
         val contentTextView = findViewById<TextView>(R.id.contentTextView)
-        val signInButton = findViewById<Button>(R.id.signInEP)
+        val signInEPButton = findViewById<Button>(R.id.signInEP)
+        val signInGoogleButton = findViewById<Button>(R.id.signInGoogle)
         val signOutButton = findViewById<Button>(R.id.signOutButton)
         var key: String? = null
         var userInfo: UserInfo? = null
@@ -144,12 +146,14 @@ class MainActivity : AppCompatActivity() {
         if (key is String && key.isNotEmpty()) {
             contentTextView.text = gson.toJson(userInfo) + "\n Private Key: " + key
             contentTextView.visibility = View.VISIBLE
-            signInButton.visibility = View.GONE
+            signInEPButton.visibility = View.GONE
+            signInGoogleButton.visibility = View.GONE
             signOutButton.visibility = View.VISIBLE
         } else {
             contentTextView.text = getString(R.string.not_logged_in)
             contentTextView.visibility = View.GONE
-            signInButton.visibility = View.VISIBLE
+            signInEPButton.visibility = View.VISIBLE
+            signInGoogleButton.visibility = View.VISIBLE
             signOutButton.visibility = View.GONE
         }
     }

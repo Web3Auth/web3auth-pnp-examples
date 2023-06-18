@@ -31,7 +31,7 @@ class ViewModel: ObservableObject {
     func loginViaFirebaseEP() {
         Task{
             do {
-                let res = try await Auth.auth().signIn(withEmail: "custom+jwt@firebase.login", password: "Testing@123")
+                let res = try await Auth.auth().signIn(withEmail: "custom+id_token@firebase.login", password: "Welcome@W3A")
                 let id_token = try await res.user.getIDToken()
                 let result = try await Web3Auth(.init(
                     clientId: clientId,

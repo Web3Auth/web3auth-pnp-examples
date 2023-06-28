@@ -5,7 +5,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
 
 const name = "My App Name";
-const iconUrl = "https://web3auth.io/docs/contents/logo-ethereum.png";
+const iconUrl = "https://web3auth.io/docs/content-hub/logo-ethereum.png";
 
 export const rainbowWeb3AuthConnector = ({ chains }) => {
   // Create Web3Auth Instance

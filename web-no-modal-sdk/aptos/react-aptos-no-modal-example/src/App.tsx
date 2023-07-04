@@ -38,7 +38,7 @@ function App() {
           web3AuthNetwork: "cyan",
         });
         setWeb3auth(web3auth);
-        const privateKeyProvider = new CommonPrivateKeyProvider();
+        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,

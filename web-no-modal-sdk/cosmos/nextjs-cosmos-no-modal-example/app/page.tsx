@@ -34,7 +34,7 @@ export default function App() {
           web3AuthNetwork: "cyan",
         });
 
-        const privateKeyProvider = new CommonPrivateKeyProvider();
+        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,

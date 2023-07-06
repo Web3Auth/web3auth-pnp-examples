@@ -59,6 +59,7 @@ function App() {
             mfaLevel: "optional",
           },
           adapterSettings: {
+            uxMode: "popup", // "redirect" | "popup"
             whiteLabel: {
               name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",

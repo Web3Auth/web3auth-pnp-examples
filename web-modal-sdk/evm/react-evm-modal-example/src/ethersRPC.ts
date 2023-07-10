@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 
@@ -11,9 +10,7 @@ export default class EthereumRpc {
 
   async getChainId(): Promise<any> {
     try {
-      // For ethers v5
-      // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const ethersProvider = new ethers.BrowserProvider(this.provider);
+      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
       // Get the connected Chain's ID
       const networkDetails = await ethersProvider.getNetwork();
       return networkDetails.chainId;
@@ -24,18 +21,13 @@ export default class EthereumRpc {
 
   async getAccounts(): Promise<any> {
     try {
-      // For ethers v5
-      // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const ethersProvider = new ethers.BrowserProvider(this.provider);
-
-      // For ethers v5
-      // const signer = ethersProvider.getSigner();
-      const signer = await ethersProvider.getSigner();
+      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const signer = ethersProvider.getSigner();
 
       // Get user's Ethereum public address
-      const address = signer.getAddress();
+      const address = await signer.getAddress();
 
-      return await address;
+      return address;
     } catch (error) {
       return error;
     }
@@ -43,23 +35,14 @@ export default class EthereumRpc {
 
   async getBalance(): Promise<string> {
     try {
-      // For ethers v5
-      // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const ethersProvider = new ethers.BrowserProvider(this.provider);
-
-      // For ethers v5
-      // const signer = ethersProvider.getSigner();
-      const signer = await ethersProvider.getSigner();
+      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const signer = ethersProvider.getSigner();
 
       // Get user's Ethereum public address
-      const address = signer.getAddress();
+      const address = await signer.getAddress();
 
       // Get user's balance in ether
-      // For ethers v5
-      // const balance = ethers.utils.formatEther(
-      // await ethersProvider.getBalance(address) // Balance is in wei
-      // );
-      const balance = ethers.formatEther(
+      const balance = ethers.utils.formatEther(
         await ethersProvider.getBalance(address) // Balance is in wei
       );
 
@@ -71,20 +54,13 @@ export default class EthereumRpc {
 
   async sendTransaction(): Promise<any> {
     try {
-      // For ethers v5
-      // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const ethersProvider = new ethers.BrowserProvider(this.provider);
-
-      // For ethers v5
-      // const signer = ethersProvider.getSigner();
-      const signer = await ethersProvider.getSigner();
+      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const signer = ethersProvider.getSigner();
 
       const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
 
       // Convert 1 ether to wei
-      // For ethers v5
-      // const amount = ethers.utils.parseEther("0.001");
-      const amount = ethers.parseEther("0.001");
+      const amount = ethers.utils.parseEther("0.001");
 
       // Submit transaction to the blockchain
       const tx = await signer.sendTransaction({
@@ -105,13 +81,9 @@ export default class EthereumRpc {
 
   async signMessage() {
     try {
-      // For ethers v5
-      // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const ethersProvider = new ethers.BrowserProvider(this.provider);
+      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+      const signer = ethersProvider.getSigner();
 
-      // For ethers v5
-      // const signer = ethersProvider.getSigner();
-      const signer = await ethersProvider.getSigner();
       const originalMessage = "YOUR_MESSAGE";
 
       // Sign the message

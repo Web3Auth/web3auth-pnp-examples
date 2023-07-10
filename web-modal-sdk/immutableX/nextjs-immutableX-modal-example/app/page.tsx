@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-console */
 "use client";
+import "./globals.css";
 
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
@@ -9,15 +11,17 @@ import RPC from "./immutableRPC"; // for using web3.js
 
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
-export default function App() {
+function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
       try {
         // Eth_Goerli
-        const web3authInstance = new Web3Auth({
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -26,12 +30,13 @@ export default function App() {
           web3AuthNetwork: "cyan",
         });
 
-        setWeb3auth(web3authInstance);
+        setWeb3auth(web3auth);
 
-        await web3authInstance.initModal();
+        await web3auth.initModal();
+        setProvider(web3auth.provider);
 
-        if (web3authInstance.provider) {
-          setProvider(web3authInstance.provider);
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -40,14 +45,6 @@ export default function App() {
 
     init();
   }, []);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
 
   const registerAccounts = async () => {
     if (!provider) {
@@ -66,7 +63,7 @@ export default function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -94,6 +91,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getAccounts = async () => {
@@ -125,6 +123,13 @@ export default function App() {
     const receipt = await rpc.sendTransaction();
     uiConsole(receipt);
   };
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
 
   const loggedInView = (
     <>
@@ -183,10 +188,10 @@ export default function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & NextJS ImmutableX Example
+        & React ImmutableX Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
@@ -200,3 +205,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;

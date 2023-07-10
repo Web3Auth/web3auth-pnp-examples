@@ -8,7 +8,7 @@ import Setting from "./components/Setting";
 import Main from "./components/Main";
 
 function App() {
-  const [web3AuthNetwork, setWeb3AuthNetwork] = useState<WEB3AUTH_NETWORK_TYPE>("testnet");
+  const [web3AuthNetwork, setWeb3AuthNetwork] = useState<WEB3AUTH_NETWORK_TYPE>("cyan");
   const [chain, setChain] = useState<CHAIN_CONFIG_TYPE>("mainnet");
 
   return (

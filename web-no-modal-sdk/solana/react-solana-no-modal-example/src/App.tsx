@@ -6,6 +6,7 @@ import {
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 import RPC from "./solanaRPC";
 import "./App.css";
 
@@ -17,28 +18,39 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.SOLANA,
+          chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+          rpcTarget: "https://api.devnet.solana.com",
+          displayName: "Solana Devnet",
+          blockExplorer: "https://explorer.solana.com",
+          ticker: "SOL",
+          tickerName: "Solana Token",
+        };
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-            rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
         });
 
         setWeb3auth(web3auth);
 
-        const openloginAdapter = new OpenloginAdapter();
+        const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
+
+        const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
+        });
         web3auth.configureAdapter(openloginAdapter);
 
         await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -57,9 +69,10 @@ function App() {
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "google",
-      }
+      },
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -87,6 +100,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getAccounts = async () => {
@@ -211,7 +225,7 @@ function App() {
         & ReactJS Solana Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

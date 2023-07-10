@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import {
   CHAIN_NAMESPACES,
   SafeEventEmitterProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+import {
+  OpenloginAdapter,
+  OpenloginLoginParams,
+} from "@web3auth/openlogin-adapter";
+import {
+  WalletConnectV2Adapter,
+  getWalletConnectV2Settings,
+} from "@web3auth/wallet-connect-v2-adapter";
 import QRCodeModal from "@walletconnect/qrcode-modal";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
@@ -17,38 +24,97 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x1",
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorer: "https://goerli.etherscan.io",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
         });
 
+        const privateKeyProvider = new EthereumPrivateKeyProvider({
+          config: { chainConfig },
+        });
+
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            whiteLabel: {
+              name: "W3A Heroes",
+              url: "https://web3auth.io",
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+              dark: false, // whether to enable dark mode. defaultValue: false
+              theme: {
+                primary: "#00D1B2",
+              },
+            },
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
+              },
+            },
+          },
+          loginSettings: {
+            mfaLevel: "mandatory",
+          },
+          privateKeyProvider,
+        });
+        web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);
 
-        const openloginAdapter = new OpenloginAdapter();
-        web3auth.configureAdapter(openloginAdapter);
-
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1, 137, 5], "04309ed1007e77d1f119b85205bb779d")
+        const defaultWcSettings = await getWalletConnectV2Settings(
+          "eip155",
+          [1, 137, 5],
+          "04309ed1007e77d1f119b85205bb779d"
+        );
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          adapterSettings: { qrcodeModal: QRCodeModal, ...defaultWcSettings.adapterSettings },
+          adapterSettings: {
+            qrcodeModal: QRCodeModal,
+            ...defaultWcSettings.adapterSettings,
+          },
           loginSettings: { ...defaultWcSettings.loginSettings },
         });
 
         web3auth.configureAdapter(walletConnectV2Adapter);
 
         await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -70,6 +136,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWithSMS = async () => {
@@ -77,16 +144,17 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
+    const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "sms_passwordless",
         extraLoginOptions: {
           login_hint: "+65-XXXXXXX",
-        }
+        },
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWithEmail = async () => {
@@ -100,10 +168,11 @@ function App() {
         loginProvider: "email_passwordless",
         extraLoginOptions: {
           login_hint: "hello@web3auth.io",
-        }
+        },
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWCModal = async () => {
@@ -115,6 +184,7 @@ function App() {
       WALLET_ADAPTERS.WALLET_CONNECT_V2
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -142,6 +212,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getChainId = async () => {
@@ -330,7 +401,7 @@ function App() {
         & ReactJS Ethereum Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

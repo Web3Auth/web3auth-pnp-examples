@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { OPENLOGIN_NETWORK_TYPE } from "@toruslabs/openlogin";
+import { OPENLOGIN_NETWORK_TYPE } from "@toruslabs/openlogin-utils";
 import {
   ADAPTER_STATUS,
   CHAIN_NAMESPACES,
@@ -81,7 +81,11 @@ export default Vue.extend({
       loading: false,
       loginButtonStatus: "",
       provider: undefined,
-      web3auth: new Web3Auth({ chainConfig: { chainNamespace: CHAIN_NAMESPACES.SOLANA }, clientId: config.clientId[this.openloginNetwork] }),
+      web3auth: new Web3Auth({
+        chainConfig: { chainNamespace: CHAIN_NAMESPACES.SOLANA },
+        clientId: config.clientId[this.openloginNetwork],
+        enableLogging: true,
+      }),
     };
   },
   components: {
@@ -118,16 +122,21 @@ export default Vue.extend({
         this.parseConfig();
 
         this.loading = true;
-        this.web3auth = new Web3Auth({ chainConfig: solanaChainConfig, clientId: config.clientId[this.openloginNetwork], authMode: "DAPP" });
+        this.web3auth = new Web3Auth({
+          chainConfig: solanaChainConfig,
+          clientId: config.clientId[this.openloginNetwork],
+          authMode: "DAPP",
+          enableLogging: true,
+        });
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             network: this.openloginNetwork as OPENLOGIN_NETWORK_TYPE,
+            clientId: config.clientId[this.openloginNetwork],
           },
         });
         const slopeAdapter = new SlopeAdapter();
         const solflareAdapter = new SolflareAdapter();
         const solAdapter = new SolanaWalletAdapter({ initParams: { buildEnv: "testing" } });
-
         this.web3auth.configureAdapter(solAdapter);
         this.web3auth.configureAdapter(solflareAdapter);
         this.web3auth.configureAdapter(slopeAdapter);

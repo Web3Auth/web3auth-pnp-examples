@@ -1,10 +1,9 @@
+/* eslint-disable no-console */
 import "./App.css";
 
-import {
-  CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
-  WALLET_ADAPTERS,
-} from "@web3auth/base";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
@@ -12,32 +11,36 @@ import { useEffect, useState } from "react";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x1",
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorer: "https://goerli.etherscan.io",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
+        
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
         });
 
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
         const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "default",
-          },
           adapterSettings: {
             whiteLabel: {
               name: "Your app Name",
@@ -47,14 +50,17 @@ function App() {
               dark: true, // whether to enable dark mode. defaultValue: false
             },
           },
+          privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
 
-        setWeb3auth(web3auth);
 
         await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setWeb3auth(web3auth);
+        setProvider(web3auth.provider);
+
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -64,18 +70,23 @@ function App() {
     init();
   }, []);
 
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
+
   const login = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     setProvider(web3authProvider);
+    setLoggedIn(true);
     uiConsole("Logged in Successfully!");
   };
 
@@ -104,6 +115,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getChainId = async () => {
@@ -164,13 +176,6 @@ function App() {
     const privateKey = await rpc.getPrivateKey();
     uiConsole(privateKey);
   };
-
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
 
   const loggedInView = (
     <>
@@ -242,7 +247,7 @@ function App() {
         & ReactJS Ethereum Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

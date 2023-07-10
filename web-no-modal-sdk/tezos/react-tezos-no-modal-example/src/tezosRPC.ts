@@ -1,12 +1,14 @@
-//@ts-ignore
-import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable no-console */
+import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
-import { InMemorySigner } from "@taquito/signer";
+// @ts-ignore
+import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
+import { SafeEventEmitterProvider } from "@web3auth/base";
 
-const tezos = new TezosToolkit("https://ithacanet.ecadinfra.com");
-
+const tezos = new TezosToolkit("https://rpc.tzbeta.net/");
 export default class TezosRpc {
   private provider: SafeEventEmitterProvider;
 
@@ -46,9 +48,12 @@ export default class TezosRpc {
     try {
       const keyPair = await this.getTezosKeyPair();
       // keyPair.pkh is the account address.
+      console.log("keyPair", keyPair.pkh);
       const balance = await tezos.tz.getBalance(keyPair?.pkh as string);
+      console.log("balance", balance);
       return balance;
     } catch (error) {
+      console.error("Error", error);
       return error;
     }
   };

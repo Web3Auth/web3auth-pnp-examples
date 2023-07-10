@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,7 +14,7 @@ import Web3Auth, {
 } from '@web3auth/react-native-sdk';
 import RPC from './ethersRPC'; // for using ethers.js
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const scheme = 'web3authrnbarefirebase'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
@@ -38,8 +38,8 @@ async function signInWithEmailPassword() {
     // // Sign-in the user with the credential
     // const res = await auth().signInWithCredential(googleCredential);
     const res = await auth().signInWithEmailAndPassword(
-      'custom+jwt@firebase.login',
-      'Testing@123',
+      'custom+id_token@firebase.login',
+      'Welcome@W3A',
     );
     return res;
   } catch (error) {

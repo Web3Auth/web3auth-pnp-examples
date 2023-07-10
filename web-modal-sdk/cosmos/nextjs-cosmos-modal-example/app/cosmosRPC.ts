@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
@@ -42,7 +41,7 @@ export default class CosmosRPC {
       const walletPromise = await DirectSecp256k1Wallet.fromKey(privateKey, "cosmos");
       const { address } = (await walletPromise.getAccounts())[0];
       // Get user's balance in uAtom
-      return client.getAllBalances(address);
+      return await client.getAllBalances(address);
     } catch (error) {
       return error as string;
     }

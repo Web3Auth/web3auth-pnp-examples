@@ -4,9 +4,9 @@ import {
   WALLET_ADAPTER_TYPE,
 } from "@web3auth/base";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import type { LOGIN_PROVIDER_TYPE } from "@toruslabs/openlogin";
-
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { LOGIN_PROVIDER_TYPE, OpenloginAdapter, PrivateKeyProvider } from "@web3auth/openlogin-adapter";
 import {
   createContext,
   FunctionComponent,
@@ -130,7 +130,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
         // get your client id from https://dashboard.web3auth.io by registering a plug and play application.
         const clientId =
           process.env.REACT_APP_CLIENT_ID ||
-          "BKPxkCtfC9gZ5dj-eg-W6yb5Xfr3XkxHuGZl2o2Bn8gKQ7UYike9Dh6c-_LaXlUN77x0cBoPwcSx-IVm0llVsLA";
+          "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk";
 
         const web3AuthInstance = new Web3AuthNoModal({
           chainConfig: currentChainConfig,
@@ -138,14 +138,18 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
           web3AuthNetwork,
         });
         subscribeAuthEvents(web3AuthInstance);
+        var privateKeyProvider: PrivateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: currentChainConfig } });
+        if (chain === "solana") {
+          privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig: currentChainConfig } });
+        }
         const adapter = new OpenloginAdapter({
+          privateKeyProvider,
           adapterSettings: {
             clientId,
             uxMode: "redirect",
             loginConfig: {
               jwt: {
-                verifier:
-                  process.env.REACT_APP_VERIFIER || "web3auth-firebase-demo",
+                verifier: "web3auth-firebase-examples",
                 typeOfLogin: "jwt",
                 clientId,
               },
@@ -177,12 +181,11 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
         return;
       }
       const localProvider = await web3Auth.connectTo(adapter, {
-        relogin: true,
-        loginProvider,
+        loginProvider: "jwt",
         extraLoginOptions: {
           id_token: jwtToken,
-          domain: process.env.REACT_APP_DOMAIN || "http://localhost:3000",
           verifierIdField: "sub",
+          domain: "http://localhost:3000",
         },
       });
       setWalletProvider(localProvider!);

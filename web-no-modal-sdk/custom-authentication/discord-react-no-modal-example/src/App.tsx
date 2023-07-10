@@ -6,12 +6,11 @@ import {
   SafeEventEmitterProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 // import RPC from './ethersRPC' // for using ethers.js
 import RPC from "./web3RPC"; // for using web3.js
 import axios from "axios";
-
-
 
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
@@ -21,21 +20,31 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x5", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth_goerli",
+          displayName: "Goerli Testnet",
+          blockExplorer: "https://goerli.etherscan.io/",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
           useCoreKitKey: false,
         });
 
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
         const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
           adapterSettings: {
             uxMode: "popup",
             loginConfig: {
@@ -51,8 +60,10 @@ function App() {
         setWeb3auth(web3auth);
 
         await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -73,6 +84,7 @@ function App() {
         loginProvider: "discord",
       }
     );
+    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 
@@ -100,6 +112,7 @@ function App() {
       return;
     }
     await web3auth.logout();
+    setLoggedIn(false);
     setProvider(null);
   };
 
@@ -180,8 +193,8 @@ function App() {
       formData.append('token', `${ACCESS_TOKEN}`);
 
       const response = await axios.post(
-        'https://discord.com/api/oauth2/token/revoke', 
-        formData, 
+        'https://discord.com/api/oauth2/token/revoke',
+        formData,
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -189,7 +202,7 @@ function App() {
           },
         }
       );
-  
+
       if (response.status === 200) {
         console.log('Access token revoked successfully');
         alert('Access token revoked successfully, try logging in again');
@@ -262,7 +275,7 @@ function App() {
         Login
       </button>
       <button onClick={revokeAccessToken} className="card">
-          Revoke token
+        Revoke token
       </button>
     </>
   );
@@ -276,7 +289,7 @@ function App() {
         Core & ReactJS Example for Discord Login
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

@@ -6,51 +6,47 @@ import {
   SafeEventEmitterProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
-// import RPC from "./evm.web3";
+import RPC from "./evm.web3";
 // import RPC from './evm.ethers';
-import RPC from "./solanaRPC";
 
 const clientId =
   "BG7vMGIhzy7whDXXJPZ-JHme9haJ3PmV1-wl9SJPGGs9Cjk5_8m682DJ-lTDmwBWJe-bEHYE_t9gw0cdboLEwR8"; // get from https://dashboard.web3auth.io
-
-const solanaChainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.SOLANA,
-  chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  rpcTarget: "https://api.devnet.solana.com",
-  displayName: "Solana Devnet",
-  blockExplorer: "https://explorer.solana.com/?cluster=devnet",
-  ticker: "SOL",
-  tickerName: "Solana Token",
-};
-
-// const ethChainConfig = {
-//   chainNamespace: CHAIN_NAMESPACES.EIP155,
-//   chainId: "0x5", // Please use 0x1 for Mainnet
-//   rpcTarget: "https://rpc.ankr.com/eth_goerli",
-//   displayName: "Goerli Testnet",
-//   blockExplorer: "https://goerli.etherscan.io/",
-//   ticker: "ETH",
-//   tickerName: "Ethereum",
-// };
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(
+    false
+  );
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x5", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth_goerli",
+          displayName: "Goerli Testnet",
+          blockExplorer: "https://goerli.etherscan.io/",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
+
         const web3auth = new Web3AuthNoModal({
           clientId, // get from https://dashboard.web3auth.io
-          chainConfig: solanaChainConfig,
+          chainConfig,
           web3AuthNetwork: "testnet",
           useCoreKitKey: false,
         });
 
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
         const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
           adapterSettings: {
             clientId,
             uxMode: "popup",
@@ -87,8 +83,10 @@ function App() {
         setWeb3auth(web3auth);
 
         await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -110,6 +108,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginAuth0EmailPasswordless = async () => {
@@ -131,6 +130,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginAuth0GitHub = async () => {
@@ -153,6 +153,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginAuth0Discord = async () => {
@@ -175,6 +176,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const getUserInfo = async () => {
@@ -193,6 +195,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const getPrivateKey = async () => {
@@ -333,7 +336,7 @@ function App() {
         logins.
       </h6>
 
-      <div className="grid">{provider ? loginView : logoutView}</div>
+      <div className="grid">{loggedIn ? loginView : logoutView}</div>
 
       <footer className="footer">
         <a

@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import RPC from "./tezosRPC";
+import { Web3Auth } from "@web3auth/modal";
+import { useEffect, useState } from "react";
 import "./App.css";
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+import RPC from "./tezosRPC";
+
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -20,15 +19,18 @@ function App() {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
+            chainId: "1",
+            rpcTarget: "https://rpc.tzbeta.net/", // This is the public RPC we have added, please pass on your own endpoint while creating an app  
           },
           web3AuthNetwork: "cyan",
         });
-
         setWeb3auth(web3auth);
 
         await web3auth.initModal();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -45,7 +47,7 @@ function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -72,6 +74,7 @@ function App() {
       return;
     }
     await web3auth.logout();
+    setLoggedIn(false);
     setProvider(null);
   };
 
@@ -176,6 +179,7 @@ function App() {
           </button>
         </div>
       </div>
+
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
@@ -194,10 +198,10 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Tezos Example
+        & React Tezos Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

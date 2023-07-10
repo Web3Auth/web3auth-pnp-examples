@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { defaultProvider } from "starknet";
@@ -37,6 +39,7 @@ export default class StarkNetRpc {
       const account = await this.getStarkAccount();
       if (account) {
         const contract = JSON.parse(JSON.stringify(CompiledAccountContractAbi));
+        // @ts-ignore
         const response = await defaultProvider.deployContract({
           contract,
         });

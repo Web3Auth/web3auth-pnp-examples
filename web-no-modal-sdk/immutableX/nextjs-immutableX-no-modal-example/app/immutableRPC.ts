@@ -5,7 +5,7 @@ import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 
 export default class EthereumRpc {
-  config = Config.SANDBOX; // Or Config.PRODUCTION or Config.ROPSTEN
+  config = Config.PRODUCTION; // Or Config.PRODUCTION or Config.ROPSTEN
 
   client = new ImmutableX(this.config);
 
@@ -63,7 +63,7 @@ export default class EthereumRpc {
       const starkSigner = createStarkSigner(starkKey);
 
       console.log("eth address", address);
-      console.log("starkAddress", starkSigner);
+      console.log("starkAddress", starkSigner.getAddress());
 
       const walletConnection = { ethSigner, starkSigner };
       const response = await this.client.registerOffchain(walletConnection);
@@ -105,8 +105,8 @@ export default class EthereumRpc {
         amount: "10000000000000", // Amount in wei
       });
       return depositResponse;
-    } catch (error) {
-      return error as string;
+    } catch (error: any) {
+      return JSON.parse(error.message).data as string;
     }
   }
 

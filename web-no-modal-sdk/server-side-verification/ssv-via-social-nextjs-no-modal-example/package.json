@@ -10,16 +10,17 @@
   },
   "dependencies": {
     "@toruslabs/eccrypto": "^1.1.8",
-    "@web3auth/base": "^5.2.0",
-    "@web3auth/no-modal": "^5.2.0",
-    "@web3auth/openlogin-adapter": "^5.2.1",
-    "ethers": "^6.4.1",
+    "@web3auth/base": "^6.1.1",
+    "@web3auth/ethereum-provider": "^6.1.1",
+    "@web3auth/no-modal": "^6.1.1",
+    "@web3auth/openlogin-adapter": "^6.1.1",
+    "ethers": "^5.7.2",
     "jose": "^4.11.1",
     "next": "^12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-toastify": "^9.1.1",
-    "web3": "^1.10.0"
+    "web3": "^1.8.2"
   },
   "devDependencies": {
     "@types/node": "18.11.18",

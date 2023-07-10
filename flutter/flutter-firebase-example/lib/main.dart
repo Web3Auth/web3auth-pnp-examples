@@ -241,7 +241,7 @@ class _MyAppState extends State<MyApp> {
     var idToken = "";
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: 'custom+jwt@firebase.login', password: 'Testing@123');
+          email: 'custom+id_token@firebase.login', password: 'Welcome@W3A');
       idToken = (await credential.user?.getIdToken(true)).toString();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

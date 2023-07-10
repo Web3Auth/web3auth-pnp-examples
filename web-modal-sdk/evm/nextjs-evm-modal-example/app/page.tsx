@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-shadow */
 "use client";
 
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
@@ -13,7 +15,6 @@ import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 import { useEffect, useState } from "react";
 
 import RPC from "./web3RPC"; // for using web3.js
-// import RPC from "./ethersRPC"; // for using ethers.js
 
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -21,11 +22,12 @@ export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const web3authInstance = new Web3Auth({
+        const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -40,7 +42,7 @@ export default function App() {
 
         // adding torus wallet connector plugin
 
-        const torusPluginInstance = new TorusWalletConnectorPlugin({
+        const torusPlugin = new TorusWalletConnectorPlugin({
           torusWalletOpts: {},
           walletInitOptions: {
             whiteLabel: {
@@ -52,8 +54,8 @@ export default function App() {
             enableLogging: true,
           },
         });
-        setTorusPlugin(torusPluginInstance);
-        await web3authInstance.addPlugin(torusPluginInstance);
+        setTorusPlugin(torusPlugin);
+        await web3auth.addPlugin(torusPlugin);
 
         // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
 
@@ -66,7 +68,7 @@ export default function App() {
           clientId,
         });
 
-        web3authInstance.configureAdapter(walletConnectV1Adapter);
+        web3auth.configureAdapter(walletConnectV1Adapter);
 
         // adding metamask adapter
 
@@ -92,20 +94,21 @@ export default function App() {
         });
 
         // it will add/update  the metamask adapter in to web3auth class
-        web3authInstance.configureAdapter(metamaskAdapter);
+        web3auth.configureAdapter(metamaskAdapter);
 
         const torusWalletAdapter = new TorusWalletAdapter({
           clientId,
         });
 
         // it will add/update  the torus-evm adapter in to web3auth class
-        web3authInstance.configureAdapter(torusWalletAdapter);
+        web3auth.configureAdapter(torusWalletAdapter);
 
-        setWeb3auth(web3authInstance);
+        setWeb3auth(web3auth);
+        setProvider(web3auth.provider);
 
-        await web3authInstance.initModal();
-        if (web3authInstance.provider) {
-          setProvider(web3authInstance.provider);
+        await web3auth.initModal();
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -115,14 +118,6 @@ export default function App() {
     init();
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
-
   const login = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
@@ -130,7 +125,7 @@ export default function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -158,6 +153,7 @@ export default function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const showWCM = async () => {
@@ -271,6 +267,14 @@ export default function App() {
     uiConsole(privateKey);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
+
   const loggedInView = (
     <>
       <div className="flex-container">
@@ -361,10 +365,14 @@ export default function App() {
         & Next.js 13 Ethereum Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/nextjs-evm-modal-example" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/nextjs-evm-modal-example"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Source code
         </a>
       </footer>

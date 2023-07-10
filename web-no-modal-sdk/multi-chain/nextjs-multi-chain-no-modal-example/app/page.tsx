@@ -1,20 +1,28 @@
-"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable camelcase */
 /* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+"use client";
 
 // Polkadot
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 // StarkEx and StarkNet
+// @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { hex2buf } from "@taquito/utils";
 // Tezos
+// @ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth } from "@web3auth/modal";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // Solana
 import { SolanaPrivateKeyProvider, SolanaWallet } from "@web3auth/solana-provider";
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ec as elliptic } from "elliptic";
 import { useEffect, useState } from "react";
 // EVM
 import Web3 from "web3";
@@ -24,24 +32,40 @@ import RPC from "./web3RPC"; // for using web3.js
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 export default function App() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
+
+  function getWeb3AuthNoModal(chainConfig: any): Web3AuthNoModal {
+    const web3authInstance: Web3AuthNoModal = new Web3AuthNoModal({
+      clientId,
+      chainConfig,
+      web3AuthNetwork: "cyan",
+    });
+    return web3authInstance;
+  }
 
   useEffect(() => {
     const init = async () => {
       try {
         // ETH_Goerli
-        const web3auth = new Web3Auth({
-          clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
-          },
-          web3AuthNetwork: "cyan",
-        });
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x1",
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorer: "https://goerli.etherscan.io",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        };
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        const web3auth = getWeb3AuthNoModal(chainConfig);
         setWeb3auth(web3auth);
 
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
         const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
           loginSettings: {
             mfaLevel: "default",
           },
@@ -57,10 +81,11 @@ export default function App() {
         });
         web3auth.configureAdapter(openloginAdapter);
 
-        await web3auth.initModal();
+        await web3auth.init();
 
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        setProvider(web3auth.provider);
+        if (web3auth.connected) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -70,90 +95,12 @@ export default function App() {
     init();
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
   }
-
-  const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const web3authProvider = await web3auth.connect();
-    setProvider(web3authProvider);
-    uiConsole("Logged in Successfully!");
-  };
-
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
-  };
-
-  const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  };
-
-  const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    await web3auth.logout();
-    setProvider(null);
-  };
-
-  const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const address = await rpc.getAccounts();
-    uiConsole(`ETH Address: ${address}`);
-  };
-
-  const getBalance = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
-  };
-
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    uiConsole(signedMessage);
-  };
 
   const getPolygonAddress = async () => {
     if (!provider) {
@@ -235,8 +182,8 @@ export default function App() {
     console.log(solanaPrivateKeyProvider.provider);
 
     const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider.provider as any);
-    const solanaAddress = await solanaWallet.requestAccounts();
-    return solanaAddress[0];
+    const solana_address = await solanaWallet.requestAccounts();
+    return solana_address[0];
   };
 
   const getTezosAddress = async () => {
@@ -251,22 +198,6 @@ export default function App() {
     return address;
   };
 
-  // Will address this in future PR
-  // const getNearAddress = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const privateKey = await rpc.getPrivateKey();
-  //   const keyPair = KeyPair.fromString(utils.serialize.base_encode(privateKey));
-  //   const myKeyStore = new keyStores.InMemoryKeyStore();
-  //   await myKeyStore.setKey("testnet", "web3auth-test-account.testnet", keyPair);
-  //   const publicKey = utils.PublicKey.fromString(keyPair?.getPublicKey().toString());
-  //   const address = Buffer.from(publicKey.data).toString("hex")
-  //   return address;
-  // };
-
   const getStarkExAddress = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -275,8 +206,8 @@ export default function App() {
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
     const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starkexAccount = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
-    const address = starkexAccount.pub.getX().toString("hex");
+    const starkex_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
+    const address = starkex_account.pub.getX().toString("hex");
     return address;
   };
 
@@ -288,8 +219,8 @@ export default function App() {
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
     const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starknetAccount = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
-    const address = starknetAccount.pub.getX().toString("hex");
+    const starknet_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
+    const address = starknet_account.pub.getX().toString("hex");
     return address;
   };
 
@@ -310,33 +241,113 @@ export default function App() {
 
   const getAllAccounts = async () => {
     // EVM chains
-    const polygonAddress = await getPolygonAddress();
-    const bnbAddress = await getBnbAddress();
+    const polygon_address = await getPolygonAddress();
+    const bnb_address = await getBnbAddress();
 
     // Solana
-    let solanaAddress;
+    let solana_address;
     try {
-      solanaAddress = await getSolanaAddress();
+      solana_address = await getSolanaAddress();
     } catch (error) {
-      solanaAddress = "Solana JSON RPC Error";
+      solana_address = "Solana JSON RPC Error";
     }
+
     // Others
-    const tezosAddress = await getTezosAddress();
-    const starkexAddress = await getStarkExAddress();
-    const starknetAddress = await getStarkNetAddress();
-    const polkadotAddress = await getPolkadotAddress();
-    // const nearAddress = await getNearAddress();
+    const tezos_address = await getTezosAddress();
+    const starkex_address = await getStarkExAddress();
+    const starknet_address = await getStarkNetAddress();
+    const polkadot_address = await getPolkadotAddress();
 
     uiConsole(
-      `Polygon Address: ${polygonAddress}`,
-      `BNB Address: ${bnbAddress}`,
-      `Solana Address: ${solanaAddress}`,
-      `Tezos Address: ${tezosAddress}`,
-      `StarkEx Address: ${starkexAddress}`,
-      `StarkNet Address: ${starknetAddress}`,
-      `Polkadot Address: ${polkadotAddress}`
-      // "Near Address: " + nearAddress
+      `Polygon Address: ${polygon_address}`,
+      `BNB Address: ${bnb_address}`,
+      `Solana Address: ${solana_address}`,
+      `Tezos Address: ${tezos_address}`,
+      `StarkEx Address: ${starkex_address}`,
+      `StarkNet Address: ${starknet_address}`,
+      `Polkadot Address: ${polkadot_address}`
     );
+  };
+
+  const login = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
+    setProvider(web3authProvider);
+    setLoggedIn(true);
+    uiConsole("Logged in Successfully!");
+  };
+
+  const authenticateUser = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const idToken = await web3auth.authenticateUser();
+    uiConsole(idToken);
+  };
+
+  const getUserInfo = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const user = await web3auth.getUserInfo();
+    uiConsole(user);
+  };
+
+  const logout = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    await web3auth.logout();
+    setProvider(null);
+    setLoggedIn(false);
+  };
+
+  const getAccounts = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const address = await rpc.getAccounts();
+    uiConsole(`ETH Address: ${address}`);
+  };
+
+  const getBalance = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const balance = await rpc.getBalance();
+    uiConsole(balance);
+  };
+
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendTransaction();
+    uiConsole(receipt);
+  };
+
+  const signMessage = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const signedMessage = await rpc.signMessage();
+    uiConsole(signedMessage);
   };
 
   const loggedInView = (
@@ -404,7 +415,7 @@ export default function App() {
         & NextJS Multi-chain Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

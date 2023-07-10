@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 
 import RPC from "./tezosRPC";
@@ -17,6 +17,8 @@ export class AppComponent {
 
   provider: SafeEventEmitterProvider | null = null;
 
+  loggedIn = false;
+
   isModalLoaded = false;
 
   async ngOnInit() {
@@ -24,14 +26,24 @@ export class AppComponent {
       clientId,
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.OTHER,
+        chainId: "1",
+        rpcTarget: "https://rpc.tzbeta.net/", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+      },
+      uiConfig: {
+        theme: "dark",
+        loginMethodsOrder: ["google", "github"],
+        defaultLanguage: "en",
+        appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
       },
       web3AuthNetwork: "cyan",
     });
     const { web3auth } = this;
 
     await web3auth.initModal();
-    if (web3auth.provider) {
-      this.provider = web3auth.provider;
+    this.provider = web3auth.provider;
+
+    if (web3auth.connected) {
+      this.loggedIn = true;
     }
     this.isModalLoaded = true;
   }
@@ -43,7 +55,7 @@ export class AppComponent {
     }
     const { web3auth } = this;
     this.provider = await web3auth.connect();
-    this.uiConsole("Logged in Successfully!");
+    this.loggedIn = true;
   };
 
   authenticateUser = async () => {
@@ -121,6 +133,7 @@ export class AppComponent {
     }
     await this.web3auth.logout();
     this.provider = null;
+    this.loggedIn = false;
     this.uiConsole("logged out");
   };
 

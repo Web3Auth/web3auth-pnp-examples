@@ -40,6 +40,7 @@ export class MainComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // eslint-disable-next-line @typescript-eslint/dot-notation, dot-notation
     if (!changes["chain"] && !changes["network"]) {
       return;
     }

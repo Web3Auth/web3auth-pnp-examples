@@ -24,6 +24,7 @@ export default function App() {
           chainId: "0x1",
           rpcTarget: "https://gw.playground-v2.starkex.co",
           displayName: "Starkex Mainnet",
+          blockExplorer: "https://starkscan.co/",
           ticker: "STARK",
           tickerName: "Starkex",
         };
@@ -34,7 +35,7 @@ export default function App() {
         });
         setWeb3auth(web3authInstance);
 
-        const privateKeyProvider = new CommonPrivateKeyProvider();
+        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,

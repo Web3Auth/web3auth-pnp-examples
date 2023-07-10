@@ -24,6 +24,7 @@ export default function App() {
           chainId: "0x1",
           rpcTarget: "https://rpc.polkadot.io/",
           displayName: "Polkadot Mainnet",
+          blockExplorer: "https://explorer.polkascan.io/",
           ticker: "DOT",
           tickerName: "Polkadot",
         };
@@ -34,8 +35,7 @@ export default function App() {
         });
         setWeb3auth(web3authInstance);
 
-        const privateKeyProvider = new CommonPrivateKeyProvider();
-
+        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
         });

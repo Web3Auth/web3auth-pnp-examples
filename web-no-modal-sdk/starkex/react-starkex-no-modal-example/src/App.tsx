@@ -6,6 +6,7 @@ import {
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import RPC from "./starkexRPC";
 import "./App.css";
 
@@ -17,25 +18,39 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthNoModal({
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.OTHER,
+          chainId: "0x1",
+          rpcTarget: "https://gw.playground-v2.starkex.co",
+          displayName: "Starkex Mainnet",
+          blockExplorer: "https://starkscan.co/",
+          ticker: "STARK",
+          tickerName: "Starkex",
+        };
+        const web3authInstance = new Web3AuthNoModal({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.OTHER,
-          },
+          chainConfig,
           web3AuthNetwork: "cyan",
         });
+        setWeb3auth(web3authInstance);
 
-        const openloginAdapter = new OpenloginAdapter({});
-        web3auth.configureAdapter(openloginAdapter);
-        setWeb3auth(web3auth);
+        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
-        await web3auth.init();
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
+        const openloginAdapter = new OpenloginAdapter({
+          privateKeyProvider,
+        });
+        web3authInstance.configureAdapter(openloginAdapter);
+        setWeb3auth(web3authInstance);
+
+        await web3authInstance.init();
+        setProvider(web3authInstance.provider);
+        if (web3authInstance.connectedAdapterName) {
+          setLoggedIn(true);
         }
       } catch (error) {
         console.error(error);
@@ -45,18 +60,23 @@ function App() {
     init();
   }, []);
 
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
+
   const login = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -84,6 +104,7 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
+    setLoggedIn(false);
   };
 
   const onGetStarkAccount = async () => {
@@ -135,13 +156,6 @@ function App() {
     const request = await rpc.onWithdrawalRequest();
     uiConsole(request);
   };
-
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
 
   const loggedInView = (
     <>
@@ -208,7 +222,7 @@ function App() {
         & ReactJS StarkEx Example
       </h1>
 
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

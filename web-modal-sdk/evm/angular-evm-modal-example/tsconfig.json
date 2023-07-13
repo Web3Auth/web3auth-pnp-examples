@@ -32,8 +32,7 @@
       "os": ["./node_modules/empty-module"],
       "zlib": ["./node_modules/empty-module"],
       "url": ["./node_modules/empty-module"],
-      "process": ["./node_modules/process"],
-      "zlib": ["./node_modules/browserify-zlib"],
+      "process": ["./node_modules/process"]
     }
   },
   "angularCompilerOptions": {

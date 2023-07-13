@@ -3,14 +3,16 @@ const webpack = require("webpack");
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
   Object.assign(fallback, {
-    crypto: false,
+    crypto: require.resolve("crypto-browserify"),
     stream: false,
     assert: false,
     http: false,
     https: false,
     os: false,
     url: false,
-    zlib: false
+    zlib: false,
+    keccak: require.resolve("keccak"),
+    // secp256k1: require.resolve("secp256k1")
   });
   config.resolve.fallback = fallback;
   config.plugins = (config.plugins || []).concat([

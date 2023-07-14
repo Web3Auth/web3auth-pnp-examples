@@ -170,7 +170,7 @@ export default function App() {
       config: {
         chainConfig: {
           chainId: "0x3",
-          rpcTarget: "https://rpc.ankr.com/solana",
+          rpcTarget: "https://api.devnet.solana.com",
           displayName: "Solana Mainnet",
           blockExplorer: "https://explorer.solana.com/",
           ticker: "SOL",

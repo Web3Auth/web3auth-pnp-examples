@@ -119,13 +119,14 @@ function App() {
     const web3authProvider = await web3auth.connectTo(
       WALLET_ADAPTERS.OPENLOGIN,
       {
-        loginProvider: "auth0emailpasswordless",
+        loginProvider: "email_passwordless",
         extraLoginOptions: {
-          domain: "https://web3auth.au.auth0.com",
+          // domain: "https://web3auth.au.auth0.com",
           // this corresponds to the field inside jwt which must be used to uniquely
           // identify the user. This is mapped b/w google and email passwordless logins of Auth0
-          verifierIdField: "email",
-          isVerifierIdCaseSensitive: false,
+          // verifierIdField: "email",
+          // isVerifierIdCaseSensitive: false,
+          login_hint: "ihsraham27@gmail.com",
         },
       }
     );

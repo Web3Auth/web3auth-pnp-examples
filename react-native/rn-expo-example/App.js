@@ -2,6 +2,7 @@ import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-nat
 import Constants, { AppOwnership } from "expo-constants";
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
+import * as SecureStore from "expo-secure-store";
 import React, { useState } from "react";
 import { Button, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -19,14 +20,17 @@ export default function App() {
   const [key, setKey] = useState("");
   const [userInfo, setUserInfo] = useState("");
   const [console, setConsole] = useState("");
+  const [web3auth, setWeb3auth] = useState(null);
 
   const login = async () => {
     try {
       setConsole("Logging in");
-      const web3auth = new Web3Auth(WebBrowser, {
+      const auth = new Web3Auth(WebBrowser,SecureStore, {
         clientId,
         network: OPENLOGIN_NETWORK.CYAN, // or other networks
       });
+      setWeb3auth(auth);
+      auth.init();
       const info = await web3auth.login({
         loginProvider: LOGIN_PROVIDER.GOOGLE,
         redirectUrl: resolvedRedirectUrl,

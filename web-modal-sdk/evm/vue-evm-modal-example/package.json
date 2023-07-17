@@ -17,7 +17,7 @@
     "core-js": "^3.26.1",
     "ethers": "^5.7.2",
     "vue": "^3.3.4",
-    "web3": "^1.10.0"
+    "web3": "^4.0.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.46.1",

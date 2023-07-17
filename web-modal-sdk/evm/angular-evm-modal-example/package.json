@@ -29,7 +29,7 @@
     "empty-module": "^0.0.2",
     "ethers": "^5.7.2",
     "process": "^0.11.10",
-    "web3": "^1.8.2"
+    "web3": "^4.0.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~14.2.6",

@@ -39,8 +39,6 @@ public class BuildPostProcess
         urlSchemes.AddString(uri.Scheme);
 
         infoPlist.WriteToFile(infoPlistPath);
-        
-
 #endif
     }
 }

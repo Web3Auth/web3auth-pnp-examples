@@ -17,5 +17,6 @@
             "changeProcessCWD": true
         }
     ],
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "dotnet.defaultSolution": "unity/unity-example/unity-example.sln"
 }

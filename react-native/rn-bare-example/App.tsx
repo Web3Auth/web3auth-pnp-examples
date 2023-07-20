@@ -22,13 +22,17 @@ const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
   'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A';
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+  useCoreKitKey: false,
+  loginConfig: {},
+});
 
 export default function App() {
   const [userInfo, setUserInfo] = useState<OpenloginUserInfo | undefined>();
   const [key, setKey] = useState<string | undefined>('');
   const [console, setConsole] = useState<string>('');
-  const [web3auth, setWeb3Auth] = useState<IWeb3Auth | null>(null);
-  const [email, setEmail] = React.useState('hello@tor.us');
 
   const login = async () => {
     try {
@@ -39,14 +43,10 @@ export default function App() {
 
       setConsole('Logging in');
       await web3auth.login({
-        loginProvider: LOGIN_PROVIDER.EMAIL_PASSWORDLESS,
+        loginProvider: LOGIN_PROVIDER.GOOGLE,
         redirectUrl: resolvedRedirectUrl,
         mfaLevel: 'default',
         curve: 'secp256k1',
-        extraLoginOptions: {
-          login_hint: email,
-          connection: 'email',
-        },
       });
       setConsole(`Logged in ${web3auth.privKey}`);
       if (web3auth.privKey) {
@@ -77,19 +77,12 @@ export default function App() {
 
   useEffect(() => {
     const init = async () => {
-      const auth = new Web3Auth(WebBrowser, EncryptedStorage, {
-        clientId,
-        network: OPENLOGIN_NETWORK.TESTNET, // or other networks
-        useCoreKitKey: false,
-        loginConfig: {},
-      });
-      setWeb3Auth(auth);
-      await auth.init();
-      if (auth?.privKey) {
+      await web3auth.init();
+      if (web3auth?.privKey) {
         uiConsole('Re logged in');
-        setUserInfo(auth.userInfo());
-        setKey(auth.privKey);
-        window.console.log(auth.privKey);
+        setUserInfo(web3auth.userInfo());
+        setKey(web3auth.privKey);
+        uiConsole(web3auth.privKey);
       }
     };
     init();
@@ -157,13 +150,6 @@ export default function App() {
 
   const unloggedInView = (
     <View style={styles.buttonArea}>
-      <TextInput
-        editable
-        onChangeText={text => setEmail(text)}
-        value={email}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{padding: 10}}
-      />
       <Button title="Login with Web3Auth" onPress={login} />
     </View>
   );

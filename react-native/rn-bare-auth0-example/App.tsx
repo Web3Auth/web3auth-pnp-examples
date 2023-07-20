@@ -32,7 +32,6 @@ export default function App() {
   const [userInfo, setUserInfo] = useState<OpenloginUserInfo | undefined>();
   const [key, setKey] = useState<string | undefined>('');
   const [console, setConsole] = useState<string>('');
-  const [email, setEmail] = React.useState('hello@tor.us');
 
   const login = async () => {
     try {
@@ -147,13 +146,6 @@ export default function App() {
 
   const unloggedInView = (
     <View style={styles.buttonArea}>
-      <TextInput
-        editable
-        onChangeText={text => setEmail(text)}
-        value={email}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{padding: 10}}
-      />
       <Button title="Login with Web3Auth" onPress={login} />
     </View>
   );

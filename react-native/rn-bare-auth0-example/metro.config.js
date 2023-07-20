@@ -17,10 +17,9 @@ module.exports = (async () => {
                 os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
                 url: require.resolve("empty-module"), // url can be polyfilled here if needed
                 zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
-                process: require.resolve("empty-module"), // process can be polyfilled here if needed
                 path: require.resolve("empty-module"),
-                crypto: require.resolve("crypto-browserify"),
-                stream: require.resolve("stream-browserify"),
+                crypto: require.resolve("react-native-quick-crypto"),
+                stream: require.resolve("readable-stream"),
             },
 
             assetExts: assetExts.filter((ext) => ext !== "svg"),

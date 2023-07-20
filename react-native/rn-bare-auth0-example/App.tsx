@@ -22,30 +22,22 @@ const scheme = 'web3authrnbareauth0example'; // Or your desired app redirection 
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
   'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk';
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
+  clientId,
+  network: OPENLOGIN_NETWORK.CYAN, // or other networks
+  useCoreKitKey: false,
+});
 
 export default function App() {
   const [userInfo, setUserInfo] = useState<OpenloginUserInfo | undefined>();
   const [key, setKey] = useState<string | undefined>('');
   const [console, setConsole] = useState<string>('');
-  const [web3auth, setWeb3Auth] = useState<IWeb3Auth | null>(null);
   const [email, setEmail] = React.useState('hello@tor.us');
 
   const login = async () => {
     try {
       setConsole('Logging in');
-      const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
-        clientId,
-        network: OPENLOGIN_NETWORK.CYAN, // or other networks
-        loginConfig: {
-          jwt: {
-            name: 'Web3Auth-Auth0-JWT',
-            verifier: 'web3auth-auth0-demo',
-            typeOfLogin: 'jwt',
-            clientId: '294QRkchfq2YaXUbPri7D6PH7xzHgQMT',
-          },
-        },
-      });
-      const info = await web3auth.login({
+      await web3auth.login({
         loginProvider: LOGIN_PROVIDER.JWT,
         redirectUrl: resolvedRedirectUrl,
         mfaLevel: 'none',
@@ -56,8 +48,8 @@ export default function App() {
         },
       });
 
-      setUserInfo(info);
-      setKey(info.privKey);
+      setUserInfo(web3auth.userInfo());
+      setKey(web3auth.privKey);
       uiConsole('Logged In');
     } catch (e) {
       console.error(e);
@@ -82,19 +74,12 @@ export default function App() {
 
   useEffect(() => {
     const init = async () => {
-      const auth = new Web3Auth(WebBrowser, EncryptedStorage, {
-        clientId,
-        network: OPENLOGIN_NETWORK.TESTNET, // or other networks
-        useCoreKitKey: false,
-        loginConfig: {},
-      });
-      setWeb3Auth(auth);
-      await auth.init();
-      if (auth?.privKey) {
+      await web3auth.init();
+      if (web3auth?.privKey) {
         uiConsole('Re logged in');
-        setUserInfo(auth.userInfo());
-        setKey(auth.privKey);
-        window.console.log(auth.privKey);
+        setUserInfo(web3auth.userInfo());
+        setKey(web3auth.privKey);
+        console.log(web3auth.privKey);
       }
     };
     init();

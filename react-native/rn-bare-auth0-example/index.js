@@ -1,7 +1,6 @@
 /**
  * @format
  */
-
 import {AppRegistry} from 'react-native';
 import './globals';
 import App from './App';

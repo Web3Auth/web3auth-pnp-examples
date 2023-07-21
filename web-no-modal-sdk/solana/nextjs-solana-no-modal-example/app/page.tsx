@@ -21,9 +21,9 @@ export default function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.SOLANA,
-          chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-          rpcTarget: "https://rpc.ankr.com/solana",
-          displayName: "Solana Mainnet",
+          chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+          rpcTarget: "https://api.devnet.solana.com",
+          displayName: "Solana Devnet",
           blockExplorer: "https://explorer.solana.com",
           ticker: "SOL",
           tickerName: "Solana Token",
@@ -217,14 +217,14 @@ export default function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Solana Example
+        & NextJS Solana Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/solana/react-solana-no-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/solana/nextjs-solana-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -93,7 +93,7 @@ export default {
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    let provider = ref<SafeEventEmitterProvider | any>(null);
+    const provider = ref<SafeEventEmitterProvider | any>(null);
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -101,8 +101,8 @@ export default {
       clientId,
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.SOLANA,
-        chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-        rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+        rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
       web3AuthNetwork: "cyan",
     });
@@ -141,7 +141,7 @@ export default {
         await web3auth.addPlugin(torusPlugin);
         await web3auth.initModal();
         if (web3auth.provider) {
-          provider = web3auth.provider;
+          provider.value = web3auth.provider;
           loggedin.value = true;
         }
       } catch (error) {
@@ -157,7 +157,7 @@ export default {
         uiConsole("web3auth not initialized yet");
         return;
       }
-      provider = await web3auth.connect();
+      provider.value = await web3auth.connect();
       loggedin.value = true;
     };
 
@@ -185,12 +185,12 @@ export default {
         return;
       }
       await web3auth.logout();
-      provider = null;
+      provider.value = null;
       loggedin.value = false;
     };
 
     const getAccounts = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -200,7 +200,7 @@ export default {
     };
 
     const getBalance = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -210,7 +210,7 @@ export default {
     };
 
     const sendTransaction = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -220,7 +220,7 @@ export default {
     };
 
     const signMessage = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -230,7 +230,7 @@ export default {
     };
 
     const getPrivateKey = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }

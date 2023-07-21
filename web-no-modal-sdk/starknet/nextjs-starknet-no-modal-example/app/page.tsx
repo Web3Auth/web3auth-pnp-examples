@@ -8,6 +8,7 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 
 import RPC from "./starknetRPC";
+import { config } from "process";
 
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -34,7 +35,7 @@ export default function App() {
           web3AuthNetwork: "cyan",
         });
 
-        const privateKeyProvider = new CommonPrivateKeyProvider();
+        const privateKeyProvider = new CommonPrivateKeyProvider({config: { chainConfig }});
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
         });

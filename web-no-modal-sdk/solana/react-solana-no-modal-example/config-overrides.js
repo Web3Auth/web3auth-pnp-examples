@@ -10,7 +10,8 @@ module.exports = function override(config) {
     https: false,
     os: false,
     url: false,
-    zlib: false
+    zlib: false,
+    // keccak: require.resolve("keccak")
   });
   config.resolve.fallback = fallback;
   config.plugins = (config.plugins || []).concat([

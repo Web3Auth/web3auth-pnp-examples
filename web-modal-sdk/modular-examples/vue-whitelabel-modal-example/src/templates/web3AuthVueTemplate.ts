@@ -1,4 +1,4 @@
-import type { UIConfig } from "@web3auth/modal";
+import { UIConfig } from "@web3auth/ui";
 
 export const generateVueCode = (uiConfig: UIConfig): string => {
   return `
@@ -21,7 +21,7 @@ export const generateVueCode = (uiConfig: UIConfig): string => {
       data(): {
           uiConfig: {
               appLogo: string | undefined;
-              theme: "dark" | "light" | undefined;
+              theme: "dark" | "light" | "auto";
               loginMethodsOrder: string[] | undefined;
           };
           provider: SafeEventEmitterProvider | null;

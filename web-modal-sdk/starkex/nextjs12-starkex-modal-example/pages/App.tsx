@@ -1,4 +1,4 @@
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { useEffect, useState } from "react";
 
@@ -17,6 +17,8 @@ function App() {
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth",
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
           web3AuthNetwork: "cyan",
@@ -37,6 +39,13 @@ function App() {
 
     init();
   }, []);
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
 
   const login = async () => {
     if (!web3auth) {
@@ -125,13 +134,6 @@ function App() {
     const request = await rpc.onWithdrawalRequest();
     uiConsole(request);
   };
-
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
 
   const loggedInView = (
     <>

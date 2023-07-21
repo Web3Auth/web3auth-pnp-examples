@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
-import { connect } from "near-api-js";
 
+// import { connect } from "near-api-js";
 import RPC from "./starknetRPC";
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -26,6 +26,8 @@ export class AppComponent {
     this.web3auth = new Web3Auth({
       clientId,
       chainConfig: {
+        chainId: "0x1",
+        rpcTarget: "https://rpc.ankr.com/eth",
         chainNamespace: CHAIN_NAMESPACES.OTHER,
       },
       web3AuthNetwork: "cyan",

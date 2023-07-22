@@ -352,6 +352,8 @@ PODS:
     - glog
   - react-native-encrypted-storage (4.0.3):
     - React-Core
+  - react-native-get-random-values (1.9.0):
+    - React-Core
   - react-native-web-browser (1.1.0):
     - React-Core
   - React-NativeModulesApple (0.72.3):
@@ -499,6 +501,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
+  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - "react-native-web-browser (from `../node_modules/@toruslabs/react-native-web-browser`)"
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -581,6 +584,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-encrypted-storage:
     :path: "../node_modules/react-native-encrypted-storage"
+  react-native-get-random-values:
+    :path: "../node_modules/react-native-get-random-values"
   react-native-web-browser:
     :path: "../node_modules/@toruslabs/react-native-web-browser"
   React-NativeModulesApple:
@@ -650,15 +655,16 @@ SPEC CHECKSUMS:
   React-Core: aaacca67f9ca54f142827e67f44bfbd815875eb6
   React-CoreModules: 32fab1d62416849a3b6dac6feff9d54e5ddc2d1e
   React-cxxreact: 37765b4975541105b2a3322a4b473417c158c869
-  React-debug: c5007d16c2395a5313a6ee41f010bc4a83049a96
+  React-debug: b545bdeda1fb737767cf998c4224336b20516979
   React-hermes: 935ae71fb3d7654e947beba8498835cd5e479707
   React-jsi: ec628dc7a15ffea969f237b0ea6d2fde212b19dd
   React-jsiexecutor: 59d1eb03af7d30b7d66589c410f13151271e8006
   React-jsinspector: b511447170f561157547bc0bef3f169663860be7
   React-logger: c5b527272d5f22eaa09bb3c3a690fee8f237ae95
   react-native-encrypted-storage: db300a3f2f0aba1e818417c1c0a6be549038deb7
+  react-native-get-random-values: dee677497c6a740b71e5612e8dbd83e7539ed5bb
   react-native-web-browser: 087b454e1e94b58b40ba73f54251d77486144d19
-  React-NativeModulesApple: 951773b6528efd42a803e2a7bed7ab100c5057ce
+  React-NativeModulesApple: c3a3c7d482566c8a13111cc10428f9ddce1f55aa
   React-perflogger: 6bd153e776e6beed54c56b0847e1220a3ff92ba5
   React-RCTActionSheet: c0b62af44e610e69d9a2049a682f5dba4e9dff17
   React-RCTAnimation: fe7005136b58f58871cab2f70732343b6e330d30
@@ -672,9 +678,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: ea3a68a49873a54ced927c90923fc6932baf344a
   React-rncore: 9672a017af4a7da7495d911f0b690cbcae9dd18d
   React-runtimeexecutor: 369ae9bb3f83b65201c0c8f7d50b72280b5a1dbc
-  React-runtimescheduler: bd7c77d7cd8155d9a236deaad2b5f5e0b64f0a06
-  React-utils: 3fa2cca3b77223603ed7c1fdb9a122145e8c2bff
-  ReactCommon: ba2115cf40b24cb244ecf642e2c268eb936509c2
+  React-runtimescheduler: 3fcb8e399ce1aee002a71efa981dfebf65a47570
+  React-utils: 0b2e738a9a15b333b1ffb9514ffb029ffdd31dc2
+  ReactCommon: 6b3a062e2bec5439abc0d64101696fa33853e681
   RNFBApp: f0b5cf917b0b91a0ae890fbbaec0fb5d3285ea46
   RNFBAuth: e3f51b2e4acc39e4664b24117f9106af493b2dd3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17

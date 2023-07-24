@@ -16,7 +16,7 @@
     "@web3auth/solana-provider": "^6.1.4",
     "@web3auth/solana-wallet-connector-plugin": "^6.1.4",
     "@web3auth/solflare-adapter": "^6.1.4",
-    "next": "13.4.3",
+    "next": "13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

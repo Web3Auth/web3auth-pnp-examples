@@ -21,12 +21,11 @@ import RPC from './ethersRPC'; // for using ethers.js
 const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
-  'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A';
+  'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk';
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
-  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+  network: OPENLOGIN_NETWORK.CYAN, // or other networks
   useCoreKitKey: false,
-  loginConfig: {},
 });
 
 export default function App() {

@@ -1,37 +1,32 @@
 {
   "expo": {
-    "name": "web3auth-react-native-example",
-    "slug": "web3auth-react-native-example",
+    "name": "web3authexpoexample",
+    "slug": "web3authexpoexample",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "w3akvrn",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.web3authexpoexample"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.web3authexpoexample"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "expo": {
-      "scheme": "web3authrnsample"
     }
   }
 }

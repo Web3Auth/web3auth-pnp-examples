@@ -39,6 +39,7 @@
     "metro-react-native-babel-preset": "0.73.9",
     "prettier": "^2.4.1",
     "process": "^0.11.10",
+    "react-native-get-random-values": "^1.9.0",
     "react-native-quick-base64": "^2.0.6",
     "react-native-quick-crypto": "^0.6.1",
     "react-native-tcp-socket": "^6.0.6",

@@ -1,35 +1,34 @@
 import '@ethersproject/shims';
 import {ethers} from 'ethers';
-import {Buffer} from 'buffer';
-global.Buffer = global.Buffer || Buffer;
 
 const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
 
 const getChainId = async () => {
   try {
     const ethersProvider = ethers.getDefaultProvider(providerUrl);
+    console.log('ready', ethersProvider.ready);
     const networkDetails = await ethersProvider.getNetwork();
     return networkDetails;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
-const getAccounts = async key => {
+const getAccounts = async (key: string) => {
   try {
     const wallet = new ethers.Wallet(key);
-    const address = await wallet.address;
+    const address = wallet.address;
     return address;
   } catch (error) {
     return error;
   }
 };
 
-const getBalance = async key => {
+const getBalance = async (key: string) => {
   try {
     const ethersProvider = ethers.getDefaultProvider(providerUrl);
     const wallet = new ethers.Wallet(key, ethersProvider);
-    const balance = await wallet.getBalance();
+    const balance = await ethersProvider.getBalance(wallet.address);
 
     return balance;
   } catch (error) {
@@ -37,7 +36,7 @@ const getBalance = async key => {
   }
 };
 
-const sendTransaction = async key => {
+const sendTransaction = async (key: string) => {
   try {
     const ethersProvider = ethers.getDefaultProvider(providerUrl);
     const wallet = new ethers.Wallet(key, ethersProvider);
@@ -61,7 +60,7 @@ const sendTransaction = async key => {
   }
 };
 
-const signMessage = async key => {
+const signMessage = async (key: string) => {
   try {
     const ethersProvider = ethers.getDefaultProvider(providerUrl);
     const wallet = new ethers.Wallet(key, ethersProvider);

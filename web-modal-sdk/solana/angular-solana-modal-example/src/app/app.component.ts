@@ -25,13 +25,15 @@ export class AppComponent {
 
   isModalLoaded = false;
 
+  loggedIn = false;
+
   async ngOnInit() {
     this.web3auth = new Web3Auth({
       clientId,
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.SOLANA,
-        chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-        rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+        rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
       web3AuthNetwork: "cyan",
     });
@@ -66,8 +68,9 @@ export class AppComponent {
     web3auth.configureAdapter(slopeAdapter);
 
     await web3auth.initModal();
-    if (web3auth.provider) {
+    if (web3auth.connected) {
       this.provider = web3auth.provider;
+      this.loggedIn = true;
     }
     this.isModalLoaded = true;
   }
@@ -79,6 +82,7 @@ export class AppComponent {
     }
     const { web3auth } = this;
     this.provider = await web3auth.connect();
+    this.loggedIn = true;
     this.uiConsole("Logged in Successfully!");
   };
 
@@ -87,8 +91,8 @@ export class AppComponent {
       this.uiConsole("web3auth not initialized yet");
       return;
     }
-    const id_token = await this.web3auth.authenticateUser();
-    this.uiConsole(id_token);
+    const idToken = await this.web3auth.authenticateUser();
+    this.uiConsole(idToken);
   };
 
   getUserInfo = async () => {
@@ -157,6 +161,7 @@ export class AppComponent {
     }
     await this.web3auth.logout();
     this.provider = null;
+    this.loggedIn = false;
     this.uiConsole("logged out");
   };
 

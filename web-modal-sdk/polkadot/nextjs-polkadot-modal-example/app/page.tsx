@@ -20,6 +20,8 @@ export default function App() {
         const web3authInstance = new Web3Auth({
           clientId,
           chainConfig: {
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth",
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
           web3AuthNetwork: "cyan",

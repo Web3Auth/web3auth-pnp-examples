@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 
 import RPC from "./starkexRPC";
@@ -19,10 +19,14 @@ export class AppComponent {
 
   isModalLoaded = false;
 
+  loggedIn = false;
+
   async ngOnInit() {
     this.web3auth = new Web3Auth({
       clientId,
       chainConfig: {
+        chainId: "0x1",
+        rpcTarget: "https://rpc.ankr.com/eth",
         chainNamespace: CHAIN_NAMESPACES.OTHER,
       },
       web3AuthNetwork: "cyan",
@@ -30,8 +34,9 @@ export class AppComponent {
     const { web3auth } = this;
 
     await web3auth.initModal();
-    if (web3auth.provider) {
+    if (web3auth.connected) {
       this.provider = web3auth.provider;
+      this.loggedIn = true;
     }
     this.isModalLoaded = true;
   }
@@ -43,6 +48,7 @@ export class AppComponent {
     }
     const { web3auth } = this;
     this.provider = await web3auth.connect();
+    this.loggedIn = true;
     this.uiConsole("Logged in Successfully!");
   };
 
@@ -51,8 +57,8 @@ export class AppComponent {
       this.uiConsole("web3auth not initialized yet");
       return;
     }
-    const id_token = await this.web3auth.authenticateUser();
-    this.uiConsole(id_token);
+    const idToken = await this.web3auth.authenticateUser();
+    this.uiConsole(idToken);
   };
 
   getUserInfo = async () => {
@@ -121,6 +127,7 @@ export class AppComponent {
     }
     await this.web3auth.logout();
     this.provider = null;
+    this.loggedIn = false;
     this.uiConsole("logged out");
   };
 

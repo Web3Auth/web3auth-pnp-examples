@@ -40,6 +40,10 @@ function App() {
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "mandatory",
+            dappShare: "true",
+          },
           adapterSettings: {
             loginConfig: {
               google: {

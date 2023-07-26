@@ -18,46 +18,46 @@ import RPC from './ethersRPC'; // for using ethers.js
 const scheme = 'web3authrnbareaggregateexample'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
-  'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk';
-  const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
-    clientId,
-    network: OPENLOGIN_NETWORK.CYAN, // or other networks
-    loginConfig: {
-      google: {
-        verifier: "agg-google-emailpswd-github",
-        verifierSubIdentifier: "w3a-google",
-        typeOfLogin: "google",
-        clientId:
-          "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-      },
-      auth0emailpasswordless: {
-        verifier: "agg-google-emailpswd-github",
-        verifierSubIdentifier: "w3a-email-passwordless",
-        typeOfLogin: "jwt",
-        clientId: "QQRQNGxJ80AZ5odiIjt1qqfryPOeDcb1",
-        jwtParameters: {
-          domain: "https://shahbaz-torus.us.auth0.com",
-          // this corresponds to the field inside jwt which must be used to uniquely
-          // identify the user. This is mapped b/w google and email passwordless logins of Auth0
-          verifierIdField: "email",
-          isVerifierIdCaseSensitive: false,
-        },
-      },
-      auth0github: {
-        verifier: "agg-google-emailpswd-github",
-        verifierSubIdentifier: "w3a-github",
-        typeOfLogin: "jwt",
-        clientId: "TcuxIlWeaexIhVzsyc4sShzHJxwJ7nsO",
-        jwtParameters: {
-          domain: "https://shahbaz-torus.us.auth0.com",
-          // this corresponds to the field inside jwt which must be used to uniquely
-          // identify the user. This is mapped b/w google and github logins
-          verifierIdField: "email",
-          isVerifierIdCaseSensitive: false,
-        },
+  'BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A';
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+  loginConfig: {
+    google: {
+      verifier: 'agg-google-emailpswd-github',
+      verifierSubIdentifier: 'w3a-google',
+      typeOfLogin: 'google',
+      clientId:
+        '774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com',
+    },
+    auth0emailpasswordless: {
+      verifier: 'agg-google-emailpswd-github',
+      verifierSubIdentifier: 'w3a-email-passwordless',
+      typeOfLogin: 'jwt',
+      clientId: 'QQRQNGxJ80AZ5odiIjt1qqfryPOeDcb1',
+      jwtParameters: {
+        domain: 'https://shahbaz-torus.us.auth0.com',
+        // this corresponds to the field inside jwt which must be used to uniquely
+        // identify the user. This is mapped b/w google and email passwordless logins of Auth0
+        verifierIdField: 'email',
+        isVerifierIdCaseSensitive: false,
       },
     },
-  });
+    auth0github: {
+      verifier: 'agg-google-emailpswd-github',
+      verifierSubIdentifier: 'w3a-github',
+      typeOfLogin: 'jwt',
+      clientId: 'TcuxIlWeaexIhVzsyc4sShzHJxwJ7nsO',
+      jwtParameters: {
+        domain: 'https://shahbaz-torus.us.auth0.com',
+        // this corresponds to the field inside jwt which must be used to uniquely
+        // identify the user. This is mapped b/w google and github logins
+        verifierIdField: 'email',
+        isVerifierIdCaseSensitive: false,
+      },
+    },
+  },
+});
 
 export default function App() {
   const [userInfo, setUserInfo] = useState<OpenloginUserInfo | undefined>();
@@ -180,9 +180,12 @@ export default function App() {
 
   const unloggedInView = (
     <View style={styles.buttonArea}>
-      <Button title="Login with Google" onPress={() => login("google")} />
-      <Button title="Login with Auth0 Email Passwordless" onPress={() => login("auth0emailpasswordless")} />
-      <Button title="Login with GitHub" onPress={() => login("auth0github")} />
+      <Button title="Login with Google" onPress={() => login('google')} />
+      <Button
+        title="Login with Auth0 Email Passwordless"
+        onPress={() => login('auth0emailpasswordless')}
+      />
+      <Button title="Login with GitHub" onPress={() => login('auth0github')} />
     </View>
   );
   return (

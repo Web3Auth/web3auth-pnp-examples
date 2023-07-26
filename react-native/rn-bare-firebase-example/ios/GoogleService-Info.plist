@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>461819774167-s45cmpser7626170lld7vekd16v8onpj.apps.googleusercontent.com</string>
+	<string>461819774167-9nj4ta7nf2v0m7flb80h1sh8hk7drgnp.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.461819774167-s45cmpser7626170lld7vekd16v8onpj</string>
+	<string>com.googleusercontent.apps.461819774167-9nj4ta7nf2v0m7flb80h1sh8hk7drgnp</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>461819774167-l7oslag3sa2vllbl1b9ghhcf6e6rhvjj.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAttkINEO4AWRc2jJDHa5fPYp_1EtujcH0</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.reactjs.native.example.web3authrnbarefirebase</string>
+	<string>com.web3authrnbarefirebase</string>
 	<key>PROJECT_ID</key>
 	<string>web3auth-oauth-logins</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:461819774167:ios:e2d161dad3a80c825b9c92</string>
+	<string>1:461819774167:ios:d962287f800535b95b9c92</string>
 </dict>
 </plist>

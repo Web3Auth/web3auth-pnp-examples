@@ -1,44 +1,65 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 import Constants, { AppOwnership } from "expo-constants";
 import * as Linking from "expo-linking";
+import * as SecureStore from "expo-secure-store";
 import * as WebBrowser from "expo-web-browser";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import RPC from "./ethersRPC"; // for using ethers.js
-
+const scheme = "web3authexpoexample";
 const resolvedRedirectUrl =
-  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+  Constants.appOwnership === AppOwnership.Expo || Constants.appOwnership === AppOwnership.Guest
     ? Linking.createURL("web3auth", {})
     : Linking.createURL("web3auth", { scheme });
-
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk";
-const providerUrl = "https://rpc.ankr.com/eth"; // Or your desired provider url
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
+  clientId,
+  network: OPENLOGIN_NETWORK.CYAN, // or other networks
+  useCoreKitKey: false,
+});
 
 export default function App() {
   const [key, setKey] = useState("");
   const [userInfo, setUserInfo] = useState("");
   const [console, setConsole] = useState("");
 
+  useEffect(() => {
+    const init = async () => {
+      await web3auth.init();
+      if (web3auth?.privKey) {
+        uiConsole("Re logged in");
+        setUserInfo(web3auth.userInfo());
+        setKey(web3auth.privKey);
+        uiConsole(web3auth.privKey);
+      }
+    };
+    init();
+  }, []);
+
   const login = async () => {
     try {
+      if (!web3auth) {
+        setConsole("Web3auth not initialized");
+        return;
+      }
+
       setConsole("Logging in");
-      const web3auth = new Web3Auth(WebBrowser, {
-        clientId,
-        network: OPENLOGIN_NETWORK.CYAN, // or other networks
-      });
-      const info = await web3auth.login({
+      await web3auth.login({
         loginProvider: LOGIN_PROVIDER.GOOGLE,
         redirectUrl: resolvedRedirectUrl,
-        mfaLevel: "none",
+        mfaLevel: "default",
         curve: "secp256k1",
       });
-
-      setUserInfo(info);
-      setKey(info.privKey);
-      uiConsole("Logged In");
+      setConsole(`Logged in ${web3auth.privKey}`);
+      if (web3auth.privKey) {
+        setUserInfo(web3auth.userInfo());
+        setKey(web3auth.privKey);
+        uiConsole("Logged In");
+      }
     } catch (e) {
-      uiConsole(e);
+      setConsole(e.message);
     }
   };
 
@@ -73,6 +94,22 @@ export default function App() {
     setConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${console}`);
   };
 
+  const logout = async () => {
+    if (!web3auth) {
+      setConsole("Web3auth not initialized");
+      return;
+    }
+
+    setConsole("Logging out");
+    await web3auth.logout();
+
+    if (!web3auth.privKey) {
+      setUserInfo(undefined);
+      setKey("");
+      uiConsole("Logged out");
+    }
+  };
+
   const loggedInView = (
     <View style={styles.buttonArea}>
       <Button title="Get User Info" onPress={() => uiConsole(userInfo)} />
@@ -82,7 +119,7 @@ export default function App() {
       <Button title="Send Transaction" onPress={() => sendTransaction()} />
       <Button title="Sign Message" onPress={() => signMessage()} />
       <Button title="Get Private Key" onPress={() => uiConsole(key)} />
-      <Button title="Log Out" onPress={() => setKey("")} />
+      <Button title="Log Out" onPress={() => logout()} />
     </View>
   );
 

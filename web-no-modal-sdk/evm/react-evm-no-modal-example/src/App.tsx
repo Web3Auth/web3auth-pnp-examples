@@ -35,7 +35,7 @@ function App() {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth",
+          rpcTarget: "https://eth.llamarpc.com",
           displayName: "Ethereum Mainnet",
           blockExplorer: "https://goerli.etherscan.io",
           ticker: "ETH",

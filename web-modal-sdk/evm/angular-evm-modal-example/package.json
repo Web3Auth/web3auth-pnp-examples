@@ -17,7 +17,7 @@
     "@angular/core": "~14.2.7",
     "@angular/forms": "~14.2.7",
     "@angular/platform-browser": "~14.2.7",
-    "@angular/platform-browser-dynamic": "~14.2.7",
+    "@angular/platform-browser-dynamic": "~16.1.7",
     "@angular/router": "~14.2.7",
     "@web3auth/base": "^6.1.4",
     "@web3auth/metamask-adapter": "^6.1.4",

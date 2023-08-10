@@ -38,7 +38,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
     privateKeyProvider,
     adapterSettings: {
       network: "cyan",
-      uxMode: "popup",
+      uxMode: "redirect",
       whiteLabel: {
         name: "Your app Name",
         logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",

@@ -45,7 +45,7 @@ function App() {
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
           adapterSettings: {
-            uxMode: "popup",
+            uxMode: "redirect",
             loginConfig: {
               twitch: {
                 verifier: "web3auth-twitch-example",

@@ -40,7 +40,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
     privateKeyProvider,
     adapterSettings: {
       network: "cyan",
-      uxMode: "popup",
+      uxMode: "redirect",
       whiteLabel: {
         name: "Your app Name",
         logoLight: iconUrl,

@@ -46,7 +46,7 @@ function App() {
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
           adapterSettings: {
-            uxMode: "popup",
+            uxMode: "redirect",
             loginConfig: {
               discord: {
                 verifier: "web3auth-discord-example",

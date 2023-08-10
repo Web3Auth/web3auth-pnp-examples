@@ -49,7 +49,7 @@ function App() {
           privateKeyProvider,
           adapterSettings: {
             clientId,
-            uxMode: "popup",
+            uxMode: "redirect",
             loginConfig: {
               google: {
                 verifier: "w3a-agg-example",

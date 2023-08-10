@@ -62,7 +62,7 @@ function App() {
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
           adapterSettings: {
-            uxMode: "popup",
+            uxMode: "redirect",
             loginConfig: {
               jwt: {
                 verifier: "web3auth-firebase-examples",

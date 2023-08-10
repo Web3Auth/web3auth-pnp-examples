@@ -31,7 +31,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
     privateKeyProvider,
     adapterSettings: {
       network: "cyan",
-      uxMode: "popup",
+      uxMode: "redirect",
       loginConfig: {
         jwt: {
           name: "Web3Auth-Auth0-JWT",

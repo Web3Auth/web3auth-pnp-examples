@@ -63,7 +63,7 @@ function App() {
         mfaLevel: 'default'
       },
       adapterSettings: {
-        uxMode: 'popup',
+        uxMode: 'redirect',
         whiteLabel: {
           name: 'Safe'
         }

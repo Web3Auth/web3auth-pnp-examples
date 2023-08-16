@@ -5,7 +5,7 @@ import { CHAIN_CONFIG, CHAIN_CONFIG_TYPE } from "../config/chainConfig";
 import { WEB3AUTH_NETWORK_TYPE } from "../config/web3AuthNetwork";
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 export interface IWeb3AuthContext {
   web3Auth: Web3Auth | null;
@@ -107,11 +107,11 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
           clientId: clientId[web3AuthNetwork],
         });
         const chainConfig = CHAIN_CONFIG[chain];
-        const privateKeyProvider = new EthereumPrivateKeyProvider({
-          config: { chainConfig },
-        });
+        // const privateKeyProvider = new EthereumPrivateKeyProvider({
+        //   config: { chainConfig },
+        // });
 
-        const adapter = new OpenloginAdapter({ adapterSettings: { network: web3AuthNetwork, uxMode:'redirect' }, privateKeyProvider });
+        const adapter = new OpenloginAdapter({ adapterSettings: { network: web3AuthNetwork, uxMode:'redirect' } });
         web3AuthInstance.configureAdapter(adapter);
         subscribeAuthEvents(web3AuthInstance);
         setWeb3Auth(web3AuthInstance);

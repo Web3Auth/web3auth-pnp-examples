@@ -156,30 +156,16 @@ provider specific to the user and application.
 
 ### Browser Extensions
 
-| Browser  | Lang Framework | Directory                                                                                                                                                         |
-| -------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Chrome` | `REACT`        | [Chrome-extension-modal-example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/browser-extensions/chrome-extension-modal-example/) |
-
-### Single Factor Auth
-
-`@web3auth/single-factor-auth`
-
-| JWT Provider | Lang Framework | Directory                                                                                                                      |
-| :----------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| `Firebase`   | `React`        | [React-EVM-SFA-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/single-factor-auth/react-evm-sfa-example/) |
-
-### Node SDK
-
-| JWT Provider | Lang Framework | Directory                                                                                                     |
-| :----------- | :------------- | :------------------------------------------------------------------------------------------------------------ |
-| `Custom`     | `NodeJS`       | [Backend-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/node-sdk/node-backend-example/) |
+| Browser  | Lang Framework | Directory                                                                                                                                                           |
+| -------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Chrome` | `REACT`        | [Chrome-extension-modal-example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/browser-extensions/chrome-extension-no-modal-example) |
 
 ### Web3Auth Wagmi Connector
 
-| Lang Framework | Directory                                                                                                                                 |
-| :------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| `REACT`        | [React-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/wagmi-connector/react-example/)                               |
-| `REACT`        | [React-Example-With-Torus-Plugin](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/wagmi-connector/react-example-with-plugin/) |
+| Lang Framework | Directory                                                                                                                                                 |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `REACT`        | [React-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/wagmi-connector/wagmi-react-modal-example)                                    |
+| `REACT`        | [React-Example-With-Torus-Plugin](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/wagmi-connector/rainbowkit-react-modal-with-plugin-example) |
 
 ## Web3Auth Mobile SDKs
 
@@ -196,7 +182,7 @@ provider specific to the user and application.
 | `React Native (Bare)` | ---                                                            | ---                                              | [ReactNative-Bare-Auth0-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-auth0-example/)                         |
 | `React Native (Bare)` | ---                                                            | ---                                              | [ReactNative-Bare-Firebase-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-firebase-example/)                   |
 | `React Native (Expo)` | [Documentation](https://web3auth.io/docs/sdk/pnp/react-native) | ---                                              | [ReactNative-Expo-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-expo-example/)                                     |
-| `React Native (Expo)` | ---                                                            | ---                                              | [ReactNative-Expo-Auth0-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-expo-auth0-example/)                         |
+| `React Native (Expo)` | ---                                                            | ---                                              | [ReactNative-Expo-Auth0-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-expo-example)                                |
 | `iOS`                 | [Documentation](https://web3auth.io/docs/sdk/pnp/ios)          | ---                                              | [iOS-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-example)                                                                |
 | `iOS`                 | ---                                                            | ---                                              | [iOS-Auth0-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-auth0-example)                                                    |
 

@@ -26,11 +26,11 @@ npm run start
 
 ## Auth0 Prerequisites:-
 
-- Create a Auth0 project/tenant and configure a single page web app from [Auth0 Console](https://manage.auth0.com/).
+- Create a Auth0 project/tenant and configure a single page web app from [Auth0 Console](https://manage.auth0.com).
 
 - Whitelist the redirect urls while configuring Auth0 SPA(Single Page Application). E.g: https://beta.openlogin.com/auth
 
-- You will require domain and clientId of newly created SPA which you can copy from [Auth0 Console](https://manage.auth0.com/).
+- You will require domain and clientId of newly created SPA which you can copy from [Auth0 Console](https://manage.auth0.com).
 
 ## Web3Auth Pre-requisites
 

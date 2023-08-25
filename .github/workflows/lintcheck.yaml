@@ -7,6 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: gaurav-nelson/github-action-markdown-link-check@v1
-      with:
-        use-quiet-mode: 'yes'
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1.0.0
+        with:
+          args: --config .github/markdown-link-check.json

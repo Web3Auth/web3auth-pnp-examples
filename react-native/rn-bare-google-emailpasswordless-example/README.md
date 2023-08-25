@@ -1,8 +1,7 @@
 # Web3Auth React Native (Bare) x Aggregate Example
 
-[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/react-native)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/pnp/react-native)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
-
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
@@ -34,7 +33,7 @@ npm run android
 
 - [Website](https://web3auth.io)
 - [Docs](https://web3auth.io/docs)
-- [Guides](https://web3auth.io/docs/guides)
+- [Guides](https://web3auth.io/docs/content-hub?type=guides)
 - [SDK / API References](https://web3auth.io/docs/sdk)
 - [Pricing](https://web3auth.io/pricing.html)
 - [Community Portal](https://community.web3auth.io)

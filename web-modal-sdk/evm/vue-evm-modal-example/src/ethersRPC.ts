@@ -16,7 +16,7 @@ export default class EthereumRpc {
       const ethersProvider = new ethers.BrowserProvider(this.provider);
       // Get the connected Chain's ID
       const networkDetails = await ethersProvider.getNetwork();
-      return networkDetails.chainId;
+      return networkDetails.chainId.toString();
     } catch (error) {
       return error;
     }

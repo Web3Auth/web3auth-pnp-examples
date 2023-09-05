@@ -1,5 +1,5 @@
 {
-  "name": "auth0-react-modular-no-modal-example-api",
+  "name": "azure-b2c-react-modular-no-modal-example-api",
   "scripts": {
     "lint": "eslint"
   },

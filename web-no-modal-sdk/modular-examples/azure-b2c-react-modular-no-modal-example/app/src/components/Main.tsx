@@ -21,6 +21,7 @@ const Main = ({ isJWT, appType }: { isJWT: boolean; appType: string }) => {
     chain,
   } = useWeb3Auth();
   const rwaURL = `${process.env.REACT_APP_AZURE_B2C_DOMAIN}/authorize?scope=openid&response_type=code&client_id=${process.env.REACT_APP_RWA_CLIENTID}&redirect_uri=${process.env.REACT_APP_BACKEND_SERVER_API}&state=STATE`;
+  console.log("rwaURL", rwaURL);
   const handleImplicitLogin = async () => {
     try {
       await login(WALLET_ADAPTERS.OPENLOGIN, "jwt");

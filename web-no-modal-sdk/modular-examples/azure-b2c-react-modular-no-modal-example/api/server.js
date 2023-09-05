@@ -7,7 +7,7 @@ port = process.env.PORT;
 
 // api to which your server listen for the requests coming from azure ad
 app.get("/callback", (req, res) => {
-  // when a request from auth0 is received we get auth code as query param
+  // when a request from azure is received we get auth code as query param
   authCode = req.query.code;
   const options = {
     method: "POST",

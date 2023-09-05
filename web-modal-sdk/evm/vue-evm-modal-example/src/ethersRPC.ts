@@ -103,22 +103,79 @@ export default class EthereumRpc {
     }
   }
 
+  // async signMessage() {
+  //   try {
+  //     // For ethers v5
+  //     // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+  //     const ethersProvider = new ethers.BrowserProvider(this.provider);
+
+  //     // For ethers v5
+  //     // const signer = ethersProvider.getSigner();
+  //     const signer = await ethersProvider.getSigner();
+  //     const originalMessage = "YOUR_MESSAGE";
+
+  //     // Sign the message
+  //     const signedMessage = await signer.signMessage(originalMessage);
+
+  //     return signedMessage;
+  //   } catch (error) {
+  //     return error as string;
+  //   }
+  // }
+
   async signMessage() {
     try {
       // For ethers v5
       // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
       const ethersProvider = new ethers.BrowserProvider(this.provider);
 
-      // For ethers v5
-      // const signer = ethersProvider.getSigner();
       const signer = await ethersProvider.getSigner();
-      const originalMessage = "YOUR_MESSAGE";
 
-      // Sign the message
-      const signedMessage = await signer.signMessage(originalMessage);
+
+      // Get user's Ethereum public address
+      const fromAddress = await signer.getAddress();
+
+      const originalMessage = {
+        types: {
+          EIP712Domain: [
+            {
+              name: "name",
+              type: "string",
+            },
+            {
+              name: "version",
+              type: "string",
+            },
+            {
+              name: "verifyingContract",
+              type: "address",
+            },
+          ],
+          Greeting: [
+            {
+              name: "contents",
+              type: "string",
+            },
+          ],
+        },
+        primaryType: "Greeting",
+        domain: {
+          name: "web3auth",
+          version: "1",
+          verifyingContract: "0xE0cef4417a772512E6C95cEf366403839b0D6D6D",
+        },
+        message: {
+          contents: "Hello, from Web3Auth!",
+        },
+      };
+      const params = [fromAddress, originalMessage];
+      const method = "eth_signTypedData_v4";
+      
+      const signedMessage = await signer.provider.send(method, params);     
 
       return signedMessage;
     } catch (error) {
+      console.log(error)
       return error as string;
     }
   }

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 "use client";
 
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -13,7 +13,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export default function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const rpc = new RPC(provider as IProvider);
     const algorandKeypair = await rpc.getAlgorandKeyPair();
     uiConsole("Keypair", algorandKeypair);
   };

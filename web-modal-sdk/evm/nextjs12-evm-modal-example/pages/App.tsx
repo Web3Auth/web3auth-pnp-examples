@@ -63,7 +63,7 @@ function App() {
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings(
           "eip155",
-          [1, 137, 5],
+          [1],
           "04309ed1007e77d1f119b85205bb779d"
         );
         const walletConnectV2Adapter = new WalletConnectV2Adapter({

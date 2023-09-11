@@ -3,7 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import {
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import {
@@ -14,7 +14,7 @@ import {
   WalletConnectV2Adapter,
   getWalletConnectV2Settings,
 } from "@web3auth/wallet-connect-v2-adapter";
-import QRCodeModal from "@walletconnect/qrcode-modal";
+import {WalletConnectModal} from "@walletconnect/modal";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
@@ -24,7 +24,7 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+  const [provider, setProvider] = useState<IProvider | null>(
     null
   );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
@@ -54,12 +54,12 @@ function App() {
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             whiteLabel: {
-              name: "W3A Heroes",
-              url: "https://web3auth.io",
+              appName: "W3A Heroes",
+              appUrl: "https://web3auth.io",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-              dark: false, // whether to enable dark mode. defaultValue: false
+              mode: "auto", // whether to enable dark mode. defaultValue: false
               theme: {
                 primary: "#00D1B2",
               },
@@ -98,12 +98,13 @@ function App() {
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings(
           "eip155",
-          [1, 137, 5],
+          [1],
           "04309ed1007e77d1f119b85205bb779d"
         );
+        const walletConnectModal = new WalletConnectModal( {projectId: "04309ed1007e77d1f119b85205bb779d"});
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           adapterSettings: {
-            qrcodeModal: QRCodeModal,
+            qrcodeModal: walletConnectModal,
             ...defaultWcSettings.adapterSettings,
           },
           loginSettings: { ...defaultWcSettings.loginSettings },

@@ -2,12 +2,13 @@
 "use client";
 
 import QRCodeModal from "@walletconnect/qrcode-modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { getWalletConnectV2Settings, WalletConnectV2Adapter } from "@web3auth/wallet-connect-v2-adapter";
 import { useEffect, useState } from "react";
+import { WalletConnectModal } from "@walletconnect/modal";
 
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
@@ -16,7 +17,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
@@ -48,8 +49,9 @@ export default function App() {
 
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1, 137, 5], "04309ed1007e77d1f119b85205bb779d");
+        const walletConnectModal = new WalletConnectModal( {projectId: "04309ed1007e77d1f119b85205bb779d"});
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          adapterSettings: { qrcodeModal: QRCodeModal, ...defaultWcSettings.adapterSettings },
+          adapterSettings: { qrcodeModal: walletConnectModal, ...defaultWcSettings.adapterSettings },
           loginSettings: { ...defaultWcSettings.loginSettings },
         });
 

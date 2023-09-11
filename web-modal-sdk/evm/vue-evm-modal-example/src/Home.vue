@@ -106,7 +106,11 @@ import RPC from "./web3RPC";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 
 // Adapters
-import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
+import {
+  getWalletConnectV2Settings,
+  WalletConnectV2Adapter,
+} from "@web3auth/wallet-connect-v2-adapter";
+
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
@@ -116,12 +120,12 @@ export default {
   props: {
     msg: String,
   },
-  setup() {
+  async setup() {
     const loggedin = ref<boolean>(false);
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    let provider = ref<SafeEventEmitterProvider | any>(false);
+    const provider = ref<SafeEventEmitterProvider | any>(false);
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -158,16 +162,19 @@ export default {
 
     // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
 
-    // adding wallet connect v1 adapter
+    // adding wallet connect v2 adapter
+    const defaultWcSettings = await getWalletConnectV2Settings(
+      "eip155",
+      [1, 137, 5],
+      "04309ed1007e77d1f119b85205bb779d"
+    );
 
-    const walletConnectV1Adapter = new WalletConnectV1Adapter({
-      adapterSettings: {
-        bridge: "https://bridge.walletconnect.org",
-      },
-      clientId,
+    const walletConnectV2Adapter = new WalletConnectV2Adapter({
+      adapterSettings: { ...defaultWcSettings.adapterSettings },
+      loginSettings: { ...defaultWcSettings.loginSettings },
     });
 
-    web3auth.configureAdapter(walletConnectV1Adapter);
+    web3auth.configureAdapter(walletConnectV2Adapter);
 
     // adding metamask adapter
 
@@ -208,7 +215,7 @@ export default {
         loggedin.value = false;
         await web3auth.initModal();
         await web3auth.addPlugin(torusPlugin);
-        provider = web3auth.provider;
+        provider.value = web3auth.provider;
         if (web3auth.provider && web3auth.connected) {
           loggedin.value = true;
         }
@@ -224,7 +231,7 @@ export default {
         uiConsole("web3auth not initialized yet");
         return;
       }
-      provider = await web3auth.connect();
+      provider.value = await web3auth.connect();
       loggedin.value = true;
     };
 
@@ -252,12 +259,12 @@ export default {
         return;
       }
       await web3auth.logout();
-      provider = null;
+      provider.value = null;
       loggedin.value = false;
     };
 
     const getChainId = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -267,7 +274,7 @@ export default {
     };
 
     const addChain = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -286,7 +293,7 @@ export default {
     };
 
     const switchChain = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -305,7 +312,7 @@ export default {
     };
 
     const getAccounts = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -315,7 +322,7 @@ export default {
     };
 
     const getBalance = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -325,7 +332,7 @@ export default {
     };
 
     const sendTransaction = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -335,7 +342,7 @@ export default {
     };
 
     const signMessage = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -345,7 +352,7 @@ export default {
     };
 
     const getPrivateKey = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }

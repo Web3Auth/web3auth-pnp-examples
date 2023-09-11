@@ -20,7 +20,7 @@ Install & Run:
 ```bash
 cd w3a-modal-near-nextjs
 npm install
-npm run start
+npm run dev
 # or
 cd w3a-modal-near-nextjs
 yarn

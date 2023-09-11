@@ -24,10 +24,14 @@ function App() {
             rpcTarget: "https://rpc.ankr.com/http/aptos/v1", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           uiConfig: {
-            theme: "dark",
+            theme: {
+              primary: "red",
+            },
+            mode: "dark",            
             loginMethodsOrder: ["google", "github"],
             defaultLanguage: "en",
-            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
           },
           web3AuthNetwork: "cyan",
         });

@@ -1,10 +1,10 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import Web3 from "web3";
 
 export default class EthereumRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
   async getAccounts(): Promise<string[]> {
@@ -22,7 +22,8 @@ export default class EthereumRpc {
       const web3 = new Web3(this.provider as any);
       const accounts = await web3.eth.getAccounts();
       const balance = web3.utils.fromWei(
-        await web3.eth.getBalance(accounts[0]) // Balance is in wei
+        await web3.eth.getBalance(accounts[0]), // Balance is in wei
+        "ether"
       );
       return balance;
     } catch (error) {
@@ -68,7 +69,7 @@ export default class EthereumRpc {
       const fromAddress = (await web3.eth.getAccounts())[0];
 
       const destination = "0x809D4310d578649D8539e718030EE11e603Ee8f3";
-      const amount = web3.utils.toWei("0.05"); // Convert 1 ether to wei
+      const amount = web3.utils.toWei("0.05", "ether"); // Convert 1 ether to wei
 
       // Submit transaction to the blockchain and wait for it to be mined
       const receipt = await web3.eth.sendTransaction({

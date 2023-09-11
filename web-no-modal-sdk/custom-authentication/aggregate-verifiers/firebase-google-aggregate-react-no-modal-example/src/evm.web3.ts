@@ -1,71 +1,95 @@
-import type {SafeEventEmitterProvider} from '@web3auth/base'
-import Web3 from 'web3'
+import type { IProvider } from "@web3auth/base";
+import Web3 from "web3";
 
 export default class EthereumRpc {
-  private provider: SafeEventEmitterProvider
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
-    this.provider = provider
+  constructor(provider: IProvider) {
+    this.provider = provider;
   }
   async getAccounts(): Promise<string[]> {
     try {
-      const web3 = new Web3(this.provider as any)
-      const accounts = await web3.eth.getAccounts()
-      return accounts
+      const web3 = new Web3(this.provider as any);
+      const accounts = await web3.eth.getAccounts();
+      return accounts;
     } catch (error: unknown) {
-      return error as string[]
+      return error as string[];
     }
   }
 
   async getBalance(): Promise<string> {
     try {
-      const web3 = new Web3(this.provider as any)
-      const accounts = await web3.eth.getAccounts()
-      const balance = await web3.eth.getBalance(accounts[0])
-      return balance
+      const web3 = new Web3(this.provider as any);
+      const accounts = await web3.eth.getAccounts();
+      const balance = web3.utils.fromWei(
+        await web3.eth.getBalance(accounts[0]), // Balance is in wei
+        "ether"
+      );
+      return balance;
     } catch (error) {
-      return error as string
+      return error as string;
     }
   }
 
   async signMessage(): Promise<string | undefined> {
     try {
-      const web3 = new Web3(this.provider as any)
-      const accounts = await web3.eth.getAccounts()
-      const message =
-        '0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad'
-      ;(web3.currentProvider as any)?.send(
+      const web3 = new Web3(this.provider as any);
+      const fromAddress = (await web3.eth.getAccounts())[0];
+
+      const originalMessage = [
         {
-          method: 'eth_sign',
-          params: [accounts[0], message],
-          from: accounts[0],
+          type: "string",
+          name: "fullName",
+          value: "Satoshi Nakamoto",
         },
-        (err: Error, result: any) => {
-          if (err) {
-            return console.error(err)
-          }
-          return result
+        {
+          type: "uint32",
+          name: "userId",
+          value: "1212",
         },
-      )
+      ];
+      const params = [originalMessage, fromAddress];
+      const method = "eth_signTypedData";
+
+      const signedMessage = await (web3.currentProvider as any)?.sendAsync({
+        id: 1,
+        method,
+        params,
+        fromAddress,
+      });
+      return signedMessage;
     } catch (error) {
-      return error as string
+      return error as string;
     }
-    return
   }
 
-  async signAndSendTransaction(): Promise<string> {
+  async sendTransaction(): Promise<string> {
     try {
-      const web3 = new Web3(this.provider as any)
-      const accounts = await web3.eth.getAccounts()
+      const web3 = new Web3(this.provider as any);
+      const fromAddress = (await web3.eth.getAccounts())[0];
 
-      const txRes = await web3.eth.sendTransaction({
-        from: accounts[0],
-        to: accounts[0],
-        value: web3.utils.toWei('0.01'),
-      })
-      return txRes.transactionHash
+      const destination = "0x809D4310d578649D8539e718030EE11e603Ee8f3";
+      const amount = web3.utils.toWei("0.05", "ether"); // Convert 1 ether to wei
+
+      // Submit transaction to the blockchain and wait for it to be mined
+      const receipt = await web3.eth.sendTransaction({
+        from: fromAddress,
+        to: destination,
+        value: amount,
+        maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+        maxFeePerGas: "6000000000000", // Max fee per gas
+      });
+      return receipt.toString();
     } catch (error) {
-      return error as string
+      return error as string;
     }
   }
+
+  getPrivateKey = async (): Promise<string> => {
+    const privateKey = await this.provider.request({
+      method: "eth_private_key",
+    });
+
+    return privateKey as string;
+  };
 }

@@ -3,7 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -16,7 +16,7 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+  const [provider, setProvider] = useState<IProvider | null>(
     null
   );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(
@@ -126,7 +126,7 @@ function App() {
           // identify the user. This is mapped b/w google and email passwordless logins of Auth0
           // verifierIdField: "email",
           // isVerifierIdCaseSensitive: false,
-          login_hint: "ihsraham27@gmail.com",
+          login_hint: "hello@web3auth.io",
         },
       }
     );

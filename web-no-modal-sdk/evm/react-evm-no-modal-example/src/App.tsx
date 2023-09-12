@@ -61,9 +61,10 @@ function App() {
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
               mode: "auto", // whether to enable dark mode. defaultValue: false
               theme: {
-                primary: "#00D1B2",
+                  primary: "#768729",
               },
-            },
+              useLogoLoader: true,
+          },
             mfaSettings: {
               deviceShareFactor: {
                 enable: true,

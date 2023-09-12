@@ -10,7 +10,7 @@ export default class XrplRPC {
 
   getAccounts = async (): Promise<any> => {
     try {
-      const accounts = await this.provider.request<string[]>({
+      const accounts = await this.provider.request<never, string[]>({
         method: "xrpl_getAccounts",
       });
       if (accounts) {
@@ -37,7 +37,7 @@ export default class XrplRPC {
 
   getBalance = async (): Promise<any> => {
     try {
-      const accounts = await this.provider.request<string[]>({
+      const accounts = await this.provider.request<string[], never>({
         method: "xrpl_getAccounts",
       });
 
@@ -67,10 +67,10 @@ export default class XrplRPC {
     try {
       const msg = "Hello world";
       const hexMsg = convertStringToHex(msg);
-      const txSign = await this.provider.request<{ signature: string }>({
+      const txSign = await this.provider.request< { signature: string }, never>({
         method: "xrpl_signMessage",
         params: {
-          message: hexMsg,
+          signature: hexMsg,
         },
       });
       return txSign;
@@ -82,7 +82,7 @@ export default class XrplRPC {
 
   signAndSendTransaction = async (): Promise<any> => {
     try {
-      const accounts = await this.provider.request<string[]>({
+      const accounts = await this.provider.request<never, string[]>({
         method: "xrpl_getAccounts",
       });
 

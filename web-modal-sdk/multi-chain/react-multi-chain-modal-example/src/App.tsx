@@ -51,21 +51,56 @@ function App() {
             chainId: "0x5",
             rpcTarget: "https://rpc.ankr.com/eth_goerli",
           },
+          uiConfig: {
+            appName: "W3A",
+            // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            theme: {
+              primary: "red",
+            },
+            mode: "dark",
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+          },
           web3AuthNetwork: "cyan",
         });
         setWeb3auth(web3auth);
 
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
-            mfaLevel: "default",
+            mfaLevel: "optional",
           },
           adapterSettings: {
+            uxMode: "redirect", // "redirect" | "popup"
             whiteLabel: {
-              name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-              defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
+              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+              // dark: false, // whether to enable dark mode. defaultValue: false
+            },
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
+              },
             },
           },
         });

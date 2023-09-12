@@ -23,6 +23,16 @@ function App() {
             chainId: "cosmoshub-4",
             rpcTarget: "https://rpc.cosmos.network",
           },
+          uiConfig: {
+            appName: "W3A Heroes",
+            mode: "light",
+            // loginMethodsOrder: ["apple", "google", "twitter"],
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+          },
           web3AuthNetwork: "cyan",
         });
 

@@ -49,7 +49,6 @@ function App() {
             mode: "dark",
             logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
             logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-            loginMethodsOrder: ["apple", "google", "twitter"],
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"

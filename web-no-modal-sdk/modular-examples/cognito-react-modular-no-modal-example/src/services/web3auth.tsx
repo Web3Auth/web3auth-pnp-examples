@@ -1,6 +1,6 @@
 import {
   ADAPTER_EVENTS,
-  SafeEventEmitterProvider,
+  IProvider,
   WALLET_ADAPTER_TYPE,
 } from "@web3auth/base";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
@@ -85,7 +85,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const setWalletProvider = useCallback(
-    (web3authProvider: SafeEventEmitterProvider) => {
+    (web3authProvider: IProvider) => {
       const walletProvider = getWalletProvider(
         chain,
         web3authProvider,

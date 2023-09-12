@@ -30,10 +30,17 @@ function App() {
             rpcTarget: "https://s.altnet.rippletest.net:51234",
           },
           uiConfig: {
-            theme: "dark",
-            loginMethodsOrder: ["github", "google"],
-            defaultLanguage: "en",
-            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            appName: "W3A",
+            // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            theme: {
+              primary: "red",
+            },
+            mode: "dark",
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
           web3AuthNetwork: "cyan",
         });
@@ -46,15 +53,36 @@ function App() {
             mfaLevel: "optional",
           },
           adapterSettings: {
+            uxMode: "redirect", // "redirect" | "popup"
             whiteLabel: {
-              name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-              defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
+              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+              // dark: false, // whether to enable dark mode. defaultValue: false
+            },
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
+              },
             },
           },
-          privateKeyProvider: xrplProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
 

@@ -39,9 +39,10 @@ export default class StarkNetRpc {
       const account = await this.getStarkAccount();
       if (account) {
         const contract = JSON.parse(JSON.stringify(CompiledAccountContractAbi));
-        const response = await defaultProvider.deployContract({
-          contract,
-        });
+        const response = await defaultProvider.deployAccountContract(
+          account,
+          contract.abi,
+        );
         return response;
       }
     } catch (error) {

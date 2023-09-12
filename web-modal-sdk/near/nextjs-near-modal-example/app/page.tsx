@@ -27,6 +27,19 @@ function App() {
             chainId: "near",
             rpcTarget: "https://rpc.testnet.near.org",
           },
+          uiConfig: {
+            appName: "W3A",
+            // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            theme: {
+              primary: "red",
+            },
+            mode: "dark",
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+          },
           web3AuthNetwork: "cyan",
         });
         setWeb3auth(web3auth);

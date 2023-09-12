@@ -22,7 +22,7 @@ export default class SolanaRpc {
   getBalance = async (): Promise<string> => {
     try {
       const solanaWallet = new SolanaWallet(this.provider);
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+      const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
         method: "solana_provider_config",
         params: [],
       });
@@ -53,7 +53,7 @@ export default class SolanaRpc {
 
       const accounts = await solanaWallet.requestAccounts();
 
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+      const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
         method: "solana_provider_config",
         params: [],
       });
@@ -84,7 +84,7 @@ export default class SolanaRpc {
   signTransaction = async (): Promise<string> => {
     try {
       const solanaWallet = new SolanaWallet(this.provider);
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+      const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
         method: "solana_provider_config",
         params: [],
       });

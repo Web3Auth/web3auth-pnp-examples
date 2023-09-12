@@ -188,7 +188,7 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & React ImmutableX Example
+        & nextjs ImmutableX Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

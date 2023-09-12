@@ -44,6 +44,7 @@ export default class EthereumRpc {
 			// Get user's balance in ether
 			const balance = web3.utils.fromWei(
 				await web3.eth.getBalance(address), // Balance is in wei
+				"ether"
 			);
 
 			return balance;

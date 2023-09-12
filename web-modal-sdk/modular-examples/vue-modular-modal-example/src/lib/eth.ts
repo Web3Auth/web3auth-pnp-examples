@@ -9,7 +9,7 @@ export const sendEth = async (provider: SafeEventEmitterProvider, uiConsole: any
     const txRes = await web3.eth.sendTransaction({
       from: accounts[0],
       to: accounts[0],
-      value: web3.utils.toWei("0.01"),
+      value: web3.utils.toWei("0.01", "ether"),
     });
     uiConsole("txRes", txRes);
   } catch (error) {
@@ -79,7 +79,7 @@ export const signTransaction = async (provider: SafeEventEmitterProvider, uiCons
     const txRes = await web3.eth.signTransaction({
       from: accounts[0],
       to: accounts[0],
-      value: web3.utils.toWei("0.01"),
+      value: web3.utils.toWei("0.01", "ether"),
     });
     uiConsole("txRes", txRes);
   } catch (error) {

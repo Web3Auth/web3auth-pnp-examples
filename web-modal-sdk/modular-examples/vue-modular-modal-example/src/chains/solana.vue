@@ -28,7 +28,7 @@ import {
   CONNECTED_EVENT_DATA,
   CustomChainConfig,
   LoginMethodConfig,
-  SafeEventEmitterProvider,
+  IProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
@@ -172,7 +172,7 @@ export default Vue.extend({
         this.loading = false;
       }
     },
-    async setupProvider(provider: SafeEventEmitterProvider) {
+    async setupProvider(provider: IProvider) {
       this.provider = provider;
     },
     subscribeAuthEvents(web3auth: Web3Auth) {

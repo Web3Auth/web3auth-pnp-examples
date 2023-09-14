@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { AptosAccount, AptosClient, FaucetClient } from "aptos";
 
 export default class AptosRpc {
@@ -10,9 +10,9 @@ export default class AptosRpc {
 
   aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
 
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

@@ -1,10 +1,10 @@
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import algosdk from "algosdk";
 
 export default class AlgorandRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

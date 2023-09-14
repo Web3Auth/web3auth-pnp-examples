@@ -1,4 +1,4 @@
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { useEffect, useState } from "react";
 
@@ -8,7 +8,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const rpc = new RPC(provider as IProvider);
     const starkaccounts = await rpc.getStarkAccount();
     uiConsole(starkaccounts);
   };
@@ -115,7 +115,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const rpc = new RPC(provider as IProvider);
     const starkKey = await rpc.getStarkKey();
     uiConsole(starkKey);
   };
@@ -125,7 +125,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const rpc = new RPC(provider as IProvider);
     const request = await rpc.onMintRequest();
     uiConsole(request);
   };
@@ -135,7 +135,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const rpc = new RPC(provider as IProvider);
     const request = await rpc.onDepositRequest();
     uiConsole(request);
   };
@@ -145,7 +145,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const rpc = new RPC(provider as IProvider);
     const request = await rpc.onWithdrawalRequest();
     uiConsole(request);
   };

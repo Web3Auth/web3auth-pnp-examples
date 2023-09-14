@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import { connect, KeyPair, keyStores, utils } from "near-api-js";
 export default class NearRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

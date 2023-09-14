@@ -1,7 +1,7 @@
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import Web3 from "web3";
 
-export const sendEth = async (provider: SafeEventEmitterProvider, uiConsole: any) => {
+export const sendEth = async (provider: IProvider, uiConsole: any) => {
   try {
     const web3 = new Web3(provider as any);
     const accounts = await web3.eth.getAccounts();
@@ -18,7 +18,7 @@ export const sendEth = async (provider: SafeEventEmitterProvider, uiConsole: any
   }
 };
 
-export const signEthMessage = async (provider: SafeEventEmitterProvider, uiConsole: any) => {
+export const signEthMessage = async (provider: IProvider, uiConsole: any) => {
   try {
     const web3 = new Web3();
     web3.setProvider(provider as any);
@@ -36,7 +36,7 @@ export const signEthMessage = async (provider: SafeEventEmitterProvider, uiConso
   }
 };
 
-export const getAccounts = async (provider: SafeEventEmitterProvider, uiConsole: any): Promise<string[] | undefined> => {
+export const getAccounts = async (provider: IProvider, uiConsole: any): Promise<string[] | undefined> => {
   try {
     const web3 = new Web3(provider as any);
     const accounts = await web3.eth.getAccounts();
@@ -47,7 +47,7 @@ export const getAccounts = async (provider: SafeEventEmitterProvider, uiConsole:
     uiConsole("error", error);
   }
 };
-export const getChainId = async (provider: SafeEventEmitterProvider, uiConsole: any): Promise<string | undefined> => {
+export const getChainId = async (provider: IProvider, uiConsole: any): Promise<string | undefined> => {
   try {
     const web3 = new Web3(provider as any);
     const chainId = await web3.eth.getChainId();
@@ -58,7 +58,7 @@ export const getChainId = async (provider: SafeEventEmitterProvider, uiConsole: 
     uiConsole("error", error);
   }
 };
-export const getBalance = async (provider: SafeEventEmitterProvider, uiConsole: any) => {
+export const getBalance = async (provider: IProvider, uiConsole: any) => {
   try {
     const web3 = new Web3(provider as any);
     const accounts = await web3.eth.getAccounts();
@@ -70,7 +70,7 @@ export const getBalance = async (provider: SafeEventEmitterProvider, uiConsole: 
   }
 };
 
-export const signTransaction = async (provider: SafeEventEmitterProvider, uiConsole: any) => {
+export const signTransaction = async (provider: IProvider, uiConsole: any) => {
   try {
     const web3 = new Web3(provider as any);
     const accounts = await web3.eth.getAccounts();

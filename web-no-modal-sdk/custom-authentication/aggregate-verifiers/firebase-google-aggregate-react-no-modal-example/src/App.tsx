@@ -113,7 +113,6 @@ function App() {
     );
     console.log("web3authProvider", web3authProvider);
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const signInWithGithub = async (): Promise<UserCredential> => {
@@ -146,7 +145,6 @@ function App() {
         },
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

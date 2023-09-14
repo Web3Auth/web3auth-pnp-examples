@@ -87,7 +87,6 @@ export default function App() {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const loginWithSMS = async () => {
@@ -102,7 +101,6 @@ export default function App() {
       },
     });
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const loginWithEmail = async () => {
@@ -117,7 +115,6 @@ export default function App() {
       },
     });
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const loginWCModal = async () => {
@@ -127,7 +124,6 @@ export default function App() {
     }
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {

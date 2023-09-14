@@ -96,7 +96,6 @@ function App() {
         loginProvider: "google",
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

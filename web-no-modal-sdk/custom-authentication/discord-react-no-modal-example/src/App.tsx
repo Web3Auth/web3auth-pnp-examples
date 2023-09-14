@@ -84,7 +84,6 @@ function App() {
         loginProvider: "discord",
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

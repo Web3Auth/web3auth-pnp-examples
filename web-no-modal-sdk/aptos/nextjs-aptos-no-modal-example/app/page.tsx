@@ -71,7 +71,6 @@ export default function App() {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {

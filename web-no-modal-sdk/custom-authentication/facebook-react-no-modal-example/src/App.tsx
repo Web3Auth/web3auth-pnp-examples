@@ -82,7 +82,6 @@ function App() {
         loginProvider: "facebook",
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

@@ -108,7 +108,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const loginAuth0EmailPasswordless = async () => {
@@ -131,7 +130,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const loginAuth0GitHub = async () => {
@@ -154,7 +152,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const loginAuth0Discord = async () => {
@@ -177,7 +174,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const getUserInfo = async () => {

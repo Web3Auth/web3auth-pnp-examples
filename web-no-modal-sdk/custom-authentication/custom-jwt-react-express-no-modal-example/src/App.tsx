@@ -100,7 +100,6 @@ function App() {
         },
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

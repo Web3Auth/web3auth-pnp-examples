@@ -83,7 +83,6 @@ function App() {
         loginProvider: "twitch",
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

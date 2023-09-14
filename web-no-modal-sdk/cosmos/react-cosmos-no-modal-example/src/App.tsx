@@ -74,7 +74,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {

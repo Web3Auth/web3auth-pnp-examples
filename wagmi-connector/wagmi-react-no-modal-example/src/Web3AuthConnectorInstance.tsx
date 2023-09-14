@@ -2,12 +2,11 @@
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 import { Chain } from "wagmi";
 
-const name = "My App Name";
 const iconUrl = "https://web3auth.io/docs/contents/logo-ethereum.png";
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
@@ -24,9 +23,9 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   }
 
   const web3AuthInstance = new Web3AuthNoModal({
-    clientId: "YOUR_CLIENT_ID",
+    clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
     chainConfig,
-    web3AuthNetwork: "cyan",
+    web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
   });
 
   const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
@@ -35,15 +34,10 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   const openloginAdapterInstance = new OpenloginAdapter({
     privateKeyProvider,
     adapterSettings: {
-      network: "cyan",
       uxMode: "redirect",
       whiteLabel: {
-        name,
-        logoLight: iconUrl,
-        logoDark: iconUrl,
-        defaultLanguage: "en",
-        dark: true, // whether to enable dark mode. defaultValue: false
-      },
+        appName: "Wagmi Web3Auth Demo",
+      }
     },
   });
   web3AuthInstance.configureAdapter(openloginAdapterInstance);

@@ -1,12 +1,13 @@
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
 const name = "Login with Auth0";
 const iconUrl = "https://avatars.githubusercontent.com/u/2824157?s=280&v=4";
 
+//@ts-ignore
 export const rainbowWeb3AuthConnector = ({ chains }) => {
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -20,9 +21,9 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
 
   // Create Web3Auth Instance
   const web3AuthInstance = new Web3AuthNoModal({
-    clientId: "YOUR_CLIENT_ID",
+    clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
     chainConfig,
-    web3AuthNetwork: "cyan",
+    web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
   });
 
   // Add openlogin adapter for customisations
@@ -34,12 +35,15 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
       uxMode: "redirect",
       loginConfig: {
         jwt: {
-          name: "Web3Auth-Auth0-JWT",
-          verifier: "web3auth-auth0-demo",
+          name: "Web3Auth Auth0 Grandma",
+          verifier: "w3a-auth0-demo",
           typeOfLogin: "jwt",
-          clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+          clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
         },
       },
+      whiteLabel: {
+        appName: "Web3Auth Auth0 Grandma",
+      }
     },
   });
   web3AuthInstance.configureAdapter(openloginAdapter);
@@ -58,7 +62,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
             relogin: true,
             loginProvider: "jwt",
             extraLoginOptions: {
-              domain: "https://shahbaz-torus.us.auth0.com",
+              domain: "https://web3auth.au.auth0.com",
               verifierIdField: "sub",
             },
           },

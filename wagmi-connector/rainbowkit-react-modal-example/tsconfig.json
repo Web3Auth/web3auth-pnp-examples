@@ -21,11 +21,6 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "**/src/*.ts",
-    "**/src/*.js",
-    "**/*.ts",
-    "**/*.js",
-    "**/src/*.tsx",
-    "**/*.tsx", "wagmi-connector/rainbowkit-react-modal-with-plugin-example/src/App.tsx",
-  ],
+    "src"
+  ]
 }

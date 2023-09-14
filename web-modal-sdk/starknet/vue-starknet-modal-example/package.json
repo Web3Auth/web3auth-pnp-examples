@@ -10,7 +10,7 @@
   "dependencies": {
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "@web3auth/base": "^7.0.1",
-    "@web3auth/modal": "^7.0.1",
+    "@web3auth/modal": "^7.0.2",
     "@web3auth/openlogin-adapter": "^7.0.1",
     "core-js": "^3.8.3",
     "elliptic": "^6.5.4",

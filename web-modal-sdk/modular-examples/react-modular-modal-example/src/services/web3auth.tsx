@@ -1,4 +1,4 @@
-import { ADAPTER_EVENTS, SafeEventEmitterProvider } from "@web3auth/base";
+import { ADAPTER_EVENTS, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { createContext, FunctionComponent, ReactNode, useCallback, useContext, useEffect, useState } from "react";
@@ -60,7 +60,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
   const [isLoading, setIsLoading] = useState(false);
 
   const setWalletProvider = useCallback(
-    (web3authProvider: SafeEventEmitterProvider) => {
+    (web3authProvider: IProvider) => {
       const walletProvider = getWalletProvider(chain, web3authProvider, uiConsole);
       setProvider(walletProvider);
     },
@@ -104,6 +104,8 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
           chainConfig: currentChainConfig,
           // get your client id from https://dashboard.web3auth.io
           clientId: clientId[web3AuthNetwork],
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             defaultLanguage: "en",
           },

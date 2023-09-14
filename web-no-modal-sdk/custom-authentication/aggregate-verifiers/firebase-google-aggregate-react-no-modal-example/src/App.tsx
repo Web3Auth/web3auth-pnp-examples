@@ -3,7 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -34,7 +34,7 @@ const firebaseConfig = {
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+  const [provider, setProvider] = useState<IProvider | null>(
     null
   );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -113,7 +113,6 @@ function App() {
     );
     console.log("web3authProvider", web3authProvider);
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const signInWithGithub = async (): Promise<UserCredential> => {
@@ -146,7 +145,6 @@ function App() {
         },
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

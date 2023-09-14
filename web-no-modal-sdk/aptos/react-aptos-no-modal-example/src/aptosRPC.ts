@@ -1,13 +1,13 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { AptosAccount , FaucetClient, AptosClient } from "aptos";
 
 export default class AptosRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
   NODE_URL ="https://fullnode.devnet.aptoslabs.com";
   FAUCET_URL ="https://faucet.devnet.aptoslabs.com";
   aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

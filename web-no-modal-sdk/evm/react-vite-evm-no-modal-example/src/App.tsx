@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import "./App.css";
 
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
@@ -15,7 +15,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
@@ -43,11 +43,11 @@ function App() {
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             whiteLabel: {
-              name: "Your app Name",
+              appName: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
               defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
+              mode: "dark", // whether to enable dark mode. defaultValue: false
             },
           },
           privateKeyProvider,

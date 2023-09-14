@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import RPC from "./algorandRPC";
 import "./App.css";
 
@@ -9,7 +9,7 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -21,6 +21,18 @@ function App() {
             chainId: "1",
             rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
             chainNamespace: CHAIN_NAMESPACES.OTHER,
+          },
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
+            appName: "W3A Heroes",
+            mode: "light",
+            // loginMethodsOrder: ["apple", "google", "twitter"],
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
           web3AuthNetwork: "cyan"
         });
@@ -47,7 +59,6 @@ function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -84,7 +95,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const rpc = new RPC(provider as IProvider);
     const algorandKeypair = await rpc.getAlgorandKeyPair();
     uiConsole("Keypair", algorandKeypair);
   };

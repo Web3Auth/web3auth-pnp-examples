@@ -73,7 +73,7 @@
 <script lang="ts">
 import { ref, onMounted } from "vue";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import RPC from "./solanaRPC";
 
 // Plugins
@@ -93,7 +93,7 @@ export default {
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    const provider = ref<SafeEventEmitterProvider | any>(null);
+    const provider = ref<IProvider | any>(null);
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -104,6 +104,21 @@ export default {
         chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
         rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
+            appName: "W3A",
+            // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            theme: {
+              primary: "red",
+            },
+            mode: "dark",
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+          },
       web3AuthNetwork: "cyan",
     });
 

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 
 import RPC from "./tezosRPC";
@@ -15,7 +15,7 @@ export class AppComponent {
 
   web3auth: Web3Auth | null = null;
 
-  provider: SafeEventEmitterProvider | null = null;
+  provider: IProvider | null = null;
 
   loggedIn = false;
 
@@ -29,7 +29,9 @@ export class AppComponent {
         chainId: "1",
         rpcTarget: "https://rpc.tzbeta.net/", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
-      uiConfig: {
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
         theme: "dark",
         loginMethodsOrder: ["google", "github"],
         defaultLanguage: "en",
@@ -81,7 +83,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const tezosKey = await rpc.getTezosKeyPair();
     this.uiConsole(tezosKey);
   };

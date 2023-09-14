@@ -3,23 +3,30 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { ConnectButton, connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { createConfig, WagmiConfig, configureChains } from "wagmi";
 import { rainbowWeb3AuthConnector } from "./RainbowWeb3authConnector";
-import { mainnet, polygon } from 'wagmi/chains';
-import { walletConnectWallet, rainbowWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
-import { alchemyProvider } from "wagmi/providers/alchemy";
+import { mainnet, polygon, optimism, arbitrum, base, zora } from 'wagmi/chains';
+import { rainbowWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon],
-  [alchemyProvider({ apiKey: "7wSu45FYTMHUO4HJkHjQwX4HFkb7k9Ui" }), alchemyProvider({ apiKey: "fGXusgBUDC-OPy6XI8IFRvu1i7sbWsYj" }), publicProvider()]
+  [mainnet, polygon, optimism, arbitrum, base, zora],
+  [
+    publicProvider()
+  ]
 );
+
 const connectors = connectorsForWallets([
   {
-    groupName: "Recommended",
-    wallets: [rainbowWallet({ chains }), walletConnectWallet({ chains }), metaMaskWallet({ chains }), rainbowWeb3AuthConnector({ chains })],
+    groupName: 'Recommended',
+    wallets: [
+      rainbowWallet({ projectId: "04309ed1007e77d1f119b85205bb779d", chains }),
+      rainbowWeb3AuthConnector({ chains }),
+      metaMaskWallet({ projectId: "04309ed1007e77d1f119b85205bb779d", chains }),
+    ],
   },
 ]);
+
 const wagmiConfig = createConfig({
-  autoConnect: false,
+  autoConnect: true,
   connectors,
   publicClient,
 });

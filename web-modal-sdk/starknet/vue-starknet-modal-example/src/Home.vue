@@ -65,7 +65,7 @@ import { Web3Auth } from "@web3auth/modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
 } from "@web3auth/base";
 import RPC from "./starknetRPC";
 
@@ -79,7 +79,7 @@ export default {
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    let provider = ref<SafeEventEmitterProvider | any>(null);
+    let provider = ref<IProvider | any>(null);
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -90,6 +90,21 @@ export default {
         rpcTarget: "https://rpc.ankr.com/eth",
         chainNamespace: CHAIN_NAMESPACES.OTHER,
       },
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
+            appName: "W3A",
+            // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            theme: {
+              primary: "red",
+            },
+            mode: "dark",
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+            loginGridCol: 3,
+            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+          },
       web3AuthNetwork: "cyan",
     });
 
@@ -153,7 +168,7 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const starkaccounts = await rpc.getStarkAccount();
       uiConsole(starkaccounts);
     };
@@ -163,7 +178,7 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const starkKey = await rpc.getStarkKey();
       uiConsole(starkKey);
     };
@@ -173,7 +188,7 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const deployaccount = await rpc.deployAccount();
       uiConsole(deployaccount);
     };

@@ -43,7 +43,9 @@ import { LOGIN_PROVIDER } from "@toruslabs/openlogin";
 export default defineComponent({
   name: "App",
   data(): {
-    uiConfig: {
+    // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
       appLogo: string | undefined;
       theme: "dark" | "light" | undefined;
       loginMethodsOrder: string[] | undefined;
@@ -51,7 +53,9 @@ export default defineComponent({
     loginMethodsOrderDisplay: string;
   } {
     return {
-      uiConfig: {
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
         appLogo: "https://images.web3auth.io/login-google.svg",
         theme: "light",
         loginMethodsOrder: undefined,

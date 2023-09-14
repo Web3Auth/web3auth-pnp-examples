@@ -3,7 +3,7 @@ import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -15,13 +15,13 @@ import RPC from "./web3RPC"; // for using web3.js
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 
 const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [torusPlugin, setTorusPlugin] =
     useState<TorusWalletConnectorPlugin | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+  const [provider, setProvider] = useState<IProvider | null>(
     null
   );
   const [loggedIn, setLoggedIn] = useState(false);
@@ -36,16 +36,19 @@ function App() {
             chainId: "0x1",
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             appName: "W3A Heroes",
-            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-            theme: "light",
+            mode: "light",
             // loginMethodsOrder: ["apple", "google", "twitter"],
+            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
         });
 
         const openloginAdapter = new OpenloginAdapter({
@@ -54,11 +57,11 @@ function App() {
           },
           adapterSettings: {
             whiteLabel: {
-              name: "W3A Heroes",
+              appName: "W3A Heroes",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-              dark: false, // whether to enable dark mode. defaultValue: false
+              mode: "dark", // whether to enable dark mode. defaultValue: false
             },
             mfaSettings: {
               deviceShareFactor: {
@@ -84,25 +87,25 @@ function App() {
             },
             loginConfig: {
               google: {
-                verifier: "web3auth-google-example",
+                verifier: "w3a-google-demo",
                 typeOfLogin: "google",
                 clientId:
-                  "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com", //use your app client id you got from google
+                  "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", //use your app client id you got from google
               },
               facebook: {
-                verifier: "web3auth-facebook-example",
+                verifier: "w3a-facebook-demo",
                 typeOfLogin: "facebook",
-                clientId: "1222658941886084", //use your app client id you got from facebook
+                clientId: "215892741216994", //use your app client id you got from facebook
               },
               discord: {
-                verifier: "web3auth-discord-example",
+                verifier: "w3a-discord-demo",
                 typeOfLogin: "discord",
-                clientId: "993506120276648017", //use your app client id you got from discord
+                clientId: "1151006428610433095", //use your app client id you got from discord
               },
               twitch: {
-                verifier: "web3auth-twitch-example",
+                verifier: "w3a-twitch-demo",
                 typeOfLogin: "twitch",
-                clientId: "csotztipy7zn1bk9x4973bht1d8b0u", //use your app client id you got from twitch
+                clientId: "3k7e70gowvxjaxg71hjnc8h8ih3bpf", //use your app client id you got from twitch
               },
             },
           },

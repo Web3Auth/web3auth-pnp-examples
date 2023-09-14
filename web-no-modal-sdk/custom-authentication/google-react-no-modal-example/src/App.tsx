@@ -3,7 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -16,7 +16,7 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+  const [provider, setProvider] = useState<IProvider | null>(
     null
   );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -48,12 +48,12 @@ function App() {
           privateKeyProvider,
           adapterSettings: {
             whiteLabel: {
-              name: "W3A Heroes",
-              url: "https://web3auth.io",
+              appName: "W3A Heroes",
+              appUrl: "https://web3auth.io",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-              dark: true, // whether to enable dark mode. defaultValue: false
+              mode: "dark", // whether to enable dark mode. defaultValue: auto
               theme: {
                 primary: "#00D1B2",
               },
@@ -96,7 +96,6 @@ function App() {
         loginProvider: "google",
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

@@ -3,7 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -12,11 +12,11 @@ import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 
 const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+  const [provider, setProvider] = useState<IProvider | null>(
     null
   );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -36,7 +36,7 @@ function App() {
         const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig,
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
           useCoreKitKey: false,
         });
 
@@ -48,9 +48,9 @@ function App() {
             uxMode: "redirect",
             loginConfig: {
               twitch: {
-                verifier: "web3auth-twitch-example",
+                verifier: "w3a-twitch-demo",
                 typeOfLogin: "twitch",
-                clientId: "csotztipy7zn1bk9x4973bht1d8b0u", //use your app client id you got from twitch
+                clientId: "3k7e70gowvxjaxg71hjnc8h8ih3bpf", //use your app client id you got from twitch
               },
             },
           },
@@ -83,7 +83,6 @@ function App() {
         loginProvider: "twitch",
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

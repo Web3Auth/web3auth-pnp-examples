@@ -88,7 +88,7 @@ import { Web3Auth } from "@web3auth/modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
 } from "@web3auth/base";
 import RPC from "./starkexRPC";
 
@@ -102,14 +102,31 @@ export default {
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    let provider = ref<SafeEventEmitterProvider | any>(null);
+    const provider = ref<IProvider | any>(null);
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
     const web3auth = new Web3Auth({
       clientId,
       chainConfig: {
+        chainId: "0x1",
+        rpcTarget: "https://rpc.ankr.com/eth",
         chainNamespace: CHAIN_NAMESPACES.OTHER,
+      },
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
+        appName: "W3A",
+        // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+        theme: {
+          primary: "red",
+        },
+        mode: "dark",
+        logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+        logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+        defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+        loginGridCol: 3,
+        primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
       },
       web3AuthNetwork: "cyan",
     });
@@ -121,7 +138,7 @@ export default {
 
         await web3auth.initModal();
         if (web3auth.provider) {
-          provider = web3auth.provider;
+          provider.value = web3auth.provider;
           loggedin.value = true;
         }
       } catch (error) {
@@ -136,7 +153,7 @@ export default {
         uiConsole("web3auth not initialized yet");
         return;
       }
-      provider = await web3auth.connect();
+      provider.value = await web3auth.connect();
       loggedin.value = true;
       uiConsole("Logged in Successfully!");
     };
@@ -165,56 +182,56 @@ export default {
         return;
       }
       await web3auth.logout();
-      provider = null;
+      provider.value = null;
       loggedin.value = false;
     };
 
     const onGetStarkAccount = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const starkaccounts = await rpc.getStarkAccount();
       uiConsole(starkaccounts);
     };
 
     const getStarkKey = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const starkKey = await rpc.getStarkKey();
       uiConsole(starkKey);
     };
 
     const onMintRequest = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const request = await rpc.onMintRequest();
       uiConsole(request);
     };
 
     const onDepositRequest = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const request = await rpc.onDepositRequest();
       uiConsole(request);
     };
 
     const onWithdrawalRequest = async () => {
-      if (!provider) {
+      if (!provider.value) {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const request = await rpc.onWithdrawalRequest();
       uiConsole(request);
     };

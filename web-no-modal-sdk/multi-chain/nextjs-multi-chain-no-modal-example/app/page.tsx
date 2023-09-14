@@ -14,7 +14,7 @@ import { hex2buf } from "@taquito/utils";
 // Tezos
 // @ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -33,7 +33,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   function getWeb3AuthNoModal(chainConfig: any): Web3AuthNoModal {
@@ -71,11 +71,11 @@ export default function App() {
           },
           adapterSettings: {
             whiteLabel: {
-              name: "Your app Name",
+              appName: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
               defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
+              mode: "dark", // whether to enable dark mode. defaultValue: false
             },
           },
         });

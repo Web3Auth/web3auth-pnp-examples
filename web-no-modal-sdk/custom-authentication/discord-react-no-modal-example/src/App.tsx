@@ -3,7 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -13,11 +13,11 @@ import RPC from "./web3RPC"; // for using web3.js
 import axios from "axios";
 
 const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+  const [provider, setProvider] = useState<IProvider | null>(
     null
   );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -37,7 +37,7 @@ function App() {
         const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig,
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
           useCoreKitKey: false,
         });
 
@@ -49,9 +49,9 @@ function App() {
             uxMode: "redirect",
             loginConfig: {
               discord: {
-                verifier: "web3auth-discord-example",
+                verifier: "w3a-discord-demo",
                 typeOfLogin: "discord",
-                clientId: "993506120276648017", //use your app client id you got from discord
+                clientId: "1151006428610433095", //use your app client id you got from discord
               },
             },
           },
@@ -84,7 +84,6 @@ function App() {
         loginProvider: "discord",
       }
     );
-    setLoggedIn(true);
     setProvider(web3authProvider);
   };
 

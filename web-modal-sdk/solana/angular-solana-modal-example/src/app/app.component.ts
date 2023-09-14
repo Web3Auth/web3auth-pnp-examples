@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { SlopeAdapter } from "@web3auth/slope-adapter";
 // Plugins
@@ -21,7 +21,7 @@ export class AppComponent {
 
   web3auth: Web3Auth | null = null;
 
-  provider: SafeEventEmitterProvider | null = null;
+  provider: IProvider | null = null;
 
   isModalLoaded = false;
 
@@ -34,6 +34,21 @@ export class AppComponent {
         chainNamespace: CHAIN_NAMESPACES.SOLANA,
         chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
         rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+      },
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
+        appName: "W3A",
+        // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+        theme: {
+          primary: "red",
+        },
+        mode: "dark",
+        logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+        logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+        defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+        loginGridCol: 3,
+        primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
       },
       web3AuthNetwork: "cyan",
     });

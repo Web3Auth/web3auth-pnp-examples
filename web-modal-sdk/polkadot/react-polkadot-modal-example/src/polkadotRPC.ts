@@ -1,13 +1,13 @@
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 
 import { ApiPromise, WsProvider } from "@polkadot/api";
 
 export default class PolkadotRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

@@ -1,10 +1,10 @@
-import type { SafeEventEmitterProvider } from '@web3auth/base';
+import type { IProvider } from '@web3auth/base';
 import Web3 from 'web3';
 
 export default class EthereumRpc {
-	private provider: SafeEventEmitterProvider;
+	private provider: IProvider;
 
-	constructor(provider: SafeEventEmitterProvider) {
+	constructor(provider: IProvider) {
 		this.provider = provider;
 	}
 
@@ -44,6 +44,7 @@ export default class EthereumRpc {
 			// Get user's balance in ether
 			const balance = web3.utils.fromWei(
 				await web3.eth.getBalance(address), // Balance is in wei
+				"ether"
 			);
 
 			return balance;

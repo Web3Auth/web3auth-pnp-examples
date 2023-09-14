@@ -20,7 +20,7 @@ Install & Run:
 ```bash
 cd w3a-modal-polkadot-nextjs
 npm install
-npm run start
+npm run dev
 # or
 cd w3a-modal-polkadot-nextjs
 yarn

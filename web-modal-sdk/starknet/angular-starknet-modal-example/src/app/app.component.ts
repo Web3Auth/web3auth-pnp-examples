@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 
 // import { connect } from "near-api-js";
@@ -16,7 +16,7 @@ export class AppComponent {
 
   web3auth: Web3Auth | null = null;
 
-  provider: SafeEventEmitterProvider | null = null;
+  provider: IProvider | null = null;
 
   isModalLoaded = false;
 
@@ -29,6 +29,21 @@ export class AppComponent {
         chainId: "0x1",
         rpcTarget: "https://rpc.ankr.com/eth",
         chainNamespace: CHAIN_NAMESPACES.OTHER,
+      },
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
+        appName: "W3A",
+        // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+        theme: {
+          primary: "red",
+        },
+        mode: "dark",
+        logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+        logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+        defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+        loginGridCol: 3,
+        primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
       },
       web3AuthNetwork: "cyan",
     });
@@ -76,7 +91,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const starkaccounts = await rpc.getStarkAccount();
     this.uiConsole(starkaccounts);
   };
@@ -86,7 +101,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const starkKey = await rpc.getStarkKey();
     this.uiConsole(starkKey);
   };
@@ -96,7 +111,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const deployaccount = await rpc.deployAccount();
     this.uiConsole(deployaccount);
   };

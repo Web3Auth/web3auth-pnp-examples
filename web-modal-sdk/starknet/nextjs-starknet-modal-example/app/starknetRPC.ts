@@ -1,13 +1,13 @@
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { defaultProvider } from "starknet";
 
 import CompiledAccountContractAbi from "./ArgentAccount.json";
 
 export default class StarkNetRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

@@ -13,9 +13,9 @@
     "@taquito/taquito": "^16.2.0",
     "@taquito/utils": "^16.2.0",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
-    "@web3auth/base": "^6.1.7",
-    "@web3auth/no-modal": "^6.1.7",
-    "@web3auth/openlogin-adapter": "^6.1.7",
+    "@web3auth/base": "^7.0.1",
+    "@web3auth/no-modal": "^7.0.1",
+    "@web3auth/openlogin-adapter": "^7.0.1",
     "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"

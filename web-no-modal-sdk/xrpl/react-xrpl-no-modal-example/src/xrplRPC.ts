@@ -1,16 +1,16 @@
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import { convertStringToHex, Payment, xrpToDrops } from "xrpl";
 
 export default class XrplRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
   getAccounts = async (): Promise<any> => {
     try {
-      const accounts = await this.provider.request<string[]>({
+      const accounts = await this.provider.request<never, string[]>({
         method: "xrpl_getAccounts",
       });
       if (accounts) {
@@ -37,7 +37,7 @@ export default class XrplRPC {
 
   getBalance = async (): Promise<any> => {
     try {
-      const accounts = await this.provider.request<string[]>({
+      const accounts = await this.provider.request<never, string[]>({
         method: "xrpl_getAccounts",
       });
 
@@ -67,7 +67,7 @@ export default class XrplRPC {
     try {
       const msg = "Hello world";
       const hexMsg = convertStringToHex(msg);
-      const txSign = await this.provider.request<{ signature: string }>({
+      const txSign = await this.provider.request<object, never>({
         method: "xrpl_signMessage",
         params: {
           message: hexMsg,
@@ -82,7 +82,7 @@ export default class XrplRPC {
 
   signAndSendTransaction = async (): Promise<any> => {
     try {
-      const accounts = await this.provider.request<string[]>({
+      const accounts = await this.provider.request<never, string[]>({
         method: "xrpl_getAccounts",
       });
 

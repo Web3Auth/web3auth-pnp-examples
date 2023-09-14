@@ -1,4 +1,4 @@
-import { ADAPTER_EVENTS, SafeEventEmitterProvider } from "@web3auth/base";
+import { ADAPTER_EVENTS, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { createContext, FunctionComponent, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { CHAIN_CONFIG, CHAIN_CONFIG_TYPE } from "../config/chainConfig";
@@ -60,7 +60,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
   const [isLoading, setIsLoading] = useState(false);
 
   const setWalletProvider = useCallback(
-    (web3authProvider: SafeEventEmitterProvider) => {
+    (web3authProvider: IProvider) => {
       const walletProvider = getWalletProvider(chain, web3authProvider, uiConsole);
       setProvider(walletProvider);
     },

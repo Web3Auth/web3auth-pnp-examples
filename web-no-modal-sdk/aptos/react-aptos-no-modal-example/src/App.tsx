@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
@@ -15,7 +15,7 @@ const clientId =
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+  const [provider, setProvider] = useState<IProvider | null>(
     null
   );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
@@ -69,7 +69,6 @@ function App() {
       }
     );
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {

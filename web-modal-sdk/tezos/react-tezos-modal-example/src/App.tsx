@@ -1,4 +1,4 @@
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { useEffect, useState } from "react";
 import "./App.css";
@@ -9,7 +9,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,6 @@ function App() {
     }
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -83,7 +82,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const rpc = new RPC(provider as IProvider);
     const tezosKey = await rpc.getTezosKeyPair();
     uiConsole(tezosKey);
   };

@@ -26,6 +26,6 @@
     "**/*.ts",
     "**/*.js",
     "**/src/*.tsx",
-    "**/*.tsx",
+    "**/*.tsx", "wagmi-connector/rainbowkit-react-modal-with-plugin-example/src/App.tsx",
   ],
 }

@@ -99,14 +99,13 @@
 <script lang="ts">
 import { ref, onMounted } from "vue";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import RPC from "./web3RPC";
 
 // Plugins
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 
 // Adapters
-import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
@@ -121,7 +120,7 @@ export default {
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    let provider = ref<SafeEventEmitterProvider | any>(false);
+    let provider = ref<IProvider | any>(false);
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -132,8 +131,19 @@ export default {
         chainId: "0x1",
         rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
       uiConfig: {
-        defaultLanguage: "en",
+        appName: "W3A",
+        theme: {
+          primary: "red",
+        },
+        mode: "dark",
+        logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+        logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+        defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+        loginGridCol: 3,
+        primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
       },
       web3AuthNetwork: "cyan",
     });
@@ -153,22 +163,11 @@ export default {
         },
         useWalletConnect: true,
         enableLogging: true,
+        showTorusButton: true,
       },
     });
 
     // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
-
-    // adding wallet connect v1 adapter
-
-    const walletConnectV1Adapter = new WalletConnectV1Adapter({
-      adapterSettings: {
-        bridge: "https://bridge.walletconnect.org",
-      },
-      clientId,
-    });
-
-    web3auth.configureAdapter(walletConnectV1Adapter);
-
     // adding metamask adapter
 
     const metamaskAdapter = new MetamaskAdapter({
@@ -195,15 +194,17 @@ export default {
     // it will add/update  the metamask adapter in to web3auth class
     web3auth.configureAdapter(metamaskAdapter);
 
-    const torusWalletAdapter = new TorusWalletAdapter({
+    onMounted(async () => {
+      try {
+        const torusWalletAdapter = new TorusWalletAdapter({
       clientId,
+      initParams: {
+        showTorusButton: true,
+      }
     });
 
     // it will add/update  the torus-evm adapter in to web3auth class
     web3auth.configureAdapter(torusWalletAdapter);
-
-    onMounted(async () => {
-      try {
         loading.value = true;
         loggedin.value = false;
         await web3auth.initModal();
@@ -224,7 +225,7 @@ export default {
         uiConsole("web3auth not initialized yet");
         return;
       }
-      provider = await web3auth.connect();
+      provider.value = await web3auth.connect();
       loggedin.value = true;
     };
 
@@ -252,7 +253,7 @@ export default {
         return;
       }
       await web3auth.logout();
-      provider = null;
+      provider.value = null;
       loggedin.value = false;
     };
 

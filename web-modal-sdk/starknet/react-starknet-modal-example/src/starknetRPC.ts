@@ -1,15 +1,15 @@
 // @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { defaultProvider } from "starknet";
 
 // @ts-ignore
 import CompiledAccountContractAbi from "./ArgentAccount.json";
 
 export default class StarkNetRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
@@ -39,9 +39,10 @@ export default class StarkNetRpc {
       const account = await this.getStarkAccount();
       if (account) {
         const contract = JSON.parse(JSON.stringify(CompiledAccountContractAbi));
-        const response = await defaultProvider.deployContract({
-          contract,
-        });
+        const response = await defaultProvider.deployAccountContract(
+          account,
+          contract.abi,
+        );
         return response;
       }
     } catch (error) {

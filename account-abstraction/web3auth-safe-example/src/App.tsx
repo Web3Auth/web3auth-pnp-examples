@@ -37,7 +37,9 @@ function App() {
         chainId: "0x5",
         rpcTarget: "https://rpc.ankr.com/eth_goerli", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
-      uiConfig: {
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
         theme: "dark",
         loginMethodsOrder: ["github", "google"],
         defaultLanguage: "en",

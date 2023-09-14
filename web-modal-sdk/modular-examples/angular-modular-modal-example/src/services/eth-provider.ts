@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import Web3 from "web3";
 
 import { IWalletProvider } from "./wallet-provider";
 
-const ethProvider = (provider: SafeEventEmitterProvider, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
+const ethProvider = (provider: IProvider, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
   const getAccounts = async () => {
     try {
       const web3 = new Web3(provider as any);
@@ -59,7 +59,7 @@ const ethProvider = (provider: SafeEventEmitterProvider, uiConsole: (...args: un
       const txRes = await web3.eth.sendTransaction({
         from: accounts[0],
         to: accounts[0],
-        value: web3.utils.toWei("0.01"),
+        value: web3.utils.toWei("0.01", "ether"),
       });
       uiConsole("txRes", txRes);
     } catch (error) {
@@ -76,7 +76,7 @@ const ethProvider = (provider: SafeEventEmitterProvider, uiConsole: (...args: un
       const txRes = await web3.eth.signTransaction({
         from: accounts[0],
         to: accounts[0],
-        value: web3.utils.toWei("0.01"),
+        value: web3.utils.toWei("0.01", "ether"),
       });
       uiConsole("txRes", txRes);
     } catch (error) {

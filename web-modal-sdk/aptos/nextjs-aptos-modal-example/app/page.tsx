@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 "use client";
 
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { useEffect, useState } from "react";
 
@@ -11,7 +11,7 @@ const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpz
 
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -25,6 +25,8 @@ export default function App() {
             chainId: "1",
             rpcTarget: "https://rpc.ankr.com/http/aptos/v1", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             theme: "dark",
             loginMethodsOrder: ["google", "github"],

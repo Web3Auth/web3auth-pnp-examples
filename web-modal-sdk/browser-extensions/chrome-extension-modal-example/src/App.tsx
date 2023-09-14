@@ -23,6 +23,8 @@ function App() {
             chainId: "0x13881",
             rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
           },
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             theme: "dark",
             loginMethodsOrder: ["github", "google"],

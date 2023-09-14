@@ -39,7 +39,9 @@ import EthRpc from "../rpc/ethRpc.vue";
 export default Vue.extend({
   name: "WhitelabelExample",
   props: {
-    uiConfig: {
+    // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
       type: Object,
       default: () => ({
         theme: "light",
@@ -76,6 +78,8 @@ export default Vue.extend({
       try {
         this.loading = true;
         this.web3auth = new Web3Auth({
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             appLogo: this.uiConfig.logoUrl,
             theme: this.uiConfig.theme,

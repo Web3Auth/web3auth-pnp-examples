@@ -31,7 +31,9 @@ let web3auth: Web3Auth;
 export default defineComponent({
   name: "App",
   data(): {
-    uiConfig: {
+    // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
       appLogo: string | undefined;
       theme: "dark" | "light" | "auto";
       loginMethodsOrder: string[] | undefined;
@@ -39,7 +41,9 @@ export default defineComponent({
     provider: SafeEventEmitterProvider | null;
   } {
     return {
-      uiConfig: {
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
         appLogo: "https://images.web3auth.io/login-google.svg",
         theme: "light",
         loginMethodsOrder: undefined,

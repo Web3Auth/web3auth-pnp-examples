@@ -25,6 +25,8 @@ export default function App() {
             rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             appName: "W3A Heroes",
             mode: "light",

@@ -24,7 +24,9 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   const web3AuthInstance = new Web3Auth({
     clientId: "YOUR_CLIENT_ID",
     chainConfig,
-    uiConfig: {
+    // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
       appName: name,
       theme: "light",
       loginMethodsOrder: ["github", "google"],

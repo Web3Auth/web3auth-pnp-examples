@@ -23,6 +23,8 @@ function App() {
             chainId: "cosmoshub-4",
             rpcTarget: "https://rpc.cosmos.network",
           },
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             appName: "W3A Heroes",
             mode: "light",

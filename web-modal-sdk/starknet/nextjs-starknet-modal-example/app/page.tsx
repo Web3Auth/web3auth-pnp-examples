@@ -24,6 +24,8 @@ export default function App() {
             rpcTarget: "https://rpc.ankr.com/eth",
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             appName: "W3A",
             // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here

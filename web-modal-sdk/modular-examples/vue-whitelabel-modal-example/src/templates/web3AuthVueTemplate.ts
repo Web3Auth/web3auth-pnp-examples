@@ -19,6 +19,8 @@ export const generateVueCode = (uiConfig: UIConfig): string => {
   export default defineComponent({
       name: "App",
       data(): {
+          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
           uiConfig: {
               appLogo: string | undefined;
               theme: "dark" | "light" | "auto";
@@ -27,7 +29,9 @@ export const generateVueCode = (uiConfig: UIConfig): string => {
           provider: SafeEventEmitterProvider | null;
       } {
         return {
-            uiConfig: {
+            // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
                 appLogo: "https://images.web3auth.io/login-google.svg",
                 theme: undefined,
                 loginMethodsOrder: undefined,

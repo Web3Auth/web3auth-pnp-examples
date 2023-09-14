@@ -35,7 +35,9 @@ export class AppComponent {
         chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
         rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
       },
-      uiConfig: {
+      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+          // Please remove this parameter if you're on the Base Plan
+          uiConfig: {
         appName: "W3A",
         // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
         theme: {

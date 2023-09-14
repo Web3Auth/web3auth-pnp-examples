@@ -82,7 +82,7 @@ import { Web3Auth } from "@web3auth/modal";
 import {
   WALLET_ADAPTERS,
   CHAIN_NAMESPACES,
-  SafeEventEmitterProvider,
+  IProvider,
 } from "@web3auth/base";
 import RPC from "./tezosRPC";
 
@@ -96,7 +96,7 @@ export default {
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    let provider = ref<SafeEventEmitterProvider | any>(null);
+    let provider = ref<IProvider | any>(null);
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -170,7 +170,7 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(provider as IProvider);
       const tezosKey = await rpc.getTezosKeyPair();
       uiConsole(tezosKey);
     };

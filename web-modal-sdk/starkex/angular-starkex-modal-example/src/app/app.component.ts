@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 
 import RPC from "./starkexRPC";
@@ -15,7 +15,7 @@ export class AppComponent {
 
   web3auth: Web3Auth | null = null;
 
-  provider: SafeEventEmitterProvider | null = null;
+  provider: IProvider | null = null;
 
   isModalLoaded = false;
 
@@ -88,7 +88,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const starkaccounts = await rpc.getStarkAccount();
     this.uiConsole(starkaccounts);
   };
@@ -98,7 +98,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const starkKey = await rpc.getStarkKey();
     this.uiConsole(starkKey);
   };
@@ -108,7 +108,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const request = await rpc.onMintRequest();
     this.uiConsole(request);
   };
@@ -118,7 +118,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const request = await rpc.onDepositRequest();
     this.uiConsole(request);
   };
@@ -128,7 +128,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+    const rpc = new RPC(this.provider as IProvider);
     const request = await rpc.onWithdrawalRequest();
     this.uiConsole(request);
   };

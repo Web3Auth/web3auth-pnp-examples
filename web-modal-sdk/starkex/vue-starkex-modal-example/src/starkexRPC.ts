@@ -1,16 +1,16 @@
 import StarkExAPI from "@starkware-industries/starkex-js";
 //@ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 
 const starkExAPI = new StarkExAPI({
   endpoint: "https://gw.playground-v2.starkex.co",
 });
 
 export default class StarkExRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

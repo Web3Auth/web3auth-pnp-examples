@@ -1,13 +1,13 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 
 import { ImmutableX, Config } from "@imtbl/core-sdk";
 import { createStarkSigner } from "@imtbl/core-sdk";
 
 export default class EthereumRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

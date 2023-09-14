@@ -11,7 +11,7 @@ export const generateVueCode = (uiConfig: UIConfig): string => {
   
   <script lang="ts">
   import { UIConfig, Web3Auth } from "@web3auth/modal";
-  import { ADAPTER_STATUS, CHAIN_NAMESPACES, CONNECTED_EVENT_DATA, SafeEventEmitterProvider } from "@web3auth/base";
+  import { ADAPTER_STATUS, CHAIN_NAMESPACES, CONNECTED_EVENT_DATA, IProvider } from "@web3auth/base";
   import { defineComponent } from "vue";
   
   let web3auth: Web3Auth;
@@ -24,7 +24,7 @@ export const generateVueCode = (uiConfig: UIConfig): string => {
               theme: "dark" | "light" | "auto";
               loginMethodsOrder: string[] | undefined;
           };
-          provider: SafeEventEmitterProvider | null;
+          provider: IProvider | null;
       } {
         return {
             uiConfig: {

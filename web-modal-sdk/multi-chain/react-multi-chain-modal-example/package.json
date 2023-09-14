@@ -7,7 +7,7 @@
     "@polkadot/util-crypto": "^10.2.1",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "@taquito/signer": "^14.0.0",
-    "@taquito/taquito": "^14.0.0",
+    "@taquito/taquito": "^17.3.0",
     "@taquito/utils": "^14.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

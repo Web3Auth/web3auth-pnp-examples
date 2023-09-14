@@ -8,10 +8,6 @@ import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 // Adapters
 // import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
-import {
-  WalletConnectV2Adapter,
-  getWalletConnectV2Settings,
-} from "@web3auth/wallet-connect-v2-adapter";
 import RPC from "./web3RPC"; // for using web3.js
 
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
@@ -86,19 +82,6 @@ export class AppComponent {
     // });
 
     // web3auth.configureAdapter(walletConnectV1Adapter);
-
-    // adding wallet connect v2 adapter
-    const defaultWcSettings = await getWalletConnectV2Settings(
-      "eip155",
-      [1],
-      "04309ed1007e77d1f119b85205bb779d"
-    );
-    const walletConnectV2Adapter = new WalletConnectV2Adapter({
-      adapterSettings: { ...defaultWcSettings.adapterSettings },
-      loginSettings: { ...defaultWcSettings.loginSettings },
-    });
-
-    web3auth.configureAdapter(walletConnectV2Adapter);
 
     // adding metamask adapter
 

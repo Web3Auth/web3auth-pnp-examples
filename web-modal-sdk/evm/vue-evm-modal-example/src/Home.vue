@@ -106,11 +106,6 @@ import RPC from "./web3RPC";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 
 // Adapters
-import {
-  getWalletConnectV2Settings,
-  WalletConnectV2Adapter,
-} from "@web3auth/wallet-connect-v2-adapter";
-
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
@@ -120,12 +115,12 @@ export default {
   props: {
     msg: String,
   },
-  async setup() {
+  setup() {
     const loggedin = ref<boolean>(false);
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    const provider = ref<IProvider | any>(false);
+    let provider = ref<IProvider | any>(false);
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
@@ -138,19 +133,18 @@ export default {
       },
       // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
-          uiConfig: {
-          appName: "W3A",
-          // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-          theme: {
-            primary: "red",
-          },
-          mode: "dark",
-          logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-          logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-          defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-          loginGridCol: 3,
-          primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+      uiConfig: {
+        appName: "W3A",
+        theme: {
+          primary: "red",
         },
+        mode: "dark",
+        logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+        logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+        defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+        loginGridCol: 3,
+        primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+      },
       web3AuthNetwork: "cyan",
     });
 
@@ -169,25 +163,11 @@ export default {
         },
         useWalletConnect: true,
         enableLogging: true,
+        showTorusButton: true,
       },
     });
 
     // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
-
-    // adding wallet connect v2 adapter
-    const defaultWcSettings = await getWalletConnectV2Settings(
-      "eip155",
-      [1],
-      "04309ed1007e77d1f119b85205bb779d"
-    );
-
-    const walletConnectV2Adapter = new WalletConnectV2Adapter({
-      adapterSettings: { ...defaultWcSettings.adapterSettings },
-      loginSettings: { ...defaultWcSettings.loginSettings },
-    });
-
-    web3auth.configureAdapter(walletConnectV2Adapter);
-
     // adding metamask adapter
 
     const metamaskAdapter = new MetamaskAdapter({
@@ -214,20 +194,22 @@ export default {
     // it will add/update  the metamask adapter in to web3auth class
     web3auth.configureAdapter(metamaskAdapter);
 
-    const torusWalletAdapter = new TorusWalletAdapter({
+    onMounted(async () => {
+      try {
+        const torusWalletAdapter = new TorusWalletAdapter({
       clientId,
+      initParams: {
+        showTorusButton: true,
+      }
     });
 
     // it will add/update  the torus-evm adapter in to web3auth class
     web3auth.configureAdapter(torusWalletAdapter);
-
-    onMounted(async () => {
-      try {
         loading.value = true;
         loggedin.value = false;
         await web3auth.initModal();
         await web3auth.addPlugin(torusPlugin);
-        provider.value = web3auth.provider;
+        provider = web3auth.provider;
         if (web3auth.provider && web3auth.connected) {
           loggedin.value = true;
         }
@@ -276,7 +258,7 @@ export default {
     };
 
     const getChainId = async () => {
-      if (!provider.value) {
+      if (!provider) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -286,7 +268,7 @@ export default {
     };
 
     const addChain = async () => {
-      if (!provider.value) {
+      if (!provider) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -305,7 +287,7 @@ export default {
     };
 
     const switchChain = async () => {
-      if (!provider.value) {
+      if (!provider) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -324,7 +306,7 @@ export default {
     };
 
     const getAccounts = async () => {
-      if (!provider.value) {
+      if (!provider) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -334,7 +316,7 @@ export default {
     };
 
     const getBalance = async () => {
-      if (!provider.value) {
+      if (!provider) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -344,7 +326,7 @@ export default {
     };
 
     const sendTransaction = async () => {
-      if (!provider.value) {
+      if (!provider) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -354,7 +336,7 @@ export default {
     };
 
     const signMessage = async () => {
-      if (!provider.value) {
+      if (!provider) {
         uiConsole("provider not initialized yet");
         return;
       }
@@ -364,7 +346,7 @@ export default {
     };
 
     const getPrivateKey = async () => {
-      if (!provider.value) {
+      if (!provider) {
         uiConsole("provider not initialized yet");
         return;
       }

@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import {
+  OpenloginAdapter,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
@@ -11,17 +14,11 @@ import RPC from "./web3RPC"; // for using web3.js
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 
 // Adapters
-
-// import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
-import {
-  WalletConnectV2Adapter,
-  getWalletConnectV2Settings,
-} from "@web3auth/wallet-connect-v2-adapter";
-import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+// import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+// import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
 const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -55,7 +52,7 @@ function App() {
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
         });
 
         const openloginAdapter = new OpenloginAdapter({
@@ -68,7 +65,7 @@ function App() {
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-              // dark: false, // whether to enable dark mode. defaultValue: false
+              mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
             },
             mfaSettings: {
               deviceShareFactor: {
@@ -116,62 +113,39 @@ function App() {
         setTorusPlugin(torusPlugin);
         await web3auth.addPlugin(torusPlugin);
 
-        // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
+        // read more about adapters here: https://web3auth.io/docs/sdk/pnp/web/adapters/
 
-        // adding wallet connect v1 adapter
-        // const walletConnectV1Adapter = new WalletConnectV1Adapter({
-        //   adapterSettings: {
-        //     bridge: "https://bridge.walletconnect.org",
+        // adding metamask adapter
+        // const metamaskAdapter = new MetamaskAdapter({
+        //   clientId,
+        //   sessionTime: 3600, // 1 hour in seconds
+        //   web3AuthNetwork: "cyan",
+        //   chainConfig: {
+        //     chainNamespace: CHAIN_NAMESPACES.EIP155,
+        //     chainId: "0x1",
+        //     rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
         //   },
+        // });
+        // // we can change the above settings using this function
+        // metamaskAdapter.setAdapterSettings({
+        //   sessionTime: 86400, // 1 day in seconds
+        //   chainConfig: {
+        //     chainNamespace: CHAIN_NAMESPACES.EIP155,
+        //     chainId: "0x1",
+        //     rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        //   },
+        //   web3AuthNetwork: "cyan",
+        // });
+
+        // // it will add/update  the metamask adapter in to web3auth class
+        // web3auth.configureAdapter(metamaskAdapter);
+
+        // const torusWalletAdapter = new TorusWalletAdapter({
         //   clientId,
         // });
 
-        // web3auth.configureAdapter(walletConnectV1Adapter);
-
-        // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings(
-          "eip155",
-          [1],
-          "04309ed1007e77d1f119b85205bb779d"
-        );
-        const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          adapterSettings: { ...defaultWcSettings.adapterSettings },
-          loginSettings: { ...defaultWcSettings.loginSettings },
-        });
-
-        web3auth.configureAdapter(walletConnectV2Adapter);
-
-        // adding metamask adapter
-        const metamaskAdapter = new MetamaskAdapter({
-          clientId,
-          sessionTime: 3600, // 1 hour in seconds
-          web3AuthNetwork: "cyan",
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-        });
-        // we can change the above settings using this function
-        metamaskAdapter.setAdapterSettings({
-          sessionTime: 86400, // 1 day in seconds
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-          web3AuthNetwork: "cyan",
-        });
-
-        // it will add/update  the metamask adapter in to web3auth class
-        web3auth.configureAdapter(metamaskAdapter);
-
-        const torusWalletAdapter = new TorusWalletAdapter({
-          clientId,
-        });
-
-        // it will add/update  the torus-evm adapter in to web3auth class
-        web3auth.configureAdapter(torusWalletAdapter);
+        // // it will add/update  the torus-evm adapter in to web3auth class
+        // web3auth.configureAdapter(torusWalletAdapter);
 
         setWeb3auth(web3auth);
 

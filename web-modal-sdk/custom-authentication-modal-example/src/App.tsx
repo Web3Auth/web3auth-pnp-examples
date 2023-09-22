@@ -476,7 +476,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/react-evm-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/custom-authentication-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

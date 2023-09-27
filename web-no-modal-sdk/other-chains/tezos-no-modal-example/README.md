@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth with Tezos.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/tezos/react-tezos-no-modal-example w3a-nomodal-tezos-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/other-chains/tezos-no-modal-example w3a-nomodal-tezos-react
 ```
 
 Install & Run:

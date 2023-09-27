@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth with ImmutableX.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/immutableX/react-immutableX-no-modal-example w3a-nomodal-immutableX-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/other-chains/immutableX-no-modal-example w3a-nomodal-immutableX-react
 ```
 
 Install & Run:

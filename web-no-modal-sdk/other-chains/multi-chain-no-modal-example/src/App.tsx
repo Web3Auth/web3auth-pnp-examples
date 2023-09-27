@@ -438,7 +438,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/multi-chain/react-multi-chain-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/other-chains/multi-chain-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

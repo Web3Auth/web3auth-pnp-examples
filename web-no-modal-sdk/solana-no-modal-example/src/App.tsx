@@ -228,7 +228,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/solana/react-solana-no-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/solana-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

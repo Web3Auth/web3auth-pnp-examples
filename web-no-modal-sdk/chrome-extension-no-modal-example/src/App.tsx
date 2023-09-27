@@ -257,7 +257,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples"
+          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/chrome-extension-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

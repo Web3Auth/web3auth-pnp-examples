@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth(No-Modal) with RainbowKit.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/wagmi-connector/rainbowkit-react-auth0-no-modal-example w3a-rainbowkit-auth0-no-modal-react
+npx degit Web3Auth/web3auth-pnp-examples/wagmi/rainbowkit-auth0-no-modal-example w3a-rainbowkit-auth0-no-modal-react
 ```
 
 Install & Run:

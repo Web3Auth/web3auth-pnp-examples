@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth with XRPL.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/xrpl/react-xrpl-no-modal-example w3a-nomodal-xrpl-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/xrpl-no-modal-example w3a-nomodal-xrpl-react
 ```
 
 Install & Run:

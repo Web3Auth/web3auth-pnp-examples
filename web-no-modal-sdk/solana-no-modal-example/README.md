@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth with Solana.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/solana/react-solana-no-modal-example w3a-nomodal-solana-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/solana-no-modal-example w3a-nomodal-solana-react
 ```
 
 Install & Run:

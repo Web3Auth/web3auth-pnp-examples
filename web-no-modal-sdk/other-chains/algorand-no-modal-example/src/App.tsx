@@ -232,7 +232,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/algorand/react-algorand-no-modal-example"
+          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/other-chains/algorand-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

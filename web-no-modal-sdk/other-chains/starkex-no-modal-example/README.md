@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth with StarkEx.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/starkex/react-starkex-no-modal-example w3a-nomodal-starkex-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/other-chains/starkex-no-modal-example w3a-nomodal-starkex-react
 ```
 
 Install & Run:

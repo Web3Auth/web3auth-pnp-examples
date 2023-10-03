@@ -3,7 +3,7 @@ import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3Auth } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES, } from "@web3auth/base";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 import { Chain } from "wagmi";
 
@@ -37,7 +37,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
       loginGridCol: 3,
       primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
-      modalZIndex: "2147483647"
+      modalZIndex: "2147483647",
     },
     web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
     enableLogging: true,
@@ -45,29 +45,52 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
 
   // Add openlogin adapter for customisations
   const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-  const openloginAdapterInstance = new OpenloginAdapter({
-    privateKeyProvider,
+  const openloginAdapter = new OpenloginAdapter({
+    loginSettings: {
+      mfaLevel: "optional",
+    },
     adapterSettings: {
-      uxMode: "redirect",
+      uxMode: "redirect", // "redirect" | "popup"
+      whiteLabel: {
+        logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+        logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+        defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+        mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
+      },
+      mfaSettings: {
+        deviceShareFactor: {
+          enable: true,
+          priority: 1,
+          mandatory: true,
+        },
+        backUpShareFactor: {
+          enable: true,
+          priority: 2,
+          mandatory: false,
+        },
+        socialBackupFactor: {
+          enable: true,
+          priority: 3,
+          mandatory: false,
+        },
+        passwordFactor: {
+          enable: true,
+          priority: 4,
+          mandatory: false,
+        },
+      },
     },
   });
-  web3AuthInstance.configureAdapter(openloginAdapterInstance);
+  web3AuthInstance.configureAdapter(openloginAdapter);
 
   // Add Torus Wallet Plugin (optional)
   const torusPlugin = new TorusWalletConnectorPlugin({
-    torusWalletOpts: {
-      buttonPosition: "bottom-left",
-    },
+    torusWalletOpts: {},
     walletInitOptions: {
       whiteLabel: {
-        theme: {
-          isDark: false,
-          colors: {
-            primary: "#00a8ff",
-          },
-        },
-        logoDark: iconUrl,
-        logoLight: iconUrl,
+        theme: { isDark: true, colors: { primary: "#00a8ff" } },
+        logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+        logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
       },
       useWalletConnect: true,
       enableLogging: true,

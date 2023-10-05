@@ -112,7 +112,7 @@ function App() {
         });
 
         web3auth.configureAdapter(walletConnectV2Adapter);
-
+        setWeb3auth(web3auth);
         await web3auth.init();
         setProvider(web3auth.provider);
         if (web3auth.connected) {
@@ -138,6 +138,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWithSMS = async () => {
@@ -155,6 +156,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWithEmail = async () => {
@@ -172,6 +174,7 @@ function App() {
       }
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const loginWCModal = async () => {
@@ -183,6 +186,7 @@ function App() {
       WALLET_ADAPTERS.WALLET_CONNECT_V2
     );
     setProvider(web3authProvider);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {

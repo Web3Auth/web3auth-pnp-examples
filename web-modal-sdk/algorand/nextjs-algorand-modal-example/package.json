@@ -16,7 +16,7 @@
     "@web3auth/torus-wallet-connector-plugin": "^7.0.1",
     "@web3auth/wallet-connect-v2-adapter": "^7.0.2",
     "algosdk": "^2.3.0",
-    "next": "13.4.3",
+    "next": "13.5.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

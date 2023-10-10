@@ -28,14 +28,15 @@ class MainActivity : AppCompatActivity() {
                context = this,
                clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
                network = Network.TESTNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN)
+               buildEnv = BuildEnv.TESTING,
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
                // Optional parameters
-               whiteLabel = WhiteLabelData(
-                   "Web3Auth Android Aggregate Verifier Example", null, null, "en", true,
-                   hashMapOf(
-                       "primary" to "#eb5424"
-                   )
-               ),
+//               whiteLabel = WhiteLabelData(
+//                   "Web3Auth Android Aggregate Verifier Example", null, null, null, Language.EN, ThemeModes.LIGHT, true,
+//                   hashMapOf(
+//                       "primary" to "#eb5424"
+//                   )
+//               ),
                loginConfig = hashMapOf(
                    "google" to LoginConfigItem(
                    verifier = "agg-google-emailpswd-github",

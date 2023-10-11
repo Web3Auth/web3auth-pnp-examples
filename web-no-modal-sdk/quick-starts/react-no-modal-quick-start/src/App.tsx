@@ -191,7 +191,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/quick-starts/react-modal-quick-start"
+          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/quick-starts/react-no-modal-quick-start"
           target="_blank"
           rel="noopener noreferrer"
         >

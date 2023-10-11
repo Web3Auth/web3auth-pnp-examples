@@ -52,7 +52,7 @@
 
     <footer class="footer">
       <a
-        href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start"
+        href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start"
         target="_blank"
         rel="noopener noreferrer"
       >

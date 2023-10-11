@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web3Auth Getting Started</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="title">
+        <a target="_blank" href="http://web3auth.io/">Web3Auth</a> & JS Ethereum
+        Example
+      </h1>
+      <!-- Logged In -->
+      <div class="grid btn-logged-in">
+        <button id="get-user-info" class="btn">Get User Info</button>
+        <button id="get-id-token" class="btn">Get ID Token</button>
+        <button id="get-chain-id" class="btn">Get Chain ID</button>
+        <button id="get-accounts" class="btn">Get Accounts</button>
+        <button id="get-balance" class="btn">Get Balance</button>
+        <button id="send-transaction" class="btn">Send Transaction</button>
+        <button id="sign-message" class="btn">Sign Message</button>
+        <button id="get-private-key" class="btn">Get Private Key</button>
+        <button id="logout" class="btn">Logout</button>
+        <div class="console" id="console">
+          <p id="code" class="code"></p>
+        </div>
+      </div>
+
+      <!-- Logged Logout -->
+      <div class="grid btn-logged-out">
+        <button id="login" class="btn">Login</button>
+      </div>
+      <footer class="footer">
+        <a
+          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/commonjs-evm-modal-example"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Source code
+        </a>
+      </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/metamask-adapter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/wallet-connect-v1-adapter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-evm-adapter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/torus-wallet-connector-plugin"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.3/dist/web3.min.js"></script>
+    <script src="./web3RPC.js"></script>
+    <!-- for using web3.js -->
+    <!--- <script src="./ethersRPC.js"></script>-->
+    <!-- for using ethers.js -->
+    <script>
+      let web3auth = null;
+      let provider = null;
+
+      (async function init() {
+        $(".btn-logged-in").hide();
+        $("#sign-tx").hide();
+
+        const clientId =
+          "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get your clientId from https://dashboard.web3auth.io
+
+        web3auth = new window.Modal.Web3Auth({
+          clientId,
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+          web3AuthNetwork: "cyan",
+        });
+
+        // Add Torus Wallet Connector Plugin
+        const torusPlugin =
+          new window.TorusWalletConnectorPlugin.TorusWalletConnectorPlugin({
+            torusWalletOpts: {},
+            walletInitOptions: {
+              whiteLabel: {
+                theme: { isDark: true, colors: { primary: "#00a8ff" } },
+                logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+                logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              },
+              useWalletConnect: true,
+              enableLogging: true,
+            },
+          });
+        await web3auth.addPlugin(torusPlugin);
+
+        const metamaskAdapter = new window.MetamaskAdapter.MetamaskAdapter({
+          clientId,
+          sessionTime: 3600, // 1 hour in seconds
+          web3AuthNetwork: "cyan",
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+        });
+        web3auth.configureAdapter(metamaskAdapter);
+        // we can change the above settings using this function
+        metamaskAdapter.setAdapterSettings({
+          sessionTime: 86400, // 1 day in seconds
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x89",
+            rpcTarget: "https://rpc-mainnet.matic.network", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+          web3AuthNetwork: "cyan",
+        });
+
+        const walletConnectAdapter =
+          new window.WalletConnectV1Adapter.WalletConnectV1Adapter({
+            adapterSettings: {
+              bridge: "https://bridge.walletconnect.org",
+            },
+            clientId,
+          });
+        web3auth.configureAdapter(walletConnectAdapter);
+
+        const torusAdapter = new window.TorusEvmAdapter.TorusWalletAdapter({
+          clientId,
+        });
+        web3auth.configureAdapter(torusAdapter);
+
+        await web3auth.initModal();
+        if (web3auth.connected) {
+          $(".btn-logged-in").show();
+          $(".btn-logged-out").hide();
+          if (web3auth.connected === "openlogin") {
+            $("#sign-tx").show();
+          }
+        } else {
+          $(".btn-logged-out").show();
+          $(".btn-logged-in").hide();
+        }
+      })();
+
+      $("#login").click(async function (event) {
+        try {
+          const provider = await web3auth.connect();
+          $(".btn-logged-out").hide();
+          $(".btn-logged-in").show();
+          uiConsole("Logged in Successfully!");
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-user-info").click(async function (event) {
+        try {
+          const user = await web3auth.getUserInfo();
+          uiConsole(user);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-id-token").click(async function (event) {
+        try {
+          const id_token = await web3auth.authenticateUser();
+          uiConsole(id_token);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-chain-id").click(async function (event) {
+        try {
+          const chainId = await rpc.getChainId(web3auth.provider);
+          uiConsole(chainId);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-accounts").click(async function (event) {
+        try {
+          const accounts = await rpc.getAccounts(web3auth.provider);
+          uiConsole(accounts);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-balance").click(async function (event) {
+        try {
+          const balance = await rpc.getBalance(web3auth.provider);
+          uiConsole(balance);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#send-transaction").click(async function (event) {
+        try {
+          const receipt = await rpc.sendTransaction(web3auth.provider);
+          uiConsole(receipt);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#sign-message").click(async function (event) {
+        try {
+          const signedMsg = await rpc.signMessage(web3auth.provider);
+          uiConsole(signedMsg);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-private-key").click(async function (event) {
+        try {
+          const privateKey = await rpc.getPrivateKey(web3auth.provider);
+          uiConsole(privateKey);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#logout").click(async function (event) {
+        try {
+          await web3auth.logout();
+          $(".btn-logged-in").hide();
+          $(".btn-logged-out").show();
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      function uiConsole(...args) {
+        const el = document.querySelector("#console>p");
+        if (el) {
+          el.innerHTML = JSON.stringify(args || {}, null, 2);
+        }
+      }
+    </script>
+  </body>
+</html>

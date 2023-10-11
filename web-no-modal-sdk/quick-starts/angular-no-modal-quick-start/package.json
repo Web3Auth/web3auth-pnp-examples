@@ -1,5 +1,5 @@
 {
-  "name": "angular-modal-quick-start",
+  "name": "angular-no-modal-quick-start",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -19,10 +19,12 @@
     "@angular/platform-browser": "~14.2.7",
     "@angular/platform-browser-dynamic": "~14.2.7",
     "@angular/router": "~14.2.7",
-    "@web3auth/base": "^7.0.1",
-    "@web3auth/modal": "^7.0.2",
+    "@web3auth/base": "^7.0.4",
+    "@web3auth/no-modal": "^7.0.4",
+    "@web3auth/ethereum-provider": "^7.0.4",
+    "@web3auth/openlogin-adapter": "^7.0.4",
     "empty-module": "^0.0.2",
-    "web3": "^4.1.1"
+    "web3": "^4.1.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~14.2.6",

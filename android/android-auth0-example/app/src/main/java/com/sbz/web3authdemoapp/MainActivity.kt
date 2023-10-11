@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
            Web3AuthOptions(
                context = this,
                clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
-               network = Network.CYAN, // pass over the network you want to use (MAINNET or TESTNET or CYAN)
+               network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN)
                buildEnv = BuildEnv.TESTING,
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
                // Optional parameters
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                    )
                ),
                loginConfig = hashMapOf("jwt" to LoginConfigItem(
-                   verifier = "web3auth-auth0-demo",
+                   verifier = "w3a-auth0-demo",
                    typeOfLogin = TypeOfLogin.JWT,
                    name = "Auth0 Login",
                    clientId = getString(R.string.web3auth_auth0_client_id)
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signIn() {
         val selectedLoginProvider = Provider.JWT   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "https://shahbaz-torus.us.auth0.com", verifierIdField = "sub")))
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "https://web3auth.au.auth0.com", verifierIdField = "sub")))
 
     //    For Email Passwordless, use the below code and pass email id into extraLoginOptions of LoginParams.
     //    val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS

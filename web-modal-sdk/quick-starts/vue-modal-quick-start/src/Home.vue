@@ -5,11 +5,11 @@
       <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
         Web3Auth
       </a>
-      Vue.js Ethereum Example
+      Vue.js Quick Start
     </h2>
 
     <button
-      v-if="!loggedin"
+      v-if="!loggedIn"
       class="card"
       @click="login"
       style="cursor: pointer"
@@ -17,35 +17,11 @@
       Login
     </button>
 
-    <div v-if="loggedin">
+    <div v-if="loggedIn">
       <div class="flex-container">
         <div>
           <button class="card" @click="getUserInfo" style="cursor: pointer">
             Get User Info
-          </button>
-        </div>
-        <div>
-          <button
-            class="card"
-            @click="authenticateUser"
-            style="cursor: pointer"
-          >
-            Get ID Token
-          </button>
-        </div>
-        <div>
-          <button class="card" @click="getChainId" style="cursor: pointer">
-            Get Chain ID
-          </button>
-        </div>
-        <div>
-          <button class="card" @click="addChain" style="cursor: pointer">
-            Add Chain
-          </button>
-        </div>
-        <div>
-          <button class="card" @click="switchChain" style="cursor: pointer">
-            Switch Chain
           </button>
         </div>
         <div>
@@ -59,18 +35,8 @@
           </button>
         </div>
         <div>
-          <button class="card" @click="sendTransaction" style="cursor: pointer">
-            Send Transaction
-          </button>
-        </div>
-        <div>
           <button class="card" @click="signMessage" style="cursor: pointer">
             Sign Message
-          </button>
-        </div>
-        <div>
-          <button class="card" @click="getPrivateKey" style="cursor: pointer">
-            Get Private Key
           </button>
         </div>
         <div>
@@ -79,14 +45,14 @@
           </button>
         </div>
       </div>
-      <div id="console" style="white-space: pre-line">
-        <p style="white-space: pre-line"></p>
-      </div>
+    </div>
+    <div id="console" style="white-space: pre-line">
+      <p style="white-space: pre-line"></p>
     </div>
 
     <footer class="footer">
       <a
-        href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/vue-evm-modal-example"
+        href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -100,14 +66,7 @@
 import { ref, onMounted } from "vue";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import RPC from "./web3RPC";
-
-// Plugins
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
-
-// Adapters
-import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+import Web3 from "web3";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -116,193 +75,62 @@ export default {
     msg: String,
   },
   setup() {
-    const loggedin = ref<boolean>(false);
-    const loading = ref<boolean>(false);
-    const loginButtonStatus = ref<string>("");
-    const connecting = ref<boolean>(false);
-    let provider = ref<IProvider | any>(false);
+    const loggedIn = ref<boolean>(false);
+    let provider = <IProvider | null>(null);
+
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
+    const chainConfig = {
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      chainId: "0x1", // Please use 0x1 for Mainnet
+      rpcTarget: "https://rpc.ankr.com/eth",
+      displayName: "Ethereum Mainnet",
+      blockExplorer: "https://etherscan.io/",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    };
+
     const web3auth = new Web3Auth({
       clientId,
-      chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "0x1",
-        rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-      },
-      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
-          // Please remove this parameter if you're on the Base Plan
-      uiConfig: {
-        appName: "W3A",
-        theme: {
-          primary: "red",
-        },
-        mode: "dark",
-        logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-        logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-        defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-        loginGridCol: 3,
-        primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
-      },
-      web3AuthNetwork: "cyan",
+      chainConfig,
+      web3AuthNetwork: "sapphire_mainnet",
     });
-
-    // plugins and adapters are optional and can be added as per your requirement
-    // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/
-
-    // adding torus wallet connector plugin
-
-    const torusPlugin = new TorusWalletConnectorPlugin({
-      torusWalletOpts: {},
-      walletInitOptions: {
-        whiteLabel: {
-          theme: { isDark: true, colors: { primary: "#00a8ff" } },
-          logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-          logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-        },
-        useWalletConnect: true,
-        enableLogging: true,
-        showTorusButton: true,
-      },
-    });
-
-    // read more about adapters here: https://web3auth.io/docs/sdk/web/adapters/
-    // adding metamask adapter
-
-    const metamaskAdapter = new MetamaskAdapter({
-      clientId,
-      sessionTime: 3600, // 1 hour in seconds
-      web3AuthNetwork: "cyan",
-      chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "0x1",
-        rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-      },
-    });
-    // we can change the above settings using this function
-    metamaskAdapter.setAdapterSettings({
-      sessionTime: 86400, // 1 day in seconds
-      chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "0x89",
-        rpcTarget: "https://rpc-mainnet.matic.network", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-      },
-      web3AuthNetwork: "cyan",
-    });
-
-    // it will add/update  the metamask adapter in to web3auth class
-    web3auth.configureAdapter(metamaskAdapter);
 
     onMounted(async () => {
+    const init = async () => {
       try {
-        const torusWalletAdapter = new TorusWalletAdapter({
-      clientId,
-      initParams: {
-        showTorusButton: true,
-      }
-    });
-
-    // it will add/update  the torus-evm adapter in to web3auth class
-    web3auth.configureAdapter(torusWalletAdapter);
-        loading.value = true;
-        loggedin.value = false;
         await web3auth.initModal();
-        await web3auth.addPlugin(torusPlugin);
         provider = web3auth.provider;
-        if (web3auth.provider && web3auth.connected) {
-          loggedin.value = true;
+
+        if (web3auth.connected) {
+          loggedIn.value = true;
         }
       } catch (error) {
-        uiConsole("error", error);
-      } finally {
-        loading.value = false;
+        console.error(error);
       }
+    };
+
+    init();
     });
 
     const login = async () => {
-      if (!web3auth) {
-        uiConsole("web3auth not initialized yet");
-        return;
+      provider = await web3auth.connect();
+      if (web3auth.connected) {
+        loggedIn.value = true;
       }
-      provider.value = await web3auth.connect();
-      loggedin.value = true;
-    };
-
-    const authenticateUser = async () => {
-      if (!web3auth) {
-        uiConsole("web3auth not initialized yet");
-        return;
-      }
-      const idToken = await web3auth.authenticateUser();
-      uiConsole(idToken);
     };
 
     const getUserInfo = async () => {
-      if (!web3auth) {
-        uiConsole("web3auth not initialized yet");
-        return;
-      }
       const user = await web3auth.getUserInfo();
       uiConsole(user);
     };
 
     const logout = async () => {
-      if (!web3auth) {
-        uiConsole("web3auth not initialized yet");
-        return;
-      }
       await web3auth.logout();
-      provider.value = null;
-      loggedin.value = false;
-    };
-
-    const getChainId = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const rpc = new RPC(provider);
-      const chainId = await rpc.getChainId();
-      uiConsole(chainId);
-    };
-
-    const addChain = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const newChain = {
-        chainId: "0x5",
-        displayName: "Goerli",
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        tickerName: "Goerli",
-        ticker: "ETH",
-        decimals: 18,
-        rpcTarget: "https://rpc.ankr.com/eth_goerli",
-        blockExplorer: "https://goerli.etherscan.io",
-      };
-      await web3auth?.addChain(newChain);
-      uiConsole("New Chain Added");
-    };
-
-    const switchChain = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const newChain = {
-        chainId: "0x5",
-        displayName: "Goerli",
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        tickerName: "Goerli",
-        ticker: "ETH",
-        decimals: 18,
-        rpcTarget: "https://rpc.ankr.com/eth_goerli",
-        blockExplorer: "https://goerli.etherscan.io",
-      };
-      await web3auth?.switchChain({ chainId: "0x5" });
-      uiConsole("Chain Switched");
+      provider = null;
+      loggedIn.value = false;
+      uiConsole("logged out");
     };
 
     const getAccounts = async () => {
@@ -310,8 +138,10 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider);
-      const address = await rpc.getAccounts();
+      const web3 = new Web3(provider as any);
+
+      // Get user's Ethereum public address
+      const address = await web3.eth.getAccounts();
       uiConsole(address);
     };
 
@@ -320,19 +150,17 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider);
-      const balance = await rpc.getBalance();
-      uiConsole(balance);
-    };
+      const web3 = new Web3(provider as any);
 
-    const sendTransaction = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const rpc = new RPC(provider);
-      const receipt = await rpc.sendTransaction();
-      uiConsole(receipt);
+      // Get user's Ethereum public address
+      const address = (await web3.eth.getAccounts())[0];
+
+      // Get user's balance in ether
+      const balance = web3.utils.fromWei(
+        await web3.eth.getBalance(address), // Balance is in wei
+        "ether"
+      ); 
+      uiConsole(balance);
     };
 
     const signMessage = async () => {
@@ -340,19 +168,20 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider);
-      const signedMessage = await rpc.signMessage();
-      uiConsole(signedMessage);
-    };
+      const web3 = new Web3(provider as any);
 
-    const getPrivateKey = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const rpc = new RPC(provider);
-      const privateKey = await rpc.getPrivateKey();
-      uiConsole(privateKey);
+      // Get user's Ethereum public address
+      const fromAddress = (await web3.eth.getAccounts())[0];
+
+      const originalMessage = "YOUR_MESSAGE";
+
+      // Sign the message
+      const signedMessage = await web3.eth.personal.sign(
+        originalMessage,
+        fromAddress,
+        "test password!" // configure your own password here.
+      );
+      uiConsole(signedMessage);
     };
 
     function uiConsole(...args: any[]): void {
@@ -360,27 +189,19 @@ export default {
       if (el) {
         el.innerHTML = JSON.stringify(args || {}, null, 2);
       }
+      console.log(...args);
     }
 
     return {
-      loggedin,
-      loading,
-      loginButtonStatus,
-      connecting,
+      loggedIn,
       provider,
       web3auth,
       login,
-      authenticateUser,
       logout,
       getUserInfo,
-      getChainId,
-      addChain,
-      switchChain,
       getAccounts,
       getBalance,
-      sendTransaction,
       signMessage,
-      getPrivateKey,
     };
   },
 };

@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity() {
            Web3AuthOptions(
                context = this,
                clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
-               network = Network.CYAN, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
-               buildEnv = BuildEnv.TESTING,
+               network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
+               buildEnv = BuildEnv.PRODUCTION,
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
                // Optional parameters
                whiteLabel = WhiteLabelData(
@@ -46,9 +46,9 @@ class MainActivity : AppCompatActivity() {
                    )
                ),
                loginConfig = hashMapOf("jwt" to LoginConfigItem(
-                   verifier = "web3auth-firebase-examples",
+                   verifier = "w3a-firebase-demo",
                    typeOfLogin = TypeOfLogin.JWT,
-                   name = "Firebase Login",
+                   name = "Firebase login",
                    clientId = getString(R.string.web3auth_project_id)
                ))
            )
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                         //Do whatever
                         Log.d(TAG, "GetTokenResult result = $idToken")
                         val selectedLoginProvider = Provider.JWT
-                        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "firebase", id_token = idToken)))
+                        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain= "firebase", id_token = idToken, verifierIdField = "email")))
 
                         loginCompletableFuture.whenComplete {  _, error ->
                             if (error == null) {

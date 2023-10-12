@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 context = this,
                 clientId = getString(R.string.web3auth_project_id),
                 network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
-                buildEnv = BuildEnv.TESTING,
+                buildEnv = BuildEnv.PRODUCTION,
                 redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"),
 //                whiteLabel = WhiteLabelData(
 //                    "Web3Auth Android Example", null, null, null, Language.EN, ThemeModes.LIGHT, true,

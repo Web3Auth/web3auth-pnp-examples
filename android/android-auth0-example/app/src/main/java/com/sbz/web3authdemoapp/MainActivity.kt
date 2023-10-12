@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
                context = this,
                clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
                network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN)
-               buildEnv = BuildEnv.TESTING,
+               buildEnv = BuildEnv.PRODUCTION,
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
                // Optional parameters
                whiteLabel = WhiteLabelData(

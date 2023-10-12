@@ -27,27 +27,21 @@ class MainActivity : AppCompatActivity() {
            Web3AuthOptions(
                context = this,
                clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
-               network = Network.TESTNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN)
+               network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
+               buildEnv = BuildEnv.PRODUCTION,
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
-               // Optional parameters
-               whiteLabel = WhiteLabelData(
-                   "Web3Auth Android Aggregate Verifier Example", null, null, "en", true,
-                   hashMapOf(
-                       "primary" to "#eb5424"
-                   )
-               ),
                loginConfig = hashMapOf(
                    "google" to LoginConfigItem(
-                   verifier = "agg-google-emailpswd-github",
-                   verifierSubIdentifier= "w3a-google",
-                   typeOfLogin = TypeOfLogin.GOOGLE,
-                   name = "Aggregate Login",
-                   clientId = getString(R.string.web3auth_google_client_id)
+                       verifier = "aggregate-sapphire",
+                       verifierSubIdentifier= "w3a-google",
+                       typeOfLogin = TypeOfLogin.GOOGLE,
+                       name = "Aggregate Login",
+                       clientId = getString(R.string.web3auth_google_client_id)
                     ),
                    "jwt" to LoginConfigItem(
-                   verifier = "agg-google-emailpswd-github",
-                   verifierSubIdentifier= "w3a-email-passwordless",
-                   typeOfLogin = TypeOfLogin.JWT,
+                       verifier = "aggregate-sapphire",
+                       verifierSubIdentifier= "w3a-a0-email-passwordless",
+                       typeOfLogin = TypeOfLogin.JWT,
                        name = "Aggregate Login",
                        clientId = getString(R.string.web3auth_auth0_client_id)
                    )
@@ -93,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signInEP() {
         val selectedLoginProvider = Provider.JWT
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "https://shahbaz-torus.us.auth0.com", verifierIdField = "email", isVerifierIdCaseSensitive = false)))
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "https://web3auth.au.auth0.com", verifierIdField = "email", isVerifierIdCaseSensitive = false)))
 
         loginCompletableFuture.whenComplete { _, error ->
             if (error == null) {

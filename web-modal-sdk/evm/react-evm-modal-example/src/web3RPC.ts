@@ -150,16 +150,17 @@ export default class EthereumRpc {
 
       // Write message to smart contract
       // @ts-ignore
-      const receipt = await contract.methods.update("W3A").send({
+      const receipt = await contract.methods.update("Check").send({
         from: (await web3.eth.getAccounts())[0],
         maxFeePerGas: "300",
         maxPriorityFeePerGas: "10",
       });
       console.log(receipt);
 
-      return receipt.transactionHash;
+      return receipt;
     } catch (error) {
-      return error as string;
+      console.error (error);
+      return "Error writing to contract, check console for details."
     }
   }
 

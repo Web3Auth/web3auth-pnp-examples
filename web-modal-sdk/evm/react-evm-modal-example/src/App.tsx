@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import {
-  OpenloginAdapter,
-  OPENLOGIN_NETWORK,
-} from "@web3auth/openlogin-adapter";
+import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
@@ -17,13 +14,11 @@ import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plu
 // import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 // import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [torusPlugin, setTorusPlugin] =
-    useState<TorusWalletConnectorPlugin | null>(null);
+  const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -329,6 +324,26 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  const readContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const message = await rpc.readFromContract();
+    uiConsole(message);
+  };
+
+  const writeContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const message = await rpc.writeToContract();
+    uiConsole(message);
+  };
+
   const getPrivateKey = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -415,6 +430,16 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={readContract} className="card">
+            Read From Contract
+          </button>
+        </div>
+        <div>
+          <button onClick={writeContract} className="card">
+            Write To Contract
+          </button>
+        </div>
+        <div>
           <button onClick={getPrivateKey} className="card">
             Get Private Key
           </button>
@@ -449,11 +474,7 @@ function App() {
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/react-evm-modal-example"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/react-evm-modal-example" target="_blank" rel="noopener noreferrer">
           Source code
         </a>
       </footer>

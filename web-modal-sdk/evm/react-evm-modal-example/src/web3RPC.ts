@@ -152,8 +152,8 @@ export default class EthereumRpc {
       // @ts-ignore
       const receipt = await contract.methods.update("Check").send({
         from: (await web3.eth.getAccounts())[0],
-        maxFeePerGas: "300",
-        maxPriorityFeePerGas: "10",
+        maxFeePerGas: "5000",
+        maxPriorityFeePerGas: "5000",
       });
       console.log(receipt);
 
@@ -175,4 +175,5 @@ export default class EthereumRpc {
       return error as string;
     }
   }
+  
 }

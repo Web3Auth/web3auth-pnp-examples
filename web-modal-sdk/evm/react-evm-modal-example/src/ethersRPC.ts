@@ -134,4 +134,55 @@ export default class EthereumRpc {
       return error as string;
     }
   }
+
+  async readFromContract(): Promise<any> {
+    const ethersProvider = new ethers.BrowserProvider(this.provider);
+
+    const signer = await ethersProvider.getSigner();
+
+    const contractABI = [
+      { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+      { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+      {
+        inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+        name: "update",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ];
+    const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+    const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
+
+    // Read message from smart contract
+    const message = await contract.message();
+    return message;
+  }
+
+  async writeToContract(): Promise<any> {
+    const ethersProvider = new ethers.BrowserProvider(this.provider);
+
+    const signer = await ethersProvider.getSigner();
+
+    const contractABI = [
+      { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+      { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+      {
+        inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+        name: "update",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ];
+    const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+    const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
+
+    // Send transaction to smart contract to update message
+    const tx = await contract.update("NEW_MESSAGE");
+
+    // Wait for transaction to finish
+    const receipt = await tx.wait();
+    return receipt;
+  }
 }

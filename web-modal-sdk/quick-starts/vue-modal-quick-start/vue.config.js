@@ -15,7 +15,7 @@ module.exports = defineConfig({
       os: false,
       https: false,
       http: false,
-      url: false,
+      url: "url",
       zlib: false,
     };
     config.plugins.push(new ProvidePlugin({ Buffer: ["buffer", "Buffer"] }));

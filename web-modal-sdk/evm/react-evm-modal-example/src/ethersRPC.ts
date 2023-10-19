@@ -16,7 +16,7 @@ export default class EthereumRpc {
       const ethersProvider = new ethers.BrowserProvider(this.provider);
       // Get the connected Chain's ID
       const networkDetails = await ethersProvider.getNetwork();
-      return networkDetails.chainId;
+      return networkDetails.chainId.toString();
     } catch (error) {
       return error;
     }
@@ -178,8 +178,10 @@ export default class EthereumRpc {
     const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
     const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
 
+    const number = Math.floor(Math.random() * (10000 - 3000 + 1) + 3000);
+
     // Send transaction to smart contract to update message
-    const tx = await contract.update("NEW_MESSAGE");
+    const tx = await contract.update(`Web3Auth is awesome ${number} times!`);
 
     // Wait for transaction to finish
     const receipt = await tx.wait();

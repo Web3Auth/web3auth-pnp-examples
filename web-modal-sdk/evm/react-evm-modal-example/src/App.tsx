@@ -132,7 +132,6 @@ web3auth.addPlugin(torusPlugin);
 // // it will add/update  the torus-evm adapter in to web3auth class
 // web3auth.configureAdapter(torusWalletAdapter);
 
-
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);

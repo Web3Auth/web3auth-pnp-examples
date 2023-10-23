@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@toruslabs/eccrypto": "^1.1.8",
+    "@toruslabs/eccrypto": "^4.0.0",
     "@web3auth/base": "^7.0.1",
     "@web3auth/ethereum-provider": "^7.0.2",
     "@web3auth/no-modal": "^7.0.1",

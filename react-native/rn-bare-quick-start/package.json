@@ -1,5 +1,5 @@
 {
-  "name": "web3authrnexample",
+  "name": "rn-bare-quick-start",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,10 +12,10 @@
   "dependencies": {
     "@ethersproject/shims": "^5.7.0",
     "@toruslabs/react-native-web-browser": "^1.1.0",
-    "@web3auth/react-native-sdk": "^4.0.0",
+    "@web3auth/react-native-sdk": "^5.0.0",
     "ethers": "^5.7.2",
     "react": "18.2.0",
-    "react-native": "0.71.8",
+    "react-native": "0.72.6",
     "react-native-encrypted-storage": "^4.0.3"
   },
   "devDependencies": {
@@ -37,12 +37,12 @@
     "metro-react-native-babel-preset": "0.73.9",
     "prettier": "^2.4.1",
     "react-native-get-random-values": "^1.9.0",
-    "react-native-quick-base64": "^2.0.6",
+    "react-native-quick-base64": "^2.0.7",
     "react-native-quick-crypto": "^0.6.1",
     "react-native-tcp-socket": "^6.0.6",
     "react-test-renderer": "18.2.0",
-    "readable-stream": "^4.4.0",
-    "typescript": "4.8.4"
+    "readable-stream": "^4.4.2",
+    "typescript": "5.2.2"
   },
   "jest": {
     "preset": "react-native"

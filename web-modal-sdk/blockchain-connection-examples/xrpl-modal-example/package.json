@@ -1,9 +1,8 @@
 {
-  "name": "react-solana-modal-example",
+  "name": "xrpl-modal-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@solana/web3.js": "^1.72.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -13,15 +12,13 @@
     "@types/react-dom": "^18.0.10",
     "@web3auth/base": "^7.0.1",
     "@web3auth/modal": "^7.0.2",
-    "@web3auth/slope-adapter": "^7.0.2",
-    "@web3auth/solana-provider": "^7.0.2",
-    "@web3auth/solana-wallet-connector-plugin": "^7.0.1",
-    "@web3auth/solflare-adapter": "^7.0.2",
+    "@web3auth/openlogin-adapter": "^7.0.1",
+    "@web3auth/xrpl-provider": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "typescript": "^4.9.4",
-    "web-vitals": "^3.1.0"
+    "web-vitals": "^3.1.0",
+    "xrpl": "^2.7.0"
   },
   "eslintConfig": {
     "extends": [
@@ -47,14 +44,12 @@
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
-    "https-browserify": "^1.0.0",
-    "os-browserify": "^0.3.0",
+    "eslint-config-react-app": "^7.0.1",
     "process": "^0.11.10",
     "react-app-rewired": "^2.2.1",
+    "source-map-loader": "^4.0.1",
     "stream-browserify": "^3.0.0",
-    "stream-http": "^3.2.0",
-    "url": "^0.11.0",
-    "zlib-browserify": "^0.0.3"
+    "typescript": "^4.9.4"
   },
   "scripts": {
     "start": "react-app-rewired start",

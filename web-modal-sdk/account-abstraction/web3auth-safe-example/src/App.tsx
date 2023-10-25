@@ -247,7 +247,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
         & <a target="_blank" href="https://docs.safe.global/learn/safe-core/safe-core-account-abstraction-sdk/auth-kit" rel="noreferrer">Safe Auth Kit</a> Example
@@ -275,7 +275,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/account-abstraction/web3auth-safe-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/account-abstraction/web3auth-safe-example"
           target="_blank"
           rel="noopener noreferrer"
         >

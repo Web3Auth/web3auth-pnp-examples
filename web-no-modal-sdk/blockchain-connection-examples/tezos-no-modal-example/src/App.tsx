@@ -212,7 +212,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>
         & ReactJS Tezos Example
@@ -222,7 +222,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/other-chains/tezos-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/tezos-no-modal-example
           target="_blank"
           rel="noopener noreferrer"
         >

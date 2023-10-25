@@ -15,7 +15,7 @@ function App() {
     <div className={styles.container}>
       <Web3AuthProvider chain={chain} web3AuthNetwork={web3AuthNetwork}>
         <h1 className={styles.title}>
-          <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+          <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
             Web3Auth
           </a>{" "}
           & ReactJS Example
@@ -24,7 +24,7 @@ function App() {
         <Main />
       </Web3AuthProvider>
       <footer className={styles.footer}>
-        <a href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/multi-page-examples/react-multi-page-modal-example" target="_blank" rel="noopener noreferrer">
+        <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/react-multi-page-modal-example" target="_blank" rel="noopener noreferrer">
           Source code {"  "}
           <img className={styles.logo} src="/images/github-logo.png" alt="github-logo" />
         </a>

@@ -1,5 +1,5 @@
 {
-  "name": "chrome-extension-web3auth-no-modal-example",
+  "name": "chrome-extension-no-modal-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

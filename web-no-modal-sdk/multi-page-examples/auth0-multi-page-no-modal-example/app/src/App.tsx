@@ -22,7 +22,7 @@ function App() {
     <div className={styles.container}>
       <Web3AuthProvider chain={chain} web3AuthNetwork={web3AuthNetwork} app={app}>
         {/* <h1 className={styles.title}>
-          <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+          <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
             Web3Auth
           </a>{" "}
           & Auth0 Example

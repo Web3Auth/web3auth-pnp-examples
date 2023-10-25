@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import RPC from "./solanaRPC";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import {
+  XrplPrivateKeyProvider,
+  getXRPLChainConfig,
+} from "@web3auth/xrpl-provider";
+import RPC from "./xrplRPC";
 import "./App.css";
-
-// Plugins
-import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
-
-// Adapters
-import { SolflareAdapter } from "@web3auth/solflare-adapter";
-import { SlopeAdapter } from "@web3auth/slope-adapter";
 
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(
+    null
+  );
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -25,16 +25,19 @@ function App() {
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-            rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            chainNamespace: CHAIN_NAMESPACES.OTHER,
+            chainId: "0x04",
+            rpcTarget: "https://s.altnet.rippletest.net:51234",
           },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
-            appName: "W3A Heroes",
-            mode: "light",
-            // loginMethodsOrder: ["apple", "google", "twitter"],
+            appName: "W3A",
+            // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            theme: {
+              primary: "red",
+            },
+            mode: "dark",
             logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
             logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
@@ -44,40 +47,53 @@ function App() {
           web3AuthNetwork: "cyan",
         });
 
-        // adding solana wallet connector plugin
-
-        const torusPlugin = new SolanaWalletConnectorPlugin({
-          torusWalletOpts: {},
-          walletInitOptions: {
+        const xrplProvider: any = new XrplPrivateKeyProvider({
+          config: { chainConfig: getXRPLChainConfig("testnet") },
+        }); // devnet, testnet, mainnet
+        const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "optional",
+          },
+          adapterSettings: {
+            uxMode: "redirect", // "redirect" | "popup"
             whiteLabel: {
-              name: "Whitelabel Demo",
-              theme: { isDark: true, colors: { torusBrand1: "#00a8ff" } },
-              logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-              topupHide: true,
-              defaultLanguage: "en",
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+              // dark: false, // whether to enable dark mode. defaultValue: false
             },
-            enableLogging: true,
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
+              },
+            },
           },
         });
-        await web3auth.addPlugin(torusPlugin);
-
-        const solflareAdapter = new SolflareAdapter({
-          clientId,
-        });
-        web3auth.configureAdapter(solflareAdapter);
-
-        const slopeAdapter = new SlopeAdapter({
-          clientId,
-        });
-        web3auth.configureAdapter(slopeAdapter);
+        web3auth.configureAdapter(openloginAdapter);
 
         setWeb3auth(web3auth);
 
         await web3auth.initModal();
-        setProvider(web3auth.provider);
 
         if (web3auth.connected) {
+          setProvider(web3auth.provider!);
           setLoggedIn(true);
         }
       } catch (error) {
@@ -94,35 +110,8 @@ function App() {
       return;
     }
     const web3authProvider = await web3auth.connect();
-    setProvider(web3authProvider);
-  };
-
-  const addChain = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const newChain = {
-      chainId: "0x2",
-      displayName: "Solana Testnet",
-      chainNamespace: CHAIN_NAMESPACES.SOLANA,
-      tickerName: "SOLANA",
-      ticker: "SOL",
-      decimals: 18,
-      rpcTarget: "https://api.testnet.solana.com",
-      blockExplorer: "https://explorer.solana.com/?cluster=testnet",
-    };
-    await web3auth?.addChain(newChain);
-    uiConsole("New Chain Added");
-  };
-
-  const switchChain = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await web3auth?.switchChain({ chainId: "0x2" });
-    uiConsole("Chain Switched");
+    setProvider(web3authProvider!);
+    setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -159,8 +148,8 @@ function App() {
       return;
     }
     const rpc = new RPC(provider);
-    const address = await rpc.getAccounts();
-    uiConsole(address);
+    const userAccount = await rpc.getAccounts();
+    uiConsole("Accpuint info: ", userAccount);
   };
 
   const getBalance = async () => {
@@ -170,7 +159,7 @@ function App() {
     }
     const rpc = new RPC(provider);
     const balance = await rpc.getBalance();
-    uiConsole(balance);
+    uiConsole("Balance", balance);
   };
 
   const sendTransaction = async () => {
@@ -179,8 +168,8 @@ function App() {
       return;
     }
     const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
+    const result = await rpc.signAndSendTransaction();
+    uiConsole(result);
   };
 
   const signMessage = async () => {
@@ -189,18 +178,8 @@ function App() {
       return;
     }
     const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    uiConsole(signedMessage);
-  };
-
-  const getPrivateKey = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    uiConsole(privateKey);
+    const result = await rpc.signMessage();
+    uiConsole(result);
   };
 
   function uiConsole(...args: any[]): void {
@@ -224,18 +203,8 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={addChain} className="card">
-            Add Chain
-          </button>
-        </div>
-        <div>
-          <button onClick={switchChain} className="card">
-            Switch Chain
-          </button>
-        </div>
-        <div>
           <button onClick={getAccounts} className="card">
-            Get Account
+            Get Accounts
           </button>
         </div>
         <div>
@@ -244,18 +213,13 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
           <button onClick={signMessage} className="card">
             Sign Message
           </button>
         </div>
         <div>
-          <button onClick={getPrivateKey} className="card">
-            Get Private Key
+          <button onClick={sendTransaction} className="card">
+            Send Transaction
           </button>
         </div>
         <div>
@@ -265,7 +229,7 @@ function App() {
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
+        <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
     </>
   );
@@ -279,17 +243,17 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Solana Example
+        & ReactJS XRPL Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/solana-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/xrpl-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

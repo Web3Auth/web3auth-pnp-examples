@@ -248,7 +248,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>{" "}
         & NextJS Server Side Verification Example
@@ -258,14 +258,11 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/server-side-verification-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/server-side-verification-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a href="https://goerlifaucet.com/" target="_blank" rel="noopener noreferrer">
-          Goerli Faucet
         </a>
       </footer>
     </div>

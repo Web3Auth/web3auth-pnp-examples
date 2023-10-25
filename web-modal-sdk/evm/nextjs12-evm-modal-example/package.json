@@ -17,7 +17,7 @@
     "@web3auth/wallet-connect-v2-adapter": "^7.0.2",
     "ethers": "^6.6.2",
     "i18n": "^0.15.1",
-    "next": "^12.3.1",
+    "next": "^13.5.0",
     "react": "18",
     "react-dom": "18",
     "web3": "^4.1.1"

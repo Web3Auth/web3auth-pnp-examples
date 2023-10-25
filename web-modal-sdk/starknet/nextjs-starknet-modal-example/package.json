@@ -15,7 +15,7 @@
     "@web3auth/openlogin-adapter": "^7.0.1",
     "elliptic": "^6.5.4",
     "ethers": "^5.7.2",
-    "next": "13.4.3",
+    "next": "13.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "starknet": "^4.4.2"

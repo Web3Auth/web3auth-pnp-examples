@@ -95,7 +95,7 @@ export default Vue.extend({
     },
     async connect(e) {
       try {
-        await this.web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V1);
+        await this.web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
       } catch (error) {
         console.error(error);
         this.console("error", error);

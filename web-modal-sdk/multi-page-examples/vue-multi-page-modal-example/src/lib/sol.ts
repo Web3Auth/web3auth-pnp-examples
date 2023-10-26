@@ -15,7 +15,7 @@ function getNewTx(publicKeys, blockhash) {
     toPubkey: new PublicKey(publicKeys[0]),
     lamports: 0.1 * LAMPORTS_PER_SOL,
   });
-  return new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(publicKeys![0]) }).add(inst);
+  return new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(publicKeys?.[0]) }).add(inst);
 }
 
 export const getAccounts = async (provider: IProvider, uiConsole: any): Promise<string[] | undefined> => {

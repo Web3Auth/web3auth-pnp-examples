@@ -27,8 +27,8 @@ import {
   CHAIN_NAMESPACES,
   CONNECTED_EVENT_DATA,
   CustomChainConfig,
-  LoginMethodConfig,
   IProvider,
+  LoginMethodConfig,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";

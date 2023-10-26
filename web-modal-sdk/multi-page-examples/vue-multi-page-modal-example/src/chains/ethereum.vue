@@ -126,7 +126,7 @@ export default Vue.extend({
           clientId: config.clientId[this.openloginNetwork],
           authMode: "DAPP",
           enableLogging: true,
-          web3AuthNetwork: this.openloginNetwork as any,
+          web3AuthNetwork: this.openloginNetwork as OPENLOGIN_NETWORK_TYPE,
         });
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
@@ -179,7 +179,7 @@ export default Vue.extend({
               showOnMobile: true,
               label: "Metamask",
             },
-            [WALLET_ADAPTERS.WALLET_CONNECT_V1]: {
+            [WALLET_ADAPTERS.WALLET_CONNECT_V2]: {
               showOnDesktop: true,
               showOnModal: true,
               showOnMobile: true,

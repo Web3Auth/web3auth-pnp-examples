@@ -40,8 +40,8 @@ export default Vue.extend({
   name: "WhitelabelExample",
   props: {
     // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
-          // Please remove this parameter if you're on the Base Plan
-          uiConfig: {
+    // Please remove this parameter if you're on the Base Plan
+    uiConfig: {
       type: Object,
       default: () => ({
         theme: "light",
@@ -81,7 +81,7 @@ export default Vue.extend({
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
-            appLogo: this.uiConfig.logoUrl,
+            logoLight: this.uiConfig.logoUrl,
             theme: this.uiConfig.theme,
             loginMethodsOrder: this.uiConfig.loginMethodsOrder,
             defaultLanguage: this.uiConfig.defaultLanguage,

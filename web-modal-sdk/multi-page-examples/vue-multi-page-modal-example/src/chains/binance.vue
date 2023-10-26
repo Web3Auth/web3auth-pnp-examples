@@ -63,7 +63,7 @@ export default Vue.extend({
     };
   },
   watch: {
-    adapterConfig: async function (newSettings, oldSettings) {
+    adapterConfig: async function () {
       await this.initBinanceWeb3Auth();
     },
   },

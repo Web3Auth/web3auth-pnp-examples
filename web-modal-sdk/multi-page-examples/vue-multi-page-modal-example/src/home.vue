@@ -1,14 +1,15 @@
 <template>
   <div class="container">
     <div class="sidebar">
-      <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/vue-multi-page-modal-example" target="blank">
+      <a
+        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/vue-multi-page-modal-example"
+        target="blank"
+      >
         <img src="./assets/github-logo.png" width="30px" />
       </a>
       <h2>Demo Settings</h2>
 
-      <div class="flex-vertical-center authMode">
-        <!-- <label class="form-label" for="chain">Chain</label> -->
-
+      <!-- <div class="flex-vertical-center authMode">
         <span class="form-label">Auth Mode</span>
         <span class="form-control radio-group">
           <label for="hosted" class="radio-button">
@@ -20,7 +21,7 @@
             Use Your Own Auth
           </label>
         </span>
-      </div>
+      </div> -->
       <div class="flex-vertical-center plugins">
         <!-- <label class="form-label" for="chain">Chain</label> -->
 
@@ -40,17 +41,13 @@
           <div class="flex-vertical-center ui-mode">
             <span class="form-label">Openlogin Network</span>
             <span class="form-control radio-group">
-              <label for="mainnet" class="radio-button">
-                <input type="radio" id="mainnet" value="mainnet" v-model="form.openloginNetwork" />
-                Mainnet
+              <label for="sapphire_mainnet" class="radio-button">
+                <input type="radio" id="sapphire_mainnet" value="sapphire_mainnet" v-model="form.openloginNetwork" />
+                Sapphire Mainnet
               </label>
-              <label for="testnet" class="radio-button">
-                <input type="radio" id="testnet" value="testnet" v-model="form.openloginNetwork" />
-                Testnet
-              </label>
-              <label for="cyan" class="radio-button">
-                <input type="radio" id="cyan" value="cyan" v-model="form.openloginNetwork" />
-                Cyan
+              <label for="sapphire_devnet" class="radio-button">
+                <input type="radio" id="sapphire_devnet" value="sapphire_devnet" v-model="form.openloginNetwork" />
+                Sapphire Devnet
               </label>
             </span>
           </div>
@@ -66,10 +63,6 @@
               <input type="radio" id="ethereum" value="ethereum" v-model="form.chain" />
               Ethereum
             </label>
-            <label for="solana" class="radio-button">
-              <input type="radio" id="solana" value="solana" v-model="form.chain" />
-              Solana
-            </label>
             <label for="binance" class="radio-button">
               <input type="radio" id="binance" value="binance" v-model="form.chain" />
               Binance
@@ -81,7 +74,7 @@
           </span>
         </div>
         <hr />
-        <div class="ui-mode">
+        <!-- <div class="ui-mode">
           <div class="flex-vertical-center ui-mode">
             <span class="form-label">UI</span>
             <span class="form-control radio-group">
@@ -89,10 +82,10 @@
                 <input type="radio" id="default" value="default" v-model="form.selectedUiMode" />
                 Default
               </label>
-              <!-- <label for="customUi" class="radio-button">
-              <input type="radio" id="customUi" value="customUi" v-model="form.selectedUiMode" />
-              CustomUI
-            </label> -->
+              <label for="customUi" class="radio-button">
+                <input type="radio" id="customUi" value="customUi" v-model="form.selectedUiMode" />
+                CustomUI
+              </label>
               <label for="whitelabel" class="radio-button">
                 <input type="radio" id="whitelabel" value="whitelabel" v-model="form.selectedUiMode" />
                 WhiteLabel
@@ -101,7 +94,7 @@
           </div>
           <hr />
 
-          <!-- UI MODE DEFAULT -->
+          UI MODE DEFAULT
           <div v-if="form.selectedUiMode == 'default'">
             <div class="flex-vertical-center">
               <span class="form-label">Social Logins</span>
@@ -128,7 +121,7 @@
             </div>
           </div>
 
-          <!-- UI MODE YOUR OWN MODAL -->
+          UI MODE YOUR OWN MODAL
           <div v-if="form.selectedUiMode == 'customUi'">
             <div class="flex-vertical-center">
               <span class="form-label">Type</span>
@@ -141,7 +134,7 @@
             <br />
           </div>
 
-          <!-- UI MODE WHITELABEL -->
+          UI MODE WHITELABEL
           <div v-if="form.selectedUiMode == 'whitelabel'">
             <div class="flex-vertical-center">
               <span class="form-label">Logo URL</span>
@@ -181,7 +174,7 @@
               <div></div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="ownAuth" v-else-if="config.authMode === 'ownAuth'">

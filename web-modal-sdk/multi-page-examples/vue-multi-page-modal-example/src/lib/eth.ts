@@ -3,7 +3,7 @@ import Web3 from "web3";
 
 export const sendEth = async (provider: IProvider, uiConsole: any) => {
   try {
-    const web3 = new Web3(provider as any);
+    const web3 = new Web3(provider as IProvider);
     const accounts = await web3.eth.getAccounts();
     console.log("pubKey", accounts);
     const txRes = await web3.eth.sendTransaction({
@@ -21,7 +21,7 @@ export const sendEth = async (provider: IProvider, uiConsole: any) => {
 export const signEthMessage = async (provider: IProvider, uiConsole: any) => {
   try {
     const web3 = new Web3();
-    web3.setProvider(provider as any);
+    web3.setProvider(provider as IProvider);
 
     const fromAddress = (await web3.eth.getAccounts())[0];
     console.log("fromAddress", fromAddress);
@@ -38,7 +38,7 @@ export const signEthMessage = async (provider: IProvider, uiConsole: any) => {
 
 export const getAccounts = async (provider: IProvider, uiConsole: any): Promise<string[] | undefined> => {
   try {
-    const web3 = new Web3(provider as any);
+    const web3 = new Web3(provider as IProvider);
     const accounts = await web3.eth.getAccounts();
     uiConsole("accounts", accounts);
     return accounts;
@@ -49,7 +49,7 @@ export const getAccounts = async (provider: IProvider, uiConsole: any): Promise<
 };
 export const getChainId = async (provider: IProvider, uiConsole: any): Promise<string | undefined> => {
   try {
-    const web3 = new Web3(provider as any);
+    const web3 = new Web3(provider as IProvider);
     const chainId = await web3.eth.getChainId();
     uiConsole(chainId.toString());
     return chainId.toString();
@@ -60,10 +60,10 @@ export const getChainId = async (provider: IProvider, uiConsole: any): Promise<s
 };
 export const getBalance = async (provider: IProvider, uiConsole: any) => {
   try {
-    const web3 = new Web3(provider as any);
+    const web3 = new Web3(provider as IProvider);
     const accounts = await web3.eth.getAccounts();
     const balance = await web3.eth.getBalance(accounts[0]);
-    uiConsole("balance", balance);
+    uiConsole("balance", balance.toString());
   } catch (error) {
     console.error("Error", error);
     uiConsole("error", error);
@@ -72,7 +72,7 @@ export const getBalance = async (provider: IProvider, uiConsole: any) => {
 
 export const signTransaction = async (provider: IProvider, uiConsole: any) => {
   try {
-    const web3 = new Web3(provider as any);
+    const web3 = new Web3(provider as IProvider);
     const accounts = await web3.eth.getAccounts();
 
     // only supported with social logins (openlogin adapter)
@@ -81,7 +81,7 @@ export const signTransaction = async (provider: IProvider, uiConsole: any) => {
       to: accounts[0],
       value: web3.utils.toWei("0.01", "ether"),
     });
-    uiConsole("txRes", txRes);
+    uiConsole("txRes", txRes.raw);
   } catch (error) {
     console.log("error", error);
     uiConsole("error", error);

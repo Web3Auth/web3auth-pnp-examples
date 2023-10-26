@@ -4,14 +4,10 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 // EVM
 import Web3 from "web3";
 // Solana
-import {
-  SolanaPrivateKeyProvider,
-  SolanaWallet,
-} from "@web3auth/solana-provider";
+import { SolanaPrivateKeyProvider, SolanaWallet } from "@web3auth/solana-provider";
 // Tezos
 //@ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
@@ -25,15 +21,9 @@ import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 
 // Near
-// import { keyStores, KeyPair, utils } from "near-api-js";
-// Will address in future PR
+import { KeyPair, utils } from "near-api-js";
 
-//@ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ec as elliptic } from "elliptic";
-
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -139,7 +129,7 @@ function App() {
     const starkex_address = await getStarkExAddress();
     const starknet_address = await getStarkNetAddress();
     const polkadot_address = await getPolkadotAddress();
-    // const near_address = await getNearAddress();
+    const near_address = await getNearAddress();
 
     uiConsole(
       "Polygon Address: " + polygon_address,
@@ -148,9 +138,10 @@ function App() {
       "Tezos Address: " + tezos_address,
       "StarkEx Address: " + starkex_address,
       "StarkNet Address: " + starknet_address,
-      "Polkadot Address: " + polkadot_address
-      // "Near Address: " + near_address
+      "Polkadot Address: " + polkadot_address,
+      "Near Address: " + near_address
     );
+    console.log("Solana Address: " + solana_address);
   };
 
   const login = async () => {
@@ -235,23 +226,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-
-    const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0x13881",
-          rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-          displayName: "Polygon Mumbai",
-          blockExplorer: "https://mumbai.polygonscan.com/",
-          ticker: "MATIC",
-          tickerName: "MATIC",
-        },
-      },
-    });
-    await polygonPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(polygonPrivateKeyProvider.provider as any);
+    const web3 = new Web3(provider as any);
     const address = (await web3.eth.getAccounts())[0];
     return address;
   };
@@ -261,23 +236,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-
-    const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0x38",
-          rpcTarget: "https://rpc.ankr.com/bsc",
-          displayName: "Binance SmartChain Mainnet",
-          blockExplorer: "https://bscscan.com/",
-          ticker: "BNB",
-          tickerName: "BNB",
-        },
-      },
-    });
-    await bnbPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(bnbPrivateKeyProvider.provider as any);
+    const web3 = new Web3(provider as any);
     const address = (await web3.eth.getAccounts())[0];
     return address;
   };
@@ -307,11 +266,7 @@ function App() {
       },
     });
     await solanaPrivateKeyProvider.setupProvider(ed25519key);
-    console.log(solanaPrivateKeyProvider.provider);
-
-    const solanaWallet = new SolanaWallet(
-      solanaPrivateKeyProvider.provider as any
-    );
+    const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider.provider as any);
     const solana_address = await solanaWallet.requestAccounts();
     return solana_address[0];
   };
@@ -328,21 +283,32 @@ function App() {
     return address;
   };
 
-  // Will address this in future PR
-  // const getNearAddress = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const privateKey = await rpc.getPrivateKey();
-  //   const keyPair = KeyPair.fromString(utils.serialize.base_encode(privateKey));
-  //   const myKeyStore = new keyStores.InMemoryKeyStore();
-  //   await myKeyStore.setKey("testnet", "web3auth-test-account.testnet", keyPair);
-  //   const publicKey = utils.PublicKey.fromString(keyPair?.getPublicKey().toString());
-  //   const address = Buffer.from(publicKey.data).toString("hex")
-  //   return address;
-  // };
+  const getNearAddress = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const privateKey = await rpc.getPrivateKey();
+    const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
+    const privateKeyEd25519 = getED25519Key(privateKey).sk.toString("hex");
+
+    // Convert the private key to Buffer
+    const privateKeyEd25519Buffer = Buffer.from(privateKeyEd25519, "hex");
+
+    // Convert the private key to base58
+    const bs58encode = utils.serialize.base_encode(privateKeyEd25519Buffer);
+
+    // Convert the base58 private key to KeyPair
+    const keyPair = KeyPair.fromString(bs58encode);
+
+    // publicAddress
+    const publicAddress = keyPair?.getPublicKey().toString();
+
+    // accountId is the account address which is where funds will be sent to.
+    const accountId = utils.serialize.base_decode(publicAddress.split(":")[1]).toString("hex");
+    return accountId;
+  };
 
   const getStarkExAddress = async () => {
     if (!provider) {
@@ -352,10 +318,7 @@ function App() {
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
     const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starkex_account = starkwareCrypto.ec.keyFromPublic(
-      keyPairStarkEx.getPublic(true, "hex"),
-      "hex"
-    );
+    const starkex_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
     const address = starkex_account.pub.getX().toString("hex");
     return address;
   };
@@ -367,14 +330,8 @@ function App() {
     }
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
-    const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(
-      privateKey,
-      "hex"
-    );
-    const starknet_account = starkwareCrypto.ec.keyFromPublic(
-      keyPairStarkNet.getPublic(true, "hex"),
-      "hex"
-    );
+    const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
+    const starknet_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
     const address = starknet_account.pub.getX().toString("hex");
     return address;
   };

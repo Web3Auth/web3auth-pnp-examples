@@ -18,11 +18,11 @@ npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/evm/nextjs-evm-no-modal-e
 Install & Run:
 
 ```bash
-cd w3a-modal-evm-nextjs
+cd w3a-no-modal-evm-nextjs
 npm install
 npm run dev
 # or
-cd w3a-modal-evm-nextjs
+cd w3a-no-modal-evm-nextjs
 yarn
 yarn dev
 ```

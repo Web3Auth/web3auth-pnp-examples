@@ -154,21 +154,21 @@ export default Vue.extend({
         this.web3auth.configureAdapter(wc2Adapter);
 
         this.web3auth.configureAdapter(openloginAdapter);
-        if (this.plugins["torusWallet"]) {
-          const torusPlugin = new TorusWalletConnectorPlugin({
-            torusWalletOpts: {},
-            walletInitOptions: {
-              whiteLabel: {
-                theme: { isDark: true, colors: { primary: "#00a8ff" } },
-                logoDark: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-                logoLight: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-              },
-              useWalletConnect: true,
-              enableLogging: true,
-            },
-          });
-          await this.web3auth.addPlugin(torusPlugin);
-        }
+        // if (this.plugins["torusWallet"]) {
+        //   const torusPlugin = new TorusWalletConnectorPlugin({
+        //     torusWalletOpts: {},
+        //     walletInitOptions: {
+        //       whiteLabel: {
+        //         theme: { isDark: true, colors: { primary: "#00a8ff" } },
+        //         logoDark: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+        //         logoLight: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+        //       },
+        //       useWalletConnect: true,
+        //       enableLogging: true,
+        //     },
+        //   });
+        //   await this.web3auth.addPlugin(torusPlugin);
+        // }
         this.subscribeAuthEvents(this.web3auth);
 
         await this.web3auth.initModal({

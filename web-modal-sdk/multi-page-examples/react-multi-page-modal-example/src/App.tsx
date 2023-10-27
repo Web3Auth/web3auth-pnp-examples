@@ -1,34 +1,34 @@
 import "./App.css";
-import { useState } from "react";
-import { WEB3AUTH_NETWORK_TYPE } from "./config/web3AuthNetwork";
-import { CHAIN_CONFIG_TYPE } from "./config/chainConfig";
-import styles from "./styles/Home.module.css";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import Deposit from "./pages/Deposit";
+import Explorer from "./pages/Explorer";
+import HomePage from "./pages/HomePage";
+import Minting from "./pages/Minting";
+import Settlement from "./pages/Settlement";
+import Transfer from "./pages/Transfer";
+import Withdrawal from "./pages/Withdrawal";
 import { Web3AuthProvider } from "./services/web3auth";
-import Setting from "./components/Setting";
-import Main from "./components/Main";
 
 function App() {
-  const [web3AuthNetwork, setWeb3AuthNetwork] = useState<WEB3AUTH_NETWORK_TYPE>("mainnet");
-  const [chain, setChain] = useState<CHAIN_CONFIG_TYPE>("mainnet");
-
   return (
-    <div className={styles.container}>
-      <Web3AuthProvider chain={chain} web3AuthNetwork={web3AuthNetwork}>
-        <h1 className={styles.title}>
-          <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
-            Web3Auth
-          </a>{" "}
-          & ReactJS Example
-        </h1>
-        <Setting setNetwork={setWeb3AuthNetwork} setChain={setChain} />
-        <Main />
+    <div>
+      <Web3AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/">
+              <Route index element={<HomePage />} />
+              <Route path="deposit" element={<Deposit />} />
+              <Route path="withdrawal" element={<Withdrawal />} />
+              <Route path="minting" element={<Minting />} />
+              <Route path="transfer" element={<Transfer />} />
+              <Route path="settlement" element={<Settlement />} />
+              <Route path="explorer" element={<Explorer />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </Web3AuthProvider>
-      <footer className={styles.footer}>
-        <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/react-multi-page-modal-example" target="_blank" rel="noopener noreferrer">
-          Source code {"  "}
-          <img className={styles.logo} src="/images/github-logo.png" alt="github-logo" />
-        </a>
-      </footer>
     </div>
   );
 }

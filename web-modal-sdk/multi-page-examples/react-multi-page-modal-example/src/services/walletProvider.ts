@@ -1,21 +1,16 @@
-import { IProvider } from "@web3auth/base";
-import ethProvider from "./ethProvider";
-import solanaProvider from "./solanaProvider";
-import tezosProvider  from "./tezosProvider";
+import { SafeEventEmitterProvider } from "@web3auth/base";
+
+import evmProvider from "./evmProvider";
+import { TransactionReceipt } from "ethers";
 
 export interface IWalletProvider {
-  getAccounts: () => Promise<any>;
-  getBalance: () => Promise<any>;
-  signAndSendTransaction: () => Promise<void>;
-  signTransaction: () => Promise<void>;
-  signMessage: () => Promise<void>;
+  getAddress: () => Promise<string>;
+  getBalance: () => Promise<string>;
+  getSignature: (message: string) => Promise<string>;
+  sendTransaction: (amount: string, destination: string) => Promise<TransactionReceipt | string>
+  getPrivateKey: () => Promise<string>;
 }
 
-export const getWalletProvider = (chain: string, provider: IProvider, uiConsole: any): IWalletProvider => {
-  if (chain === "solana") {
-    return solanaProvider(provider, uiConsole);
-  } else if (chain === "tezos") {
-    return tezosProvider(provider, uiConsole);
-  }
-  return ethProvider(provider, uiConsole);
+export const getWalletProvider = (provider: SafeEventEmitterProvider | null, uiConsole: any): IWalletProvider => {
+  return evmProvider(provider, uiConsole);
 };

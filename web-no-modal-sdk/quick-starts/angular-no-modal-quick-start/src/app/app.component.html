@@ -1,0 +1,43 @@
+<div class="content">
+  <h1 class="title">
+    <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal">Web3Auth</a> & AngularJS
+    Example
+  </h1>
+  <div class="setting">
+    <div
+      *ngIf="loggedIn; else elseBlock"
+      class="card-container"
+    >
+      <button class="card card-small" (click)="getUserInfo()">
+        Get User Info
+      </button>
+      <button class="card card-small" (click)="getAccounts()">
+        Get Accounts
+      </button>
+      <button class="card card-small" (click)="getBalance()">
+        Get Balance
+      </button>
+      <button class="card card-small" (click)="signMessage()">
+        Sign Message
+      </button>
+      <button class="card card-small" (click)="logout()">Log Out</button>
+    </div>
+    <ng-template #elseBlock>
+      <div class="card-container">
+        <button class="card card-small" (click)="login()">Login</button>
+      </div>
+    </ng-template>
+    <div class="console" id="console-ui">
+      <p class="code">Logged In</p>
+    </div>
+  </div>
+  <footer class="footer">
+    <a
+      href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/angular-no-modal-quick-start"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Source code
+    </a>
+  </footer>
+</div>

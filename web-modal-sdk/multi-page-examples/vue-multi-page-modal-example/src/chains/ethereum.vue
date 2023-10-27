@@ -57,7 +57,7 @@ export default Vue.extend({
     },
     openloginNetwork: {
       type: String,
-      default: "testnet",
+      default: "sapphire_devnet",
     },
   },
   watch: {

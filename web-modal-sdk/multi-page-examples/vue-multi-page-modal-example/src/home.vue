@@ -259,7 +259,7 @@ const defaultFormConfig = {
   chain: "ethereum",
   authMode: "hosted",
   selectedUiMode: "default",
-  openloginNetwork: "testnet",
+  openloginNetwork: "sapphire_devnet",
   plugins: {
     torusWallet: true,
   },

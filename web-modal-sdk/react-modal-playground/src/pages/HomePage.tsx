@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import { useWeb3Auth } from "../services/web3auth";
 
 function HomePage() {
-  const { provider, address, balance } = useWeb3Auth();
+  const { provider, address, balance, chainDetails } = useWeb3Auth();
   const formDetails = [
     {
       label: "Address",
@@ -12,8 +12,13 @@ function HomePage() {
       readOnly: true,
     },
     {
-      label: "L1 Balance (Goerli)",
+      label: "Balance",
       input: `${balance} ETH`,
+      readOnly: true,
+    },
+    {
+      label: "Chain details",
+      input: chainDetails,
       readOnly: true,
     },
   ];

@@ -11,6 +11,7 @@ export interface IWeb3AuthContext {
   user: any;
   address: any;
   balance: any;
+  chainDetails: any;
   login: () => Promise<void>;
   logout: () => Promise<void>;
   getUserInfo: () => Promise<any>;
@@ -19,6 +20,7 @@ export interface IWeb3AuthContext {
   getSignature: (message: string) => Promise<string>;
   sendTransaction: (amount: string, destination: string) => Promise<string>;
   getPrivateKey: () => Promise<string>;
+  getChainDetails: () => Promise<string>;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -28,6 +30,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   user: null,
   address: null,
   balance: null,
+  chainDetails: null,
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => {},
@@ -36,6 +39,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   getSignature: async () => "",
   sendTransaction: async () => "",
   getPrivateKey: async () => "",
+  getChainDetails: async () => "",
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -53,6 +57,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [balance, setBalance] = useState<string | null>(null);
   const [user, setUser] = useState<Partial<OpenloginUserInfo> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [chainDetails, setChainDetails] = useState<string | null>(null);
 
   const uiConsole = (...args: unknown[]): void => {
     const el = document.querySelector("#console");
@@ -66,6 +71,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     setProvider(walletProvider);
     setAddress(await walletProvider.getAddress());
     setBalance(await walletProvider.getBalance());
+    setChainDetails(await walletProvider.getChainDetails());
   }, []);
 
   useEffect(() => {
@@ -190,6 +196,14 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     await provider.getPrivateKey();
   };
 
+  const getChainDetails = async () => {
+    if (!web3Auth) {
+      uiConsole("web3auth not initialized yet");
+      return "";
+    }
+    await provider.getChainDetails();
+  }
+
   const contextProvider = {
     web3Auth,
     provider,
@@ -197,6 +211,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     isLoading,
     address,
     balance,
+    chainDetails,
     login,
     logout,
     getUserInfo,
@@ -205,6 +220,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     getSignature,
     sendTransaction,
     getPrivateKey,
+    getChainDetails,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

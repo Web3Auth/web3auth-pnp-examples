@@ -39,7 +39,7 @@ function Minting() {
         <Sidebar />
         {provider ? (
           <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
-            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Minting</h1>
+            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Server Side Verification</h1>
             <Form heading="StarkEx Minting" formDetails={formDetails}>
               <button
                 className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"

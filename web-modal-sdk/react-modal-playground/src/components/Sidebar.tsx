@@ -9,14 +9,14 @@ const Sidebar = () => {
   function goToHome() {
     navigate("/");
   }
-  function goToWithdrawal() {
-    navigate("/withdrawal");
+  function goToTransaction() {
+    navigate("/transaction");
   }
-  function goToDeposit() {
-    navigate("/deposit");
+  function goToContractNftInteractions() {
+    navigate("/contract-nft-interactions");
   }
-  function goToMinting() {
-    navigate("/minting");
+  function goToServerSideVerification() {
+    navigate("/server-side-verification");
   }
   function goToTransfer() {
     navigate("/transfer");
@@ -75,13 +75,13 @@ const Sidebar = () => {
       <div className="py-3">
         <strong className="px-4 block p-1 text-xs font-medium text-gray-400 uppercase">MENU</strong>
         <nav className="flex flex-col mt-6">
-          {location.pathname === "/" ? activePage("Default Parameters") : linktoGo("Default Parameters", goToHome)}
-          {location.pathname === "/withdrawal" ? activePage("Withdrawal") : linktoGo("Withdrawal", goToWithdrawal)}
-          {location.pathname === "/deposit" ? activePage("Deposit") : linktoGo("Deposit", goToDeposit)}
-          {location.pathname === "/minting" ? activePage("Minting") : linktoGo("Minting", goToMinting)}
-          {location.pathname === "/transfer" ? activePage("Transfer") : linktoGo("Transfer", goToTransfer)}
+          {location.pathname === "/" ? activePage("Main Page") : linktoGo("Main Page", goToHome)}
+          {location.pathname === "/transaction" ? activePage("Transactions") : linktoGo("Transactions", goToTransaction)}
+          {location.pathname === "/contract-nft-interactions" ? activePage("Smart Contract & NFT Interactions") : linktoGo("Smart Contract & NFT Interactions", goToContractNftInteractions)}
+          {location.pathname === "/server-side-verification" ? activePage("Server Side Verification") : linktoGo("Server Side Verification", goToServerSideVerification)}
+          {/* {location.pathname === "/transfer" ? activePage("Transfer") : linktoGo("Transfer", goToTransfer)}
           {location.pathname === "/settlement" ? activePage("Settlement") : linktoGo("Settlement", goToSettlement)}
-          {location.pathname === "/explorer" ? activePage("StarkEx Explorer") : linktoGo("StarkEx Explorer", goToExplorer)}
+          {location.pathname === "/explorer" ? activePage("StarkEx Explorer") : linktoGo("StarkEx Explorer", goToExplorer)} */}
         </nav>
       </div>
       {userProfile()}

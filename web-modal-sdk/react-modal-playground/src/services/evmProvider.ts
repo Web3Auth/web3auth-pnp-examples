@@ -95,12 +95,25 @@ const starkexProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (
     }
   }
 
+  const getChainDetails = async (): Promise<string> => {
+    try {
+      const ethersProvider = new ethers.BrowserProvider(provider);
+
+      const networkDetails = await ethersProvider.getNetwork();
+
+      return JSON.stringify(networkDetails.toJSON());
+    } catch (error) {
+      return error as string;
+    }
+  }
+
   return {
     getAddress,
     getBalance,
     getSignature,
     sendTransaction,
     getPrivateKey,
+    getChainDetails,
   };
 };
 

@@ -7,35 +7,17 @@ import Sidebar from "../components/Sidebar";
 import Tabs from "../components/Tabs";
 import { useWeb3Auth } from "../services/web3auth";
 
-function Deposit() {
-  const [vaultId, setVaultId] = useState("1654615998");
-  const [tokenId, setTokenId] = useState("45");
-  const [assetType, setAssetType] = useState("354");
-  const [amount, setAmount] = useState("6000000000");
-
+function Transaction() {
   const { provider } = useWeb3Auth();
 
-  const [tab, setTab] = useState("l1");
+  const [vaultId, setVaultId] = useState("1654615998");
+  const [tokenId, setTokenId] = useState("sdfa");
+  const [assetType, setAssetType] = useState("asdf");
+  const [amount, setAmount] = useState("6000000000");
+
+  const [tab, setTab] = useState("starkex");
 
   const formDetailsStarkEx = [
-    {
-      label: "vault_id",
-      input: vaultId as string,
-      onChange: setVaultId,
-    },
-    {
-      label: "asset_type",
-      input: assetType as string,
-      onChange: setAssetType,
-    },
-    {
-      label: "amount",
-      input: amount as string,
-      onChange: setAmount,
-    },
-  ];
-
-  const formDetailsL1 = [
     {
       label: "vault_id",
       input: vaultId as string,
@@ -52,16 +34,34 @@ function Deposit() {
       onChange: setAmount,
     },
   ];
-  const TabData = [
+
+  const formDetailsL1 = [
     {
-      tabName: "L1 → StarkEx Deposit",
-      onClick: () => setTab("l1"),
-      active: tab === "l1",
+      label: "vault_id",
+      input: vaultId as string,
+      onChange: setVaultId,
     },
     {
-      tabName: "StarkEx → StarkEx Deposit",
+      label: "asset_type",
+      input: assetType as string,
+      onChange: setAssetType,
+    },
+    {
+      label: "amount",
+      input: amount as string,
+      onChange: setAmount,
+    },
+  ];
+  const TabData = [
+    {
+      tabName: "Sign Message",
       onClick: () => setTab("starkex"),
       active: tab === "starkex",
+    },
+    {
+      tabName: "Send Transaction",
+      onClick: () => setTab("l1"),
+      active: tab === "l1",
     },
   ];
 
@@ -71,22 +71,16 @@ function Deposit() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         {provider ? (
-          <div className="w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
-            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Deposit</h1>
+          <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
+            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Withdrawal</h1>
             <Tabs tabData={TabData} />
-            {tab === "l1" ? (
+            {tab === "starkex" ? (
               <Form formDetails={formDetailsStarkEx}>
                 <button
                   className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                   style={{ backgroundColor: "#0364ff" }}
                 >
-                  Deposit ETH
-                </button>
-                <button
-                  className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                  style={{ backgroundColor: "#0364ff" }}
-                >
-                  View Balance
+                  Sign Message
                 </button>
               </Form>
             ) : (
@@ -95,20 +89,14 @@ function Deposit() {
                   className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                   style={{ backgroundColor: "#0364ff" }}
                 >
-                  Send with StarkEx Gateway
-                </button>
-                <button
-                  className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                  style={{ backgroundColor: "#0364ff" }}
-                >
-                  View Deposit Balance
+                  Send Transaction
                 </button>
               </Form>
             )}
             <Console />
           </div>
         ) : (
-          <div className="w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-center overflow-scroll p-4">
+          <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-center overflow-scroll p-4">
             <h1 className="text-2xl font-bold text-center sm:text-3xl">Welcome to Web3Auth StarkEx Playground</h1>
             <p className="max-w-md mx-auto mt-4 text-center text-gray-500">Please connect to Web3Auth to get started.</p>
           </div>
@@ -118,4 +106,4 @@ function Deposit() {
   );
 }
 
-export default Deposit;
+export default Transaction;

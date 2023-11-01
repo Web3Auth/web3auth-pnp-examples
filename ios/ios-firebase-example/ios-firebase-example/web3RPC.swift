@@ -1,3 +1,4 @@
+
 import BigInt
 import Combine
 import Foundation
@@ -22,8 +23,8 @@ class Web3RPC : ObservableObject {
     init?(user: Web3AuthState){
         self.user = user
         do{
-            client = EthereumClient(url: URL(string: RPC_URL)!)
-            account = try EthereumAccount(keyStorage: user )
+            client = EthereumHttpClient(url: URL(string: RPC_URL)!)
+            account = try EthereumAccount(keyStorage: user as! EthereumSingleKeyStorageProtocol )
             address = account.address
         } catch {
              return nil
@@ -38,16 +39,23 @@ class Web3RPC : ObservableObject {
 
     func checkLatestBlockChanged() async -> Bool {
         return await withCheckedContinuation({ continuation in
-            client.eth_blockNumber { [weak self] _, val in
-                guard let val = val, self?.latestBlock != val else {
+            client.eth_blockNumber { [weak self] result in
+                switch result {
+                case .success(let val):
+                    if self?.latestBlock != val {
+                        self?.latestBlock = val
+                        continuation.resume(returning: true)
+                    } else {
+                        continuation.resume(returning: false)
+                    }
+                case .failure:
                     continuation.resume(returning: false)
-                    return
                 }
-                self?.latestBlock = val
-                continuation.resume(returning: true)
             }
         })
     }
+
+
     
     func getBalance() {
         Task {
@@ -55,19 +63,20 @@ class Web3RPC : ObservableObject {
             guard blockChanged == true else {
                 return
             }
-            let balance: () = client.eth_getBalance(address: self.address, block: .Latest) { [unowned self] error, val in
-                if let error = error {
+            let _ = client.eth_getBalance(address: self.address, block: .Latest) { [unowned self] result in
+                switch result {
+                case .success(let weiValue):
+                    let balance = TorusWeb3Utils.toEther(wei: weiValue) // Access the value directly
+                    DispatchQueue.main.async { [weak self] in
+                        self?.balance = balance
+                    }
+                case .failure(let error):
                     print(error)
                 }
-                let balance = TorusWeb3Utils.toEther(wei: Wei(val ?? 0))
-                DispatchQueue.main.async { [weak self] in
-                    self?.balance = balance
-                }
             }
-            print(balance)
-            
         }
     }
+
     
     func signMessage() {
         do {
@@ -85,8 +94,9 @@ class Web3RPC : ObservableObject {
                 let val = try await transferAsset(sendTo: "0x24BfD1c2D000EC276bb2b6af38C47390Ae6B5FF0", amount: 0.0001, maxTip: 0.0001)
                 self.sentTransactionID = val
                 print(val)
-            } catch {
-                self.sentTransactionID = "Something Went Wrong"
+            } catch let error {
+                print("error: ", error)
+                self.sentTransactionID = "Something Went Wrong, please check if you have insufficient funds"
             }
             
         }
@@ -107,7 +117,7 @@ class Web3RPC : ObservableObject {
     
 }
 
-extension Web3AuthState:EthereumKeyStorageProtocol {
+extension Web3AuthState: EthereumSingleKeyStorageProtocol {
     public func storePrivateKey(key: Data) throws {
         
     }

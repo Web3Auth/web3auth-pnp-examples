@@ -34,13 +34,15 @@ class ViewModel: ObservableObject {
                 let res = try await Auth.auth().signIn(withEmail: "custom+id_token@firebase.login", password: "Welcome@W3A")
                 let id_token = try await res.user.getIDToken()
                 let result = try await Web3Auth(.init(
-                    clientId: clientId,
-                    network: network,
+                    clientId: self.clientId,
+                    network: self.network,
                     loginConfig: [
                         TypeOfLogin.jwt.rawValue:
                                 .init(
                                     verifier: "web3auth-firebase-examples",
-                                    typeOfLogin: .jwt
+                                    typeOfLogin: .jwt,
+                                    name: "Web3Auth-Firebase-JWT",
+                                    clientId: self.clientId
                                 )
                     ]
                 )).login(
@@ -56,8 +58,8 @@ class ViewModel: ObservableObject {
                     loggedIn = true
                 })
 
-            } catch {
-                print("Error")
+            } catch let error {
+                print("Error: ", error)
             }
         }
     }

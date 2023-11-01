@@ -59,13 +59,53 @@ class _MyAppState extends State<MyApp> {
       throw UnKnownException('Unknown platform');
     }
 
+    final loginConfig = HashMap<String, LoginConfigItem>();
+    loginConfig['google'] = LoginConfigItem(
+        verifier: "w3a-google-demo", // get it from web3auth dashboard
+        typeOfLogin: TypeOfLogin.google,
+        clientId:
+            "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com" // web3auth's plug and play client id
+        );
+
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk',
-        network: Network.cyan,
+            'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ',
+        network: Network.sapphire_mainnet,
         redirectUrl: redirectUrl,
+        buildEnv: BuildEnv.production,
         whiteLabel: WhiteLabelData(
-            dark: true, name: "Web3Auth Flutter App", theme: themeMap)));
+            appName: "Web3Auth Flutter App",
+            logoLight:
+                "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+            logoDark:
+                "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+            defaultLanguage: Language.en,
+            mode: ThemeModes.auto,
+            // appUrl: "https://web3auth.io",
+            useLogoLoader: true,
+            theme: themeMap),
+        loginConfig: loginConfig,
+        useCoreKitKey: false,
+        chainNamespace: ChainNamespace.eip155,
+        mfaSettings: MfaSettings(
+            deviceShareFactor:
+                MfaSetting(enable: true, priority: 4, mandatory: false),
+            backUpShareFactor:
+                MfaSetting(enable: true, priority: 2, mandatory: true),
+            socialBackupFactor:
+                MfaSetting(enable: true, priority: 3, mandatory: false),
+            passwordFactor:
+                MfaSetting(enable: true, priority: 1, mandatory: true))));
+
+    await Web3AuthFlutter.initialize();
+
+    final String res = await Web3AuthFlutter.getPrivKey();
+    print(res);
+    if (res.isNotEmpty) {
+      setState(() {
+        logoutVisible = true;
+      });
+    }
   }
 
   @override
@@ -147,8 +187,8 @@ class _MyAppState extends State<MyApp> {
                                   Colors.red[600] // This is what you need!
                               ),
                           onPressed: _logout(),
-                          child: Column(
-                            children: const [
+                          child: const Column(
+                            children: [
                               Text('Logout'),
                             ],
                           )),
@@ -228,25 +268,67 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Web3AuthResponse> _withGoogle() {
+    Uri redirectUrl;
+    if (Platform.isAndroid) {
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+    } else if (Platform.isIOS) {
+      redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
+    } else {
+      throw UnKnownException('Unknown platform');
+    }
+
     return Web3AuthFlutter.login(LoginParams(
-      loginProvider: Provider.google,
-      mfaLevel: MFALevel.DEFAULT,
-    ));
+        loginProvider: Provider.google,
+        mfaLevel: MFALevel.OPTIONAL,
+        redirectUrl: redirectUrl));
   }
 
   Future<Web3AuthResponse> _withFacebook() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.facebook));
+    Uri redirectUrl;
+    if (Platform.isAndroid) {
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+    } else if (Platform.isIOS) {
+      redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
+    } else {
+      throw UnKnownException('Unknown platform');
+    }
+    return Web3AuthFlutter.login(LoginParams(
+        loginProvider: Provider.facebook,
+        mfaLevel: MFALevel.MANDATORY,
+        redirectUrl: redirectUrl));
   }
 
   Future<Web3AuthResponse> _withEmailPasswordless() {
+    Uri redirectUrl;
+    if (Platform.isAndroid) {
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+    } else if (Platform.isIOS) {
+      redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
+    } else {
+      throw UnKnownException('Unknown platform');
+    }
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
-        extraLoginOptions:
-            ExtraLoginOptions(login_hint: "hello+flutterdemo@tor.us")));
+        mfaLevel: MFALevel.OPTIONAL,
+        redirectUrl: redirectUrl,
+        extraLoginOptions: ExtraLoginOptions(
+            login_hint: "shahbaz+flutterdemo+test@web3auth.io")));
   }
 
   Future<Web3AuthResponse> _withDiscord() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.discord));
+    Uri redirectUrl;
+    if (Platform.isAndroid) {
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+    } else if (Platform.isIOS) {
+      redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
+    } else {
+      throw UnKnownException('Unknown platform');
+    }
+    return Web3AuthFlutter.login(LoginParams(
+      loginProvider: Provider.discord,
+      mfaLevel: MFALevel.DEFAULT,
+      redirectUrl: redirectUrl,
+    ));
   }
 
   Future<String> _getAddress() async {

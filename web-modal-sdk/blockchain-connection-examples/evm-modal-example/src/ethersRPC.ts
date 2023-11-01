@@ -16,7 +16,7 @@ export default class EthereumRpc {
       const ethersProvider = new ethers.BrowserProvider(this.provider);
       // Get the connected Chain's ID
       const networkDetails = await ethersProvider.getNetwork();
-      return networkDetails.chainId;
+      return networkDetails.chainId.toString();
     } catch (error) {
       return error;
     }
@@ -118,6 +118,65 @@ export default class EthereumRpc {
       const signedMessage = await signer.signMessage(originalMessage);
 
       return signedMessage;
+    } catch (error) {
+      return error as string;
+    }
+  }
+
+  async readContract() {
+    try {
+      const ethersProvider = new ethers.BrowserProvider(this.provider);
+
+      const signer = await ethersProvider.getSigner();
+
+      const contractABI = [
+        { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+        { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+        {
+          inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+          name: "update",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ];
+      const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+      const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
+
+      // Read message from smart contract
+      const message = await contract.message();
+      return message;
+    } catch (error) {
+      return error as string;
+    }
+  }
+
+  async writeContract() {
+    try {
+      const ethersProvider = new ethers.BrowserProvider(this.provider);
+
+      const signer = await ethersProvider.getSigner();
+
+      const contractABI = [
+        { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+        { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+        {
+          inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+          name: "update",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ];
+      const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+      const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
+      // Generate random number between 1000 and 9000
+      const number = Math.floor(Math.random() * 9000) + 1000;
+      // Send transaction to smart contract to update message
+      const tx = await contract.update(`Web3Auth is awesome ${number} times!`);
+      // Wait for transaction to finish
+      const receipt = await tx.wait();
+      return receipt;
     } catch (error) {
       return error as string;
     }

@@ -369,6 +369,26 @@ function App() {
     uiConsole(privateKey);
   };
 
+  // const changeNetwork = async () => {
+  //   if (!provider) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   const rpc = new RPC(provider);
+  //   const privateKey = await rpc.getPrivateKey();
+  //   uiConsole(privateKey);
+  // };
+
+  const deployContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const message = await rpc.deployContract();
+    uiConsole(message);
+  };
+
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -447,6 +467,11 @@ function App() {
         <div>
           <button onClick={getPrivateKey} className="card">
             Get Private Key
+          </button>
+        </div>
+        <div>
+          <button onClick={deployContract} className="card">
+            Deploy Contract
           </button>
         </div>
         <div>

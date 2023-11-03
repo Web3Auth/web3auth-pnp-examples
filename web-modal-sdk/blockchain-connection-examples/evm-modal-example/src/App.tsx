@@ -334,6 +334,16 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  const deployContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const message = await rpc.deployContract();
+    uiConsole(message);
+  };
+
   const readContract = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -437,6 +447,11 @@ function App() {
         <div>
           <button onClick={readContract} className="card">
             Read Contract
+          </button>
+        </div>
+        <div>
+          <button onClick={deployContract} className="card">
+            Deploy Contract
           </button>
         </div>
         <div>

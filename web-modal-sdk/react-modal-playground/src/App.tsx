@@ -2,12 +2,10 @@ import "./App.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import ContractNft from "./pages/ContractNft";
-import Explorer from "./pages/Explorer";
+import Contract from "./pages/Contract";
+import NFT from "./pages/NFT";
 import HomePage from "./pages/HomePage";
-import Minting from "./pages/Minting";
-import Settlement from "./pages/Settlement";
-import Transfer from "./pages/Transfer";
+import ServerSideVerification from "./pages/ServerSideVerification";
 import Transaction from "./pages/Transaction";
 import { Web3AuthProvider } from "./services/web3auth";
 
@@ -19,12 +17,10 @@ function App() {
           <Routes>
             <Route path="/">
               <Route index element={<HomePage />} />
-              <Route path="contract-nft-interactions" element={<ContractNft />} />
+              <Route path="contract" element={<Contract />} />
               <Route path="transaction" element={<Transaction />} />
-              <Route path="server-side-verification" element={<Minting />} />
-              <Route path="transfer" element={<Transfer />} />
-              <Route path="settlement" element={<Settlement />} />
-              <Route path="explorer" element={<Explorer />} />
+              <Route path="server-side-verification" element={<ServerSideVerification />} />
+              <Route path="explorer" element={<NFT />} />
             </Route>
           </Routes>
         </BrowserRouter>

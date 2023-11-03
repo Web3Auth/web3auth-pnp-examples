@@ -112,8 +112,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            chainId: "0x5",
+            rpcTarget: "https://rpc.ankr.com/eth_goerli", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
         });
@@ -158,6 +158,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       return;
     }
     const user = await web3Auth.getUserInfo();
+
     uiConsole(user);
   };
 
@@ -182,16 +183,17 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       uiConsole("web3auth not initialized yet");
       return "";
     }
-    await provider.getSignature(message);
+    const signature = await provider.getSignature(message);
+    uiConsole(signature);
   };
-
 
   const sendTransaction = async (amount: string, destination: string) => {
     if (!web3Auth) {
       uiConsole("web3auth not initialized yet");
       return "";
     }
-    await provider.sendTransaction(amount, destination);
+    const receipt = await provider.sendTransaction(amount, destination);
+    uiConsole(receipt);
   };
 
   const getPrivateKey = async () => {
@@ -208,7 +210,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       return "";
     }
     await provider.getChainDetails();
-  }
+  };
 
   const deployContract = async (abi: any, bytecode: string) => {
     if (!web3Auth) {
@@ -216,7 +218,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       return null;
     }
     await provider.deployContract(abi, bytecode);
-  }
+  };
 
   const readContract = async () => {
     if (!provider) {

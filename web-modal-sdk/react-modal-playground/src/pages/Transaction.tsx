@@ -8,44 +8,28 @@ import Tabs from "../components/Tabs";
 import { useWeb3Auth } from "../services/web3auth";
 
 function Transaction() {
-  const { provider } = useWeb3Auth();
+  const { provider, getSignature, sendTransaction } = useWeb3Auth();
 
-  const [vaultId, setVaultId] = useState("1654615998");
-  const [tokenId, setTokenId] = useState("sdfa");
-  const [assetType, setAssetType] = useState("asdf");
-  const [amount, setAmount] = useState("6000000000");
+  const [message, setMessage] = useState("Welcome to Web3Auth");
+  const [address, setAddress] = useState("0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8");
+  const [amount, setAmount] = useState("0.01");
 
   const [tab, setTab] = useState("starkex");
 
   const formDetailsStarkEx = [
     {
       label: "message",
-      input: vaultId as string,
-      onChange: setVaultId,
-    },
-    {
-      label: "token_id",
-      input: tokenId as string,
-      onChange: setTokenId,
-    },
-    {
-      label: "amount",
-      input: amount as string,
-      onChange: setAmount,
+      input: message as string,
+      onChange: setMessage,
     },
   ];
 
   const formDetailsL1 = [
     {
       label: "destination address",
-      input: vaultId as string,
-      onChange: setVaultId,
+      input: address as string,
+      onChange: setAddress,
     },
-    // {
-    //   label: "asset_type",
-    //   input: assetType as string,
-    //   onChange: setAssetType,
-    // },
     {
       label: "amount",
       input: amount as string,
@@ -79,6 +63,7 @@ function Transaction() {
                 <button
                   className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                   style={{ backgroundColor: "#0364ff" }}
+                  onClick={() => getSignature(message)}
                 >
                   Sign Message
                 </button>
@@ -88,6 +73,7 @@ function Transaction() {
                 <button
                   className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                   style={{ backgroundColor: "#0364ff" }}
+                  onClick={() => sendTransaction(amount, address)}
                 >
                   Send Transaction
                 </button>

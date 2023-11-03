@@ -12,20 +12,11 @@ const Sidebar = () => {
   function goToTransaction() {
     navigate("/transaction");
   }
-  function goToContractNftInteractions() {
-    navigate("/contract-nft-interactions");
+  function goToContract() {
+    navigate("/contract");
   }
   function goToServerSideVerification() {
     navigate("/server-side-verification");
-  }
-  function goToTransfer() {
-    navigate("/transfer");
-  }
-  function goToSettlement() {
-    navigate("/settlement");
-  }
-  function goToExplorer() {
-    navigate("/explorer");
   }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
@@ -77,11 +68,10 @@ const Sidebar = () => {
         <nav className="flex flex-col mt-6">
           {location.pathname === "/" ? activePage("Main Page") : linktoGo("Main Page", goToHome)}
           {location.pathname === "/transaction" ? activePage("Transactions") : linktoGo("Transactions", goToTransaction)}
-          {location.pathname === "/contract-nft-interactions" ? activePage("Smart Contract & NFT Interactions") : linktoGo("Smart Contract & NFT Interactions", goToContractNftInteractions)}
-          {location.pathname === "/server-side-verification" ? activePage("Server Side Verification") : linktoGo("Server Side Verification", goToServerSideVerification)}
-          {/* {location.pathname === "/transfer" ? activePage("Transfer") : linktoGo("Transfer", goToTransfer)}
-          {location.pathname === "/settlement" ? activePage("Settlement") : linktoGo("Settlement", goToSettlement)}
-          {location.pathname === "/explorer" ? activePage("StarkEx Explorer") : linktoGo("StarkEx Explorer", goToExplorer)} */}
+          {location.pathname === "/contract" ? activePage("Smart Contract Interactions") : linktoGo("Smart Contract Interactions", goToContract)}
+          {location.pathname === "/server-side-verification"
+            ? activePage("Server Side Verification")
+            : linktoGo("Server Side Verification", goToServerSideVerification)}
         </nav>
       </div>
       {userProfile()}

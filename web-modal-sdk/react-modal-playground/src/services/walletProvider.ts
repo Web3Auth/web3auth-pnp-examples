@@ -10,6 +10,9 @@ export interface IWalletProvider {
   sendTransaction: (amount: string, destination: string) => Promise<TransactionReceipt | string>
   getPrivateKey: () => Promise<string>;
   getChainDetails: () => Promise<string>;
+  deployContract: (abi: any, bytecode: string) => Promise<void>;
+  readContract: () => Promise<any>;
+  writeContract: () => Promise<any>;
 }
 
 export const getWalletProvider = (provider: SafeEventEmitterProvider | null, uiConsole: any): IWalletProvider => {

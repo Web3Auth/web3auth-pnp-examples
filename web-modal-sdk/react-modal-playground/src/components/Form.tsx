@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import Dropdown from "./DropDown";
 
 interface FormProps {
   heading?: string;
@@ -44,6 +45,7 @@ function Form({ heading, headingCenter, formDetails, children }: FormProps) {
               </div>
             </div>
           ))}
+          <Dropdown options={['ETH', 'Solana']} label="Switch Chain" />
         </form>
         {children}
       </div>

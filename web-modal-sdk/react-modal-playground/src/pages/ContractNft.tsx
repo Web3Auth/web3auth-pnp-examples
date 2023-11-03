@@ -13,18 +13,18 @@ function ContractNft() {
   const [assetType, setAssetType] = useState("354");
   const [amount, setAmount] = useState("6000000000");
 
-  const { provider } = useWeb3Auth();
+  const { provider, deployContract, readContract, writeContract } = useWeb3Auth();
 
   const [tab, setTab] = useState("l1");
 
   const formDetailsStarkEx = [
     {
-      label: "vault_id",
+      label: "ABI",
       input: vaultId as string,
       onChange: setVaultId,
     },
     {
-      label: "asset_type",
+      label: "Bytecode",
       input: assetType as string,
       onChange: setAssetType,
     },
@@ -79,18 +79,21 @@ function ContractNft() {
                 <button
                   className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                   style={{ backgroundColor: "#0364ff" }}
+                  onClick={() => deployContract('', '')}
                 >
                   Deploy
                 </button>
                 <button
                   className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                   style={{ backgroundColor: "#0364ff" }}
+                  onClick={readContract}
                 >
                   Read
                 </button>
                 <button
                   className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                   style={{ backgroundColor: "#0364ff" }}
+                  onClick={writeContract}
                 >
                   Write
                 </button>

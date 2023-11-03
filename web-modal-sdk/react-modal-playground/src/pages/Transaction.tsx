@@ -19,7 +19,7 @@ function Transaction() {
 
   const formDetailsStarkEx = [
     {
-      label: "vault_id",
+      label: "message",
       input: vaultId as string,
       onChange: setVaultId,
     },
@@ -37,15 +37,15 @@ function Transaction() {
 
   const formDetailsL1 = [
     {
-      label: "vault_id",
+      label: "destination address",
       input: vaultId as string,
       onChange: setVaultId,
     },
-    {
-      label: "asset_type",
-      input: assetType as string,
-      onChange: setAssetType,
-    },
+    // {
+    //   label: "asset_type",
+    //   input: assetType as string,
+    //   onChange: setAssetType,
+    // },
     {
       label: "amount",
       input: amount as string,

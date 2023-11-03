@@ -21,6 +21,9 @@ export interface IWeb3AuthContext {
   sendTransaction: (amount: string, destination: string) => Promise<string>;
   getPrivateKey: () => Promise<string>;
   getChainDetails: () => Promise<string>;
+  deployContract: (abi: any, bytecode: string) => Promise<any>;
+  readContract: () => Promise<any>;
+  writeContract: () => Promise<any>;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -40,6 +43,9 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   sendTransaction: async () => "",
   getPrivateKey: async () => "",
   getChainDetails: async () => "",
+  deployContract: async () => {},
+  readContract: async () => "",
+  writeContract: async () => {},
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -204,6 +210,38 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     await provider.getChainDetails();
   }
 
+  const deployContract = async (abi: any, bytecode: string) => {
+    if (!web3Auth) {
+      uiConsole("web3auth not initialized yet");
+      return null;
+    }
+    await provider.deployContract(abi, bytecode);
+  }
+
+  const readContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const message = await provider.readContract();
+    uiConsole(message);
+  };
+
+  const writeContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const receipt = await provider.writeContract();
+    uiConsole(receipt);
+
+    if (receipt) {
+      setTimeout(async () => {
+        await readContract();
+      }, 2000);
+    }
+  };
+
   const contextProvider = {
     web3Auth,
     provider,
@@ -221,6 +259,9 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     sendTransaction,
     getPrivateKey,
     getChainDetails,
+    deployContract,
+    readContract,
+    writeContract,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

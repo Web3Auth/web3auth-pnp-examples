@@ -1,5 +1,5 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-import { TransactionReceipt, ethers } from "ethers";
+import { ethers, TransactionReceipt } from "ethers";
 
 import ABI from "../config/ABI.json";
 import { IWalletProvider } from "./walletProvider";

@@ -19,6 +19,9 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   function goToContract() {
     navigate("/contract");
   }
+  function goToNft() {
+    navigate("/nft");
+  }
   function goToServerSideVerification() {
     navigate("/server-side-verification");
   }
@@ -76,6 +79,7 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
               {location.pathname === "/" ? activePage("Main Page") : linktoGo("Main Page", goToHome)}
               {location.pathname === "/transaction" ? activePage("Transactions") : linktoGo("Transactions", goToTransaction)}
               {location.pathname === "/contract" ? activePage("Smart Contract Interactions") : linktoGo("Smart Contract Interactions", goToContract)}
+              {location.pathname === "/nft" ? activePage("NFT Interactions") : linktoGo("NFT Interactions", goToNft)}
               {location.pathname === "/server-side-verification"
                 ? activePage("Server Side Verification")
                 : linktoGo("Server Side Verification", goToServerSideVerification)}

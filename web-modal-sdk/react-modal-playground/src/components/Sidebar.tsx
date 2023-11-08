@@ -21,6 +21,12 @@ const Sidebar = () => {
   function goToServerSideVerification() {
     navigate("/server-side-verification");
   }
+  function goToExplorer() {
+    window.open("https://goerli.etherscan.io/", "_blank");
+  }
+  function goToFaucet() {
+    window.open("https://goerlifaucet.com/", "_blank");
+  }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
     return (
@@ -76,6 +82,8 @@ const Sidebar = () => {
           {location.pathname === "/server-side-verification"
             ? activePage("Server Side Verification")
             : linktoGo("Server Side Verification", goToServerSideVerification)}
+          {linktoGo("Explorer Link", goToExplorer)}
+          {linktoGo("Faucet Link", goToFaucet)}
         </nav>
       </div>
       {userProfile()}

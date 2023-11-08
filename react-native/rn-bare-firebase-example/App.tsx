@@ -20,15 +20,15 @@ import firebaseAuth from '@react-native-firebase/auth';
 const scheme = 'web3authrnbarefirebase'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
-  'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk';
+  'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ';
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
-  network: OPENLOGIN_NETWORK.CYAN, // or other networks
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
   useCoreKitKey: false,
   loginConfig: {
     jwt: {
       name: 'Web3Auth-Auth0-JWT',
-      verifier: 'web3auth-firebase-examples',
+      verifier: 'w3a-firebase-demo',
       typeOfLogin: 'jwt',
       clientId,
     },

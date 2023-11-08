@@ -13,10 +13,10 @@ const resolvedRedirectUrl =
   Constants.appOwnership === AppOwnership.Expo || Constants.appOwnership === AppOwnership.Guest
     ? Linking.createURL("web3auth", {})
     : Linking.createURL("web3auth", { scheme });
-const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk";
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 const web3auth = new Web3Auth(WebBrowser, SecureStore, {
   clientId,
-  network: OPENLOGIN_NETWORK.CYAN, // or other networks
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
   useCoreKitKey: false,
 });
 

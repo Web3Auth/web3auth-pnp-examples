@@ -101,6 +101,65 @@ export default class EthereumRpc {
     }
   }
 
+  async readContract() {
+    try {
+      const web3 = new Web3(this.provider as any);
+
+      const contractABI = [
+        { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+        { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+        {
+          inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+          name: "update",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ];
+      const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+      const contract = new web3.eth.Contract(JSON.parse(JSON.stringify(contractABI)), contractAddress);
+
+      // Read message from smart contract
+      const message = await contract.methods.message().call();
+      return message;
+    } catch (error) {
+      return error as string;
+    }
+  }
+
+  async writeContract() {
+    try {
+      const web3 = new Web3(this.provider as any);
+
+      const contractABI = [
+        { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+        { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+        {
+          inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+          name: "update",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ];
+      const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+      const myContract = new web3.eth.Contract(JSON.parse(JSON.stringify(contractABI)), contractAddress);
+      console.log(myContract);
+      console.log((await web3.eth.getAccounts())[0]);
+      // Generate random number between 1000 and 9000
+      const randomNumber = Math.floor(Math.random() * 9000) + 1000;
+      console.log(randomNumber);
+      // Send transaction to smart contract to update message
+      const receipt = await myContract.methods.update(`Web3Auth is awesome ${randomNumber} times!`).send({
+        from: `${(await web3.eth.getAccounts())[0]}`,
+      });
+      // console.log(receipt.transactionHash.toString());
+      return receipt;
+    } catch (error) {
+      return error as string;
+    }
+  }
+
   async getPrivateKey(): Promise<any> {
     try {
       const privateKey = await this.provider.request({

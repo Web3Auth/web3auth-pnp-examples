@@ -2,32 +2,24 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import {
-  OpenloginAdapter,
-  OPENLOGIN_NETWORK,
-} from "@web3auth/openlogin-adapter";
+import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
-//import RPC from "./ethersRPC"; // for using ethers.js
+// import RPC from "./ethersRPC"; // for using ethers.js
 
 // Plugins
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 
 // Adapters
-import {
-  WalletConnectV2Adapter,
-  getWalletConnectV2Settings,
-} from "@web3auth/wallet-connect-v2-adapter";
+import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [torusPlugin, setTorusPlugin] =
-    useState<TorusWalletConnectorPlugin | null>(null);
+  const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -38,8 +30,8 @@ function App() {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            chainId: "0x5",
+            rpcTarget: "https://rpc.ankr.com/eth_goerli", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
@@ -120,11 +112,7 @@ function App() {
         // read more about adapters here: https://web3auth.io/docs/sdk/pnp/web/adapters/
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings(
-          "eip155",
-          [1],
-          "04309ed1007e77d1f119b85205bb779d"
-        );
+        const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1], "04309ed1007e77d1f119b85205bb779d");
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           adapterSettings: { ...defaultWcSettings.adapterSettings },
           loginSettings: { ...defaultWcSettings.loginSettings },
@@ -346,6 +334,31 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  const readContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const message = await rpc.readContract();
+    uiConsole(message);
+  };
+
+  const writeContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.writeContract();
+    uiConsole(receipt);
+    if (receipt) {
+      setTimeout(async () => {
+        await readContract();
+      }, 2000);
+    }
+  };
+
   const getPrivateKey = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -355,16 +368,6 @@ function App() {
     const privateKey = await rpc.getPrivateKey();
     uiConsole(privateKey);
   };
-
-  // const changeNetwork = async () => {
-  //   if (!provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(provider);
-  //   const privateKey = await rpc.getPrivateKey();
-  //   uiConsole(privateKey);
-  // };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -429,6 +432,16 @@ function App() {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={readContract} className="card">
+            Read Contract
+          </button>
+        </div>
+        <div>
+          <button onClick={writeContract} className="card">
+            Write Contract
           </button>
         </div>
         <div>

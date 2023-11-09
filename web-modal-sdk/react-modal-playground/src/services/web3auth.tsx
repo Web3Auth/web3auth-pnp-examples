@@ -261,7 +261,11 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       algorithms: ["ES256"],
     });
 
-    uiConsole(jwtDecoded.payload as any);
+    if ((jwtDecoded.payload as any).wallets[0].public_key === address) {
+      uiConsole("Validation Success!");
+    } else {
+      uiConsole("Failed");
+    }
   };
 
   const contextProvider = {

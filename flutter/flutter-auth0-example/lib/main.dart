@@ -14,10 +14,12 @@ import 'package:web3dart/web3dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -54,22 +56,38 @@ class _MyAppState extends State<MyApp> {
 
     final loginConfig = HashMap<String, LoginConfigItem>();
     loginConfig['jwt'] = LoginConfigItem(
-        verifier: "web3auth-auth0-demo", // get it from web3auth dashboard
+        verifier: "w3a-auth0-demo", // get it from web3auth dashboard
         typeOfLogin: TypeOfLogin.jwt,
-        name: "Web3Auth Flutter Auth0 Example",
-        clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT" // auth0 client id
+        clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O" // auth0 client id
         );
 
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk',
-        network: Network.cyan,
+            'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ',
+        network: Network.sapphire_mainnet,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(
-            dark: true,
-            name: "Web3Auth Flutter Auth0 Example",
+            appName: "Web3Auth Flutter App",
+            logoLight:
+                "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+            logoDark:
+                "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+            defaultLanguage: Language.en,
+            mode: ThemeModes.auto,
+            appUrl: "https://web3auth.io",
+            useLogoLoader: true,
             theme: themeMap),
         loginConfig: loginConfig));
+
+    await Web3AuthFlutter.initialize();
+
+    final String res = await Web3AuthFlutter.getPrivKey();
+    print(res);
+    if (res.isNotEmpty) {
+      setState(() {
+        logoutVisible = true;
+      });
+    }
   }
 
   @override
@@ -146,8 +164,8 @@ class _MyAppState extends State<MyApp> {
                                   Colors.red[600] // This is what you need!
                               ),
                           onPressed: _logout(),
-                          child: Column(
-                            children: const [
+                          child: const Column(
+                            children: [
                               Text('Logout'),
                             ],
                           )),
@@ -230,8 +248,7 @@ class _MyAppState extends State<MyApp> {
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.jwt,
         extraLoginOptions: ExtraLoginOptions(
-            domain: 'https://shahbaz-torus.us.auth0.com',
-            verifierIdField: 'sub')));
+            domain: 'https://web3auth.au.auth0.com', verifierIdField: 'sub')));
   }
 
   Future<String> _getAddress() async {

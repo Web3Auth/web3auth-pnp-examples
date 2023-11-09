@@ -61,17 +61,46 @@ class _MyAppState extends State<MyApp> {
 
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk',
-        network: Network.cyan,
+            'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ',
+        network: Network.sapphire_mainnet,
         redirectUrl: redirectUrl,
+        // buildEnv: BuildEnv.production,
         whiteLabel: WhiteLabelData(
-            dark: true, name: "Web3Auth Flutter App", theme: themeMap)));
+            appName: "Web3Auth Flutter App",
+            logoLight:
+                "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+            logoDark:
+                "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+            defaultLanguage: Language.en,
+            mode: ThemeModes.auto,
+            appUrl: "https://web3auth.io",
+            useLogoLoader: true,
+            theme: themeMap),
+        useCoreKitKey: false,
+        chainNamespace: ChainNamespace.eip155,
+        mfaSettings: MfaSettings(
+            deviceShareFactor:
+                MfaSetting(enable: true, priority: 4, mandatory: false),
+            backUpShareFactor:
+                MfaSetting(enable: true, priority: 2, mandatory: true),
+            socialBackupFactor:
+                MfaSetting(enable: true, priority: 3, mandatory: false),
+            passwordFactor:
+                MfaSetting(enable: true, priority: 1, mandatory: true))));
+
+    await Web3AuthFlutter.initialize();
+
+    final String res = await Web3AuthFlutter.getPrivKey();
+    print(res);
+    if (res.isNotEmpty) {
+      setState(() {
+        logoutVisible = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Map<String, dynamic> user = jsonDecode(_result);
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -147,8 +176,8 @@ class _MyAppState extends State<MyApp> {
                                   Colors.red[600] // This is what you need!
                               ),
                           onPressed: _logout(),
-                          child: Column(
-                            children: const [
+                          child: const Column(
+                            children: [
                               Text('Logout'),
                             ],
                           )),
@@ -228,33 +257,37 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Web3AuthResponse> _withGoogle() {
-    return Web3AuthFlutter.login(LoginParams(
-      loginProvider: Provider.google,
-      mfaLevel: MFALevel.DEFAULT,
-    ));
+    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
   }
 
   Future<Web3AuthResponse> _withFacebook() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.facebook));
+    return Web3AuthFlutter.login(LoginParams(
+        loginProvider: Provider.facebook, mfaLevel: MFALevel.MANDATORY));
   }
 
   Future<Web3AuthResponse> _withEmailPasswordless() {
+    // final additionalParams = HashMap<String, String>();
+    // additionalParams['flow_type'] = "link"; // default is code
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
+        mfaLevel: MFALevel.MANDATORY,
         extraLoginOptions:
-            ExtraLoginOptions(login_hint: "hello+flutterdemo@tor.us")));
+            ExtraLoginOptions(login_hint: "hello+flutterdemo@web3auth.io"
+                // additionalParams: additionalParams
+                )));
   }
 
   Future<Web3AuthResponse> _withDiscord() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.discord));
+    return Web3AuthFlutter.login(LoginParams(
+      loginProvider: Provider.discord,
+      mfaLevel: MFALevel.DEFAULT,
+    ));
   }
 
   Future<String> _getAddress() async {
     final prefs = await SharedPreferences.getInstance();
     final privateKey = prefs.getString('privateKey') ?? '0';
-    // const String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
 
-    // final client = Web3Client(rpcUrl, Client());
     final credentials = EthPrivateKey.fromHex(privateKey);
     final address = credentials.address;
     debugPrint("Account, ${address.hexEip55}");

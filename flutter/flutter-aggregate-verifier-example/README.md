@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth in Flutter.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/flutter/flutter-google-emailpasswordless-example w3a-flutter-aggregate
+npx degit Web3Auth/web3auth-pnp-examples/flutter/flutter-aggregate-verifier-example w3a-flutter-aggregate
 ```
 
 Install & Run:

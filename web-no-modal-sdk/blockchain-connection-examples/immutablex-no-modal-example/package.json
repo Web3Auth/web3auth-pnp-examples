@@ -19,7 +19,7 @@
     "@web3auth/openlogin-adapter": "^7.0.4",
     "@web3auth/torus-wallet-connector-plugin": "^7.0.4",
     "elliptic": "^6.5.4",
-    "ethers": "^5.7.2",
+    "ethers": "^6.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",

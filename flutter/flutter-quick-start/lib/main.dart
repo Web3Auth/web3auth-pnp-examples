@@ -59,20 +59,12 @@ class _MyAppState extends State<MyApp> {
       throw UnKnownException('Unknown platform');
     }
 
-    final loginConfig = HashMap<String, LoginConfigItem>();
-    loginConfig['google'] = LoginConfigItem(
-        verifier: "w3a-google-demo", // get it from web3auth dashboard
-        typeOfLogin: TypeOfLogin.google,
-        clientId:
-            "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com" // web3auth's plug and play client id
-        );
-
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
             'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ',
         network: Network.sapphire_mainnet,
         redirectUrl: redirectUrl,
-        buildEnv: BuildEnv.production,
+        // buildEnv: BuildEnv.production,
         whiteLabel: WhiteLabelData(
             appName: "Web3Auth Flutter App",
             logoLight:
@@ -81,10 +73,9 @@ class _MyAppState extends State<MyApp> {
                 "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
             defaultLanguage: Language.en,
             mode: ThemeModes.auto,
-            // appUrl: "https://web3auth.io",
+            appUrl: "https://web3auth.io",
             useLogoLoader: true,
             theme: themeMap),
-        loginConfig: loginConfig,
         useCoreKitKey: false,
         chainNamespace: ChainNamespace.eip155,
         mfaSettings: MfaSettings(
@@ -277,10 +268,8 @@ class _MyAppState extends State<MyApp> {
       throw UnKnownException('Unknown platform');
     }
 
-    return Web3AuthFlutter.login(LoginParams(
-        loginProvider: Provider.google,
-        mfaLevel: MFALevel.OPTIONAL,
-        redirectUrl: redirectUrl));
+    return Web3AuthFlutter.login(
+        LoginParams(loginProvider: Provider.google, redirectUrl: redirectUrl));
   }
 
   Future<Web3AuthResponse> _withFacebook() {
@@ -309,10 +298,10 @@ class _MyAppState extends State<MyApp> {
     }
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
-        mfaLevel: MFALevel.OPTIONAL,
+        mfaLevel: MFALevel.MANDATORY,
         redirectUrl: redirectUrl,
         extraLoginOptions: ExtraLoginOptions(
-            login_hint: "shahbaz+flutterdemo+test@web3auth.io")));
+            login_hint: "shahbaz+flutterdemo123@web3auth.io")));
   }
 
   Future<Web3AuthResponse> _withDiscord() {

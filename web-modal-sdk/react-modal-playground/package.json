@@ -18,6 +18,7 @@
     "@toruslabs/eccrypto": "^4.0.0",
     "ethers": "^6.8.0",
     "hamburger-react": "^2.5.0",
+    "jose": "^5.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-js-pagination": "^3.0.3",

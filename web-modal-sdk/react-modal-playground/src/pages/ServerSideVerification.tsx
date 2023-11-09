@@ -8,27 +8,16 @@ import Sidebar from "../components/Sidebar";
 import { useWeb3Auth } from "../services/web3auth";
 
 function ServerSideVerification() {
-  const [vaultId, setVaultId] = useState("1654615998");
   const [tokenId, setTokenId] = useState("0x23a77118133287637ebdcd9e87a1613e443df789558867f5ba91faf7a024204");
   const [amount, setAmount] = useState("100");
 
-  const { provider } = useWeb3Auth();
+  const { provider, verifyServerSide } = useWeb3Auth();
 
   const formDetails = [
-    {
-      label: "vault_id",
-      input: vaultId as string,
-      onChange: setVaultId,
-    },
     {
       label: "token_id",
       input: tokenId as string,
       onChange: setTokenId,
-    },
-    {
-      label: "amount",
-      input: amount as string,
-      onChange: setAmount,
     },
   ];
 
@@ -44,6 +33,7 @@ function ServerSideVerification() {
               <button
                 className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                 style={{ backgroundColor: "#0364ff" }}
+                onClick={verifyServerSide}
               >
                 Verify
               </button>

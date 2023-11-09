@@ -4,6 +4,7 @@ import { OPENLOGIN_NETWORK, OpenloginUserInfo } from "@web3auth/openlogin-adapte
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
+import * as jose from "jose";
 
 export interface IWeb3AuthContext {
   web3Auth: Web3Auth | null;
@@ -25,6 +26,7 @@ export interface IWeb3AuthContext {
   deployContract: (abi: any, bytecode: string) => Promise<any>;
   readContract: () => Promise<any>;
   writeContract: () => Promise<any>;
+  verifyServerSide: () => Promise<any>;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -47,6 +49,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   deployContract: async () => {},
   readContract: async () => "",
   writeContract: async () => {},
+  verifyServerSide: async () => {},
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -245,6 +248,22 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
   };
 
+  const verifyServerSide = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const token = await web3Auth.authenticateUser();
+
+    const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
+
+    const jwtDecoded = await jose.jwtVerify(token.idToken, jwks, {
+      algorithms: ["ES256"],
+    });
+
+    uiConsole(jwtDecoded.payload as any);
+  };
+
   const contextProvider = {
     web3Auth,
     provider,
@@ -265,6 +284,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     deployContract,
     readContract,
     writeContract,
+    verifyServerSide,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

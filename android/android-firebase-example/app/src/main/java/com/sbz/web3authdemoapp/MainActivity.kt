@@ -40,10 +40,22 @@ class MainActivity : AppCompatActivity() {
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
                // Optional parameters
                whiteLabel = WhiteLabelData(
-                   "Web3Auth Android FireBase Example", null, null, null, Language.EN, ThemeModes.LIGHT, true,
+                   "Web3Auth Android FireBase Example",
+                   null,
+                   "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+                   "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+                   Language.EN,
+                   ThemeModes.LIGHT,
+                   true,
                    hashMapOf(
                        "primary" to "#eb5424"
                    )
+               ),
+               mfaSettings = MfaSettings(
+                   deviceShareFactor = MfaSetting(true, 1, true),
+                   socialBackupFactor = MfaSetting(true, 2, false),
+                   passwordFactor = MfaSetting(true, 3, false),
+                   backUpShareFactor = MfaSetting(true, 4, false),
                ),
                loginConfig = hashMapOf("jwt" to LoginConfigItem(
                    verifier = "w3a-firebase-demo",

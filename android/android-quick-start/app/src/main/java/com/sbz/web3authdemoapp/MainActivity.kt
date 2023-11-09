@@ -37,12 +37,24 @@ class MainActivity : AppCompatActivity() {
                 network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
                 buildEnv = BuildEnv.PRODUCTION,
                 redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"),
-//                whiteLabel = WhiteLabelData(
-//                    "Web3Auth Android Example", null, null, null, Language.EN, ThemeModes.LIGHT, true,
-//                    hashMapOf(
-//                        "primary" to "#eb5424"
-//                    )
-//                ),
+                whiteLabel = WhiteLabelData(
+                    "Web3Auth Android Example",
+                    null,
+                    "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+                    "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+                    Language.EN,
+                    ThemeModes.LIGHT, 
+                    true,
+                    hashMapOf(
+                        "primary" to "#eb5424"
+                    )
+                ),
+                mfaSettings = MfaSettings(
+                    deviceShareFactor = MfaSetting(true, 1, true),
+                    socialBackupFactor = MfaSetting(true, 2, false),
+                    passwordFactor = MfaSetting(true, 3, false),
+                    backUpShareFactor = MfaSetting(true, 4, false),
+                )
             )
         )
 

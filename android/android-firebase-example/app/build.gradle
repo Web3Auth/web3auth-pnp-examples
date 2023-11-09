@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.code.gson:gson:2.9.1'
-    implementation 'com.github.Web3Auth:web3auth-android-sdk:5.0.2'
+    implementation 'com.github.Web3Auth:web3auth-android-sdk:5.3.0'
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation 'com.google.firebase:firebase-auth-ktx'
     testImplementation 'junit:junit:4.13.2'

@@ -14,10 +14,12 @@ import 'package:web3dart/web3dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -54,31 +56,46 @@ class _MyAppState extends State<MyApp> {
 
     final loginConfig = HashMap<String, LoginConfigItem>();
     loginConfig['google'] = LoginConfigItem(
-        verifier: "agg-google-emailpswd-github",
+        verifier: "aggregate-sapphire",
         verifierSubIdentifier: "w3a-google",
         typeOfLogin: TypeOfLogin.google,
-        name: "Web3Auth Flutter Aggregate Verifier Example",
         clientId:
-            "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com" // auth0 client id
+            "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com" // auth0 client id
         );
     loginConfig['jwt'] = LoginConfigItem(
-        verifier: "agg-google-emailpswd-github",
-        verifierSubIdentifier: "w3a-email-passwordless",
+        verifier: "aggregate-sapphire",
+        verifierSubIdentifier: "w3a-a0-github",
         typeOfLogin: TypeOfLogin.jwt,
-        name: "Web3Auth Flutter Aggregate Verifier Example",
-        clientId: "QQRQNGxJ80AZ5odiIjt1qqfryPOeDcb1" // auth0 client id
+        clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu" // auth0 client id
         );
 
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BHZPoRIHdrfrdXj5E8G5Y72LGnh7L8UFuM8O0KrZSOs4T8lgiZnebB5Oc6cbgYSo3qSz7WBZXIs8fs6jgZqFFgw',
-        network: Network.testnet,
+            'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ',
+        network: Network.sapphire_mainnet,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(
-            dark: true,
-            name: "Web3Auth Flutter Aggregate Verifier Example",
+            appName: "Web3Auth Flutter App",
+            logoLight:
+                "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+            logoDark:
+                "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+            defaultLanguage: Language.en,
+            mode: ThemeModes.auto,
+            appUrl: "https://web3auth.io",
+            useLogoLoader: true,
             theme: themeMap),
         loginConfig: loginConfig));
+
+    await Web3AuthFlutter.initialize();
+
+    final String res = await Web3AuthFlutter.getPrivKey();
+    print(res);
+    if (res.isNotEmpty) {
+      setState(() {
+        logoutVisible = true;
+      });
+    }
   }
 
   @override
@@ -143,11 +160,11 @@ class _MyAppState extends State<MyApp> {
                         child: const Text('Google')),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(
-                                0xFFeb5424) // This is what you need!
+                            backgroundColor: const Color.fromARGB(
+                                255, 0, 0, 0) // This is what you need!
                             ),
-                        onPressed: _login(_withEmailPasswordless),
-                        child: const Text('Email Passwordless')),
+                        onPressed: _login(_withGitHub),
+                        child: const Text('GitHub')),
                   ],
                 ),
               ),
@@ -162,8 +179,8 @@ class _MyAppState extends State<MyApp> {
                                   Colors.red[600] // This is what you need!
                               ),
                           onPressed: _logout(),
-                          child: Column(
-                            children: const [
+                          child: const Column(
+                            children: [
                               Text('Logout'),
                             ],
                           )),
@@ -246,21 +263,19 @@ class _MyAppState extends State<MyApp> {
     return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
   }
 
-  Future<Web3AuthResponse> _withEmailPasswordless() {
+  Future<Web3AuthResponse> _withGitHub() {
     return Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.jwt,
         extraLoginOptions: ExtraLoginOptions(
-            domain: 'https://shahbaz-torus.us.auth0.com',
+            domain: 'https://web3auth.au.auth0.com',
             verifierIdField: 'email',
+            connection: 'github',
             isVerifierIdCaseSensitive: false)));
   }
 
   Future<String> _getAddress() async {
     final prefs = await SharedPreferences.getInstance();
     final privateKey = prefs.getString('privateKey') ?? '0';
-    // const String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
-
-    // final client = Web3Client(rpcUrl, Client());
     final credentials = EthPrivateKey.fromHex(privateKey);
     final address = credentials.address;
     debugPrint("Account, ${address.hexEip55}");

@@ -12,13 +12,13 @@ This example demonstrates how to use Web3Auth in Flutter.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/flutter/flutter-example w3a-flutter
+npx degit Web3Auth/web3auth-pnp-examples/flutter/flutter-quick-start flutter-quick-start
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-flutter
+cd flutter-quick-start
 # run project in Android Studio or in VSCode
 ```
 

@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { useWeb3Auth } from "../services/web3auth";
 
 interface DropdownProps {
   options: string[];
@@ -8,10 +9,12 @@ interface DropdownProps {
 
 const Dropdown: FC<DropdownProps> = ({ options, label, onChange }) => {
   const [selectedOption, setSelectedOption] = useState<string>(options[0] || "");
+  const { switchChain } = useWeb3Auth();
 
   const handleChange = (e: any) => {
     const { value } = e.target;
     setSelectedOption(value);
+    switchChain(value);
     if (onChange) onChange(value);
   };
 

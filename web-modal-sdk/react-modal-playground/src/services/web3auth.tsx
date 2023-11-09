@@ -27,6 +27,7 @@ export interface IWeb3AuthContext {
   readContract: () => Promise<any>;
   writeContract: () => Promise<any>;
   verifyServerSide: () => Promise<any>;
+  switchChain: (network: string) => Promise<any>;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -50,6 +51,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   readContract: async () => "",
   writeContract: async () => {},
   verifyServerSide: async () => {},
+  switchChain: async () => {},
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -268,6 +270,42 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
   };
 
+  const switchChain = async (network: string) => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const ethChainConfig = {
+      chainId: "0x5",
+      displayName: "Goerli",
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      tickerName: "Goerli",
+      ticker: "ETH",
+      decimals: 18,
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      blockExplorer: "https://goerli.etherscan.io",
+    };
+
+    const solanaChainConfig = {
+      chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+      displayName: "Solana Devnet",
+      chainNamespace: CHAIN_NAMESPACES.SOLANA,
+      tickerName: "Solana",
+      ticker: "SOL",
+      decimals: 18,
+      rpcTarget: "https://api.devnet.solana.com", // Please use some Testing/ Public RPC Target for Solana Tesnet
+      blockExplorer: "https://explorer.solana.com",
+    };
+
+    const chain = {
+      Ethereum: ethChainConfig,
+      Solana: ethChainConfig, // change to solanaChainConfig when there is a solana provider
+    };
+
+    await web3Auth.addChain(chain[network]);
+    uiConsole("Chain Switched");
+  };
+
   const contextProvider = {
     web3Auth,
     provider,
@@ -289,6 +327,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     readContract,
     writeContract,
     verifyServerSide,
+    switchChain,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

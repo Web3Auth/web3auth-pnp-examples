@@ -46,7 +46,7 @@ function Form({ heading, headingCenter, formDetails, children }: FormProps) {
               </div>
             </div>
           ))}
-          <Dropdown options={["ETH", "Solana"]} label="Switch Chain" />
+          <Dropdown options={["Ethereum", "Solana"]} label="Switch Chain" />
         </form>
         {children}
       </div>

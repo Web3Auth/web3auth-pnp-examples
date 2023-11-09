@@ -47,6 +47,7 @@ function App() {
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+            
           },
           web3AuthNetwork: "sapphire_mainnet",
         });

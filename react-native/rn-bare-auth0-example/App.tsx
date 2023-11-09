@@ -6,14 +6,12 @@ import {
   Button,
   ScrollView,
   Dimensions,
-  TextInput,
 } from 'react-native';
 import * as WebBrowser from '@toruslabs/react-native-web-browser';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Web3Auth, {
   LOGIN_PROVIDER,
   OPENLOGIN_NETWORK,
-  IWeb3Auth,
   OpenloginUserInfo,
 } from '@web3auth/react-native-sdk';
 import RPC from './ethersRPC'; // for using ethers.js
@@ -21,11 +19,19 @@ import RPC from './ethersRPC'; // for using ethers.js
 const scheme = 'web3authrnbareauth0example'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 const clientId =
-  'BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk';
+  'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ';
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
-  network: OPENLOGIN_NETWORK.CYAN, // or other networks
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
   useCoreKitKey: false,
+  loginConfig: {
+    jwt: {
+      name: 'Web3Auth-Auth0-JWT',
+      verifier: 'w3a-auth0-demo',
+      typeOfLogin: 'jwt',
+      clientId,
+    },
+  },
 });
 
 export default function App() {
@@ -42,8 +48,9 @@ export default function App() {
         mfaLevel: 'none',
         curve: 'secp256k1',
         extraLoginOptions: {
-          domain: 'https://shahbaz-torus.us.auth0.com',
+          domain: 'https://web3auth.au.auth0.com',
           verifierIdField: 'sub',
+          client_id: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
         },
       });
 

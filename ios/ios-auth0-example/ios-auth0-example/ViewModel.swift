@@ -40,12 +40,25 @@ class ViewModel: ObservableObject {
                                     name: "Web3Auth-Auth0-JWT",
                                     clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT"
                                 )
-                    ]
+                    ],
+                    whiteLabel: W3AWhiteLabelData(
+                            appName: "Web3Auth Stub",
+                            logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+                            logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+                            defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
+                            mode: .dark,
+                            theme: ["primary": "#d53f8c"]),
+                    mfaSettings: MfaSettings(
+                        deviceShareFactor: MfaSetting(enable: true, priority: 1),
+                        backUpShareFactor: MfaSetting(enable: true, priority: 2),
+                        socialBackupFactor: MfaSetting(enable: true, priority: 3),
+                        passwordFactor: MfaSetting(enable: true, priority: 4)
+                    )
                 )).login(
                     W3ALoginParams(
                     loginProvider: .JWT,
                     dappShare: nil,
-                    extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: "https://shahbaz-torus.us.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil),
+                    extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: "https://shahbaz-torus.us.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil, additionalParams: nil),
                     mfaLevel: .NONE,
                     curve: .SECP256K1
                     ))

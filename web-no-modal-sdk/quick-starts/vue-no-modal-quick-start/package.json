@@ -8,10 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@web3auth/base": "^7.0.4",
-    "@web3auth/ethereum-provider": "^7.0.4",
-    "@web3auth/no-modal": "^7.0.4",
-    "@web3auth/openlogin-adapter": "^7.0.4",
+    "@web3auth/base": "^7.1.0",
+    "@web3auth/ethereum-provider": "^7.1.1",
+    "@web3auth/no-modal": "^7.1.1",
+    "@web3auth/openlogin-adapter": "^7.1.1",
     "core-js": "^3.26.1",
     "vue": "^3.3.4",
     "web3": "^4.1.1"

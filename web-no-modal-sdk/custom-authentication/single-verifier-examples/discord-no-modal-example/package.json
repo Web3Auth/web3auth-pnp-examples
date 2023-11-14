@@ -14,7 +14,7 @@
     "@web3auth/ethereum-provider": "^7.1.1",
     "@web3auth/no-modal": "^7.1.1",
     "@web3auth/openlogin-adapter": "^7.1.1",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "ethers": "^6.6.2",
     "npm-check-updates": "^16.6.2",
     "react": "^18.2.0",

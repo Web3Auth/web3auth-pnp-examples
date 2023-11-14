@@ -13,7 +13,7 @@
     "@web3auth/no-modal": "^7.1.1",
     "@web3auth/ethereum-provider": "^7.1.1",
     "@web3auth/openlogin-adapter": "^7.1.1",
-    "next": "13.4.9",
+    "next": "14.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "web3": "^4.1.1"

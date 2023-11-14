@@ -20,7 +20,6 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -30,14 +29,13 @@ function App() {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x5",
-            rpcTarget: "https://rpc.ankr.com/eth_goerli", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            chainId: "0x1",
+            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             appName: "W3A",
-            // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
             theme: {
               primary: "red",
             },
@@ -124,7 +122,7 @@ function App() {
         const metamaskAdapter = new MetamaskAdapter({
           clientId,
           sessionTime: 3600, // 1 hour in seconds
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x1",
@@ -139,7 +137,7 @@ function App() {
             chainId: "0x1",
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
         });
 
         // it will add/update  the metamask adapter in to web3auth class
@@ -183,8 +181,6 @@ function App() {
         //     }
         //   }
         // });
-        setProvider(web3auth.provider);
-
         if (web3auth.connected) {
           setLoggedIn(true);
         }
@@ -201,8 +197,8 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connect();
-    setProvider(web3authProvider);
+    await web3auth.connect();
+    // setLoggedIn(true);
   };
 
   const authenticateUser = async () => {
@@ -229,7 +225,6 @@ function App() {
       return;
     }
     await web3auth.logout();
-    setProvider(null);
     setLoggedIn(false);
   };
 
@@ -257,17 +252,17 @@ function App() {
   };
 
   const getChainId = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider as IProvider);
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
 
   const addChain = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
@@ -286,7 +281,7 @@ function App() {
   };
 
   const switchChain = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
@@ -295,61 +290,61 @@ function App() {
   };
 
   const getAccounts = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider as IProvider);
     const address = await rpc.getAccounts();
     uiConsole(address);
   };
 
   const getBalance = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider as IProvider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
 
   const sendTransaction = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider as IProvider);
     const receipt = await rpc.sendTransaction();
     uiConsole(receipt);
   };
 
   const signMessage = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider as IProvider);
     const signedMessage = await rpc.signMessage();
     uiConsole(signedMessage);
   };
 
   const readContract = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider as IProvider);
     const message = await rpc.readContract();
     uiConsole(message);
   };
 
   const writeContract = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider as IProvider);
     const receipt = await rpc.writeContract();
     uiConsole(receipt);
     if (receipt) {
@@ -360,11 +355,11 @@ function App() {
   };
 
   const getPrivateKey = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider as IProvider);
     const privateKey = await rpc.getPrivateKey();
     uiConsole(privateKey);
   };

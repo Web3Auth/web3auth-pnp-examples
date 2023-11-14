@@ -44,6 +44,9 @@ function App() {
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
+          adapterSettings: {
+            uxMode: "redirect",
+          }
         });
         web3auth.configureAdapter(openloginAdapter);
 
@@ -132,6 +135,56 @@ function App() {
     uiConsole(receipt);
   };
 
+  const sendVersionTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendVersionTransaction();
+    uiConsole(receipt);
+  };
+
+  const signVersionedTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signVersionedTransaction();
+    uiConsole(receipt);
+  };
+
+  const signAllVersionedTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signAllVersionedTransaction();
+    uiConsole(receipt);
+  };
+
+  const signAllTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signAllTransaction();
+    uiConsole(receipt);
+  };
+
+  const mintNFT = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const NFT = await rpc.mintNFT();
+    uiConsole(NFT);
+  };
+
   const signMessage = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -190,6 +243,31 @@ function App() {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={sendVersionTransaction} className="card">
+            Send Version Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={signVersionedTransaction} className="card">
+            Sign Versioned Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={signAllVersionedTransaction} className="card">
+            Sign All Versioned Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={signAllTransaction} className="card">
+            Sign All Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={mintNFT} className="card">
+            Mint NFT
           </button>
         </div>
         <div>

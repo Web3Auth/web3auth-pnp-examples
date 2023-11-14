@@ -27,7 +27,7 @@ function App() {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.SOLANA,
             chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-            rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            rpcTarget: "https://summer-frosty-friday.solana-devnet.quiknode.pro/5430f85cfb9a90ac2763131b24d8a746f2d18825/", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
@@ -94,6 +94,10 @@ function App() {
       return;
     }
     const web3authProvider = await web3auth.connect();
+
+    if (web3auth.connected) {
+      setLoggedIn(true);
+    }
     setProvider(web3authProvider);
   };
 
@@ -183,6 +187,56 @@ function App() {
     uiConsole(receipt);
   };
 
+  const sendVersionTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendVersionTransaction();
+    uiConsole(receipt);
+  };
+
+  const signVersionedTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signVersionedTransaction();
+    uiConsole(receipt);
+  };
+
+  const signAllVersionedTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signAllVersionedTransaction();
+    uiConsole(receipt);
+  };
+
+  const signAllTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signAllTransaction();
+    uiConsole(receipt);
+  };
+
+  const mintNFT = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const NFT = await rpc.mintNFT();
+    uiConsole(NFT);
+  };
+
   const signMessage = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -246,6 +300,31 @@ function App() {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={sendVersionTransaction} className="card">
+            Send Version Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={signVersionedTransaction} className="card">
+            Sign Versioned Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={signAllVersionedTransaction} className="card">
+            Sign All Versioned Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={signAllTransaction} className="card">
+            Sign All Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={mintNFT} className="card">
+            Mint NFT
           </button>
         </div>
         <div>

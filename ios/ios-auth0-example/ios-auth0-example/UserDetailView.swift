@@ -112,7 +112,7 @@ struct UserDetailView: View {
 
 struct UserDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let user: Web3AuthState = .init(privKey: "12345", ed25519PrivKey: "32334", sessionId: "23234384y7735y47shdj", userInfo: nil, error: nil)
+        let user: Web3AuthState = .init(privKey: "12345", ed25519PrivKey: "32334", sessionId: "23234384y7735y47shdj", userInfo: nil, error: nil, coreKitKey: "45676", coreKitEd25519PrivKey: "84567")
         UserDetailView(user: user , loggedIn: .constant(true), web3RPC: .init(user: user)!)
     }
 }

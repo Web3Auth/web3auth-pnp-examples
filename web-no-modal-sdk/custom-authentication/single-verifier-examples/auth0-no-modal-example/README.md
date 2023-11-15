@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth with Auth0 (Custom Authentication)
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/auth0-react-no-modal-example w3a-nomodal-auth0
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/auth0-no-modal-example w3a-nomodal-auth0
 ```
 
 Install & Run:

@@ -1,5 +1,4 @@
-// @ts-ignore
-import { useState } from "react";
+import React, { useState } from "react";
 
 import Console from "../components/Console";
 import Form from "../components/Form";
@@ -9,7 +8,6 @@ import { useWeb3Auth } from "../services/web3auth";
 
 function ServerSideVerification() {
   const [tokenId, setTokenId] = useState("0x23a77118133287637ebdcd9e87a1613e443df789558867f5ba91faf7a024204");
-  const [amount, setAmount] = useState("100");
 
   const { provider, verifyServerSide } = useWeb3Auth();
 

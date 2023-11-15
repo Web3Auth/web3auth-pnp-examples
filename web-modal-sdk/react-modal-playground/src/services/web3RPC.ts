@@ -1,5 +1,5 @@
 import type { IProvider } from "@web3auth/base";
-import Web3 from "web3";
+import { Web3 } from "web3";
 
 export default class EthereumRpc {
   private provider: IProvider;

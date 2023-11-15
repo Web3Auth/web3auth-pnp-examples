@@ -1,5 +1,5 @@
 import Hamburger from "hamburger-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import starkexLogo from "../assets/starkexLogo.png";

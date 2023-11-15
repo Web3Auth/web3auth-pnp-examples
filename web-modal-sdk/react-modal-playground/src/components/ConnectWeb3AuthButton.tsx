@@ -1,3 +1,5 @@
+import React from "react";
+
 import web3AuthLogoWhite from "../assets/web3authLogoWhite.svg";
 import { useWeb3Auth } from "../services/web3auth";
 
@@ -27,5 +29,4 @@ const ConnectWeb3AuthButton = () => {
     </div>
   );
 };
-
 export default ConnectWeb3AuthButton;

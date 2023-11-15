@@ -1,3 +1,5 @@
+import React from "react";
+
 interface TabsProps {
   tabData: { tabName: string; onClick?: any; active?: boolean }[];
 }

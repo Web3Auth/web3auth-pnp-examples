@@ -1,10 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import Console from "../components/Console";
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import Tabs from "../components/Tabs";
 import { useWeb3Auth } from "../services/web3auth";
 
 function Contract() {
@@ -12,7 +11,7 @@ function Contract() {
   const [bytecode, setBytecode] = useState("354");
   const [amount, setAmount] = useState("6000000000");
 
-  const { provider, deployContract, readContract, writeContract } = useWeb3Auth();
+  const { provider, deployContract } = useWeb3Auth();
 
   const formDetails = [
     {
@@ -51,14 +50,14 @@ function Contract() {
               <button
                 className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                 style={{ backgroundColor: "#0364ff" }}
-                onClick={readContract}
+                // onClick={readContract}
               >
                 Read
               </button>
               <button
                 className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                 style={{ backgroundColor: "#0364ff" }}
-                onClick={writeContract}
+                // onClick={writeContract}
               >
                 Write
               </button>

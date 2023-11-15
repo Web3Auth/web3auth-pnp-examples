@@ -1,3 +1,5 @@
+import React from "react";
+
 const Console = () => {
   return (
     <div className="w-11/12 px-4 py-16 sm:px-6 lg:px-8 flex-col">

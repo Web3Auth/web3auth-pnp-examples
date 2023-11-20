@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
@@ -46,7 +46,7 @@ function App() {
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
-          web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
         });
 
         const openloginAdapter = new OpenloginAdapter({
@@ -122,7 +122,7 @@ function App() {
         const metamaskAdapter = new MetamaskAdapter({
           clientId,
           sessionTime: 3600, // 1 hour in seconds
-          web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
             chainId: "0x1",
@@ -137,7 +137,7 @@ function App() {
             chainId: "0x1",
             rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
-          web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
         });
 
         // it will add/update  the metamask adapter in to web3auth class

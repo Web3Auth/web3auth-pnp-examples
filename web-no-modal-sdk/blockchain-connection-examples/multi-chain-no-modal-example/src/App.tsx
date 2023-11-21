@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import {
-  CHAIN_NAMESPACES,
-  IProvider,
-  WALLET_ADAPTERS,
-} from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 // EVM
 import Web3 from "web3";
 // Solana
-import {
-  SolanaPrivateKeyProvider,
-  SolanaWallet,
-} from "@web3auth/solana-provider";
+import { SolanaPrivateKeyProvider, SolanaWallet } from "@web3auth/solana-provider";
 // Tezos
 //@ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
@@ -32,18 +25,15 @@ import { cryptoWaitReady } from "@polkadot/util-crypto";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ec as elliptic } from "elliptic";
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   function getWeb3AuthNoModal(chainConfig: any): Web3AuthNoModal {
-    const web3authInstance: Web3AuthNoModal= new Web3AuthNoModal({
+    const web3authInstance: Web3AuthNoModal = new Web3AuthNoModal({
       clientId,
       chainConfig,
       web3AuthNetwork: "cyan",
@@ -77,8 +67,8 @@ function App() {
           adapterSettings: {
             whiteLabel: {
               name: "Your app Name",
-              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
               defaultLanguage: "en",
               dark: true, // whether to enable dark mode. defaultValue: false
             },
@@ -135,12 +125,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     setProvider(web3authProvider);
     setLoggedIn(true);
     uiConsole("Logged in Successfully!");
@@ -293,9 +280,7 @@ function App() {
     await solanaPrivateKeyProvider.setupProvider(ed25519key);
     console.log(solanaPrivateKeyProvider.provider);
 
-    const solanaWallet = new SolanaWallet(
-      solanaPrivateKeyProvider.provider as any
-    );
+    const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider.provider as any);
     const solana_address = await solanaWallet.requestAccounts();
     return solana_address[0];
   };
@@ -320,10 +305,7 @@ function App() {
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
     const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starkex_account = starkwareCrypto.ec.keyFromPublic(
-      keyPairStarkEx.getPublic(true, "hex"),
-      "hex"
-    );
+    const starkex_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
     const address = starkex_account.pub.getX().toString("hex");
     return address;
   };
@@ -335,14 +317,8 @@ function App() {
     }
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
-    const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(
-      privateKey,
-      "hex"
-    );
-    const starknet_account = starkwareCrypto.ec.keyFromPublic(
-      keyPairStarkNet.getPublic(true, "hex"),
-      "hex"
-    );
+    const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
+    const starknet_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
     const address = starknet_account.pub.getX().toString("hex");
     return address;
   };

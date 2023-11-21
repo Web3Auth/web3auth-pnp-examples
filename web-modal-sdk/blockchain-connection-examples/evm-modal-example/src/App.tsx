@@ -40,8 +40,8 @@ function App() {
               primary: "red",
             },
             mode: "dark",
-            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+            logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
@@ -56,8 +56,8 @@ function App() {
           adapterSettings: {
             uxMode: "redirect", // "redirect" | "popup"
             whiteLabel: {
-              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
               mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
             },
@@ -97,8 +97,8 @@ function App() {
           walletInitOptions: {
             whiteLabel: {
               theme: { isDark: true, colors: { primary: "#00a8ff" } },
-              logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/web3auth-logo.svg",
+              logoLight: "https://web3auth.io/images/web3auth-logo---Dark.svg",
             },
             useWalletConnect: true,
             enableLogging: true,

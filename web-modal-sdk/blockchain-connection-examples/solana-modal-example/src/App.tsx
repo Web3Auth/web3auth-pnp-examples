@@ -11,8 +11,7 @@ import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-p
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
 import { SlopeAdapter } from "@web3auth/slope-adapter";
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -35,8 +34,8 @@ function App() {
             appName: "W3A Heroes",
             mode: "light",
             // loginMethodsOrder: ["apple", "google", "twitter"],
-            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+            logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
@@ -52,8 +51,8 @@ function App() {
             whiteLabel: {
               name: "Whitelabel Demo",
               theme: { isDark: true, colors: { torusBrand1: "#00a8ff" } },
-              logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/web3auth-logo.svg",
+              logoLight: "https://web3auth.io/images/web3auth-logo---Dark.svg",
               topupHide: true,
               defaultLanguage: "en",
             },

@@ -19,7 +19,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
     tickerName: chains[0].nativeCurrency?.name,
     ticker: chains[0].nativeCurrency?.symbol,
     blockExplorer: chains[0].blockExplorers?.default.url[0],
-  }
+  };
   const web3AuthInstance = new Web3Auth({
     clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
     chainConfig,
@@ -27,17 +27,17 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
     // Please remove this parameter if you're on the Base Plan
     uiConfig: {
       appName: "W3A",
-      // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+      // appLogo: "https://web3auth.io/images/web3auth-logo.svg", // Your App Logo Here
       theme: {
         primary: "red",
       },
       mode: "dark",
-      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
       defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
       loginGridCol: 3,
       primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
-      modalZIndex: "2147483647"
+      modalZIndex: "2147483647",
     },
     web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
   });
@@ -50,8 +50,8 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
       uxMode: "redirect",
       whiteLabel: {
         name: "Your app Name",
-        logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-        logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+        logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+        logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
         defaultLanguage: "en",
         dark: true, // whether to enable dark mode. defaultValue: false
       },
@@ -75,7 +75,7 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
     },
   });
   web3AuthInstance.addPlugin(torusPlugin);
-  return ({
+  return {
     id: "web3auth",
     name,
     iconUrl,
@@ -111,12 +111,12 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
               label: "Coinbase",
               showOnModal: false,
             },
-          }
+          },
         },
       });
       return {
         connector,
       };
     },
-  });
+  };
 };

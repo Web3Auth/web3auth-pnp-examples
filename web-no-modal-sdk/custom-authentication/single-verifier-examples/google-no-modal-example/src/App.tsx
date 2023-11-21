@@ -1,24 +1,17 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import {
-  WALLET_ADAPTERS,
-  CHAIN_NAMESPACES,
-  IProvider,
-} from "@web3auth/base";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 // import RPC from './ethersRPC' // for using ethers.js
 import RPC from "./web3RPC"; // for using web3.js
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -50,8 +43,8 @@ function App() {
             whiteLabel: {
               appName: "W3A Heroes",
               appUrl: "https://web3auth.io",
-              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
               mode: "dark", // whether to enable dark mode. defaultValue: auto
               theme: {
@@ -62,8 +55,7 @@ function App() {
               google: {
                 verifier: "web3auth-google-example",
                 typeOfLogin: "google",
-                clientId:
-                  "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com", //use your app client id you got from google
+                clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com", //use your app client id you got from google
               },
             },
           },
@@ -90,12 +82,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     setProvider(web3authProvider);
   };
 

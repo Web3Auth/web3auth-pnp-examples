@@ -3,7 +3,7 @@ import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3Auth } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES, } from "@web3auth/base";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 import { Chain } from "wagmi";
 
@@ -27,17 +27,17 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     // Please remove this parameter if you're on the Base Plan
     uiConfig: {
       appName: "W3A",
-      // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+      // appLogo: "https://web3auth.io/images/web3auth-logo.svg", // Your App Logo Here
       theme: {
         primary: "red",
       },
       mode: "dark",
-      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
       defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
       loginGridCol: 3,
       primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
-      modalZIndex: "2147483647"
+      modalZIndex: "2147483647",
     },
     web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
     enableLogging: true,

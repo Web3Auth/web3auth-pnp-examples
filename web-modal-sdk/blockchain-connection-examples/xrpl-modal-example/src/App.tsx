@@ -2,21 +2,15 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import {
-  XrplPrivateKeyProvider,
-  getXRPLChainConfig,
-} from "@web3auth/xrpl-provider";
+import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
 import RPC from "./xrplRPC";
 import "./App.css";
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -33,13 +27,13 @@ function App() {
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             appName: "W3A",
-            // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            // appLogo: "https://web3auth.io/images/web3auth-logo.svg", // Your App Logo Here
             theme: {
               primary: "red",
             },
             mode: "dark",
-            logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-            logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+            logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+            logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
@@ -57,8 +51,8 @@ function App() {
           adapterSettings: {
             uxMode: "redirect", // "redirect" | "popup"
             whiteLabel: {
-              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
               // dark: false, // whether to enable dark mode. defaultValue: false
             },

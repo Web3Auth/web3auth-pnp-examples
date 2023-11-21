@@ -113,8 +113,8 @@ function App() {
           walletInitOptions: {
             whiteLabel: {
               theme: { isDark: true, colors: { primary: "#00a8ff" } },
-              logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-              logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/web3auth-logo.svg",
+              logoLight: "https://web3auth.io/images/web3auth-logo---Dark.svg",
             },
             useWalletConnect: true,
           },

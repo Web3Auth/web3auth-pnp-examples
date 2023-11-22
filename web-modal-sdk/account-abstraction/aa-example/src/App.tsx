@@ -7,6 +7,9 @@ import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 
+import { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
+import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
+
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
@@ -129,14 +132,14 @@ function App() {
     // setLoggedIn(true);
   };
 
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
-  };
+  // const authenticateUser = async () => {
+  //   if (!web3auth) {
+  //     uiConsole("web3auth not initialized yet");
+  //     return;
+  //   }
+  //   const idToken = await web3auth.authenticateUser();
+  //   uiConsole(idToken);
+  // };
 
   const getUserInfo = async () => {
     if (!web3auth) {
@@ -196,39 +199,59 @@ function App() {
     uiConsole(signedMessage);
   };
 
-  const readContract = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider as IProvider);
-    const message = await rpc.readContract();
-    uiConsole(message);
-  };
+  // const readContract = async () => {
+  //   if (!web3auth?.provider) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   const rpc = new RPC(web3auth.provider as IProvider);
+  //   const message = await rpc.readContract();
+  //   uiConsole(message);
+  // };
 
-  const writeContract = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider as IProvider);
-    const receipt = await rpc.writeContract();
-    uiConsole(receipt);
-    if (receipt) {
-      setTimeout(async () => {
-        await readContract();
-      }, 2000);
-    }
-  };
+  // const writeContract = async () => {
+  //   if (!web3auth?.provider) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   const rpc = new RPC(web3auth.provider as IProvider);
+  //   const receipt = await rpc.writeContract();
+  //   uiConsole(receipt);
+  //   if (receipt) {
+  //     setTimeout(async () => {
+  //       await readContract();
+  //     }, 2000);
+  //   }
+  // };
 
-  const getPrivateKey = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider as IProvider);
-    const privateKey = await rpc.getPrivateKey();
-    uiConsole(privateKey);
+  // const getPrivateKey = async () => {
+  //   if (!web3auth?.provider) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   const rpc = new RPC(web3auth.provider as IProvider);
+  //   const privateKey = await rpc.getPrivateKey();
+  //   uiConsole(privateKey);
+  // };
+
+  const createSafe = async () => {
+    // Currently, createSafe is not supported by SafeAuthKit.
+    const provider = new BrowserProvider(web3auth?.provider as Eip1193Provider);
+    const signer = await provider.getSigner();
+    // const ethAdapter = new EthersAdapter({
+    //   ethers,
+    //   signerOrProvider: signer,
+    // } as any);
+
+    const address = await signer.getAddress();
+    console.log(address);
+
+    // const safeFactory = await SafeFactory.create({ ethAdapter });
+    // const safe = await safeFactory.deploySafe({
+    //   safeAccountConfig: { threshold: 1, owners: [address as string] },
+    // });
+    // console.log("SAFE Created!", await safe.getAddress());
+    // uiConsole("SAFE Created!", await safe.getAddress());
   };
 
   function uiConsole(...args: any[]): void {
@@ -267,13 +290,8 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={readContract} className="card">
-            Read Contract
-          </button>
-        </div>
-        <div>
-          <button onClick={writeContract} className="card">
-            Write Contract
+          <button onClick={createSafe} className="card">
+            Create Safe
           </button>
         </div>
         <div>

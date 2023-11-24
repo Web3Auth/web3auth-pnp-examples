@@ -9,11 +9,16 @@ import RPC from "./web3RPC"; // for using web3.js
 
 import Safe, { SafeFactory, Web3Adapter } from "@safe-global/protocol-kit";
 import { SafeTransactionDataPartial } from "@safe-global/safe-core-sdk-types";
-// import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
-
 import SafeApiKit from "@safe-global/api-kit";
 
+import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
 import Web3 from "web3";
+
+import { IPaymaster, BiconomyPaymaster } from "@biconomy/paymaster";
+import { IBundler, Bundler } from "@biconomy/bundler";
+import { BiconomySmartAccountV2, DEFAULT_ENTRYPOINT_ADDRESS } from "@biconomy/account";
+import { ChainId } from "@biconomy/core-types";
+import { ECDSAOwnershipValidationModule, DEFAULT_ECDSA_OWNERSHIP_MODULE } from "@biconomy/modules";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -264,6 +269,7 @@ function App() {
 
     const txServiceUrl = "https://safe-transaction-goerli.safe.global";
     const safeApiKit = new SafeApiKit({ txServiceUrl, ethAdapter });
+    console.log("SafeApiKit:", safeApiKit);
 
     const safeFactory = await SafeFactory.create({ ethAdapter, isL1SafeMasterCopy: true });
     console.log("Safe Factory Created!", safeFactory);
@@ -310,6 +316,48 @@ function App() {
     });
   };
 
+  const createBcnmySmartAcc = async () => {
+    if (!web3auth?.provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const bundler: IBundler = new Bundler({
+      // get from biconomy dashboard https://dashboard.biconomy.io/
+      bundlerUrl: `https://bundler.biconomy.io/api/v2/${ChainId.GOERLI}/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44`,
+      chainId: ChainId.GOERLI, // or any supported chain of your choice
+      entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
+    });
+
+    const paymaster: IPaymaster = new BiconomyPaymaster({
+      // get from biconomy dashboard https://dashboard.biconomy.io/
+      paymasterUrl: "https://paymaster.biconomy.io/api/v1/5/dN1OCHGOs.75ceb802-24c3-42b2-9caf-b92155b0888d",
+    });
+
+    const ethersProvider = new ethers.BrowserProvider(web3auth.provider);
+
+    // For ethers v5
+    // const signer = ethersProvider.getSigner();
+    const signer = await ethersProvider.getSigner();
+
+    const module = await ECDSAOwnershipValidationModule.create({
+      signer: signer as any,
+      moduleAddress: DEFAULT_ECDSA_OWNERSHIP_MODULE,
+    });
+
+    let biconomySmartAccount = await BiconomySmartAccountV2.create({
+      chainId: ChainId.POLYGON_MUMBAI,
+      bundler: bundler,
+      paymaster: paymaster,
+      entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
+      defaultValidationModule: module,
+      activeValidationModule: module,
+    });
+
+    const address = await biconomySmartAccount.getAccountAddress();
+    console.log("Biconomy Smart Account Address:", address);
+    uiConsole("Biconomy Smart Account Address:", address);
+  };
+
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -353,6 +401,11 @@ function App() {
         <div>
           <button onClick={safeTransaction} className="card">
             Safe Txn
+          </button>
+        </div>
+        <div>
+          <button onClick={createBcnmySmartAcc} className="card">
+            Bcnmy Smart Acc
           </button>
         </div>
         <div>

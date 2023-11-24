@@ -7,13 +7,20 @@ import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 
-import { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
-import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
+import Safe, { SafeFactory, Web3Adapter } from "@safe-global/protocol-kit";
+import { SafeTransactionDataPartial } from "@safe-global/safe-core-sdk-types";
+// import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
+
+import SafeApiKit from "@safe-global/api-kit";
+
+import Web3 from "web3";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [ethAdapter, setEthAdapter] = useState<any>(null);
+  const [safeAddress, setSafeAddress] = useState<any>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -235,23 +242,72 @@ function App() {
   // };
 
   const createSafe = async () => {
-    // Currently, createSafe is not supported by SafeAuthKit.
-    const provider = new BrowserProvider(web3auth?.provider as Eip1193Provider);
-    const signer = await provider.getSigner();
-    // const ethAdapter = new EthersAdapter({
-    //   ethers,
-    //   signerOrProvider: signer,
-    // } as any);
+    if (!web3auth?.provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
 
-    const address = await signer.getAddress();
-    console.log(address);
+    const web3 = new Web3(web3auth?.provider as any);
+    const address = await web3.eth.getAccounts();
+    const safeAddress = address[0];
+    setSafeAddress(safeAddress);
+    if (!safeAddress) {
+      uiConsole("safeAddress not initialized yet");
+      return;
+    }
+    console.log(address[0]);
+    const ethAdapter = new Web3Adapter({
+      web3,
+      signerAddress: safeAddress,
+    });
+    setEthAdapter(ethAdapter);
 
-    // const safeFactory = await SafeFactory.create({ ethAdapter });
-    // const safe = await safeFactory.deploySafe({
-    //   safeAccountConfig: { threshold: 1, owners: [address as string] },
-    // });
-    // console.log("SAFE Created!", await safe.getAddress());
-    // uiConsole("SAFE Created!", await safe.getAddress());
+    const txServiceUrl = "https://safe-transaction-goerli.safe.global";
+    const safeApiKit = new SafeApiKit({ txServiceUrl, ethAdapter });
+
+    const safeFactory = await SafeFactory.create({ ethAdapter, isL1SafeMasterCopy: true });
+    console.log("Safe Factory Created!", safeFactory);
+
+    const safe = await safeFactory.deploySafe({
+      safeAccountConfig: { threshold: 1, owners: [safeAddress] },
+    });
+    console.log("SAFE Created!", await safe.getAddress());
+    uiConsole("SAFE Created!", await safe.getAddress());
+  };
+
+  const safeTransaction = async () => {
+    const txServiceUrl = "https://safe-transaction-goerli.safe.global";
+    const safeApiKit = new SafeApiKit({ txServiceUrl, ethAdapter });
+    console.log("SafeApiKit:", safeApiKit);
+
+    const nonce = await safeApiKit.getNextNonce(safeAddress);
+    console.log("Nonce:", nonce);
+
+    const safe = await Safe.create({
+      ethAdapter,
+      safeAddress: safeAddress,
+    });
+
+    const safeTransactionData: SafeTransactionDataPartial = {
+      to: "0x",
+      value: "1", // 1 wei
+      data: "0x",
+    };
+
+    const safeTransaction = await safe.createTransaction({ safeTransactionData });
+
+    const senderAddress = safeAddress;
+    const safeTxHash = await safe.getTransactionHash(safeTransaction);
+    const signature = await safe.signTransactionHash(safeTxHash);
+
+    // Propose transaction to the service
+    await safeApiKit.proposeTransaction({
+      safeAddress: await safe.getAddress(),
+      safeTransactionData: safeTransaction.data,
+      safeTxHash,
+      senderAddress,
+      senderSignature: signature.data,
+    });
   };
 
   function uiConsole(...args: any[]): void {
@@ -292,6 +348,11 @@ function App() {
         <div>
           <button onClick={createSafe} className="card">
             Create Safe
+          </button>
+        </div>
+        <div>
+          <button onClick={safeTransaction} className="card">
+            Safe Txn
           </button>
         </div>
         <div>

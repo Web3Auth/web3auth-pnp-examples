@@ -150,7 +150,7 @@ provider specific to the user and application.
 | `Flutter`             | ---                                                            | ---                                              | [Flutter-Auth0-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-auth0-example/)                           |
 | `Flutter`             | ---                                                            | ---                                              | [Flutter-Firebase-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-firebase-example/)                     |
 | `Flutter`             | Aggregate Verifier Example                                     | ---                                              | [Flutter-Aggregate-Verifier-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-aggregate-verifier-example/) |
-| `React Native (Bare)` | [Documentation](https://web3auth.io/docs/sdk/pnp/react-native) | ---                                              | [ReactNative-Bare-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-example/)                         |
+| `React Native (Bare)` | [Documentation](https://web3auth.io/docs/sdk/pnp/react-native) | ---                                              | [ReactNative-Bare-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-quick-start/)                         |
 | `React Native (Bare)` | ---                                                            | ---                                              | [ReactNative-Bare-Auth0-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-auth0-example/)             |
 | `React Native (Bare)` | ---                                                            | ---                                              | [ReactNative-Bare-Firebase-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-firebase-example/)       |
 | `React Native (Expo)` | [Documentation](https://web3auth.io/docs/sdk/pnp/react-native) | ---                                              | [ReactNative-Expo-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-expo-example/)                         |
@@ -162,7 +162,7 @@ provider specific to the user and application.
 
 | SDK     | Documentation                                           | Guide                                          | Directory                                                                                         |
 | :------ | :------------------------------------------------------ | :--------------------------------------------- | :------------------------------------------------------------------------------------------------ |
-| `Unity` | [Documentation](https://web3auth.io/docs/sdk/pnp/unity) | [Guide](https://web3auth.io/docs/guides/unity) | [Unity-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/unity/unity-example/) |
+| `Unity` | [Documentation](https://web3auth.io/docs/sdk/pnp/unity) | [Guide](https://web3auth.io/docs/guides/unity) | [Unity-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/unity/unity-quick-start/) |
 
 ## Questions
 

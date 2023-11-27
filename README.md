@@ -26,87 +26,52 @@ provider specific to the user and application.
 
 ### Blockchain x Framework
 
+#### Multi-page examples
+
 | Blockchain        | Lang Framework | Directory                                                                                                                                        |
 | :---------------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Multiple Chains` | `REACT`        | [React-EVM-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-chain/react-multi-chain-modal-example) |
+| `Multiple Chains` | `REACT`        | [React-Multi-Page-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/react-multi-page-modal-example) |
+| `Multiple Chains` | `Angular`      | [Angular-Multi-Page-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/angular-multi-page-modal-example) |
+| `Multiple Chains` | `Vue`          | [Vue-Multi-Page-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/vue-multi-page-modal-example) |
 
-#### Ethereum - EVM Based
+#### Blockchain Connection Examples
 
 | Blockchain | Lang Framework | Directory                                                                                                                                  |
 | :--------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| `EVM`      | `REACT`        | [React-EVM-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/evm/react-evm-modal-example)           |
-| `EVM`      | `Vite + React` | [React-Vite-EVM-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/evm/react-vite-evm-modal-example) |
-| `EVM`      | `NEXTJS`       | [NextJS-EVM-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/evm/nextjs-evm-modal-example)         |
-| `EVM`      | `Vue`          | [Vue-EVM-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/evm/vue-evm-modal-example)               |
-| `EVM`      | `Angular`      | [Angular-EVM-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/evm/angular-evm-modal-example)       |
-| `EVM`      | `CommonJS`     | [CommonJS-EVM-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/evm/commonjs-evm-modal-example)     |
+| `EVM`      | `REACT`        | [EVM-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/evm-modal-example)           |
+| `SOLANA`      | `REACT` | [Solana-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/solana-modal-example) |
+| `XRPL`      | `REACT`       | [Xrpl-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/xrpl-modal-example)         |
 
-#### Solana
+#### Custom Authentication Example
 
 | Blockchain | Lang Framework | Directory                                                                                                                                       |
 | :--------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Solana`   | `REACT`        | [React-Solana-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/solana/react-solana-modal-example)       |
-| `Solana`   | `NEXTJS`       | [NextJS-Solana-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/solana/nextjs-solana-modal-example)     |
-| `Solana`   | `Vue`          | [Vue-Solana-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/solana/vue-solana-modal-example)           |
-| `Solana`   | `Angular`      | [Angular-Solana-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/solana/angular-solana-modal-example)   |
-| `Solana`   | `CommonJS`     | [CommonJS-Solana-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/solana/commonjs-solana-modal-example) |
+| `EVM`   | `REACT`        | [Custom-Authentication-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/custom-authentication-modal-example)       |
 
-#### StarkEx
+#### Quick-start Examples
 
 | Blockchain | Lang Framework | Directory                                                                                                                                        |
 | :--------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `StarkEx`  | `REACT`        | [React-StarkEx-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/starkex/react-starkex-modal-example)     |
-| `StarkEx`  | `NEXTJS`       | [NextJS-StarkEx-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/starkex/nextjs-starkex-modal-example)   |
-| `StarkEx`  | `Vue`          | [Vue-StarkEx-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/starkex/vue-starkex-modal-example)         |
-| `StarkEx`  | `Angular`      | [Angular-StarkEx-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/starkex/angular-starkex-modal-example) |
+| `EVM`  | `REACT`        | [React-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-modal-quick-start)     |
+| `EVM`  | `NEXTJS`       | [NextJS-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nextjs-modal-quick-start)   |
+| `EVM`  | `Vue`          | [Vue-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start)         |
+| `EVM`  | `Angular`      | [Angular-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/angular-modal-quick-start) |
+| `EVM`  | `Vite + React`      | [React-Vite-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-vite-modal-quick-start) |
+| `EVM`  | `Vanilla JS`      | [VanillaJS-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vanillajs-modal-quick-start) |
 
-#### StarkNet
+### Web3Auth Wagmi Connector
 
-| Blockchain | Lang Framework | Directory                                                                                                                                           |
-| :--------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `StarkNet` | `REACT`        | [React-StarkNet-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/starknet/react-starknet-modal-example)     |
-| `StarkNet` | `NEXTJS`       | [NextJS-StarkNet-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/starknet/nextjs-starknet-modal-example)   |
-| `StarkNet` | `Vue`          | [Vue-StarkNet-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/starknet/vue-starknet-modal-example)         |
-| `StarkNet` | `Angular`      | [Angular-StarkNet-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/starknet/angular-starknet-modal-example) |
+| Lang Framework | Directory                                                                                                                                                 |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `REACT`        | [Wagmi-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples/wagmi-modal-example)                                    |
+| `REACT`        | [Rainbowkit-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples/rainbowkit-modal-example) |
 
-#### Tezos
+### Web3Auth x Safe Auth Kit Example
 
-| Blockchain | Lang Framework | Directory                                                                                                                                  |
-| :--------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| `Tezos`    | `REACT`        | [React-Tezos-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/tezos/react-tezos-modal-example)     |
-| `Tezos`    | `NEXTJS`       | [NextJS-Tezos-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/tezos/nextjs-tezos-modal-example)   |
-| `Tezos`    | `Vue`          | [Vue-Tezos-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/tezos/vue-tezos-modal-example)         |
-| `Tezos`    | `Angular`      | [Angular-Tezos-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/tezos/angular-tezos-modal-example) |
+| Lang Framework | Directory                                                                                                                                                 |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `REACT`        | [Web3Auth-Safe-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/account-abstraction/web3auth-safe-example)                                    |
 
-#### Algorand
-
-| Blockchain | Lang Framework | Directory                                                                                                                                       |
-| :--------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Algorand` | `REACT`        | [React-Algorand-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/algorand/react-algorand-modal-example) |
-
-#### Aptos
-
-| Blockchain | Lang Framework | Directory                                                                                                                              |
-| :--------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------- |
-| `Aptos`    | `REACT`        | [React-Aptos-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/aptos/react-aptos-modal-example) |
-
-#### Polkadot
-
-| Blockchain | Lang Framework | Directory                                                                                                                                       |
-| :--------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Polkadot` | `REACT`        | [React-Polkadot-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/polkadot/react-polkadot-modal-example) |
-
-#### ImmutableX
-
-| Blockchain   | Lang Framework | Directory                                                                                                                                              |
-| :----------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ImmutableX` | `REACT`        | [React-ImmutableX-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/immutableX/react-immutableX-modal-example/) |
-
-### Browser Extensions
-
-| Browser  | Lang Framework | Directory                                                                                                                                                      |
-| -------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Chrome` | `REACT`        | [Chrome-extension-modal-example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/browser-extensions/chrome-extension-modal-example/) |
 
 ## Web3Auth Plug n Play No Modal
 

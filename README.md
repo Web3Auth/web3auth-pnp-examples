@@ -77,60 +77,67 @@ provider specific to the user and application.
 
 `@web3auth/no-modal`
 
-### Blockchains
+### Blockchain Connection Examples
 
 | Blockchain   | Lang Framework | Directory                                                                                                                                                                |
 | :----------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `EVM`        | `REACT`        | [React-EVM-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/evm/react-evm-no-modal-example/)                      |
-| `EVM`        | `Vite + React` | [React-Vite-EVM-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/evm/react-vite-evm-no-modal-example)                      |
-| `Solana`     | `REACT`        | [React-Solana-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/solana/react-solana-no-modal-example/)             |
-| `StarkEx`    | `REACT`        | [React-StarkEx-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/starkex/react-starkex-no-modal-example/)          |
-| `StarkNet`   | `REACT`        | [React-StarkNet-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/starknet/react-starknet-no-modal-example/)       |
-| `Tezos`      | `REACT`        | [React-Tezos-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/tezos/react-tezos-no-modal-example/)                |
-| `Algorand`   | `REACT`        | [React-Algorand-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/algorand/react-algorand-no-modal-example/)       |
-| `Aptos`      | `REACT`        | [React-Aptos-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/aptos/react-aptos-no-modal-example/)                |
-| `ImmutableX` | `REACT`        | [React-ImmutableX-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/immutableX/react-immutableX-no-modal-example/) |
-| `Polkadot`   | `REACT`        | [React-Polkadot-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/polkadot/react-polkadot-no-modal-example/)       |
+| `EVM`        | `REACT`        | [EVM-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/evm-no-modal-example/)                      |
+| `Solana`     | `REACT`        | [Solana-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/solana-no-modal-example/)             |
+| `StarkEx`    | `REACT`        | [StarkEx-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/starkex-no-modal-example/)          |
+| `StarkNet`   | `REACT`        | [StarkNet-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/starknet-no-modal-example/)       |
+| `Tezos`      | `REACT`        | [Tezos-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/tezos-no-modal-example/)                |
+| `Algorand`   | `REACT`        | [Algorand-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/algorand-no-modal-example/)       |
+| `Aptos`      | `REACT`        | [Aptos-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/aptos-no-modal-example/)                |
+| `ImmutableX` | `REACT`        | [ImmutableX-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/immutablex-no-modal-example/) |
+| `Polkadot`   | `REACT`        | [Polkadot-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/polkadot-no-modal-example/)       |
+| `XRPL`       | `REACT`        | [XRPL-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/xrpl-no-modal-example/)             |
+| `Cosmos`      | `REACT`        | [Cosmos-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/cosmos-no-modal-example/)             |
+| `Multiple Chains` | `REACT`        | [Multi-Chain-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/multi-chain-no-modal-example)             |
 
-### Custom Authentication
+### Custom Authentication - Single Verifier
 
 | Auth Provider | Lang Framework  | Directory                                                                                                                                                                                          |
 | :------------ | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Auth0`       | `REACT`         | [Auth0-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/auth0-react-no-modal-example)                           |
-| `Google`      | `REACT`         | [Google-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/google-react-no-modal-example)                         |
-| `Firebase`    | `REACT`         | [Firebase-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/firebase-react-no-modal-example)                     |
-| `Discord`     | `REACT`         | [Discord-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/discord-react-no-modal-example)                       |
-| `Facebook`    | `REACT`         | [Facebook-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/facebook-react-no-modal-example)                     |
-| `Twitch`      | `REACT`         | [Twitch-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/twitch-react-no-modal-example)                         |
-| `AWS Cognito` | `REACT`         | [Cognito-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/cognito-react-no-modal-example)                       |
-| `Custom JWT`  | `REACT-EXPRESS` | [Custom-JWT-React-Express-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/custom-jwt-react-express-no-modal-example) |
+| `Auth0`       | `REACT`         | [Auth0-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/auth0-no-modal-example)                           |
+| `Google`      | `REACT`         | [Google-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/google-no-modal-example)                         |
+| `Firebase`    | `REACT`         | [Firebase-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/firebase-no-modal-example)                     |
+| `Discord`     | `REACT`         | [Discord-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/discord-no-modal-example)                       |
+| `Facebook`    | `REACT`         | [Facebook-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/facebook-no-modal-example)                     |
+| `Twitch`      | `REACT`         | [Twitch-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/twitch-no-modal-example)                         |
+| `AWS Cognito` | `REACT`         | [Cognito-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/cognito-no-modal-example)                       |
+| `Custom JWT`  | `REACT-EXPRESS` | [Custom-JWT-React-Express-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/custom-jwt-no-modal-example) |
 
-### Aggregate Verifiers
+### Custom Authentication - Aggregate Verifiers
 
 | Auth Providers                            | Lang Framework | Directory                                                                                                                                                                                                                            |
 | :---------------------------------------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Google`, `Email Passwordless` & `GitHub` | `REACT`        | [Auth0-Google-Aggregate-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-no-modal-example)       |
-| `Google` & `Firebase [GitHub]`            | `REACT`        | [Firebase-Google-Aggregate-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifiers/firebase-google-aggregate-react-no-modal-example) |
-| `Google` & `Auth0 [EmailPasswordless]`    | `Flutter`      | [Flutter-Google-EmailPasswordless-Flutter-Application](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-google-emailpasswordless-example/)                                                                |
+| `Google`, `Email Passwordless` & `GitHub` | `REACT`        | [Auth0-Google-Aggregate-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/auth0-google-aggregate-no-modal-example)       |
+| `Google` & `Firebase [GitHub]`            | `REACT`        | [Firebase-Google-Aggregate-React-Web3Auth-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/firebase-google-aggregate-no-modal-example) |
+| `Google` & `Auth0`    | `Flutter`      | [Flutter-Google-EmailPasswordless-Flutter-Application](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-aggregate-verifier-example/)                                                                |
+| `Google` & `Auth0`    | `React Native` | [ReactNative-Google-EmailPasswordless-ReactNative-Application](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-aggregate-verifier-example)                                                         |
+| `Google` & `Auth0`    | `iOS`          | [iOS-Google-EmailPasswordless-iOS-Application](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-aggregate-verifier-example)                                                                                    |
+| `Google` & `Auth0`    | `Android`      | [Android-Google-EmailPasswordless-Android-Application](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-aggregate-verifier-example)                                                                   |
+| `Google` & `Auth0`    | `Unity`        | [Unity-Google-EmailPasswordless-Unity-Application](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/unity/unity-aggregate-verifier-example)                                                                              |
 
 ### Server Side Verification
 
 | Via               | Lang Framework | Directory                                                                                                                                                                              |
 | :---------------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/server-side-verification/ssv-via-social-nextjs-no-modal-example) |
+| `Social - Google` | `NEXTJS`       | [SSV-Via-Social-NextJS-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/server-side-verification-no-modal-example) |
 
 ### Browser Extensions
 
 | Browser  | Lang Framework | Directory                                                                                                                                                           |
 | -------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Chrome` | `REACT`        | [Chrome-extension-modal-example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/browser-extensions/chrome-extension-no-modal-example) |
+| `Chrome` | `REACT`        | [Chrome-extension-modal-example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/chrome-extension-no-modal-example) |
 
 ### Web3Auth Wagmi Connector
 
 | Lang Framework | Directory                                                                                                                                                 |
 | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `REACT`        | [React-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/wagmi-connector/wagmi-react-modal-example)                                    |
-| `REACT`        | [React-Example-With-Torus-Plugin](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/wagmi-connector/rainbowkit-react-modal-with-plugin-example) |
+| `REACT`        | [React-No-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example)                                    |
+| `REACT`        | [RainbowKit-With-No-Modal](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/rainbowkit-no-modal-example) |
+| `REACT`        | [RainbowKit-With-No-Modal-Auth0](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/rainbowkit-auth0-no-modal-example)
 
 ## Web3Auth Mobile SDKs
 

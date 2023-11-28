@@ -1,82 +1,42 @@
 import { useEffect, useState } from "react";
-import { SafeAuthKit, SafeAuthSignInData, SafeGetUserInfoResponse, Web3AuthModalPack, Web3AuthEventListener } from "@safe-global/auth-kit";
+import { SafeAuthPack, SafeAuthInitOptions, AuthKitSignInData } from "@safe-global/auth-kit";
 import Safe, { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
-import { ethers } from "ethers";
-import { Web3AuthOptions } from "@web3auth/modal";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS, ADAPTER_EVENTS } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
+
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
-//import RPC from "./ethersRPC"; // for using ethers.js
-
-const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
-
-const connectedHandler: Web3AuthEventListener = (data) => console.log("CONNECTED", data);
-const disconnectedHandler: Web3AuthEventListener = (data) => console.log("DISCONNECTED", data);
+// import RPC from "./ethersRPC"; // for using ethers.js
 
 function App() {
-  const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
-  const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<SafeAuthSignInData | null>(null);
-  const [userInfo, setUserInfo] = useState<SafeGetUserInfoResponse<Web3AuthModalPack>>();
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [safeAuth, setSafeAuth] = useState<SafeAuthPack>();
+  const [userInfo, setUserInfo] = useState<any>();
+  const [provider, setProvider] = useState<Eip1193Provider | null>(null);
+  const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<AuthKitSignInData | null>(null);
 
   useEffect(() => {
-    const options: Web3AuthOptions = {
-      clientId,
-      chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "0x5",
-        rpcTarget: "https://rpc.ankr.com/eth_goerli", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-      },
-      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
-      // Please remove this parameter if you're on the Base Plan
-      uiConfig: {
-        theme: "dark",
-        loginMethodsOrder: ["github", "google"],
-        defaultLanguage: "en",
-        appLogo: "https://web3auth.io/images/web3auth-logo.svg", // Your App Logo Here
-      },
-      web3AuthNetwork: "cyan",
-    };
-
-    const modalConfig = {
-      [WALLET_ADAPTERS.TORUS_EVM]: {
-        label: "torus",
-        showOnModal: false,
-      },
-      [WALLET_ADAPTERS.METAMASK]: {
-        label: "metamask",
-        showOnDesktop: true,
-        showOnMobile: false,
-      },
-    };
-
-    const openloginAdapter = new OpenloginAdapter({
-      loginSettings: {
-        mfaLevel: "default",
-      },
-      adapterSettings: {
-        uxMode: "redirect",
-        whiteLabel: {
-          name: "Safe",
-        },
-      },
-    });
-
     const init = async () => {
       try {
-        const web3AuthModalPack = new Web3AuthModalPack(options, [openloginAdapter], modalConfig);
+        const safeAuthInitOptions: SafeAuthInitOptions = {
+          showWidgetButton: false,
+          chainConfig: {
+            blockExplorerUrl: "https://goerli.etherscan.io",
+            chainId: "0x5",
+            displayName: "Ethereum Goerli",
+            rpcTarget: "https://rpc.ankr.com/eth_goerli",
+            ticker: "ETH",
+            tickerName: "Ethereum",
+          },
+        };
 
-        const safeAuthKit = await SafeAuthKit.init(web3AuthModalPack, {
-          txServiceUrl: "https://safe-transaction-goerli.safe.global",
-        });
+        const safeAuthPack = new SafeAuthPack();
+        await safeAuthPack.init(safeAuthInitOptions);
 
-        safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
-
-        safeAuthKit.subscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler);
-
-        setSafeAuth(safeAuthKit);
+        setSafeAuth(safeAuthPack);
+        if (safeAuthPack.isAuthenticated) {
+          const signInInfo = await safeAuthPack?.signIn();
+          setSafeAuthSignInResponse(signInInfo);
+          setProvider(safeAuthPack.getProvider() as Eip1193Provider);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -98,7 +58,7 @@ function App() {
 
     setSafeAuthSignInResponse(signInInfo);
     setUserInfo(userInfo || undefined);
-    setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
+    setProvider(safeAuth.getProvider() as Eip1193Provider);
   };
 
   const logout = async () => {
@@ -113,11 +73,19 @@ function App() {
 
   const createSafe = async () => {
     // Currently, createSafe is not supported by SafeAuthKit.
-    const provider = new ethers.providers.Web3Provider(safeAuth?.getProvider() as SafeEventEmitterProvider);
-    const signer = provider.getSigner();
-    const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: signer || provider });
+    const provider = new BrowserProvider(safeAuth?.getProvider() as Eip1193Provider);
+    const signer = await provider.getSigner();
+    const ethAdapter = new EthersAdapter({
+      ethers,
+      signerOrProvider: signer,
+    } as any);
+
+    console.log(safeAuthSignInResponse);
+
     const safeFactory = await SafeFactory.create({ ethAdapter });
-    const safe: Safe = await safeFactory.deploySafe({ safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] } });
+    const safe: Safe = await safeFactory.deploySafe({
+      safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },
+    });
     console.log("SAFE Created!", await safe.getAddress());
     uiConsole("SAFE Created!", await safe.getAddress());
   };
@@ -172,6 +140,40 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  const signAndExecuteSafeTx = async () => {
+    const safeAddress = safeAuthSignInResponse?.safes?.[0] || "0x";
+
+    // Wrap Web3Auth provider with ethers
+    const provider = new BrowserProvider(safeAuth?.getProvider() as Eip1193Provider);
+    const signer = await provider.getSigner();
+    const ethAdapter = new EthersAdapter({
+      ethers,
+      signerOrProvider: signer,
+    });
+    const protocolKit = await Safe.create({
+      safeAddress,
+      ethAdapter,
+    });
+
+    // Create transaction
+    let tx = await protocolKit.createTransaction({
+      transactions: [
+        {
+          to: ethers.getAddress(safeAuthSignInResponse?.eoa || "0x"),
+          data: "0x",
+          value: ethers.parseUnits("0.0001", "ether").toString(),
+        },
+      ],
+    });
+
+    // Sign transaction
+    tx = await protocolKit.signTransaction(tx);
+
+    // Execute transaction
+    const txResult = await protocolKit.executeTransaction(tx);
+    uiConsole("Safe Transaction Result", txResult);
+  };
+
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -183,11 +185,18 @@ function App() {
     <>
       <div className="flex-container">
         {!safeAuthSignInResponse?.safes?.length ? (
-          <div>
-            <button onClick={createSafe} className="card">
-              Create Safe
-            </button>
-          </div>
+          <>
+            <div>
+              <button onClick={createSafe} className="card">
+                Create Safe
+              </button>
+            </div>
+            <div>
+              <button onClick={logout} className="card">
+                Log Out
+              </button>
+            </div>
+          </>
         ) : (
           <>
             <div>
@@ -213,6 +222,11 @@ function App() {
             <div>
               <button onClick={sendTransaction} className="card">
                 Send Transaction
+              </button>
+            </div>
+            <div>
+              <button onClick={signAndExecuteSafeTx} className="card">
+                Sign & Ex Safe Txn
               </button>
             </div>
             <div>
@@ -242,7 +256,7 @@ function App() {
           Web3Auth{" "}
         </a>
         &{" "}
-        <a target="_blank" href="https://docs.safe.global/learn/safe-core/safe-core-account-abstraction-sdk/auth-kit" rel="noreferrer">
+        <a target="_blank" href="https://docs.safe.global/safe-core-aa-sdk/auth-kit/reference" rel="noreferrer">
           Safe Auth Kit
         </a>{" "}
         Example
@@ -251,15 +265,29 @@ function App() {
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <div className="grid">{provider ? userInfo?.name ? <p>Welcome {userInfo?.name}!</p> : null : null} </div>
-      <div className="grid">{provider ? safeAuthSignInResponse?.eoa ? <p>Your EOA: {safeAuthSignInResponse?.eoa}</p> : null : null} </div>
+      <div className="grid">
+        {provider ? (
+          safeAuthSignInResponse?.eoa ? (
+            <p>
+              Your EOA:{" "}
+              <a href={`https://goerli.etherscan.io/address/${safeAuthSignInResponse?.eoa}`} target="_blank" rel="noreferrer">
+                {safeAuthSignInResponse?.eoa}
+              </a>
+            </p>
+          ) : null
+        ) : null}{" "}
+      </div>
       <div className="grid">
         {provider ? (
           safeAuthSignInResponse?.safes?.length ? (
             <>
               <p>Your Safe Accounts</p>
-              {safeAuthSignInResponse?.safes?.map((safe, index) => (
+              {safeAuthSignInResponse?.safes?.map((safe: any, index: any) => (
                 <p key={index}>
-                  Safe[{index}]: {safe}
+                  Safe[{index}]:{" "}
+                  <a href={`https://goerli.etherscan.io/address/${safe}`} target="_blank" rel="noreferrer">
+                    {safe}
+                  </a>
                 </p>
               ))}
             </>

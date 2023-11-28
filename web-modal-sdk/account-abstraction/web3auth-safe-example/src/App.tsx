@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SafeAuthPack, SafeAuthConfig, SafeAuthInitOptions } from "@safe-global/auth-kit";
+import { SafeAuthPack, SafeAuthInitOptions, AuthKitSignInData } from "@safe-global/auth-kit";
 import Safe, { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
 import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
 
@@ -9,39 +9,34 @@ import RPC from "./web3RPC"; // for using web3.js
 
 function App() {
   const [safeAuth, setSafeAuth] = useState<SafeAuthPack>();
-  const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<any | null>(null);
   const [userInfo, setUserInfo] = useState<any>();
   const [provider, setProvider] = useState<Eip1193Provider | null>(null);
+  const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<AuthKitSignInData | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const safeAuthConfig: SafeAuthConfig = {
-          txServiceUrl: "https://safe-transaction-goerli.safe.global", //'https://safe-transaction-mainnet.safe.global',
-        };
-
         const safeAuthInitOptions: SafeAuthInitOptions = {
           showWidgetButton: false,
           chainConfig: {
             blockExplorerUrl: "https://goerli.etherscan.io",
             chainId: "0x5",
             displayName: "Ethereum Goerli",
-            logo: "eth.svg",
             rpcTarget: "https://rpc.ankr.com/eth_goerli",
             ticker: "ETH",
             tickerName: "Ethereum",
           },
         };
 
-        const safeAuthPack = new SafeAuthPack(safeAuthConfig);
+        const safeAuthPack = new SafeAuthPack();
         await safeAuthPack.init(safeAuthInitOptions);
 
         setSafeAuth(safeAuthPack);
-        console.log(safeAuthPack.isAuthenticated);
         if (safeAuthPack.isAuthenticated) {
+          const signInInfo = await safeAuthPack?.signIn();
+          setSafeAuthSignInResponse(signInInfo);
           setProvider(safeAuthPack.getProvider() as Eip1193Provider);
         }
-        // setProvider(safeAuthPack.getProvider() as Eip1193Provider);
       } catch (error) {
         console.error(error);
       }
@@ -145,6 +140,40 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  const signAndExecuteSafeTx = async () => {
+    const safeAddress = safeAuthSignInResponse?.safes?.[0] || "0x";
+
+    // Wrap Web3Auth provider with ethers
+    const provider = new BrowserProvider(safeAuth?.getProvider() as Eip1193Provider);
+    const signer = await provider.getSigner();
+    const ethAdapter = new EthersAdapter({
+      ethers,
+      signerOrProvider: signer,
+    });
+    const protocolKit = await Safe.create({
+      safeAddress,
+      ethAdapter,
+    });
+
+    // Create transaction
+    let tx = await protocolKit.createTransaction({
+      transactions: [
+        {
+          to: ethers.getAddress(safeAuthSignInResponse?.eoa || "0x"),
+          data: "0x",
+          value: ethers.parseUnits("0.0001", "ether").toString(),
+        },
+      ],
+    });
+
+    // Sign transaction
+    tx = await protocolKit.signTransaction(tx);
+
+    // Execute transaction
+    const txResult = await protocolKit.executeTransaction(tx);
+    uiConsole("Safe Transaction Result", txResult);
+  };
+
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -196,6 +225,11 @@ function App() {
               </button>
             </div>
             <div>
+              <button onClick={signAndExecuteSafeTx} className="card">
+                Sign & Ex Safe Txn
+              </button>
+            </div>
+            <div>
               <button onClick={logout} className="card">
                 Log Out
               </button>
@@ -222,7 +256,7 @@ function App() {
           Web3Auth{" "}
         </a>
         &{" "}
-        <a target="_blank" href="https://docs.safe.global/learn/safe-core/safe-core-account-abstraction-sdk/auth-kit" rel="noreferrer">
+        <a target="_blank" href="https://docs.safe.global/safe-core-aa-sdk/auth-kit/reference" rel="noreferrer">
           Safe Auth Kit
         </a>{" "}
         Example
@@ -231,7 +265,18 @@ function App() {
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <div className="grid">{provider ? userInfo?.name ? <p>Welcome {userInfo?.name}!</p> : null : null} </div>
-      <div className="grid">{provider ? safeAuthSignInResponse?.eoa ? <p>Your EOA: {safeAuthSignInResponse?.eoa}</p> : null : null} </div>
+      <div className="grid">
+        {provider ? (
+          safeAuthSignInResponse?.eoa ? (
+            <p>
+              Your EOA:{" "}
+              <a href={`https://goerli.etherscan.io/address/${safeAuthSignInResponse?.eoa}`} target="_blank" rel="noreferrer">
+                {safeAuthSignInResponse?.eoa}
+              </a>
+            </p>
+          ) : null
+        ) : null}{" "}
+      </div>
       <div className="grid">
         {provider ? (
           safeAuthSignInResponse?.safes?.length ? (
@@ -239,7 +284,10 @@ function App() {
               <p>Your Safe Accounts</p>
               {safeAuthSignInResponse?.safes?.map((safe: any, index: any) => (
                 <p key={index}>
-                  Safe[{index}]: {safe}
+                  Safe[{index}]:{" "}
+                  <a href={`https://goerli.etherscan.io/address/${safe}`} target="_blank" rel="noreferrer">
+                    {safe}
+                  </a>
                 </p>
               ))}
             </>

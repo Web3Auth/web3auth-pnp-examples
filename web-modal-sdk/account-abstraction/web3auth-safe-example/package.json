@@ -1,7 +1,18 @@
 {
-  "name": "web3auth-safe-example",
-  "version": "0.1.0",
-  "private": true,
+  "browserslist": {
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
+    ]
+  },
   "dependencies": {
     "@safe-global/auth-kit": "^2.0.0-alpha.10",
     "@testing-library/jest-dom": "^5.16.5",
@@ -11,33 +22,13 @@
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
-    "ethers": "^5.7.2",
+    "ethers": "^6.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.4",
     "web-vitals": "^3.1.0",
-    "web3": "^1.8.2"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      "chrome >= 67",
-      "edge >= 79",
-      "firefox >= 68",
-      "opera >= 54",
-      "safari >= 14"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "web3": "^4.2.2"
   },
   "devDependencies": {
     "assert": "^2.0.0",
@@ -54,11 +45,20 @@
     "url": "^0.11.0",
     "zlib-browserify": "^0.0.3"
   },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "name": "web3auth-safe-example",
+  "private": true,
   "scripts": {
-    "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "lint": "react-scripts lint"
-  }
+    "lint": "react-scripts lint",
+    "start": "react-app-rewired start",
+    "test": "react-app-rewired test"
+  },
+  "version": "0.1.0"
 }

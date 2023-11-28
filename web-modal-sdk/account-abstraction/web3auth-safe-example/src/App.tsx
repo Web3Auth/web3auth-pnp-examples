@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { SafeAuthPack, SafeAuthConfig, SafeAuthInitOptions } from "@safe-global/auth-kit";
 import Safe, { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
-import { ethers } from "ethers";
+import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
 
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
-//import RPC from "./ethersRPC"; // for using ethers.js
+// import RPC from "./ethersRPC"; // for using ethers.js
 
 function App() {
   const [safeAuth, setSafeAuth] = useState<SafeAuthPack>();
   const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<any | null>(null);
   const [userInfo, setUserInfo] = useState<any>();
-  const [provider, setProvider] = useState<any | null>(null);
+  const [provider, setProvider] = useState<Eip1193Provider | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -37,6 +37,11 @@ function App() {
         await safeAuthPack.init(safeAuthInitOptions);
 
         setSafeAuth(safeAuthPack);
+        console.log(safeAuthPack.isAuthenticated);
+        if (safeAuthPack.isAuthenticated) {
+          setProvider(safeAuthPack.getProvider() as Eip1193Provider);
+        }
+        // setProvider(safeAuthPack.getProvider() as Eip1193Provider);
       } catch (error) {
         console.error(error);
       }
@@ -58,7 +63,7 @@ function App() {
 
     setSafeAuthSignInResponse(signInInfo);
     setUserInfo(userInfo || undefined);
-    setProvider(safeAuth.getProvider());
+    setProvider(safeAuth.getProvider() as Eip1193Provider);
   };
 
   const logout = async () => {
@@ -73,13 +78,21 @@ function App() {
 
   const createSafe = async () => {
     // Currently, createSafe is not supported by SafeAuthKit.
-    const provider = new ethers.providers.Web3Provider(safeAuth?.getProvider() as any);
-    const signer = provider.getSigner();
-    // const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: signer || provider });
-    // const safeFactory = await SafeFactory.create({ ethAdapter });
-    // const safe: Safe = await safeFactory.deploySafe({ safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] } });
-    // console.log("SAFE Created!", await safe.getAddress());
-    // uiConsole("SAFE Created!", await safe.getAddress());
+    const provider = new BrowserProvider(safeAuth?.getProvider() as Eip1193Provider);
+    const signer = await provider.getSigner();
+    const ethAdapter = new EthersAdapter({
+      ethers,
+      signerOrProvider: signer,
+    } as any);
+
+    console.log(safeAuthSignInResponse);
+
+    const safeFactory = await SafeFactory.create({ ethAdapter });
+    const safe: Safe = await safeFactory.deploySafe({
+      safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },
+    });
+    console.log("SAFE Created!", await safe.getAddress());
+    uiConsole("SAFE Created!", await safe.getAddress());
   };
 
   const getChainId = async () => {
@@ -143,11 +156,18 @@ function App() {
     <>
       <div className="flex-container">
         {!safeAuthSignInResponse?.safes?.length ? (
-          <div>
-            <button onClick={createSafe} className="card">
-              Create Safe
-            </button>
-          </div>
+          <>
+            <div>
+              <button onClick={createSafe} className="card">
+                Create Safe
+              </button>
+            </div>
+            <div>
+              <button onClick={logout} className="card">
+                Log Out
+              </button>
+            </div>
+          </>
         ) : (
           <>
             <div>

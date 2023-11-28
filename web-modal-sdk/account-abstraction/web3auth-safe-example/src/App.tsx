@@ -1,82 +1,42 @@
 import { useEffect, useState } from "react";
-import { SafeAuthKit, SafeAuthSignInData, SafeGetUserInfoResponse, Web3AuthModalPack, Web3AuthEventListener } from "@safe-global/auth-kit";
+import { SafeAuthPack, SafeAuthConfig, SafeAuthInitOptions } from "@safe-global/auth-kit";
 import Safe, { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
 import { ethers } from "ethers";
-import { Web3AuthOptions } from "@web3auth/modal";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS, ADAPTER_EVENTS } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
 
-const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
-
-const connectedHandler: Web3AuthEventListener = (data) => console.log("CONNECTED", data);
-const disconnectedHandler: Web3AuthEventListener = (data) => console.log("DISCONNECTED", data);
-
 function App() {
-  const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
-  const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<SafeAuthSignInData | null>(null);
-  const [userInfo, setUserInfo] = useState<SafeGetUserInfoResponse<Web3AuthModalPack>>();
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [safeAuth, setSafeAuth] = useState<SafeAuthPack>();
+  const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<any | null>(null);
+  const [userInfo, setUserInfo] = useState<any>();
+  const [provider, setProvider] = useState<any | null>(null);
 
   useEffect(() => {
-    const options: Web3AuthOptions = {
-      clientId,
-      chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "0x5",
-        rpcTarget: "https://rpc.ankr.com/eth_goerli", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-      },
-      // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
-      // Please remove this parameter if you're on the Base Plan
-      uiConfig: {
-        theme: "dark",
-        loginMethodsOrder: ["github", "google"],
-        defaultLanguage: "en",
-        appLogo: "https://web3auth.io/images/web3auth-logo.svg", // Your App Logo Here
-      },
-      web3AuthNetwork: "cyan",
-    };
-
-    const modalConfig = {
-      [WALLET_ADAPTERS.TORUS_EVM]: {
-        label: "torus",
-        showOnModal: false,
-      },
-      [WALLET_ADAPTERS.METAMASK]: {
-        label: "metamask",
-        showOnDesktop: true,
-        showOnMobile: false,
-      },
-    };
-
-    const openloginAdapter = new OpenloginAdapter({
-      loginSettings: {
-        mfaLevel: "default",
-      },
-      adapterSettings: {
-        uxMode: "redirect",
-        whiteLabel: {
-          name: "Safe",
-        },
-      },
-    });
-
     const init = async () => {
       try {
-        const web3AuthModalPack = new Web3AuthModalPack(options, [openloginAdapter], modalConfig);
+        const safeAuthConfig: SafeAuthConfig = {
+          txServiceUrl: "https://safe-transaction-goerli.safe.global", //'https://safe-transaction-mainnet.safe.global',
+        };
 
-        const safeAuthKit = await SafeAuthKit.init(web3AuthModalPack, {
-          txServiceUrl: "https://safe-transaction-goerli.safe.global",
-        });
+        const safeAuthInitOptions: SafeAuthInitOptions = {
+          showWidgetButton: false,
+          chainConfig: {
+            blockExplorerUrl: "https://goerli.etherscan.io",
+            chainId: "0x5",
+            displayName: "Ethereum Goerli",
+            logo: "eth.svg",
+            rpcTarget: "https://rpc.ankr.com/eth_goerli",
+            ticker: "ETH",
+            tickerName: "Ethereum",
+          },
+        };
 
-        safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
+        const safeAuthPack = new SafeAuthPack(safeAuthConfig);
+        await safeAuthPack.init(safeAuthInitOptions);
 
-        safeAuthKit.subscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler);
-
-        setSafeAuth(safeAuthKit);
+        setSafeAuth(safeAuthPack);
       } catch (error) {
         console.error(error);
       }
@@ -98,7 +58,7 @@ function App() {
 
     setSafeAuthSignInResponse(signInInfo);
     setUserInfo(userInfo || undefined);
-    setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
+    setProvider(safeAuth.getProvider());
   };
 
   const logout = async () => {
@@ -113,13 +73,13 @@ function App() {
 
   const createSafe = async () => {
     // Currently, createSafe is not supported by SafeAuthKit.
-    const provider = new ethers.providers.Web3Provider(safeAuth?.getProvider() as SafeEventEmitterProvider);
+    const provider = new ethers.providers.Web3Provider(safeAuth?.getProvider() as any);
     const signer = provider.getSigner();
-    const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: signer || provider });
-    const safeFactory = await SafeFactory.create({ ethAdapter });
-    const safe: Safe = await safeFactory.deploySafe({ safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] } });
-    console.log("SAFE Created!", await safe.getAddress());
-    uiConsole("SAFE Created!", await safe.getAddress());
+    // const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: signer || provider });
+    // const safeFactory = await SafeFactory.create({ ethAdapter });
+    // const safe: Safe = await safeFactory.deploySafe({ safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] } });
+    // console.log("SAFE Created!", await safe.getAddress());
+    // uiConsole("SAFE Created!", await safe.getAddress());
   };
 
   const getChainId = async () => {
@@ -257,7 +217,7 @@ function App() {
           safeAuthSignInResponse?.safes?.length ? (
             <>
               <p>Your Safe Accounts</p>
-              {safeAuthSignInResponse?.safes?.map((safe, index) => (
+              {safeAuthSignInResponse?.safes?.map((safe: any, index: any) => (
                 <p key={index}>
                   Safe[{index}]: {safe}
                 </p>

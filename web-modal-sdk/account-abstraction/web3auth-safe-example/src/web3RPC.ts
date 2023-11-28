@@ -1,10 +1,10 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+// import type { any } from "@web3auth/base";
 import Web3 from "web3";
 
 export default class EthereumRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: any;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: any) {
     this.provider = provider;
   }
 
@@ -26,7 +26,7 @@ export default class EthereumRpc {
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
-      const address = (await web3.eth.getAccounts());
+      const address = await web3.eth.getAccounts();
 
       return address;
     } catch (error) {

@@ -1,11 +1,16 @@
+// IMP START - Quick Start
 import { Component } from "@angular/core";
+// IMP END - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import Web3 from "web3";
 
+// IMP START - SDK Initialization
+// IMP START - Dashboard Registration
 const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+// IMP END - Dashboard Registration
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -28,6 +33,7 @@ const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider: privateKeyProvider,
 });
 web3auth.configureAdapter(openloginAdapter);
+// IMP END - SDK Initialization
 
 @Component({
   selector: "app-root",
@@ -47,7 +53,9 @@ export class AppComponent {
   async ngOnInit() {
     const init = async () => {
       try {
+        // IMP START - SDK Initialization
         await web3auth.init();
+        // IMP END - SDK Initialization
         this.provider = web3auth.provider;
 
         if (web3auth.connected) {
@@ -62,12 +70,16 @@ export class AppComponent {
   }
 
   login = async () => {
+    // IMP START - Login
+
     const web3authProvider = await web3auth.connectTo(
       WALLET_ADAPTERS.OPENLOGIN,
       {
         loginProvider: "google",
       }
     );
+    // IMP END - Login
+
     this.provider = web3authProvider;
     if (web3auth.connected) {
       this.loggedIn = true;
@@ -75,17 +87,22 @@ export class AppComponent {
   };
 
   getUserInfo = async () => {
+    // IMP START - Get User Information
     const user = await web3auth.getUserInfo();
+    // IMP END - Get User Information
     this.uiConsole(user);
   };
-  
+
   logout = async () => {
+    // IMP START - Logout
     await web3auth.logout();
+    // IMP END - Logout
     this.provider = null;
     this.loggedIn = false;
     this.uiConsole("logged out");
   };
 
+  // IMP START - Blockchain Calls
   getAccounts = async () => {
     if (!this.provider) {
       this.uiConsole("provider not initialized yet");
@@ -136,6 +153,7 @@ export class AppComponent {
     );
     this.uiConsole(signedMessage);
   };
+  // IMP END - Blockchain Calls
 
   uiConsole(...args: any[]) {
     const el = document.querySelector("#console-ui>p");

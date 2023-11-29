@@ -10,6 +10,7 @@
     "lint": "ng line"
   },
   "private": true,
+  "//": "IMP START - Web3Auth Installation",
   "dependencies": {
     "@angular/animations": "~14.2.7",
     "@angular/common": "~14.2.7",
@@ -26,6 +27,7 @@
     "empty-module": "^0.0.2",
     "web3": "^4.1.2"
   },
+  "//": "IMP END - Web3Auth Installation",
   "devDependencies": {
     "@angular-devkit/build-angular": "~14.2.6",
     "@angular/cli": "~14.2.6",

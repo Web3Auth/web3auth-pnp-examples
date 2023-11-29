@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "//": "IMP START - Web3Auth Installation",
+  "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
     "@web3auth/base": "^7.1.0",
     "@web3auth/no-modal": "^7.1.1",
@@ -19,7 +19,7 @@
     "react-dom": "18.2.0",
     "web3": "^4.1.1"
   },
-  "//": "IMP END - Web3Auth Installation",
+  "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {
     "@types/elliptic": "^6.4.14",
     "@types/node": "20.4.1",

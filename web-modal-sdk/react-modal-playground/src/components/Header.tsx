@@ -2,7 +2,6 @@ import Hamburger from "hamburger-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import starkexLogo from "../assets/starkexLogo.png";
 import web3authLogo from "../assets/web3authLogoBlue.svg";
 import ConnectWeb3AuthButton from "./ConnectWeb3AuthButton";
 import Drawer from "./Drawer";
@@ -19,16 +18,23 @@ const Header = () => {
     <header className="sticky max-w-screen z-10">
       <div className="px-4 py-4 mx-auto sm:py-2 sm:px-6 md:px-8 border-b">
         <div className="justify-between items-center flex">
-          <div className="flex flex-row justify-center py-3" onClick={() => goToHome()}>
-            <img
-              src={web3authLogo}
-              style={{
-                height: "1.75rem",
-                paddingRight: "0.5rem",
-                borderRightWidth: "2px",
-              }}
-            />
-            <img src={starkexLogo} style={{ height: "1.75rem", paddingLeft: "0.5rem" }} />
+          <div className="flex justify-center py-3 flex-col sm:flex-row" onClick={() => goToHome()}>
+            <div className="flex flex-row justify-center">
+              <img
+                src={web3authLogo}
+                style={{
+                  height: "30px",
+                  paddingRight: "15px",
+                  borderRightWidth: "2px",
+                }}
+              />
+              <div className="text-xl text-gray-900 px-3">SDK Playground</div>
+            </div>
+            <div className="flex flex-row justify-center items-center no-underline w-max overflow-hidden flex-wrap m-0 p-0 rounded-lg bg-purple_100 mt-5 sm:mt-0">
+              <div className="flex flex-col justify-center text-center items-center w-max font-medium text-s leading-[150%] text-purple_800 flex-wrap m-0 px-3 py-0.5;">
+                Plug and Play Modal
+              </div>
+            </div>
           </div>
           <div className="flex-col flex-row mt-0 items-center lg:flex hidden">
             <ConnectWeb3AuthButton />

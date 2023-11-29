@@ -197,15 +197,15 @@ export const chain: {
     ticker: "ETH",
     tickerName: "ETH",
   },
-  SKALE: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x79f99296",
-    rpcTarget: "https://mainnet.skalenodes.com/v1/elated-tan-skat",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "SKALE Europa Hub Mainnet",
-    blockExplorer: "https://elated-tan-skat.explorer.mainnet.skalenodes.com/",
-    ticker: "sFUEL",
-    tickerName: "sFUEL",
-  },
+  // SKALE: {
+  //   chainNamespace: CHAIN_NAMESPACES.EIP155,
+  //   chainId: "0x79f99296",
+  //   rpcTarget: "https://mainnet.skalenodes.com/v1/elated-tan-skat",
+  //   // Avoid using public rpcTarget in production.
+  //   // Use services like Infura, Quicknode etc
+  //   displayName: "SKALE Europa Hub Mainnet",
+  //   blockExplorer: "https://elated-tan-skat.explorer.mainnet.skalenodes.com/",
+  //   ticker: "sFUEL",
+  //   tickerName: "sFUEL",
+  // },
 };

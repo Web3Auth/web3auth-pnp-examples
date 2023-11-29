@@ -1,4 +1,4 @@
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 
 import evmProvider from "./evmProvider";
 
@@ -14,6 +14,6 @@ export interface IWalletProvider {
   writeContract: (contractAddress: string, contractABI: any) => Promise<string>;
 }
 
-export const getWalletProvider = (provider: SafeEventEmitterProvider | null, uiConsole: any): IWalletProvider => {
+export const getWalletProvider = (provider: IProvider | null, uiConsole: any): IWalletProvider => {
   return evmProvider(provider, uiConsole);
 };

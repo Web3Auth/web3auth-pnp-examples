@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Console from "../components/Console";
 import Form from "../components/Form";
 import Header from "../components/Header";
+import NotConnectedPage from "../components/NotConnectedPage";
 import Sidebar from "../components/Sidebar";
 import Tabs from "../components/Tabs";
 import { useWeb3Auth } from "../services/web3auth";
@@ -56,7 +57,7 @@ function Transaction() {
         <Sidebar />
         {provider ? (
           <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
-            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Withdrawal</h1>
+            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Signing/ Transaction</h1>
             <Tabs tabData={TabData} />
             {tab === "starkex" ? (
               <Form formDetails={formDetailsStarkEx}>
@@ -82,10 +83,7 @@ function Transaction() {
             <Console />
           </div>
         ) : (
-          <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-center overflow-scroll p-4">
-            <h1 className="text-2xl font-bold text-center sm:text-3xl">Welcome to Web3Auth StarkEx Playground</h1>
-            <p className="max-w-md mx-auto mt-4 text-center text-gray-500">Please connect to Web3Auth to get started.</p>
-          </div>
+          <NotConnectedPage />
         )}
       </div>
     </main>

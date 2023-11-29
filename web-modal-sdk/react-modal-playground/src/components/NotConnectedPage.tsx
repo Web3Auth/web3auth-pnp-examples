@@ -1,0 +1,15 @@
+import React from "react";
+
+import ConnectWeb3AuthButton from "./ConnectWeb3AuthButton";
+
+const NotConnectedPage = () => {
+  return (
+    <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-center overflow-scroll p-4">
+      <h1 className="text-2xl font-bold text-center sm:text-3xl">Welcome to Web3Auth Modal SDK Playground</h1>
+      <div className="max-w-md mx-auto mt-4 text-center text-gray-500">
+        <ConnectWeb3AuthButton />
+      </div>
+    </div>
+  );
+};
+export default NotConnectedPage;

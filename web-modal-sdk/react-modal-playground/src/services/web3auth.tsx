@@ -1,4 +1,4 @@
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
 import * as jose from "jose";
@@ -81,7 +81,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     console.log(...args);
   };
 
-  const setWalletProvider = useCallback(async (web3authProvider: SafeEventEmitterProvider | null) => {
+  const setWalletProvider = useCallback(async (web3authProvider: IProvider | null) => {
     const walletProvider = getWalletProvider(web3authProvider, uiConsole);
     setProvider(walletProvider);
     setAddress(await walletProvider.getAddress());

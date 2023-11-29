@@ -4,6 +4,7 @@ import Console from "../components/Console";
 import Dropdown from "../components/DropDown";
 import Form from "../components/Form";
 import Header from "../components/Header";
+import NotConnectedPage from "../components/NotConnectedPage";
 import Sidebar from "../components/Sidebar";
 import { chain } from "../config/chainConfig";
 import { useWeb3Auth } from "../services/web3auth";
@@ -54,10 +55,7 @@ function HomePage() {
             </div>
           </div>
         ) : (
-          <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-center overflow-scroll p-4">
-            <h1 className="text-2xl font-bold text-center sm:text-3xl">Welcome to Web3Auth Modal SDK Playground</h1>
-            <p className="max-w-md mx-auto mt-4 text-center text-gray-500">Please connect to Web3Auth to get started.</p>
-          </div>
+          <NotConnectedPage />
         )}
       </div>
     </main>

@@ -1,9 +1,9 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 
 import { IWalletProvider } from "./walletProvider";
 
-const starkexProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
+const starkexProvider = (provider: IProvider | null, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
   const getAddress = async (): Promise<string> => {
     try {
       const ethersProvider = new ethers.BrowserProvider(provider);

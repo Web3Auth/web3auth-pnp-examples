@@ -11,7 +11,7 @@ export interface IWalletProvider {
   getPrivateKey: () => Promise<string>;
   deployContract: (abi: any, bytecode: string) => Promise<void>;
   readContract: (contractAddress: string, contractABI: any) => Promise<string>;
-  writeContract: (contractAddress: string, contractABI: any) => Promise<string>;
+  writeContract: (contractAddress: string, contractABI: any, updatedNumber: string) => Promise<string>;
 }
 
 export const getWalletProvider = (provider: IProvider | null, uiConsole: any): IWalletProvider => {

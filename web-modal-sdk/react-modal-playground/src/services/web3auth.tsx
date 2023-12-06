@@ -1,4 +1,4 @@
-import { IProvider } from "@web3auth/base";
+import { CustomChainConfig, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import * as jose from "jose";
@@ -16,6 +16,7 @@ export interface IWeb3AuthContext {
   address: string;
   balance: string;
   chainId: string;
+  connectedChain: CustomChainConfig;
   login: () => Promise<void>;
   logout: () => Promise<void>;
   getUserInfo: () => Promise<any>;
@@ -27,9 +28,10 @@ export interface IWeb3AuthContext {
   getChainId: () => Promise<string>;
   deployContract: (abi: any, bytecode: string) => Promise<any>;
   readContract: (contractAddress: string, contractABI: any) => Promise<string>;
-  writeContract: (contractAddress: string, contractABI: any) => Promise<string>;
+  writeContract: (contractAddress: string, contractABI: any, updatedNumber: string) => Promise<string>;
   verifyServerSide: () => Promise<any>;
   switchChain: (network: string) => Promise<void>;
+  updateConnectedChain: (network: string) => void;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -40,6 +42,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   address: null,
   balance: null,
   chainId: null,
+  connectedChain: chain.Ethereum,
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => null,
@@ -54,6 +57,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   writeContract: async () => "",
   verifyServerSide: async () => {},
   switchChain: async () => null,
+  updateConnectedChain: () => {},
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -72,6 +76,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [user, setUser] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [chainId, setChainId] = useState<any>(null);
+  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain.Ethereum);
 
   const uiConsole = (...args: unknown[]): void => {
     const el = document.querySelector("#console");
@@ -198,6 +203,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       return "";
     }
     const updatedBalance = await provider.getBalance();
+
     setBalance(updatedBalance);
     uiConsole(updatedBalance);
     return balance;
@@ -259,12 +265,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     uiConsole(message);
   };
 
-  const writeContract = async (contractAddress: string, contractABI: any): Promise<string> => {
+  const writeContract = async (contractAddress: string, contractABI: any, updatedNumber: string): Promise<string> => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const receipt = await provider.writeContract(contractAddress, contractABI);
+    const receipt = await provider.writeContract(contractAddress, contractABI, updatedNumber);
     uiConsole(receipt);
 
     if (receipt) {
@@ -309,6 +315,10 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     uiConsole("Chain Switched");
   };
 
+  const updateConnectedChain = (network: string) => {
+    setConnectedChain(chain[network]);
+  };
+
   const contextProvider = {
     web3Auth,
     provider,
@@ -317,6 +327,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     address,
     balance,
     chainId,
+    connectedChain,
     login,
     logout,
     getUserInfo,
@@ -331,6 +342,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     writeContract,
     verifyServerSide,
     switchChain,
+    updateConnectedChain,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

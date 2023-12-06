@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useWeb3Auth } from "../services/web3auth";
 
 const Sidebar = () => {
-  const { provider, user } = useWeb3Auth();
+  const { provider, user, connectedChain } = useWeb3Auth();
 
   const navigate = useNavigate();
   function goToHome() {
@@ -23,10 +23,14 @@ const Sidebar = () => {
     navigate("/server-side-verification");
   }
   function goToExplorer() {
-    window.open("https://goerli.etherscan.io/", "_blank");
+    window.open(connectedChain.blockExplorer);
   }
   function goToFaucet() {
-    window.open("https://goerlifaucet.com/", "_blank");
+    if (connectedChain.chainId === "0x5") {
+      window.open("https://goerlifaucet.com/");
+    } else if (connectedChain.chainId === "0x13881") {
+      window.open("https://faucet.polygon.technology/");
+    }
   }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
@@ -41,7 +45,7 @@ const Sidebar = () => {
   }
   function activePage(label: string) {
     return (
-      <div className="flex items-center px-4 py-2 mb-2 rounded-lg bg-gray-100 text-primary  cursor-pointer">
+      <div className="flex items-center px-4 py-2 mb-2 rounded-lg bg-gray-100 text-primary cursor-pointer">
         <span className="text-sm font-bold">{label}</span>
       </div>
     );
@@ -84,7 +88,7 @@ const Sidebar = () => {
             ? activePage("Server Side Verification")
             : linktoGo("Server Side Verification", goToServerSideVerification)}
           {linktoGo("Explorer Link", goToExplorer)}
-          {linktoGo("Faucet Link", goToFaucet)}
+          {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet) : null}
         </nav>
       </div>
       {userProfile()}

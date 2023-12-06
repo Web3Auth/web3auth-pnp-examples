@@ -1,6 +1,6 @@
 import { IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
-import { OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
+import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import * as jose from "jose";
 import * as React from "react";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
@@ -99,8 +99,43 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           chainConfig: chain.Ethereum,
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
         });
-        setWeb3Auth(web3AuthInstance);
+        const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "optional",
+          },
+          adapterSettings: {
+            uxMode: "redirect", // "redirect" | "popup"
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
+              },
+            },
+          },
+        });
+        web3AuthInstance.configureAdapter(openloginAdapter);
         await web3AuthInstance.initModal();
+        if (web3AuthInstance.status === "connected") {
+          setWalletProvider(web3AuthInstance.provider);
+          setUser(await web3AuthInstance.getUserInfo());
+        }
+        setWeb3Auth(web3AuthInstance);
       } catch (error) {
         uiConsole(error);
       } finally {
@@ -116,10 +151,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    console.log("web3auth connecting");
-    const localProvider = await web3Auth.connect();
-    console.log("web3auth connected");
-    setWalletProvider(localProvider);
+    await web3Auth.connect();
+
+    if (web3Auth.status === "connected") {
+      setWalletProvider(web3Auth.provider);
+      setUser(await web3Auth.getUserInfo());
+    }
   };
 
   const logout = async () => {

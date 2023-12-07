@@ -16,9 +16,9 @@ const Sidebar = () => {
   function goToContract() {
     navigate("/contract");
   }
-  function goToNft() {
-    navigate("/nft");
-  }
+  // function goToNft() {
+  //   navigate("/nft");
+  // }
   function goToServerSideVerification() {
     navigate("/server-side-verification");
   }
@@ -83,7 +83,7 @@ const Sidebar = () => {
           {location.pathname === "/" ? activePage("Main Page") : linktoGo("Main Page", goToHome)}
           {location.pathname === "/transaction" ? activePage("Signing/ Transaction") : linktoGo("Signing/ Transaction", goToTransaction)}
           {location.pathname === "/contract" ? activePage("Smart Contract Interactions") : linktoGo("Smart Contract Interactions", goToContract)}
-          {location.pathname === "/nft" ? activePage("NFT Interactions") : linktoGo("NFT Interactions", goToNft)}
+          {/* {location.pathname === "/nft" ? activePage("NFT Interactions") : linktoGo("NFT Interactions", goToNft)} */}
           {location.pathname === "/server-side-verification"
             ? activePage("Server Side Verification")
             : linktoGo("Server Side Verification", goToServerSideVerification)}

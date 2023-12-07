@@ -1,3 +1,4 @@
+import { getPublicCompressed } from "@toruslabs/eccrypto";
 import { CustomChainConfig, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -286,14 +287,20 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       return;
     }
     const token = await web3Auth.authenticateUser();
+    console.log(token);
+    const privKey: any = await web3Auth.provider?.request({
+      method: "eth_private_key",
+    });
+    console.log(privKey);
+    const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString("hex");
 
     const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
-
+    console.log(jwks);
     const jwtDecoded = await jose.jwtVerify(token.idToken, jwks, {
       algorithms: ["ES256"],
     });
-
-    if ((jwtDecoded.payload as any).wallets[0].public_key === address) {
+    console.log((jwtDecoded.payload as any).wallets[0].public_key);
+    if ((jwtDecoded.payload as any).wallets[0].public_key === pubkey) {
       uiConsole("Validation Success!");
     } else {
       uiConsole("Failed");

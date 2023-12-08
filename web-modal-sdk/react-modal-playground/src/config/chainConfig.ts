@@ -12,7 +12,7 @@ export const chain: {
     ticker: "ETH",
     tickerName: "Ethereum",
   },
-  "Goerli Testnet": {
+  Goerli: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x5",
     displayName: "Goerli",

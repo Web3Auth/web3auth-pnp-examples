@@ -102,7 +102,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
         const web3AuthInstance = new Web3Auth({
           clientId,
-          chainConfig: chain.Ethereum,
+          chainConfig: chain.Goerli,
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
         });
         const openloginAdapter = new OpenloginAdapter({
@@ -249,12 +249,13 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     await provider.getChainId();
   };
 
-  const deployContract = async (abi: any, bytecode: string): Promise<void> => {
+  const deployContract = async (abi: any, bytecode: string): Promise<any> => {
     if (!web3Auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    await provider.deployContract(abi, bytecode);
+    const receipt = await provider.deployContract(abi, bytecode);
+    return receipt;
   };
 
   const readContract = async (contractAddress: string, contractABI: any): Promise<string> => {

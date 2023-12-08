@@ -1,6 +1,7 @@
 import type { IProvider } from "@web3auth/base";
 import { ContractFactory, ethers } from "ethers";
 
+// import { json } from "stream/consumers";
 import { IWalletProvider } from "./walletProvider";
 
 const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
@@ -102,14 +103,20 @@ const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unk
   const deployContract = async (contractABI: string, contractByteCode: string): Promise<any> => {
     try {
       console.log("here", contractABI, contractByteCode);
-      const factory = new ContractFactory(JSON.parse(contractABI), contractByteCode);
+      const ethersProvider = new ethers.BrowserProvider(provider);
+
+      const signer = await ethersProvider.getSigner();
+      const factory = new ContractFactory(JSON.parse(contractABI), contractByteCode, signer);
 
       // Deploy contract with "Hello World!" in the constructor and wait to finish
       const contract = await factory.deploy("Hello World!");
+      console.log("Contract:", contract);
+      uiConsole(`Deployed Contract at ${contract.target}`);
 
-      uiConsole(`Deployed Contract: ${contract}`);
-      // Read message from smart contract
-      return contract.target;
+      const receipt = await contract.waitForDeployment();
+      console.log("Contract deployed to:", receipt);
+
+      return receipt;
     } catch (error) {
       return error as string;
     }
@@ -118,22 +125,10 @@ const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unk
   const readContract = async (contractAddress: string, contractABI: any) => {
     try {
       const ethersProvider = new ethers.BrowserProvider(provider);
-
       const signer = await ethersProvider.getSigner();
+      console.log(contractABI);
 
-      // const contractABI = [
-      //   { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
-      //   { inputs: [""], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
-      //   {
-      //     inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
-      //     name: "update",
-      //     outputs: [""],
-      //     stateMutability: "nonpayable",
-      //     type: "function",
-      //   },
-      // ];
-      // const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
-      const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
+      const contract = new ethers.Contract(contractAddress, JSON.parse(contractABI), signer);
 
       // Read message from smart contract
       const message = await contract.message();

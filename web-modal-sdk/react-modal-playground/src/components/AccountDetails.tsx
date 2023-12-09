@@ -16,7 +16,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
   }, [address]);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8  z-0">
+    <div className="py-16 w-11/12 px-4 sm:px-6 lg:px-8  z-0">
       <div className="flex flex-col space-y-2 md:flex-row md:justify-between md:space-y-0">
         <h1 className={"text-lg font-bold"}>Your Account Details</h1>
         <Dropdown

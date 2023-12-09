@@ -21,10 +21,8 @@ function HomePage() {
               <h1 className="w-11/12 px-4 pt-16 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">
                 Welcome to Web3Auth PnP Modal SDK Playground
               </h1>
-              <div className="py-16 w-11/12 ">
-                <AccountDetails />
-                <Console />
-              </div>
+              <AccountDetails />
+              <Console />
             </div>
           </>
         ) : (

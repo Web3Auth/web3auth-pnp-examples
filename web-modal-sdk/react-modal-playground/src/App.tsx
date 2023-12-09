@@ -21,7 +21,6 @@ function App() {
               <Route path="contract" element={<Contract />} />
               <Route path="transaction" element={<Transaction />} />
               <Route path="server-side-verification" element={<ServerSideVerification />} />
-              {/* <Route path="nft" element={<NFT />} /> */}
             </Route>
           </Routes>
         </BrowserRouter>

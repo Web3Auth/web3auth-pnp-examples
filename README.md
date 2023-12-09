@@ -26,13 +26,11 @@ provider specific to the user and application.
 
 ### Blockchain x Framework
 
-#### Multi-page examples
+#### Multi-page playground
 
 | Blockchain        | Lang Framework | Directory                                                                                                                                        |
 | :---------------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Multiple Chains` | `REACT`        | [React-Multi-Page-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/react-multi-page-modal-example) |
-| `Multiple Chains` | `Angular`      | [Angular-Multi-Page-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/angular-multi-page-modal-example) |
-| `Multiple Chains` | `Vue`          | [Vue-Multi-Page-Modal-Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/multi-page-examples/vue-multi-page-modal-example) |
+| `Multiple Chains` | `REACT`        | [React-Modal-Playground](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground) |
 
 #### Blockchain Connection Examples
 

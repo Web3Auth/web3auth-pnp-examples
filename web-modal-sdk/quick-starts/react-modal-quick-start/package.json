@@ -2,6 +2,7 @@
   "name": "react-modal-quick-start",
   "version": "0.1.0",
   "private": true,
+  "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
@@ -15,6 +16,7 @@
     "web-vitals": "^3.1.0",
     "web3": "^4.1.1"
   },
+  "//IMP END": "IMP END - Web3Auth Installation",
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -8,12 +8,7 @@
       Vue.js Quick Start
     </h2>
 
-    <button
-      v-if="!loggedIn"
-      class="card"
-      @click="login"
-      style="cursor: pointer"
-    >
+    <button v-if="!loggedIn" class="card" @click="login" style="cursor: pointer">
       Login
     </button>
 
@@ -51,11 +46,8 @@
     </div>
 
     <footer class="footer">
-      <a
-        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start"
+        target="_blank" rel="noopener noreferrer">
         Source code
       </a>
     </footer>
@@ -63,7 +55,9 @@
 </template>
 
 <script lang="ts">
+// IMP START - Quick Start
 import { ref, onMounted } from "vue";
+// IMP END - Quick Start
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import Web3 from "web3";
@@ -78,8 +72,11 @@ export default {
     const loggedIn = ref<boolean>(false);
     let provider = <IProvider | null>(null);
 
+    // IMP START - SDK Initialization
+    // IMP START - Dashboard Registration
     const clientId =
       "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+    // IMP END - Dashboard Registration
 
     const chainConfig = {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -96,43 +93,53 @@ export default {
       chainConfig,
       web3AuthNetwork: "sapphire_mainnet",
     });
+    // IMP END - SDK Initialization
 
     onMounted(async () => {
-    const init = async () => {
-      try {
-        await web3auth.initModal();
-        provider = web3auth.provider;
+      const init = async () => {
+        try {
+          // IMP START - SDK Initialization
+          await web3auth.initModal();
+          // IMP END - SDK Initialization
+          provider = web3auth.provider;
 
-        if (web3auth.connected) {
-          loggedIn.value = true;
+          if (web3auth.connected) {
+            loggedIn.value = true;
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+      };
 
-    init();
+      init();
     });
 
     const login = async () => {
+      // IMP START - Login
       provider = await web3auth.connect();
+      // IMP END - Login
       if (web3auth.connected) {
         loggedIn.value = true;
       }
     };
 
     const getUserInfo = async () => {
+      // IMP START - Get User Information
       const user = await web3auth.getUserInfo();
+      // IMP END - Get User Information
       uiConsole(user);
     };
 
     const logout = async () => {
+      // IMP START - Logout
       await web3auth.logout();
+      // IMP END - Logout
       provider = null;
       loggedIn.value = false;
       uiConsole("logged out");
     };
 
+    // IMP START - Blockchain Calls
     const getAccounts = async () => {
       if (!provider) {
         uiConsole("provider not initialized yet");
@@ -159,7 +166,7 @@ export default {
       const balance = web3.utils.fromWei(
         await web3.eth.getBalance(address), // Balance is in wei
         "ether"
-      ); 
+      );
       uiConsole(balance);
     };
 
@@ -183,6 +190,7 @@ export default {
       );
       uiConsole(signedMessage);
     };
+    // IMP END - Blockchain Calls
 
     function uiConsole(...args: any[]): void {
       const el = document.querySelector("#console>p");
@@ -214,20 +222,25 @@ export default {
   margin: auto;
   padding: 0 2rem;
 }
+
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: #42b983;
 }
+
 .card {
   margin: 0.5rem;
   padding: 0.7rem;
@@ -253,7 +266,7 @@ a {
   flex-flow: row wrap;
 }
 
-.flex-container > div {
+.flex-container>div {
   width: 100px;
   margin: 10px;
   text-align: center;

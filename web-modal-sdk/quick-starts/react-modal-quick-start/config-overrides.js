@@ -2,6 +2,7 @@ const webpack = require("webpack");
 
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
+  // IMP START - Bundler Issues
   Object.assign(fallback, {
     crypto: false,
     stream: false,
@@ -19,6 +20,7 @@ module.exports = function override(config) {
       Buffer: ["buffer", "Buffer"],
     }),
   ]);
+  // IMP END - Bundler Issues
   config.ignoreWarnings = [/Failed to parse source map/];
   config.module.rules.push({
     test: /\.(js|mjs|jsx)$/,

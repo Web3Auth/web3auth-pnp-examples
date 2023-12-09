@@ -7,6 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
     "@web3auth/base": "^7.2.0",
     "@web3auth/ethereum-provider": "^7.2.0",
@@ -16,6 +17,7 @@
     "vue": "^3.3.4",
     "web3": "^4.1.1"
   },
+  "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",

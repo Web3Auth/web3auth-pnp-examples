@@ -12,17 +12,16 @@ This example demonstrates how to use Web3Auth with EVM in Angular.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/evm/angular-evm-modal-example w3a-modal-evm-angular
-```
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/quick-starts/angular-modal-quick-start w3a-example
 
 Install & Run:
 
 ```bash
-cd w3a-modal-evm-angular
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-modal-evm-angular
+cd w3a-example
 yarn
 yarn start
 ```

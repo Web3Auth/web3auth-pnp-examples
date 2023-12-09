@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with Safe Auth Kit by Safe.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/account-abstraction/web3auth-safe-example web3auth-safe-example
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/account-abstraction/web3auth-safe-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd web3auth-safe-example
+cd w3a-example
 npm install
 npm run start
 # or
-cd web3auth-safe-example
+cd w3a-example
 yarn
 yarn start
 ```

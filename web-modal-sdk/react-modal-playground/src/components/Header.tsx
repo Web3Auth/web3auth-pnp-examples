@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import web3authLogo from "../assets/web3authLogoBlue.svg";
-import ConnectWeb3AuthButton from "./ConnectWeb3AuthButton";
+import DisconnectWeb3AuthButton from "./DisconnectWeb3AuthButton";
 import Drawer from "./Drawer";
 
 const Header = () => {
@@ -37,7 +37,7 @@ const Header = () => {
             </div>
           </div>
           <div className="flex-col flex-row mt-0 items-center lg:flex hidden">
-            <ConnectWeb3AuthButton />
+            <DisconnectWeb3AuthButton />
           </div>
           <div className="flex-col flex-row mt-0 items-center flex lg:hidden">
             <Hamburger toggled={isOpen} toggle={setOpen} size={25} direction="right" />

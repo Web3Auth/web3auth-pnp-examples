@@ -17,6 +17,7 @@ export interface IWeb3AuthContext {
   address: string;
   balance: string;
   chainId: string;
+  playgroundConsole: string;
   connectedChain: CustomChainConfig;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -27,10 +28,10 @@ export interface IWeb3AuthContext {
   sendTransaction: (amount: string, destination: string) => Promise<string>;
   getPrivateKey: () => Promise<string>;
   getChainId: () => Promise<string>;
-  deployContract: (abi: any, bytecode: string) => Promise<any>;
+  deployContract: (abi: any, bytecode: string, initValue: string) => Promise<any>;
   readContract: (contractAddress: string, contractABI: any) => Promise<string>;
-  writeContract: (contractAddress: string, contractABI: any, updatedNumber: string) => Promise<string>;
-  verifyServerSide: () => Promise<any>;
+  writeContract: (contractAddress: string, contractABI: any, updatedValue: string) => Promise<string>;
+  verifyServerSide: (idToken: string) => Promise<any>;
   switchChain: (network: string) => Promise<void>;
   updateConnectedChain: (network: string) => void;
 }
@@ -43,7 +44,8 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   address: null,
   balance: null,
   chainId: null,
-  connectedChain: chain.Ethereum,
+  playgroundConsole: "",
+  connectedChain: chain["Goerli Testnet"],
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => null,
@@ -76,14 +78,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [balance, setBalance] = useState<string | null>(null);
   const [user, setUser] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [playgroundConsole, setPlaygroundConsole] = useState<string>("");
   const [chainId, setChainId] = useState<any>(null);
-  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain.Ethereum);
+  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Goerli Testnet"]);
 
-  const uiConsole = (...args: unknown[]): void => {
-    const el = document.querySelector("#console");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
+  const uiConsole = (...args: unknown[]) => {
+    setPlaygroundConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${playgroundConsole}`);
     console.log(...args);
   };
 
@@ -102,7 +102,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
         const web3AuthInstance = new Web3Auth({
           clientId,
-          chainConfig: chain.Goerli,
+          chainConfig: chain["Goerli Testnet"],
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
         });
         const openloginAdapter = new OpenloginAdapter({
@@ -249,12 +249,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     await provider.getChainId();
   };
 
-  const deployContract = async (abi: any, bytecode: string): Promise<any> => {
+  const deployContract = async (abi: any, bytecode: string, initValue: string): Promise<any> => {
     if (!web3Auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const receipt = await provider.deployContract(abi, bytecode);
+    const receipt = await provider.deployContract(abi, bytecode, initValue);
     return receipt;
   };
 
@@ -267,12 +267,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     uiConsole(message);
   };
 
-  const writeContract = async (contractAddress: string, contractABI: any, updatedNumber: string): Promise<string> => {
+  const writeContract = async (contractAddress: string, contractABI: any, updatedValue: string): Promise<string> => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const receipt = await provider.writeContract(contractAddress, contractABI, updatedNumber);
+    const receipt = await provider.writeContract(contractAddress, contractABI, updatedValue);
     uiConsole(receipt);
 
     if (receipt) {
@@ -282,29 +282,47 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
   };
 
-  const verifyServerSide = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
+  const parseToken = (token: any) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace("-", "+").replace("_", "/");
+      return JSON.parse(window.atob(base64 || ""));
+    } catch (err) {
+      console.error(err);
+      return null;
     }
-    const token = await web3Auth.authenticateUser();
-    console.log(token);
-    const privKey: any = await web3Auth.provider?.request({
-      method: "eth_private_key",
-    });
-    console.log(privKey);
-    const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString("hex");
+  };
 
-    const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
-    console.log(jwks);
-    const jwtDecoded = await jose.jwtVerify(token.idToken, jwks, {
-      algorithms: ["ES256"],
-    });
-    console.log((jwtDecoded.payload as any).wallets[0].public_key);
-    if ((jwtDecoded.payload as any).wallets[0].public_key === pubkey) {
-      uiConsole("Validation Success!");
-    } else {
-      uiConsole("Failed");
+  const verifyServerSide = async (idTokenInFrontend: string) => {
+    try {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      const privKey: string = await web3Auth.provider?.request({
+        method: "eth_private_key",
+      });
+      const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString("hex");
+
+      const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
+      const jwtDecoded = await jose.jwtVerify(idTokenInFrontend, jwks, {
+        algorithms: ["ES256"],
+      });
+      if ((jwtDecoded.payload as any).wallets[0].public_key === pubkey) {
+        uiConsole(
+          "Validation Success!",
+          "Public Key from Provider: ",
+          pubkey,
+          "Public Key from decoded JWT: ",
+          (jwtDecoded.payload as any).wallets[0].public_key,
+          "Parsed Id Token: ",
+          await parseToken(idTokenInFrontend)
+        );
+      } else {
+        uiConsole("Failed");
+      }
+    } catch (e) {
+      uiConsole(e);
     }
   };
 
@@ -335,6 +353,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     address,
     balance,
     chainId,
+    playgroundConsole,
     connectedChain,
     login,
     logout,

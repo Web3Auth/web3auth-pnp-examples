@@ -4,9 +4,9 @@ import web3AuthLogoWhite from "../assets/web3authLogoWhite.svg";
 import { useWeb3Auth } from "../services/web3auth";
 
 const ConnectWeb3AuthButton = () => {
-  const { provider, login } = useWeb3Auth();
+  const { connected, login } = useWeb3Auth();
 
-  if (provider) {
+  if (connected) {
     return null;
   }
   return (

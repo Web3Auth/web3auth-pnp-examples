@@ -11,6 +11,7 @@ import { getWalletProvider, IWalletProvider } from "./walletProvider";
 
 export interface IWeb3AuthContext {
   web3Auth: Web3Auth | null;
+  connected: boolean;
   provider: IWalletProvider | null;
   isLoading: boolean;
   user: any;
@@ -40,6 +41,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   web3Auth: null,
   provider: null,
   isLoading: false,
+  connected: false,
   user: null,
   address: null,
   balance: null,
@@ -81,6 +83,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [playgroundConsole, setPlaygroundConsole] = useState<string>("");
   const [chainId, setChainId] = useState<any>(null);
   const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Goerli Testnet"]);
+  const [connected, setConnected] = useState<boolean>(false);
 
   const uiConsole = (...args: unknown[]) => {
     setPlaygroundConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${playgroundConsole}`);
@@ -140,6 +143,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         if (web3AuthInstance.status === "connected") {
           setWalletProvider(web3AuthInstance.provider);
           setUser(await web3AuthInstance.getUserInfo());
+          setConnected(true);
         }
         setWeb3Auth(web3AuthInstance);
       } catch (error) {
@@ -162,6 +166,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     if (web3Auth.status === "connected") {
       setWalletProvider(web3Auth.provider);
       setUser(await web3Auth.getUserInfo());
+      setConnected(true);
     }
   };
 
@@ -174,6 +179,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
     await web3Auth.logout();
     setProvider(null);
+    setConnected(false);
   };
 
   const getUserInfo = async () => {
@@ -355,6 +361,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     chainId,
     playgroundConsole,
     connectedChain,
+    connected,
     login,
     logout,
     getUserInfo,

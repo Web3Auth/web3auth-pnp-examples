@@ -5,6 +5,7 @@ import Form from "../components/Form";
 import Header from "../components/Header";
 import NotConnectedPage from "../components/NotConnectedPage";
 import Sidebar from "../components/Sidebar";
+import SourceCode from "../components/SourceCode";
 import Tabs from "../components/Tabs";
 import ABI from "../config/ABI.json";
 import { useWeb3Auth } from "../services/web3auth";
@@ -36,7 +37,7 @@ function Contract() {
     </button>
   );
 
-  const { provider, deployContract, readContract, writeContract } = useWeb3Auth();
+  const { connected, deployContract, readContract, writeContract } = useWeb3Auth();
 
   const formDetailsDeploy = [
     {
@@ -107,7 +108,7 @@ function Contract() {
     <main className="flex flex-col h-screen z-0">
       <Header />
       <div className="flex flex-1 overflow-hidden">
-        {provider ? (
+        {connected ? (
           <>
             <Sidebar />
             <div className="w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
@@ -161,6 +162,7 @@ function Contract() {
               ) : null}
 
               <Console />
+              <SourceCode />
             </div>
           </>
         ) : (

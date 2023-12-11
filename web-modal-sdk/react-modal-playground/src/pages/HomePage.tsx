@@ -5,16 +5,17 @@ import Console from "../components/Console";
 import Header from "../components/Header";
 import NotConnectedPage from "../components/NotConnectedPage";
 import Sidebar from "../components/Sidebar";
+import SourceCode from "../components/SourceCode";
 import { useWeb3Auth } from "../services/web3auth";
 
 function HomePage() {
-  const { provider } = useWeb3Auth();
+  const { connected } = useWeb3Auth();
 
   return (
     <main className="flex flex-col h-screen z-0">
       <Header />
       <div className="flex flex-1 overflow-hidden">
-        {provider ? (
+        {connected ? (
           <>
             <Sidebar />
             <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
@@ -23,6 +24,7 @@ function HomePage() {
               </h1>
               <AccountDetails />
               <Console />
+              <SourceCode />
             </div>
           </>
         ) : (

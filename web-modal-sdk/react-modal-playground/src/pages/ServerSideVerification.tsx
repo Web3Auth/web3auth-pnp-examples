@@ -5,11 +5,12 @@ import Form from "../components/Form";
 import Header from "../components/Header";
 import NotConnectedPage from "../components/NotConnectedPage";
 import Sidebar from "../components/Sidebar";
+import SourceCode from "../components/SourceCode";
 import { useWeb3Auth } from "../services/web3auth";
 
 function ServerSideVerification() {
   const [loading, setLoading] = useState(false);
-  const { user, provider, verifyServerSide } = useWeb3Auth();
+  const { user, connected, verifyServerSide } = useWeb3Auth();
   const [tokenId, setTokenId] = useState(user?.idToken);
 
   const LoaderButton = ({ ...props }) => (
@@ -40,7 +41,7 @@ function ServerSideVerification() {
     <main className="flex flex-col h-screen">
       <Header />
       <div className="flex flex-1 overflow-hidden z-0">
-        {provider ? (
+        {connected ? (
           <>
             <Sidebar />
             <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
@@ -59,6 +60,7 @@ function ServerSideVerification() {
                 </LoaderButton>
               </Form>
               <Console />
+              <SourceCode />
             </div>
           </>
         ) : (

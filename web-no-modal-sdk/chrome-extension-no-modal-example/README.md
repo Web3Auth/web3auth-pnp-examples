@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with ChromeExtension.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/chrome-extension-no-modal-example w3a-nomodal-chrome-extension-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/blockchain-connection-examples/chrome-extension-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-chrome-extension-react
+cd w3a-example
 npm install
 npm run build
 # or
-cd w3a-nomodal-chrome-extension-react
+cd w3a-example
 yarn
 yarn build
 ```

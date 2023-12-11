@@ -12,13 +12,13 @@ This example demonstrates how to use Web3Auth with Custom JWT (Custom Authentica
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/custom-jwt-react-express-no-modal-example w3a-nomodal-custom-jwt
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/custom-jwt-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-custom-jwt/server
+cd w3a-example/server
 npm install
 ## start server
 # server will be running on localhost:8080

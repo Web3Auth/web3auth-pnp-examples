@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with Wagmi Connector.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/wagmi/wagmi-no-modal-example w3a-wagmi-no-modal-react
+npx degit Web3Auth/web3auth-pnp-examples/wagmi/wagmi-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-wagmi-no-modal-react
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-wagmi-no-modal-react
+cd w3a-example
 yarn
 yarn start
 ```

@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with Facebook (Custom Authenticati
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/facebook-react-no-modal-example w3a-nomodal-facebook
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/facebook-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-facebook
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-nomodal-facebook
+cd w3a-example
 yarn
 yarn start
 ```

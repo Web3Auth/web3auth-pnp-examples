@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with Solana in React.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/solana-modal-example w3a-modal-solana-react
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/blockchain-connection-examples/solana-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-modal-solana-react
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-modal-solana-react
+cd w3a-example
 yarn
 yarn start
 ```

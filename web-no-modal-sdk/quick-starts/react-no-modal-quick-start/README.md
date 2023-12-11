@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with EVM in React.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/evm/react-evm-modal-example w3a-modal-evm-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/quick-starts/react-evm-modal-quick-start w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-modal-evm-react
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-modal-evm-react
+cd w3a-example
 yarn
 yarn start
 ```

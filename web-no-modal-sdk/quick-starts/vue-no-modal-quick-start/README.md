@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with EVM in Vue.js
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/evm/vue-evm-modal-example w3a-modal-evm-vue
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-modal-evm-vue
+cd w3a-example
 npm install
 npm run serve
 # or
-cd w3a-modal-evm-vue
+cd w3a-example
 yarn
 yarn serve
 ```

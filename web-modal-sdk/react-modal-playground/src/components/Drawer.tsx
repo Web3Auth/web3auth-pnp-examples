@@ -20,9 +20,6 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   function goToContract() {
     navigate("/contract");
   }
-  function goToNft() {
-    navigate("/nft");
-  }
   function goToServerSideVerification() {
     navigate("/server-side-verification");
   }
@@ -104,6 +101,11 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
                   <span className="text-sm font-bold">Connect to Web3Auth</span>
                 </div>
               )}
+              <span className="block px-4 py-2 text-xs font-medium text-gray-400 uppercase">
+                <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground" target="_blank">
+                  Source code
+                </a>
+              </span>
             </nav>
           </div>
           {userProfile()}

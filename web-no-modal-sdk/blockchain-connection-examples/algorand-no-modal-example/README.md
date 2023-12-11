@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with Algorand.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/other-chains/algorand-no-modal-example w3a-nomodal-algorand-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/blockchain-connection-examples/algorand-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-algorand-react
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-nomodal-algorand-react
+cd w3a-example
 yarn
 yarn start
 ```

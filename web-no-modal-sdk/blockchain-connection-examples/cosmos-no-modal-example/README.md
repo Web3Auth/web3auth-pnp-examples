@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with Cosmos.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/other-chains/cosmos-no-modal-example w3a-nomodal-cosmos-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/blockchain-connection-examples/cosmos-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-cosmos-react
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-nomodal-cosmos-react
+cd w3a-example
 yarn
 yarn start
 ```

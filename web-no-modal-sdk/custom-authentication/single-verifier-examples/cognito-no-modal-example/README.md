@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with AWS Cognito (Custom Authentic
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/cognito-react-no-modal-example w3a-nomodal-cognito
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/cognito-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-cognito
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-nomodal-cognito
+cd w3a-example
 yarn
 yarn start
 ```

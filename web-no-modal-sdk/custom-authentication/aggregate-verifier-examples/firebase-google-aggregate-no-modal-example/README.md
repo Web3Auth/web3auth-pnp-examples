@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with Aggregate Verifiers (Firebase
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/aggregate-verifiers/firebase-google-aggregate-react-no-modal-example w3a-nomodal-aggregate-firebase
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/firebase-google-aggregate-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-aggregate-firebase
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-nomodal-aggregate-firebase
+cd w3a-example
 yarn
 yarn start
 ```

@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with Aggregate Verifiers (Auth0 + 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/aggregate-verifiers/auth0-google-aggregate-react-no-modal-example w3a-nomodal-aggregate-auth0
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/auth0-google-aggregate-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-aggregate-auth0
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-nomodal-aggregate-auth0
+cd w3a-example
 yarn
 yarn start
 ```

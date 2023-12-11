@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with EVM in React (Vite).
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/evm/react-vite-evm-modal-example w3a-modal-evm-react-vite
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/quick-starts/react-vite-evm-modal-quick-start w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-modal-evm-react-vite
+cd w3a-example
 npm install
 npm run dev
 # or
-cd w3a-modal-evm-react-vite
+cd w3a-example
 yarn
 yarn dev
 ```

@@ -12,17 +12,17 @@ This example demonstrates how to use Web3Auth with multiple chains.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/other-chains/multi-chain-no-modal-example w3a-nomodal-multichain-react
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/blockchain-connection-examples/multi-chain-no-modal-example w3a-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-nomodal-multichain-react
+cd w3a-example
 npm install
 npm run start
 # or
-cd w3a-nomodal-multichain-react
+cd w3a-example
 yarn
 yarn start
 ```

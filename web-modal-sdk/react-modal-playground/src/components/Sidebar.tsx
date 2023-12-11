@@ -87,6 +87,11 @@ const Sidebar = () => {
           {linktoGo("Explorer Link", goToExplorer)}
           {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet) : null}
         </nav>
+        <span className="block px-4 py-2 text-xs font-medium text-gray-400 uppercase">
+          <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground" target="_blank">
+            Source code
+          </a>
+        </span>
       </div>
       {userProfile()}
     </div>

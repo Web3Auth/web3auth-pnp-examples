@@ -1,5 +1,5 @@
 import Hamburger from "hamburger-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import web3authLogo from "../assets/web3authLogoBlue.svg";
@@ -7,11 +7,29 @@ import { useWeb3Auth } from "../services/web3auth";
 import DisconnectWeb3AuthButton from "./DisconnectWeb3AuthButton";
 import Drawer from "./Drawer";
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
 const Header = () => {
   const { connected } = useWeb3Auth();
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
   const navigate = useNavigate();
   const [isOpen, setOpen] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   function goToHome() {
     navigate("/");
@@ -34,7 +52,7 @@ const Header = () => {
             </div>
             <div className="flex flex-row justify-center items-center no-underline w-max overflow-hidden flex-wrap m-0 p-0 rounded-lg bg-purple_100 mt-0">
               <div className="flex flex-col justify-center text-center items-center w-max font-medium text-xs sm:text-s leading-[150%] text-purple_800 flex-wrap m-0 px-2 sm:px-3 py-0.5;">
-                Plug and Play Modal
+                {windowDimensions.width > 425 ? "Plug and Play Modal" : "PnP Modal"}
               </div>
             </div>
           </div>

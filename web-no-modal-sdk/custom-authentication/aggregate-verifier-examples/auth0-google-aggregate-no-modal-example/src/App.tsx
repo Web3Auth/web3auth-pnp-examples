@@ -118,7 +118,7 @@ function App() {
     const web3authProvider = await web3auth.connectTo(
       WALLET_ADAPTERS.OPENLOGIN,
       {
-        loginProvider: "email_passwordless",
+        loginProvider: "auth0emailpasswordless",
         extraLoginOptions: {
           // domain: "https://web3auth.au.auth0.com",
           // this corresponds to the field inside jwt which must be used to uniquely

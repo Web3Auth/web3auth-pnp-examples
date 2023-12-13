@@ -109,33 +109,33 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
         });
         const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "optional",
-          },
+          // loginSettings: {
+          //   mfaLevel: "optional",
+          // },
           adapterSettings: {
             uxMode: "redirect", // "redirect" | "popup"
-            mfaSettings: {
-              deviceShareFactor: {
-                enable: true,
-                priority: 1,
-                mandatory: true,
-              },
-              backUpShareFactor: {
-                enable: true,
-                priority: 2,
-                mandatory: false,
-              },
-              socialBackupFactor: {
-                enable: true,
-                priority: 3,
-                mandatory: false,
-              },
-              passwordFactor: {
-                enable: true,
-                priority: 4,
-                mandatory: false,
-              },
-            },
+            // mfaSettings: {
+            //   deviceShareFactor: {
+            //     enable: true,
+            //     priority: 1,
+            //     mandatory: true,
+            //   },
+            //   backUpShareFactor: {
+            //     enable: true,
+            //     priority: 2,
+            //     mandatory: false,
+            //   },
+            //   socialBackupFactor: {
+            //     enable: true,
+            //     priority: 3,
+            //     mandatory: false,
+            //   },
+            //   passwordFactor: {
+            //     enable: true,
+            //     priority: 4,
+            //     mandatory: false,
+            //   },
+            // },
           },
         });
         web3AuthInstance.configureAdapter(openloginAdapter);

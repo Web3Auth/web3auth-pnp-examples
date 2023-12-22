@@ -9,10 +9,10 @@
   },
   "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
-    "@web3auth/base": "^7.2.0",
-    "@web3auth/ethereum-provider": "^7.2.0",
-    "@web3auth/no-modal": "^7.2.0",
-    "@web3auth/openlogin-adapter": "^7.2.0",
+    "@web3auth/base": "^7.2.1",
+    "@web3auth/ethereum-provider": "^7.2.1",
+    "@web3auth/no-modal": "^7.2.1",
+    "@web3auth/openlogin-adapter": "^7.2.1",
     "core-js": "^3.26.1",
     "vue": "^3.3.4",
     "web3": "^4.1.1"

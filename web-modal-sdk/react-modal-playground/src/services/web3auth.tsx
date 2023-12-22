@@ -108,7 +108,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           chainConfig: chain["Goerli Testnet"],
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
           uiConfig: {
-            mode: "light",
+            mode: "light", // light, dark or auto
             loginMethodsOrder: ["twitter"],
           },
         });
@@ -150,6 +150,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
               loginMethods: {
                 twitter: {
                   name: "X",
+                  mainOption: true,
                 },
               },
             },

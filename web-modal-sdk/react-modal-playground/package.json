@@ -8,7 +8,7 @@
     "@toruslabs/config": "^2.0.2",
     "@toruslabs/eccrypto": "^4.0.0",
     "@web3auth/base": "^7.2.1",
-    "@web3auth/modal": "^7.2.1",
+    "@web3auth/modal": "^7.3.0",
     "@web3auth/openlogin-adapter": "^7.2.1",
     "@web3auth/solana-provider": "^7.2.1",
     "ethers": "^6.9.0",

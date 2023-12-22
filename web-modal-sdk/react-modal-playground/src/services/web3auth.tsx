@@ -149,8 +149,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
               loginMethods: {
                 twitter: {
                   name: "X",
-                  logoDark: "https://demo-app.web3auth.io/x-logo-black.png",
-                  logoLight: "https://demo-app.web3auth.io/x-logo-white.png",
                 },
               },
             },

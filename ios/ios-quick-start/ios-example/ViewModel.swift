@@ -41,10 +41,10 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func loginEmailPasswordless(provider: Web3AuthProvider) {
+    func loginEmailPasswordless(provider: Web3AuthProvider, email: String) {
         Task {
             do {
-                let result = try await Web3Auth(.init(clientId: clientId, network: network)).login(W3ALoginParams(loginProvider: provider, extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: "hello+iosexample@web3auth.io", acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil)))
+                let result = try await Web3Auth(.init(clientId: clientId, network: network)).login(W3ALoginParams(loginProvider: provider, extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: email, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil)))
                 await MainActor.run(body: {
                     user = result
                     loggedIn = true
@@ -78,19 +78,5 @@ class ViewModel: ObservableObject {
                 print(error)
             }
         }
-    }
-}
-
-extension ViewModel {
-    func showResult(result: Web3AuthState) {
-        print("""
-        Signed in successfully!
-            Private key: \(result.privKey ?? "")
-                Ed25519 Private key: \(result.ed25519PrivKey ?? "")
-            User info:
-                Name: \(result.userInfo?.name ?? "")
-                Profile image: \(result.userInfo?.profileImage ?? "N/A")
-                Type of login: \(result.userInfo?.typeOfLogin ?? "")
-        """)
     }
 }

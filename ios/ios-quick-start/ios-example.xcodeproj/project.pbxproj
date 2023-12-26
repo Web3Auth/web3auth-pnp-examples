@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D8FF82C294339F100AB4F51 /* ios_exampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FF82B294339F100AB4F51 /* ios_exampleApp.swift */; };
 		4D8FF82E294339F100AB4F51 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FF82D294339F100AB4F51 /* ContentView.swift */; };
 		4D8FF830294339F200AB4F51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D8FF82F294339F200AB4F51 /* Assets.xcassets */; };
 		4D8FF833294339F200AB4F51 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D8FF832294339F200AB4F51 /* Preview Assets.xcassets */; };
@@ -19,7 +18,6 @@
 		4D8FF85B29433AB600AB4F51 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FF85A29433AB600AB4F51 /* UserDetailView.swift */; };
 		4D8FF85D29433ACB00AB4F51 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FF85C29433ACB00AB4F51 /* LoginView.swift */; };
 		4D8FF85F29433AE200AB4F51 /* web3RPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FF85E29433AE200AB4F51 /* web3RPC.swift */; };
-		4D8FF86129433AFC00AB4F51 /* TorusWeb3Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8FF86029433AFC00AB4F51 /* TorusWeb3Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +39,6 @@
 
 /* Begin PBXFileReference section */
 		4D8FF828294339F100AB4F51 /* ios-example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D8FF82B294339F100AB4F51 /* ios_exampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_exampleApp.swift; sourceTree = "<group>"; };
 		4D8FF82D294339F100AB4F51 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4D8FF82F294339F200AB4F51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D8FF832294339F200AB4F51 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -54,7 +51,6 @@
 		4D8FF85A29433AB600AB4F51 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 		4D8FF85C29433ACB00AB4F51 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4D8FF85E29433AE200AB4F51 /* web3RPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = web3RPC.swift; sourceTree = "<group>"; };
-		4D8FF86029433AFC00AB4F51 /* TorusWeb3Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorusWeb3Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,13 +102,11 @@
 		4D8FF82A294339F100AB4F51 /* ios-example */ = {
 			isa = PBXGroup;
 			children = (
-				4D8FF82B294339F100AB4F51 /* ios_exampleApp.swift */,
 				4D8FF82D294339F100AB4F51 /* ContentView.swift */,
 				4D8FF85529433A6400AB4F51 /* ViewModel.swift */,
 				4D8FF85A29433AB600AB4F51 /* UserDetailView.swift */,
 				4D8FF85C29433ACB00AB4F51 /* LoginView.swift */,
 				4D8FF85E29433AE200AB4F51 /* web3RPC.swift */,
-				4D8FF86029433AFC00AB4F51 /* TorusWeb3Utils.swift */,
 				4D8FF82F294339F200AB4F51 /* Assets.xcassets */,
 				4D8FF831294339F200AB4F51 /* Preview Content */,
 			);
@@ -280,13 +274,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D8FF86129433AFC00AB4F51 /* TorusWeb3Utils.swift in Sources */,
 				4D8FF85B29433AB600AB4F51 /* UserDetailView.swift in Sources */,
 				4D8FF82E294339F100AB4F51 /* ContentView.swift in Sources */,
 				4D8FF85F29433AE200AB4F51 /* web3RPC.swift in Sources */,
 				4D8FF85629433A6400AB4F51 /* ViewModel.swift in Sources */,
 				4D8FF85D29433ACB00AB4F51 /* LoginView.swift in Sources */,
-				4D8FF82C294339F100AB4F51 /* ios_exampleApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Web3Auth Android Example App</string>
+    <string name="app_name">Web3Auth Android QuickStart App</string>
     <!-- // IMP START - Get your Web3Auth Client ID from Dashboard -->
     <string name="web3auth_project_id">BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ</string>
     <!-- // IMP END - Get your Web3Auth Client ID from Dashboard -->
@@ -7,4 +7,9 @@
     <string name="login_with_google">Login with Google</string>
     <string name="logout">Logout</string>
     <string name="not_logged_in">Log in to see Web3Auth Data</string>
+    <string name="address">Address</string>
+    <string name="balance">Balance</string>
+    <string name="sign_message">Sign Message</string>
+    <string name="send_transaction">Send Transaction</string>
+    <string name="home">Home</string>
 </resources>

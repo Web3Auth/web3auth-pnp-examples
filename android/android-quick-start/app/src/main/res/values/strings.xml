@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Web3Auth Android Example App</string>
+    <!-- // IMP START - Get your Web3Auth Client ID from Dashboard -->
     <string name="web3auth_project_id">BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ</string>
+    <!-- // IMP END - Get your Web3Auth Client ID from Dashboard -->
     <string name="web3auth_android_demo">Web3Auth Android Example Demo</string>
     <string name="login_with_google">Login with Google</string>
     <string name="logout">Logout</string>

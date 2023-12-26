@@ -9,7 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+// IMP START - Quick Start
 import com.web3auth.core.Web3Auth
+// IMP END - Quick Start
 import com.web3auth.core.types.*
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // IMP START - Initialize Web3Auth
         web3Auth = Web3Auth(
             Web3AuthOptions(
                 context = this,
@@ -57,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         )
+        // IMP END - Initialize Web3Auth
 
         // Handle user signing in when app is not alive
         web3Auth.setResultUrl(intent?.data)
@@ -91,9 +95,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
+        // IMP START - Login
         val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
             web3Auth.login(LoginParams(selectedLoginProvider))
+        // IMP END - Login
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -107,7 +113,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
+        // IMP START - Logout
         val logoutCompletableFuture = web3Auth.logout()
+        // IMP END - Logout
         logoutCompletableFuture.whenComplete { _, error ->
             if (error == null) {
                 reRender()

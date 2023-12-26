@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sbz.web3authdemoapp">
-
+    <!-- // IMP START - Enable Internet Usage -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- // IMP END - Enable Internet Usage -->
 
     <application
         android:allowBackup="true"
@@ -15,10 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Web3AuthDemoApp"
         tools:targetApi="31">
+        <!-- // IMP START - Enable Single Top -->
         <activity
             android:launchMode="singleTop"
             android:name=".MainActivity"
             android:exported="true">
+            <!-- // IMP END - Enable Single Top -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,8 +34,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <!-- // IMP START - Configure Deep Link -->
                 <!-- Accept URIs: {YOUR_APP_PACKAGE_NAME}://* -->
                 <data android:scheme="com.sbz.web3authdemoapp" />
+                <!-- // IMP END - Configure Deep Link -->
             </intent-filter>
         </activity>
     </application>

@@ -10,7 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // IMP START - Add JitPack URL
         maven { url "https://jitpack.io" }
+        // IMP END - Add JitPack URL
     }
 }
 rootProject.name = "Web3Auth Demo App"

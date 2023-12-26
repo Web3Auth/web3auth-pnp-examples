@@ -99,7 +99,7 @@ struct LoginView_Previews: PreviewProvider {
 public typealias Ether = Double
 public typealias Wei = BigUInt
 
-public final class TorusWeb3Utils {
+public final class Web3AuthWeb3Utils {
     public static func timeMinToSec(val: Double) -> Double {
         return val * 60
     }

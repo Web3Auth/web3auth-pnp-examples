@@ -66,7 +66,7 @@ class Web3RPC : ObservableObject {
             let _ = client.eth_getBalance(address: self.address, block: .Latest) { [unowned self] result in
                 switch result {
                 case .success(let weiValue):
-                    let balance = TorusWeb3Utils.toEther(wei: weiValue) // Access the value directly
+                    let balance = Web3AuthWeb3Utils.toEther(wei: weiValue) // Access the value directly
                     DispatchQueue.main.async { [weak self] in
                         self?.balance = balance
                     }
@@ -105,9 +105,9 @@ class Web3RPC : ObservableObject {
     
     func transferAsset(sendTo: String, amount: Double, maxTip: Double, gasLimit: BigUInt = 21000) async throws -> String {
         let gasPrice = try await client.eth_gasPrice()
-        let maxTipInGwie = BigUInt(TorusWeb3Utils.toEther(Gwie: BigUInt(amount)))
+        let maxTipInGwie = BigUInt(Web3AuthWeb3Utils.toEther(Gwie: BigUInt(amount)))
         let totalGas = gasPrice + maxTipInGwie
-        let amtInGwie = TorusWeb3Utils.toWei(ether: amount)
+        let amtInGwie = Web3AuthWeb3Utils.toWei(ether: amount)
         let nonce = try await client.eth_getTransactionCount(address: address, block: .Latest)
         let transaction = EthereumTransaction(from: address, to: EthereumAddress(sendTo), value: amtInGwie, data: Data(), nonce: nonce + 1, gasPrice: totalGas, gasLimit: gasLimit, chainId: chainID)
         let signed = try account.sign(transaction: transaction)

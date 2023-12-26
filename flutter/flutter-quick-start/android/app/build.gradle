@@ -26,7 +26,9 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    // IMP START - Requirements Android
     compileSdkVersion 34 //flutter.compileSdkVersion
+    // IMP END - Requirements Android
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -47,8 +49,10 @@ android {
         applicationId "com.example.w3aflutter"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
+        // IMP START - Requirements Android
         minSdkVersion 33 //flutter.minSdkVersion
         targetSdkVersion 33 //flutter.targetSdkVersion
+        // IMP END - Requirements Android
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

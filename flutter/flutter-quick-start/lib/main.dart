@@ -1,15 +1,14 @@
 // ignore_for_file: avoid_print
-
-import 'dart:collection';
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+// IMP START - Quick Start
 import 'package:web3auth_flutter/enums.dart';
 import 'package:web3auth_flutter/input.dart';
 import 'package:web3auth_flutter/output.dart';
-import 'dart:async';
-
 import 'package:web3auth_flutter/web3auth_flutter.dart';
+// IMP END - Quick Start
 
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart';
@@ -33,6 +32,8 @@ class _MyAppState extends State<MyApp> {
   String _result = '';
   bool logoutVisible = false;
   String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
+  // TextEditingController for handling input from the text field
+  final TextEditingController emailController = TextEditingController();
 
   @override
   void dispose() {
@@ -47,48 +48,28 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    final themeMap = HashMap<String, String>();
-    themeMap['primary'] = "#229954";
-
     Uri redirectUrl;
+    // IMP START - Get your Web3Auth Client ID from Dashboard
+    String clientId =
+        'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ';
     if (Platform.isAndroid) {
       redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
     } else if (Platform.isIOS) {
-      redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
+      redirectUrl = Uri.parse('com.example.w3aflutter://auth');
+      // IMP END - Get your Web3Auth Client ID from Dashboard
     } else {
       throw UnKnownException('Unknown platform');
     }
 
+    // IMP START - Initialize Web3Auth
     await Web3AuthFlutter.init(Web3AuthOptions(
-        clientId:
-            'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ',
-        network: Network.sapphire_mainnet,
-        redirectUrl: redirectUrl,
-        // buildEnv: BuildEnv.production,
-        whiteLabel: WhiteLabelData(
-            appName: "Web3Auth Flutter App",
-            logoLight:
-                "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
-            logoDark:
-                "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
-            defaultLanguage: Language.en,
-            mode: ThemeModes.auto,
-            appUrl: "https://web3auth.io",
-            useLogoLoader: true,
-            theme: themeMap),
-        useCoreKitKey: false,
-        chainNamespace: ChainNamespace.eip155,
-        mfaSettings: MfaSettings(
-            deviceShareFactor:
-                MfaSetting(enable: true, priority: 4, mandatory: false),
-            backUpShareFactor:
-                MfaSetting(enable: true, priority: 2, mandatory: true),
-            socialBackupFactor:
-                MfaSetting(enable: true, priority: 3, mandatory: false),
-            passwordFactor:
-                MfaSetting(enable: true, priority: 1, mandatory: true))));
+      clientId: clientId,
+      network: Network.sapphire_mainnet,
+      redirectUrl: redirectUrl,
+    ));
 
     await Web3AuthFlutter.initialize();
+    // IMP END - Initialize Web3Auth
 
     final String res = await Web3AuthFlutter.getPrivKey();
     print(res);
@@ -104,7 +85,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Web3Auth x Flutter Example'),
+          title: const Text('Web3Auth x Flutter QuickStart'),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -137,7 +118,7 @@ class _MyAppState extends State<MyApp> {
                       height: 10,
                     ),
                     const Text(
-                      'Welcome to Web3Auth x Flutter Demo',
+                      'Welcome to Web3Auth x Flutter Quick Start Demo',
                       style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(
@@ -150,18 +131,17 @@ class _MyAppState extends State<MyApp> {
                     const SizedBox(
                       height: 20,
                     ),
+                    // Text field for entering the user's email
+                    TextField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Enter Email',
+                      ),
+                    ),
                     ElevatedButton(
-                        onPressed: _login(_withGoogle),
-                        child: const Text('Google')),
-                    ElevatedButton(
-                        onPressed: _login(_withFacebook),
-                        child: const Text('Facebook')),
-                    ElevatedButton(
-                        onPressed: _login(_withEmailPasswordless),
-                        child: const Text('Email Passwordless')),
-                    ElevatedButton(
-                        onPressed: _login(_withDiscord),
-                        child: const Text('Discord')),
+                        onPressed: _login(
+                            () => _withEmailPasswordless(emailController.text)),
+                        child: const Text('Login with Email Passwordless')),
                   ],
                 ),
               ),
@@ -186,6 +166,13 @@ class _MyAppState extends State<MyApp> {
                       'Blockchain calls',
                       style: TextStyle(fontSize: 20),
                     ),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 195, 47, 233) // This is what you need!
+                            ),
+                        onPressed: _getUserInfo,
+                        child: const Text('Get UserInfo')),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(
@@ -247,7 +234,9 @@ class _MyAppState extends State<MyApp> {
           _result = '';
           logoutVisible = false;
         });
+        // IMP START - Logout
         await Web3AuthFlutter.logout();
+        // IMP END - Logout
       } on UserCancelledException {
         print("User cancelled.");
       } on UnKnownException {
@@ -256,34 +245,42 @@ class _MyAppState extends State<MyApp> {
     };
   }
 
-  Future<Web3AuthResponse> _withGoogle() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
-  }
-
-  Future<Web3AuthResponse> _withFacebook() {
-    return Web3AuthFlutter.login(LoginParams(
-        loginProvider: Provider.facebook, mfaLevel: MFALevel.MANDATORY));
-  }
-
-  Future<Web3AuthResponse> _withEmailPasswordless() {
-    // final additionalParams = HashMap<String, String>();
-    // additionalParams['flow_type'] = "link"; // default is code
-    return Web3AuthFlutter.login(LoginParams(
+  Future<Web3AuthResponse> _withEmailPasswordless(String userEmail) async {
+    try {
+      print(userEmail);
+      // IMP START - Login
+      return await Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
-        mfaLevel: MFALevel.MANDATORY,
-        extraLoginOptions:
-            ExtraLoginOptions(login_hint: "hello+flutterdemo@web3auth.io"
-                // additionalParams: additionalParams
-                )));
+        extraLoginOptions: ExtraLoginOptions(login_hint: userEmail),
+      ));
+      // IMP END - Login
+    } catch (e) {
+      print("Error during email/passwordless login: $e");
+      // Handle the error as needed
+      // You might want to show a user-friendly message or log the error
+      return Future.error("Login failed");
+    }
   }
 
-  Future<Web3AuthResponse> _withDiscord() {
-    return Web3AuthFlutter.login(LoginParams(
-      loginProvider: Provider.discord,
-      mfaLevel: MFALevel.DEFAULT,
-    ));
+  Future<TorusUserInfo> _getUserInfo() async {
+    try {
+      // IMP START - Get User Info
+      TorusUserInfo userInfo = await Web3AuthFlutter.getUserInfo();
+      // IMP END - Get User Info
+      print(userInfo);
+      setState(() {
+        _result = userInfo.toString();
+      });
+      return userInfo;
+    } catch (e) {
+      print("Error during email/passwordless login: $e");
+      // Handle the error as needed
+      // You might want to show a user-friendly message or log the error
+      return Future.error("Login failed");
+    }
   }
 
+  // IMP START - Blockchain Calls
   Future<String> _getAddress() async {
     final prefs = await SharedPreferences.getInstance();
     final privateKey = prefs.getString('privateKey') ?? '0';
@@ -298,18 +295,33 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<EtherAmount> _getBalance() async {
-    final prefs = await SharedPreferences.getInstance();
-    final privateKey = prefs.getString('privateKey') ?? '0';
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final privateKey = prefs.getString('privateKey') ?? '0';
 
-    final client = Web3Client(rpcUrl, Client());
-    final credentials = EthPrivateKey.fromHex(privateKey);
-    final address = credentials.address;
-    final balance = await client.getBalance(address);
-    debugPrint(balance.toString());
-    setState(() {
-      _result = balance.toString();
-    });
-    return balance;
+      final client = Web3Client(rpcUrl, Client());
+      final credentials = EthPrivateKey.fromHex(privateKey);
+      final address = credentials.address;
+
+      // Get the balance in wei
+      final weiBalance = await client.getBalance(address);
+
+      // Convert wei to ether
+      final etherBalance =
+          EtherAmount.fromUnitAndValue(EtherUnit.ether, weiBalance.getInEther);
+
+      debugPrint(etherBalance.toString());
+
+      setState(() {
+        _result = etherBalance.toString();
+      });
+
+      return etherBalance;
+    } catch (e) {
+      // Handle errors as needed
+      print("Error getting balance: $e");
+      return EtherAmount.zero();
+    }
   }
 
   Future<String> _sendTransaction() async {
@@ -325,7 +337,7 @@ class _MyAppState extends State<MyApp> {
           Transaction(
             from: address,
             to: EthereumAddress.fromHex(
-                '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
+                '0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8'),
             // gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 100),
             value: EtherAmount.fromUnitAndValue(
                 EtherUnit.gwei, 5000000), // 0.005 ETH
@@ -343,4 +355,5 @@ class _MyAppState extends State<MyApp> {
       return e.toString();
     }
   }
+  // IMP END - Blockchain Calls
 }

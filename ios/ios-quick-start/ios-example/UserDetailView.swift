@@ -72,8 +72,10 @@ struct UserDetailView: View {
                     Button {
                         Task.detached {
                             do {
-                                try await Web3Auth(.init(clientId: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A",
+                                // IMP START - Logout
+                                try await Web3Auth(.init(clientId: "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk",
                                                          network: .cyan)).logout()
+                                // IMP END - Logout
                                 await MainActor.run(body: {
                                     loggedIn.toggle()
                                 })

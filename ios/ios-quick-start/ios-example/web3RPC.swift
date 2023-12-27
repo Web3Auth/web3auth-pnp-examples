@@ -55,8 +55,7 @@ class Web3RPC : ObservableObject {
         })
     }
 
-
-    
+    // IMP START - Blockchain Calls
     func getBalance() {
         Task {
             let blockChanged = await checkLatestBlockChanged()
@@ -114,6 +113,7 @@ class Web3RPC : ObservableObject {
         let val = try await client.eth_sendRawTransaction(signed.transaction, withAccount: account)
         return val
     }
+    // IMP END - Blockchain Calls
     
 }
 

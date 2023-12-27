@@ -1,5 +1,7 @@
 import SwiftUI
+// IMP START - Installation
 import Web3Auth
+// IMP END - Installation
 
 @main
 struct MainApp: App {

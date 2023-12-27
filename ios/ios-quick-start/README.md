@@ -12,13 +12,13 @@ This example demonstrates how to use Web3Auth in iOS.
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/ios/ios-example w3a-ios
+npx degit Web3Auth/web3auth-pnp-examples/ios/ios-quick-start w3a-ios-quick-start
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-ios
+cd w3a-ios-quick-start
 # run project in Xcode
 ```
 

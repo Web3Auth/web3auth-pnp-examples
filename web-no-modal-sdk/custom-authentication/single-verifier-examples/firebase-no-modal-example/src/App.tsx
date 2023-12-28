@@ -1,41 +1,18 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import {
-  WALLET_ADAPTERS,
-  CHAIN_NAMESPACES,
-  IProvider,
-} from "@web3auth/base";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { auth } from "./FireBaseConfig";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 // import RPC from "./evm.web3";
 import RPC from "./evm.ethers";
-import { initializeApp } from "firebase/app";
-import {
-  GoogleAuthProvider,
-  getAuth,
-  signInWithPopup,
-  UserCredential,
-} from "firebase/auth";
+import { GoogleAuthProvider, TwitterAuthProvider, signInWithPopup } from "firebase/auth";
 
-const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E",
-  authDomain: "web3auth-oauth-logins.firebaseapp.com",
-  projectId: "web3auth-oauth-logins",
-  storageBucket: "web3auth-oauth-logins.appspot.com",
-  messagingSenderId: "461819774167",
-  appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92",
-};
+const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -76,8 +53,6 @@ function App() {
         setWeb3auth(web3auth);
 
         await web3auth.init();
-        setProvider(web3auth.provider);
-
         if (web3auth.connected) {
           setLoggedIn(true);
         }
@@ -89,43 +64,74 @@ function App() {
     init();
   }, []);
 
-  const signInWithGoogle = async (): Promise<UserCredential> => {
+  const signInWithGoogle = async () => {
     try {
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
       const googleProvider = new GoogleAuthProvider();
-      const res = await signInWithPopup(auth, googleProvider);
-      console.log(res);
-      return res;
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  };
+      const loginRes = await signInWithPopup(auth, googleProvider);
+      console.log("login details", loginRes);
+      const idToken = await loginRes.user.getIdToken(true);
+      console.log("idToken", idToken);
 
-  const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const loginRes = await signInWithGoogle();
-    console.log("login details", loginRes);
-    const idToken = await loginRes.user.getIdToken(true);
-    console.log("idToken", idToken);
-
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
+      await web3auth?.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
         loginProvider: "jwt",
         extraLoginOptions: {
           id_token: idToken,
           verifierIdField: "sub",
           domain: "http://localhost:3000",
         },
-      }
-    );
-    setProvider(web3authProvider);
+      });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   };
+
+  const signInWithTwitter = async () => {
+    try {
+      const twitterProvider = new TwitterAuthProvider();
+      const loginRes = await signInWithPopup(auth, twitterProvider);
+      if (!web3auth) {
+        uiConsole("web3auth not initialized yet");
+        return;
+      }
+      console.log("login details", loginRes);
+      const idToken = await loginRes.user.getIdToken(true);
+      console.log("idToken", idToken);
+
+      await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+        loginProvider: "jwt",
+        extraLoginOptions: {
+          id_token: idToken,
+          verifierIdField: "sub",
+          domain: "http://localhost:3000",
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  // const login = async () => {
+  //   if (!web3auth) {
+  //     uiConsole("web3auth not initialized yet");
+  //     return;
+  //   }
+  //   const loginRes = await signInWithGoogle();
+  //   console.log("login details", loginRes);
+  //   const idToken = await loginRes.user.getIdToken(true);
+  //   console.log("idToken", idToken);
+
+  //   const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  //     loginProvider: "jwt",
+  //     extraLoginOptions: {
+  //       id_token: idToken,
+  //       verifierIdField: "sub",
+  //       domain: "http://localhost:3000",
+  //     },
+  //   });
+  //   setProvider(web3authProvider);
+  // };
 
   const authenticateUser = async () => {
     if (!web3auth) {
@@ -152,45 +158,44 @@ function App() {
     }
     await web3auth.logout();
     setLoggedIn(false);
-    setProvider(null);
   };
 
   const getAccounts = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth?.provider);
     const userAccount = await rpc.getAccounts();
     uiConsole(userAccount);
   };
 
   const getBalance = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth?.provider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
 
   const signMessage = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth?.provider);
     const result = await rpc.signMessage();
     uiConsole(result);
   };
 
   const sendTransaction = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth?.provider);
     const result = await rpc.signAndSendTransaction();
     uiConsole(result);
   };
@@ -249,9 +254,14 @@ function App() {
   );
 
   const logoutView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <div className="flex-container">
+      <button onClick={signInWithTwitter} className="card">
+        Login with Twitter
+      </button>
+      <button onClick={signInWithGoogle} className="card">
+        Login with Google
+      </button>
+    </div>
   );
 
   return (

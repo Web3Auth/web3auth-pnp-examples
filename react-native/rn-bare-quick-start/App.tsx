@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+// IMP START - Quick Start
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +8,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
+// IMP END - Quick Start
 import * as WebBrowser from '@toruslabs/react-native-web-browser';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Web3Auth, {
@@ -15,16 +17,19 @@ import Web3Auth, {
 } from '@web3auth/react-native-sdk';
 
 import '@ethersproject/shims';
-import {ethers} from 'ethers';
-import {EthereumPrivateKeyProvider} from '@web3auth/ethereum-provider';
-import {IProvider} from '@web3auth/base';
+import { ethers } from 'ethers';
+import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
+import { IProvider } from '@web3auth/base';
 
 const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 
+// IMP START - Dashboard Registration
 const clientId =
   'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ'; // get from https://dashboard.web3auth.io
+// IMP END - Dashboard Registration
 
+// IMP START - SDK Initialization
 const chainConfig = {
   chainId: '0x1',
   rpcTarget: 'https://rpc.ankr.com/eth',
@@ -39,11 +44,12 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
     chainConfig,
   },
 });
- 
+
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
 });
+// IMP END - SDK Initialization
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -52,10 +58,12 @@ export default function App() {
 
   useEffect(() => {
     const init = async () => {
+      // IMP START - SDK Initialization
       await web3auth.init();
-      
+
       if (web3auth.privKey) {
         await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+        // IMP END - SDK Initialization
         setProvider(ethereumPrivateKeyProvider);
         uiConsole('Logged In');
         setLoggedIn(true);
@@ -66,12 +74,13 @@ export default function App() {
 
   const login = async () => {
     try {
-      if (!web3auth) {
+      if (!web3auth.ready) {
         setConsole('Web3auth not initialized');
         return;
       }
 
       setConsole('Logging in');
+      // IMP START - Login
       await web3auth.login({
         loginProvider: LOGIN_PROVIDER.GOOGLE,
         redirectUrl: resolvedRedirectUrl,
@@ -79,6 +88,7 @@ export default function App() {
 
       if (web3auth.privKey) {
         await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+      // IMP END - Login
         setProvider(ethereumPrivateKeyProvider);
         uiConsole('Logged In');
         setLoggedIn(true);
@@ -88,8 +98,9 @@ export default function App() {
     }
   };
 
+  // IMP START - Logout
   const logout = async () => {
-    if (!web3auth) {
+    if (!web3auth.ready) {
       setConsole('Web3auth not initialized');
       return;
     }
@@ -103,7 +114,9 @@ export default function App() {
       setLoggedIn(false);
     }
   };
+   // IMP END - Logout
 
+  // IMP START - Blockchain Calls
   const getAccounts = async () => {
     if (!provider) {
       uiConsole('provider not set');
@@ -170,6 +183,7 @@ export default function App() {
     const signedMessage = await signer.signMessage(originalMessage);
     uiConsole(signedMessage);
   };
+  // IMP END - Blockchain Calls
 
   const uiConsole = (...args: unknown[]) => {
     setConsole(JSON.stringify(args || {}, null, 2) + '\n\n\n\n' + console);

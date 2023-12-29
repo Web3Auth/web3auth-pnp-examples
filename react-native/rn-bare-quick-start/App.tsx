@@ -7,6 +7,7 @@ import {
   Button,
   ScrollView,
   Dimensions,
+  TextInput,
 } from 'react-native';
 // IMP END - Quick Start
 import * as WebBrowser from '@toruslabs/react-native-web-browser';
@@ -55,6 +56,7 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [console, setConsole] = useState<string>('');
+  const [email, setEmail] = useState<string>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -78,17 +80,24 @@ export default function App() {
         setConsole('Web3auth not initialized');
         return;
       }
+      if (!email) {
+        setConsole('Enter email first');
+        return;
+      }
 
       setConsole('Logging in');
       // IMP START - Login
       await web3auth.login({
-        loginProvider: LOGIN_PROVIDER.GOOGLE,
+        loginProvider: LOGIN_PROVIDER.EMAIL_PASSWORDLESS,
         redirectUrl: resolvedRedirectUrl,
+        extraLoginOptions: {
+          login_hint: email,
+        },
       });
 
       if (web3auth.privKey) {
         await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
-      // IMP END - Login
+        // IMP END - Login
         setProvider(ethereumPrivateKeyProvider);
         uiConsole('Logged In');
         setLoggedIn(true);
@@ -98,7 +107,6 @@ export default function App() {
     }
   };
 
-  // IMP START - Logout
   const logout = async () => {
     if (!web3auth.ready) {
       setConsole('Web3auth not initialized');
@@ -106,7 +114,9 @@ export default function App() {
     }
 
     setConsole('Logging out');
+    // IMP START - Logout
     await web3auth.logout();
+    // IMP END - Logout
 
     if (!web3auth.privKey) {
       setProvider(null);
@@ -114,7 +124,6 @@ export default function App() {
       setLoggedIn(false);
     }
   };
-   // IMP END - Logout
 
   // IMP START - Blockchain Calls
   const getAccounts = async () => {
@@ -200,7 +209,8 @@ export default function App() {
   );
 
   const unloggedInView = (
-    <View style={styles.buttonArea}>
+    <View style={styles.buttonAreaLogin}>
+      <TextInput style={styles.inputEmail} placeholder="Enter email" onChangeText={setEmail} />
       <Button title="Login with Web3Auth" onPress={login} />
     </View>
   );
@@ -249,4 +259,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingBottom: 30,
   },
+  buttonAreaLogin: {
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 30,
+  },
+  inputEmail: {
+    height: 40,
+    width: 300,
+    borderColor: 'gray',
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 20,
+  }
 });

@@ -43,6 +43,8 @@ target 'web3authrnexample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'OpenSSL-Universal', :modular_headers => true, :configurations => ['Release']
+
   target 'web3authrnexampleTests' do
     inherit! :complete
     # Pods for testing

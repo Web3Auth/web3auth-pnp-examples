@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
     private lateinit var web3: Web3j
     private lateinit var credentials: Credentials
+    private lateinit var emailInput: EditText
     private val rpcUrl = "https://rpc.ankr.com/eth_goerli"
 
     private val gson = Gson()
@@ -76,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Setup UI and event handlers
+        emailInput = findViewById(R.id.emailInput)
+
         val signInButton = findViewById<Button>(R.id.signInButton)
         signInButton.setOnClickListener { signIn() }
 
@@ -108,10 +112,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
+        val email = emailInput.text.toString()
         // IMP START - Login
-        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS   // Can be GOOGLE, FACEBOOK, TWITCH etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            web3Auth.login(LoginParams(selectedLoginProvider))
+            web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(login_hint = email)))
         // IMP END - Login
 
         loginCompletableFuture.whenComplete { _, error ->
@@ -149,6 +154,8 @@ class MainActivity : AppCompatActivity() {
         val getBalanceButton = findViewById<Button>(R.id.getBalance)
         val getMessageButton = findViewById<Button>(R.id.getMessage)
         val getTransactionButton = findViewById<Button>(R.id.getTransaction)
+        emailInput = findViewById(R.id.emailInput)
+
 
 
         var key: String? = null
@@ -162,6 +169,7 @@ class MainActivity : AppCompatActivity() {
         if (key is String && key.isNotEmpty()) {
             contentTextView.text = gson.toJson(userInfo) + "\n Private Key: " + key
             contentTextView.visibility = View.VISIBLE
+            emailInput.visibility = View.GONE
             signInButton.visibility = View.GONE
             signOutButton.visibility = View.VISIBLE
             getAddressButton.visibility = View.VISIBLE
@@ -170,6 +178,7 @@ class MainActivity : AppCompatActivity() {
             getTransactionButton.visibility = View.VISIBLE
         } else {
             contentTextView.visibility = View.GONE
+            emailInput.visibility = View.VISIBLE
             signInButton.visibility = View.VISIBLE
             signOutButton.visibility = View.GONE
             getAddressButton.visibility = View.GONE

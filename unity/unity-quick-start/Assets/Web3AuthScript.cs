@@ -17,6 +17,7 @@ public class Web3AuthScript : MonoBehaviour
 {
     Web3Auth web3Auth;
     public TextMeshProUGUI console;
+    private string userEmail = "";
     private string privateKey;
     private string userInfo;
     private Account account;
@@ -29,9 +30,9 @@ public class Web3AuthScript : MonoBehaviour
         web3Auth = GetComponent<Web3Auth>();
         web3Auth.setOptions(new Web3AuthOptions()
         {
-            clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk",
+            clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
             redirectUrl = new System.Uri("w3aexample://com.web3auth.unityexample/auth"),
-            network = Web3Auth.Network.CYAN,
+            network = Web3Auth.Network.SAPPHIRE_MAINNET,
         });
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
@@ -39,13 +40,29 @@ public class Web3AuthScript : MonoBehaviour
         updateConsole("Ready to Login!");
     }
 
+    public void GrabEmailFromInputField(string input)
+    {
+        userEmail = input;
+    }
+
     public void login()
     {
-        var selectedProvider = Provider.GOOGLE;
+        if (userEmail == "")
+        {
+            Debug.Log("Please enter your email.");
+            updateConsole("Please enter your email.");
+            return;
+        }
+
+        var selectedProvider = Provider.EMAIL_PASSWORDLESS;
 
         var options = new LoginParams()
         {
-            loginProvider = selectedProvider
+            loginProvider = selectedProvider,
+            extraLoginOptions = new ExtraLoginOptions()
+            {
+                login_hint = userEmail
+            }
         };
 
         web3Auth.login(options);
@@ -70,16 +87,6 @@ public class Web3AuthScript : MonoBehaviour
         }
         Debug.Log(userInfo);
         updateConsole(userInfo);
-    }
-
-    public void getPrivateKey() {
-        if (account == null) {
-            Debug.Log("Please Login First");
-            updateConsole("Please Login First");
-            return;
-        }
-        Debug.Log(privateKey);
-        updateConsole(privateKey);
     }
 
     public void logout()
@@ -117,31 +124,6 @@ public class Web3AuthScript : MonoBehaviour
         
         Debug.Log(balance);
         updateConsole(balance.ToString());
-    }
-
-    public async void getChainId() {
-        if (account == null) {
-            Debug.Log("Please Login First");
-            updateConsole("Please Login First");
-            return;
-        }
-        var chainId = await web3.Net.Version.SendRequestAsync();
-        
-        Debug.Log(chainId);
-        updateConsole(chainId.ToString());
-    }
-
-    public async void sendTransaction() {
-        if (account == null) {
-            Debug.Log("Please Login First");
-            updateConsole("Please Login First");
-            return;
-        }
-        var toAddress = "0x2E464670992574A613f10F7682D5057fB507Cc21";
-        var transaction = await web3.TransactionManager.SendTransactionAsync(account.Address, toAddress, new Nethereum.Hex.HexTypes.HexBigInteger(1));
-        
-        Debug.Log(transaction);
-        updateConsole(transaction.ToString());
     }
 
     public void signMessage() {

@@ -6,6 +6,10 @@ using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Utilities.Encoders;
 using System.Runtime.InteropServices;
+using Org.BouncyCastle.Security;
+using Org.BouncyCastle.OpenSsl;
+using Org.BouncyCastle.Crypto;
+using System.Text;
 
 public class KeyStoreManagerUtils
 {
@@ -30,7 +34,7 @@ public class KeyStoreManagerUtils
         try
         {
             var domain = SecNamedCurves.GetByName("secp256k1");
-            var parameters = new ECDomainParameters(domain.Curve, domain.G, domain.H);
+            var parameters = new ECDomainParameters(domain.Curve, domain.G, domain.N);
 
             var key = new ECPrivateKeyParameters(new BigInteger(sessionId, 16), parameters);
             var q = new ECPublicKeyParameters("EC", domain.G.Multiply(key.D), parameters).Q;
@@ -76,6 +80,36 @@ public class KeyStoreManagerUtils
 #endif
     }
 
+    public static AsymmetricCipherKeyPair generateECKeyPair()
+    {
+        var secureRandom = new SecureRandom();
+        var curve = SecNamedCurves.GetByName("secp256k1");
+        var domainParams = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H, curve.GetSeed());
+
+        var keyGenParam = new ECKeyGenerationParameters(domainParams, secureRandom);
+        var generator = GeneratorUtilities.GetKeyPairGenerator("ECDSA");
+        generator.Init(keyGenParam);
+
+        return generator.GenerateKeyPair();
+    }   
+
+    public static string generateRandomSessionKey() {
+        var keyPair = generateECKeyPair();
+        var privateKey = (ECPrivateKeyParameters)keyPair.Private;
+        var publicKey = (ECPublicKeyParameters)keyPair.Public;
+
+        string privateKeyHex = privateKey.D.ToString(16).PadLeft(64, '0');
+        return privateKeyHex;
+    }
+
+    public static byte[] generateRandomBytes()
+    {
+        var secureRandom = new SecureRandom();
+        byte[] bytes = new byte[16];
+        secureRandom.NextBytes(bytes);
+        return bytes;
+    }
+
     public static string getECDSASignature(string privateKey, string data){
         var curve = SecNamedCurves.GetByName("secp256k1");
         var domain = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H);
@@ -107,5 +141,16 @@ public class KeyStoreManagerUtils
         var derSignature = new DerSequence(v).GetDerEncoded();
 
         return Hex.ToHexString(derSignature);
+    }
+
+    public static string convertByteToHexadecimal(byte[] byteArray)
+    {
+        string hex = "";
+        // Iterating through each byte in the array
+        foreach (byte b in byteArray)
+        {
+            hex += $"{b:X2}";
+        }
+        return hex.ToLowerInvariant();
     }
 }

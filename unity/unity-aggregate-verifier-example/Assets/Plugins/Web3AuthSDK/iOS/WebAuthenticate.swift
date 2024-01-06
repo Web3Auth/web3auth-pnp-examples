@@ -20,7 +20,7 @@ import UIKit
         
         if #available(iOS 13.0, *) {
             WebAuthenticate.authSession?.presentationContextProvider = self
-            WebAuthenticate.authSession?.prefersEphemeralWebBrowserSession = true
+            WebAuthenticate.authSession?.prefersEphemeralWebBrowserSession = false
         }
         
         WebAuthenticate.authSession?.start();

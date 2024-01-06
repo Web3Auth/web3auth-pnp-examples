@@ -8,7 +8,6 @@ public class LoginParams
     public Uri redirectUrl { get; set; }
     public string appState { get; set; }
     public MFALevel mfaLevel { get; set; }
-    public int sessionTime { get; set; }
 
-    public Curve curve { get; set; }
+    public Curve curve { get; set; } = Curve.SECP256K1;
 }

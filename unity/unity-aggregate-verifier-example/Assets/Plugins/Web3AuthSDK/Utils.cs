@@ -8,16 +8,26 @@ using UnityEngine;
 
 public static class Utils
 {
-#if UNITY_IOS
+#if !UNITY_EDITOR && UNITY_IOS
     [DllImport("__Internal")]
     extern static void web3auth_launch(string url, string redirectUri, string objectName);
+#endif
+
+#if !UNITY_EDITOR && UNITY_WEBGL
+    [DllImport("__Internal")]
+    public extern static string GetCurrentURL();
+
+    [DllImport("__Internal")]
+    extern static void OpenURL(string url);
+
+    [DllImport("__Internal")]
+    public extern static void RemoveAuthCodeFromURL();
 #endif
 
 
     public static void LaunchUrl(string url, string redirectUri = null, string objectName = null)
     {
-        Debug.Log((new Uri(redirectUri)).Scheme);
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+#if UNITY_EDITOR || UNITY_STANDALONE
         Application.OpenURL(url);
 #elif UNITY_ANDROID
         using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
@@ -30,6 +40,8 @@ public static class Utils
 #elif UNITY_IOS
     var uri = new Uri(redirectUri);
     web3auth_launch(url, uri.Scheme, objectName);
+#elif UNITY_WEBGL
+    OpenURL(url);
 #endif
     }
 

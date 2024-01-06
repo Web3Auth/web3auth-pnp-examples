@@ -37,12 +37,12 @@ public class AndroidBuildPostProcess : IPostGenerateGradleAndroidProject
             <category android:name= ""android.intent.category.BROWSABLE"" />
 
 
-            <data android:scheme=""{0}"" android:host=""{1}"" android:pathPrefix=""{2}"" />
+            <data android:scheme=""{0}"" android:host=""{1}"" android:pathPrefix=""{2}"" android:pathPattern=""/*"" />
           </intent-filter>
         ", uri.Scheme, uri.Host, uri.LocalPath)), true));
 
         document.Save(manifest);
-            
+
     }
 
     private XmlNode BuildeNode(string text)

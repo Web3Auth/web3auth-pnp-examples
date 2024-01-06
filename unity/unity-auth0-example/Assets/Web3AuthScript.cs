@@ -1,22 +1,17 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Newtonsoft.Json;
 using TMPro;
 using Nethereum.Web3;
-using Nethereum.Util;
 using Nethereum.Signer;
-using Nethereum.Hex.HexConvertors.Extensions;
-using Nethereum.ABI.Encoders;
-using Nethereum.Hex.HexTypes;
 using Nethereum.Web3.Accounts;
-using Nethereum.Web3.Accounts.Managed;
 
 public class Web3AuthScript : MonoBehaviour
 {
     Web3Auth web3Auth;
     public TextMeshProUGUI console;
+    private string userEmail = "";
     private string privateKey;
     private string userInfo;
     private Account account;
@@ -26,25 +21,22 @@ public class Web3AuthScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var loginConfigItem = new LoginConfigItem()
-        {
-            verifier = "web3auth-auth0-demo", // get it from web3auth dashboard
-            typeOfLogin = TypeOfLogin.JWT,
-            clientId = "294QRkchfq2YaXUbPri7D6PH7xzHgQMT", // auth0's client id
-        };
-
         web3Auth = GetComponent<Web3Auth>();
-        
+        var JWTLoginConfig = new LoginConfigItem()
+        {
+            verifier = "w3a-auth0-demo",
+            clientId = "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
+            typeOfLogin = TypeOfLogin.JWT,
+        };
         web3Auth.setOptions(new Web3AuthOptions()
         {
-            clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk",
-            redirectUrl = new System.Uri("torusapp://com.torus.Web3AuthUnity/auth"),
-            network = Web3Auth.Network.CYAN,
+            clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+            redirectUrl = new System.Uri("w3aexample://com.web3auth.unityauth0example"),
+            network = Web3Auth.Network.SAPPHIRE_MAINNET,
             loginConfig = new Dictionary<string, LoginConfigItem>
             {
-                {"jwt", loginConfigItem}
+                { "jwt", JWTLoginConfig }
             }
-            
         });
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
@@ -59,10 +51,9 @@ public class Web3AuthScript : MonoBehaviour
         var options = new LoginParams()
         {
             loginProvider = selectedProvider,
-            redirectUrl = new System.Uri("torusapp://com.torus.Web3AuthUnity/auth"),
             extraLoginOptions = new ExtraLoginOptions()
             {
-                domain = "https://shahbaz-torus.us.auth0.com/",
+                domain = "https://web3auth.au.auth0.com",
                 verifierIdField = "sub",
                 prompt = Prompt.LOGIN,
             }
@@ -92,16 +83,6 @@ public class Web3AuthScript : MonoBehaviour
         updateConsole(userInfo);
     }
 
-    public void getPrivateKey() {
-        if (account == null) {
-            Debug.Log("Please Login First");
-            updateConsole("Please Login First");
-            return;
-        }
-        Debug.Log(privateKey);
-        updateConsole(privateKey);
-    }
-
     public void logout()
     {
         web3Auth.logout();
@@ -117,6 +98,7 @@ public class Web3AuthScript : MonoBehaviour
         updateConsole("Logged out!");
     }
 
+
     public void getAccount() {
         if (account == null) {
             Debug.Log("Please Login First");
@@ -125,18 +107,6 @@ public class Web3AuthScript : MonoBehaviour
         }
         Debug.Log(account.Address);
         updateConsole(account.Address);
-    }
-
-    public void getBalance() {
-        if (account == null) {
-            Debug.Log("Please Login First");
-            updateConsole("Please Login First");
-            return;
-        }
-        var balance = web3.Eth.GetBalance.SendRequestAsync(account.Address).Result.Value;
-        
-        Debug.Log(balance);
-        updateConsole(balance.ToString());
     }
 
     public async void getChainId() {
@@ -151,17 +121,16 @@ public class Web3AuthScript : MonoBehaviour
         updateConsole(chainId.ToString());
     }
 
-    public async void sendTransaction() {
+    public void getBalance() {
         if (account == null) {
             Debug.Log("Please Login First");
             updateConsole("Please Login First");
             return;
         }
-        var toAddress = "0x2E464670992574A613f10F7682D5057fB507Cc21";
-        var transaction = await web3.TransactionManager.SendTransactionAsync(account.Address, toAddress, new Nethereum.Hex.HexTypes.HexBigInteger(1));
+        var balance = web3.Eth.GetBalance.SendRequestAsync(account.Address).Result.Value;
         
-        Debug.Log(transaction);
-        updateConsole(transaction.ToString());
+        Debug.Log(balance);
+        updateConsole(balance.ToString());
     }
 
     public void signMessage() {
@@ -177,6 +146,31 @@ public class Web3AuthScript : MonoBehaviour
         Debug.Log(signature);
         updateConsole(signature.ToString());
     }
+
+    public async void sendTransaction()
+    {
+        if (account == null)
+        {
+            Debug.Log("Please Login First");
+            updateConsole("Please Login First");
+            return;
+        }
+        try
+        {
+            var toAddress = "0x2E464670992574A613f10F7682D5057fB507Cc21";
+            var transaction = await web3.TransactionManager.SendTransactionAsync(account.Address, toAddress, new Nethereum.Hex.HexTypes.HexBigInteger(1));
+
+            Debug.Log(transaction);
+            updateConsole(transaction.ToString());
+
+        } catch(Exception e)
+        {
+            Debug.Log(e);
+            updateConsole(e.ToString());
+        }
+        
+    }
+
 
     public void updateConsole(string message){
         console.text = message;

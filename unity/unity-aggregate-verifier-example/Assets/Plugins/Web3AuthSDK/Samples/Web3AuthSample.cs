@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using static Web3Auth;
 
 public class Web3AuthSample : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class Web3AuthSample : MonoBehaviour
         {
             verifier = "your_verifierid_from_web3auth_dashboard",
             typeOfLogin = TypeOfLogin.GOOGLE,
-            clientId = "your_clientid_from_google_or_etc"
+            clientId = "your_clientId_from_web3auth_dashboard"
         };
 
         web3Auth = GetComponent<Web3Auth>();
@@ -53,16 +54,16 @@ public class Web3AuthSample : MonoBehaviour
         {
             whiteLabel = new WhiteLabelData()
             {
-                name = "Web3Auth Sample App",
+                appName = "Web3Auth Sample App",
                 logoLight = null,
                 logoDark = null,
-                defaultLanguage = "en",
-                dark = true,
+                defaultLanguage = Language.en,
+                mode = ThemeModes.dark,
                 theme = new Dictionary<string, string>
                 {
                     { "primary", "#123456" }
                 }
-            }
+            },
             // If using your own custom verifier, uncomment this code. 
             /*
             ,
@@ -71,6 +72,11 @@ public class Web3AuthSample : MonoBehaviour
                 {"CUSTOM_VERIFIER", loginConfigItem}
             }
             */
+            clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+            buildEnv = BuildEnv.TESTING,
+            redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+            network = Web3Auth.Network.SAPPHIRE_MAINNET,
+            sessionTime = 86400
         });
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;

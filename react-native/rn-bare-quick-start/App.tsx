@@ -23,7 +23,9 @@ import { IProvider } from '@web3auth/base';
 // IMP END - Quick Start
 
 const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
+// IMP START - Whitelist bundle ID
 const resolvedRedirectUrl = `${scheme}://openlogin`;
+// IMP END - Whitelist bundle ID
 
 // IMP START - Dashboard Registration
 const clientId =
@@ -89,7 +91,9 @@ export default function App() {
       // IMP START - Login
       await web3auth.login({
         loginProvider: LOGIN_PROVIDER.EMAIL_PASSWORDLESS,
+        // IMP START - Whitelist bundle ID
         redirectUrl: resolvedRedirectUrl,
+        // IMP END - Whitelist bundle ID
         extraLoginOptions: {
           login_hint: email,
         },

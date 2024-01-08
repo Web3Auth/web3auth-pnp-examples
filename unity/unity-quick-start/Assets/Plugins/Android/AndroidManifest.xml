@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.unity3d.player"
     xmlns:tools="http://schemas.android.com/tools">
+    
+    <!-- // IMP START - Android Custom Tabs -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,6 +13,7 @@
 			<action android:name="android.support.customtabs.action.CustomTabsService" />
 		</intent>
 	</queries>
+    <!-- // IMP END - Android Custom Tabs -->
     <application>
         <activity android:name="com.unity3d.player.UnityPlayerActivity"
                   android:theme="@style/UnityThemeSelector">
@@ -18,6 +21,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- // IMP START - Configure Deep Link -->
             <intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -26,6 +30,7 @@
 					android:pathPrefix="/auth"
 					android:pathPattern="/*" />
 			</intent-filter>
+            <!-- // IMP START - Configure Deep Link -->
             <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
         </activity>
     </application>

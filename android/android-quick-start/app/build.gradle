@@ -6,9 +6,11 @@ plugins {
 android {
     // IMP START - Requirements
     compileSdk 34
+    // IMP END - Requirements
 
     defaultConfig {
         applicationId "com.sbz.web3authdemoapp"
+        // IMP START - Requirements
         minSdk 24
         targetSdk 34
         // IMP END - Requirements

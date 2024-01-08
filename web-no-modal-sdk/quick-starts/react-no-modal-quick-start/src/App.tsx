@@ -1,10 +1,10 @@
-// IMP START - Quick Start
 import { useEffect, useState } from "react";
-// IMP END - Quick Start
+// IMP START - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+// IMP END - Quick Start
 import Web3 from "web3";
 
 import "./App.css";

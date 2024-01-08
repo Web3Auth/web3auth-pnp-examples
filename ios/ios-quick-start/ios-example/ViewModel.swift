@@ -12,7 +12,9 @@ class ViewModel: ObservableObject {
     // IMP START - Get your Web3Auth Client ID from Dashboard
     private var clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"
     // IMP END - Get your Web3Auth Client ID from Dashboard
+    // IMP START - Whitelist bundle ID
     private var network: Network = .cyan
+    // IMP END - Whitelist bundle ID
     func setup() async {
         guard web3Auth == nil else { return }
         await MainActor.run(body: {

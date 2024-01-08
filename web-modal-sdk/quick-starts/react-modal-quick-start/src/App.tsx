@@ -1,8 +1,8 @@
-// IMP START - Quick Start
 import { useEffect, useState } from "react";
-// IMP END - Quick Start
+// IMP START - Quick Start
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+// IMP END - Quick Start
 import Web3 from "web3";
 
 import "./App.css";

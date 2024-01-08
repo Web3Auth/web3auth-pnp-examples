@@ -162,7 +162,9 @@ class MainActivity : AppCompatActivity() {
         var userInfo: UserInfo? = null
         try {
             key = web3Auth.getPrivkey()
+            // IMP START - Get User Info
             userInfo = web3Auth.getUserInfo()
+            // IMP END - Get User Info
         } catch (ex: Exception) {
             print(ex)
         }
@@ -189,7 +191,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // IMP START - Blockchain Calls
-
     private fun getAddress(): String {
         val contentTextView = findViewById<TextView>(R.id.contentTextView)
         val publicAddress = credentials.address
@@ -253,6 +254,5 @@ class MainActivity : AppCompatActivity() {
             ethSendTransaction.transactionHash
         }
     }
-
     // IMP END - Blockchain Calls
 }

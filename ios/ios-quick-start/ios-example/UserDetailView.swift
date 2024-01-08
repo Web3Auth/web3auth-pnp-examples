@@ -12,10 +12,12 @@ struct UserDetailView: View {
     var body: some View {
         if let user = user {
             List {
+                // IMP START - Get User Info
                 Section(header: Text("User Information")) {
                     Text("Name: \(user.userInfo?.name ?? "")")
                     Text("Email: \(user.userInfo?.email ?? "")")
                 }
+                // IMP END - Get User Info
 
                 Section(header: Text("Public Address")) {
                     Button {

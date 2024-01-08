@@ -1,4 +1,3 @@
-// IMP START - Quick Start
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
@@ -9,18 +8,19 @@ import {
   Dimensions,
   TextInput,
 } from 'react-native';
-// IMP END - Quick Start
+import '@ethersproject/shims';
+import { ethers } from 'ethers';
+
+// IMP START - Quick Start
 import * as WebBrowser from '@toruslabs/react-native-web-browser';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Web3Auth, {
   LOGIN_PROVIDER,
   OPENLOGIN_NETWORK,
 } from '@web3auth/react-native-sdk';
-
-import '@ethersproject/shims';
-import { ethers } from 'ethers';
 import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
 import { IProvider } from '@web3auth/base';
+// IMP END - Quick Start
 
 const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;

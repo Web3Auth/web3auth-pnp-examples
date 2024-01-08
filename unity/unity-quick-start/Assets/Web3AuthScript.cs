@@ -27,13 +27,22 @@ public class Web3AuthScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // IMP START - Quick Start
         web3Auth = GetComponent<Web3Auth>();
+        // IMP END - Quick Start
+
+        // IMP START - SDK Initialization
+        // IMP START - Dashboard Registration
+        var clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // Get your Web3Auth Client ID on https://dashboard.web3auth.io
+        // IMP END - Dashboard Registration
+
         web3Auth.setOptions(new Web3AuthOptions()
         {
-            clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+            clientId,
             redirectUrl = new System.Uri("w3aexample://com.web3auth.unityexample/auth"),
             network = Web3Auth.Network.SAPPHIRE_MAINNET,
         });
+        // IMP END - SDK Initialization
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
         web3 = new Web3(rpcURL);
@@ -53,7 +62,7 @@ public class Web3AuthScript : MonoBehaviour
             updateConsole("Please enter your email.");
             return;
         }
-
+        // IMP START - Login
         var selectedProvider = Provider.EMAIL_PASSWORDLESS;
 
         var options = new LoginParams()
@@ -66,21 +75,28 @@ public class Web3AuthScript : MonoBehaviour
         };
 
         web3Auth.login(options);
+        // IMP END - Login
     }
 
     private void onLogin(Web3AuthResponse response)
     {
+        // IMP START - Get User Information
         userInfo = JsonConvert.SerializeObject(response.userInfo, Formatting.Indented);
+        // IMP END - Get User Information
+        // IMP START - Blockchain Calls
         privateKey = response.privKey;
         var newAccount = new Account(privateKey);
         account = newAccount;
+        // IMP END - Blockchain Calls
 
         Debug.Log(JsonConvert.SerializeObject(response, Formatting.Indented));
         updateConsole(JsonConvert.SerializeObject(response, Formatting.Indented));
     }
 
-    public void getUserInfo() {
-        if (account == null) {
+    public void getUserInfo()
+    {
+        if (account == null)
+        {
             Debug.Log("Please Login First");
             updateConsole("Please Login First");
             return;
@@ -91,7 +107,9 @@ public class Web3AuthScript : MonoBehaviour
 
     public void logout()
     {
+        // IMP START - Logout
         web3Auth.logout();
+        // IMP END - Logout
     }
 
     private void onLogout()
@@ -104,8 +122,11 @@ public class Web3AuthScript : MonoBehaviour
         updateConsole("Logged out!");
     }
 
-    public void getAccount() {
-        if (account == null) {
+    // IMP START - Blockchain Calls
+    public void getAccount()
+    {
+        if (account == null)
+        {
             Debug.Log("Please Login First");
             updateConsole("Please Login First");
             return;
@@ -114,20 +135,24 @@ public class Web3AuthScript : MonoBehaviour
         updateConsole(account.Address);
     }
 
-    public void getBalance() {
-        if (account == null) {
+    public void getBalance()
+    {
+        if (account == null)
+        {
             Debug.Log("Please Login First");
             updateConsole("Please Login First");
             return;
         }
         var balance = web3.Eth.GetBalance.SendRequestAsync(account.Address).Result.Value;
-        
+
         Debug.Log(balance);
         updateConsole(balance.ToString());
     }
 
-    public void signMessage() {
-        if (account == null) {
+    public void signMessage()
+    {
+        if (account == null)
+        {
             Debug.Log("Please Login First");
             updateConsole("Please Login First");
             return;
@@ -135,18 +160,20 @@ public class Web3AuthScript : MonoBehaviour
         var msg = "wee test message 18/09/2017 02:55PM";
         var signer = new EthereumMessageSigner();
         var signature = signer.EncodeUTF8AndSign(msg, new EthECKey(privateKey));
-        
+
         Debug.Log(signature);
         updateConsole(signature.ToString());
     }
+    // IMP END - Blockchain Calls
 
-    public void updateConsole(string message){
+    public void updateConsole(string message)
+    {
         console.text = message;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

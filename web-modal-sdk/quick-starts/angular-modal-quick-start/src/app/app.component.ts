@@ -1,8 +1,8 @@
-// IMP START - Quick Start
 import { Component } from "@angular/core";
-// IMP END - Quick Start
+// IMP START - Quick Start
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
+// IMP END - Quick Start
 import Web3 from "web3";
 
 // IMP START - SDK Initialization

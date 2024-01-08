@@ -30,7 +30,7 @@
 					android:pathPrefix="/auth"
 					android:pathPattern="/*" />
 			</intent-filter>
-            <!-- // IMP START - Configure Deep Link -->
+            <!-- // IMP END - Configure Deep Link -->
             <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
         </activity>
     </application>

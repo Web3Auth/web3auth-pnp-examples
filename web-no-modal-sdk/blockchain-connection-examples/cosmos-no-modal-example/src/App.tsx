@@ -12,7 +12,7 @@ import "./App.css";
 import CosmosRPC from "./cosmosRPC";
 
 const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -36,7 +36,7 @@ function App() {
         const web3auth = new Web3Auth({
           clientId,
           chainConfig,
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
         });
 
         setWeb3auth(web3auth);

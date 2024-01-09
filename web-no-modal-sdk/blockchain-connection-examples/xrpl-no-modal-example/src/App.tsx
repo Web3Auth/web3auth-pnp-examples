@@ -34,7 +34,7 @@ function App() {
             chainId: "0x04",
             rpcTarget: "https://s.altnet.rippletest.net:51234",
           },
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
         });
 
         const xrplProvider: any = new XrplPrivateKeyProvider({

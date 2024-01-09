@@ -9,7 +9,7 @@ import "./App.css";
 import RPC from "./evm.ethers";
 import { GoogleAuthProvider, TwitterAuthProvider, signInWithPopup } from "firebase/auth";
 
-const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
@@ -30,7 +30,7 @@ function App() {
         const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig,
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
           useCoreKitKey: false,
         });
 

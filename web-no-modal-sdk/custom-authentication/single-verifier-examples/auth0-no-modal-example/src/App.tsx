@@ -49,9 +49,9 @@ function App() {
             uxMode: "redirect",
             loginConfig: {
               jwt: {
-                verifier: "web3auth-auth0-demo",
+                verifier: "w3a-auth0-demo",
                 typeOfLogin: "jwt",
-                clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+                clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
               },
             },
           },
@@ -83,7 +83,7 @@ function App() {
       {
         loginProvider: "jwt",
         extraLoginOptions: {
-          domain: "https://shahbaz-torus.us.auth0.com",
+          domain: "https://web3auth.au.auth0.com",
           verifierIdField: "sub",
           // connection: "google-oauth2", // Use this to skip Auth0 Modal for Google login.
         },

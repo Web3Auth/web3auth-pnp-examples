@@ -53,9 +53,9 @@ function App() {
             },
             loginConfig: {
               google: {
-                verifier: "web3auth-google-example",
+                verifier: "w3a-google-demo",
                 typeOfLogin: "google",
-                clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com", //use your app client id you got from google
+                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", //use your app client id you got from google
               },
             },
           },

@@ -47,9 +47,9 @@ function App() {
           adapterSettings: {
             loginConfig: {
               facebook: {
-                verifier: "web3auth-facebook-example",
+                verifier: "w3a-facebook-demo",
                 typeOfLogin: "facebook",
-                clientId: "1222658941886084", //use your app client id you got from facebook
+                clientId: "215892741216994", //use your app client id you got from facebook
               },
             },
           },

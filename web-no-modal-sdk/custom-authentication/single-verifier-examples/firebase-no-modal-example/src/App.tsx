@@ -42,7 +42,7 @@ function App() {
             uxMode: "redirect",
             loginConfig: {
               jwt: {
-                verifier: "web3auth-firebase-examples",
+                verifier: "w3a-firebase-demo",
                 typeOfLogin: "jwt",
                 clientId,
               },

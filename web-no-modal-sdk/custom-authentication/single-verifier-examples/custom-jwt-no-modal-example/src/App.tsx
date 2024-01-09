@@ -46,7 +46,7 @@ function App() {
           adapterSettings: {
             loginConfig: {
               jwt: {
-                verifier: "web3auth-custom-jwt",
+                verifier: "w3a-node-demo",
                 typeOfLogin: "jwt",
                 clientId,
               },

@@ -48,7 +48,7 @@ function App() {
           adapterSettings: {
             loginConfig: {
               jwt: {
-                verifier: "web3auth-cognito-google",
+                verifier: "w3a-cognito-demo",
                 typeOfLogin: "jwt",
                 clientId: "2upuksfh6n0n5c0nciirc1bdrv", //use your app client id you will get from aws cognito app
               },

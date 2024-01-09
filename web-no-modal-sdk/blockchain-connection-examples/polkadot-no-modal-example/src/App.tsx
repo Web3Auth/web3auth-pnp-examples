@@ -7,7 +7,7 @@ import "./App.css";
 
 import RPC from "./polkadotRPC";
 
-const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
@@ -29,7 +29,7 @@ export default function App() {
         const web3authInstance = new Web3AuthNoModal({
           clientId,
           chainConfig,
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
         });
         setWeb3auth(web3authInstance);
 
@@ -208,7 +208,7 @@ export default function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/polkadot-no-modal-example
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/polkadot-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

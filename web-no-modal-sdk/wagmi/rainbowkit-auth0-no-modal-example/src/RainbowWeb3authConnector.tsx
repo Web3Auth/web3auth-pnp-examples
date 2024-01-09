@@ -31,7 +31,6 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
   const openloginAdapter = new OpenloginAdapter({
     privateKeyProvider,
     adapterSettings: {
-      network: "cyan",
       uxMode: "redirect",
       loginConfig: {
         jwt: {

@@ -12,7 +12,7 @@ import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 
 const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
@@ -37,7 +37,7 @@ function App() {
         const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig,
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
           useCoreKitKey: false,
         });
 
@@ -49,9 +49,9 @@ function App() {
             uxMode: "redirect",
             loginConfig: {
               jwt: {
-                verifier: "web3auth-auth0-demo",
+                verifier: "w3a-auth0-demo",
                 typeOfLogin: "jwt",
-                clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+                clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
               },
             },
           },
@@ -83,7 +83,7 @@ function App() {
       {
         loginProvider: "jwt",
         extraLoginOptions: {
-          domain: "https://shahbaz-torus.us.auth0.com",
+          domain: "https://web3auth.au.auth0.com",
           verifierIdField: "sub",
           // connection: "google-oauth2", // Use this to skip Auth0 Modal for Google login.
         },

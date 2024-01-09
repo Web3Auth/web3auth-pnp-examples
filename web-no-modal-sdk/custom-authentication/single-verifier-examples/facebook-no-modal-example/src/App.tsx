@@ -12,7 +12,7 @@ import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 
 const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
@@ -36,7 +36,7 @@ function App() {
         const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig,
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: "sapphire_mainnet",
           useCoreKitKey: false,
         });
 
@@ -47,9 +47,9 @@ function App() {
           adapterSettings: {
             loginConfig: {
               facebook: {
-                verifier: "web3auth-facebook-example",
+                verifier: "w3a-facebook-demo",
                 typeOfLogin: "facebook",
-                clientId: "1222658941886084", //use your app client id you got from facebook
+                clientId: "215892741216994", //use your app client id you got from facebook
               },
             },
           },

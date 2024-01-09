@@ -66,11 +66,11 @@ function App() {
           },
           adapterSettings: {
             whiteLabel: {
-              name: "Your app Name",
+              appName: "Your app Name",
               logoLight: "https://web3auth.io/images/web3auth-logo.svg",
               logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
               defaultLanguage: "en",
-              dark: true, // whether to enable dark mode. defaultValue: false
+              mode: "auto", // "light" or "dark" or "auto"
             },
           },
         });

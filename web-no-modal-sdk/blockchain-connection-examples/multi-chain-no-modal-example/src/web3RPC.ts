@@ -44,6 +44,7 @@ export default class EthereumRpc {
       // Get user's balance in ether
       const balance = web3.utils.fromWei(
         await web3.eth.getBalance(address), // Balance is in wei
+        'ether', // Convert wei to ether
       )
 
       return balance
@@ -61,7 +62,7 @@ export default class EthereumRpc {
 
       const destination = fromAddress
 
-      const amount = web3.utils.toWei('0.001') // Convert 1 ether to wei
+      const amount = web3.utils.toWei('0.001', 'ether') // Convert 1 ether to wei
 
       // Submit transaction to the blockchain and wait for it to be mined
       const receipt = await web3.eth.sendTransaction({

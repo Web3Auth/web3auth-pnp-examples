@@ -27,6 +27,8 @@ yarn
 yarn start
 ```
 
+To "send a transaction", first click on "Get your account" and ask por ROCs in [Rococo Faucet](https://paritytech.github.io/polkadot-testnet-faucet/)
+
 ## Important Links
 
 - [Website](https://web3auth.io)

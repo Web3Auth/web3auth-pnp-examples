@@ -12,9 +12,10 @@ export default class PolkadotRPC {
   }
 
   makeClient = async (): Promise<any> => {
-    console.log("Establishing connection to Polkadot RPC...");
-    const provider = new WsProvider("wss://westend-rpc.polkadot.io"); // testnet
-    // const provider = new WsProvider("wss://rpc.polkadot.io"); // mainnet
+    // Rococo is a testnet in the Polkadot ecosystem
+    console.log("Establishing connection to Rococo Relay Chain RPC...");
+    const provider = new WsProvider("wss://rococo-rpc.polkadot.io"); // roccoco testnet relay chain
+    // const provider = new WsProvider("wss://rpc.polkadot.io"); // Polkadot mainnet relay chain
     const api = await ApiPromise.create({ provider });
     const resp = await api.isReady;
     console.log("Polkadot RPC is ready", resp);
@@ -51,7 +52,7 @@ export default class PolkadotRPC {
     try {
       const keyPair = await this.getPolkadotKeyPair();
       const api = await this.makeClient();
-      const txHash = await api.tx.balances.transfer("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345).signAndSend(keyPair);
+      const txHash = await api.tx.balances.transferKeepAlive("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345).signAndSend(keyPair);
       console.log(txHash);
       return txHash.toHuman();
     } catch (err: any) {

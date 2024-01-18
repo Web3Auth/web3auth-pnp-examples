@@ -19,12 +19,16 @@ export default function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.OTHER,
+          /* this information is not used when
+        working with CHAIN_NAMESPACES.OTHER 
+        the configuration is in polkadotRPC.ts */
           chainId: "0x1",
           rpcTarget: "https://rpc.polkadot.io/",
           displayName: "Polkadot Mainnet",
           blockExplorer: "https://explorer.polkascan.io/",
           ticker: "DOT",
           tickerName: "Polkadot",
+          /* end CHAIN_NAMESPACES.OTHER --- */
         };
         const web3authInstance = new Web3AuthNoModal({
           clientId,

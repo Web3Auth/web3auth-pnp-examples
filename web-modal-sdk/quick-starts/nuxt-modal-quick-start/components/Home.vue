@@ -56,10 +56,10 @@ export default defineComponent({
   setup() {
     const chainConfig = {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0x1", // Please use 0x1 for Mainnet
-      rpcTarget: "https://rpc.ankr.com/eth",
-      displayName: "Ethereum Mainnet",
-      blockExplorer: "https://etherscan.io/",
+      chainId: "0xaa36a7", // Please use 0x1 for Mainnet, 11155111(0xaa36a7) for Sepolia Testnet
+      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+      displayName: "Sepolia Testnet",
+      blockExplorer: "https://sepolia.etherscan.io/",
       ticker: "ETH",
       tickerName: "Ethereum",
     };

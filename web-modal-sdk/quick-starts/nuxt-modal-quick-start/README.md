@@ -5,36 +5,33 @@
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-This example demonstrates how to use Web3Auth with EVM in Nuxt.
+This example demonstrates how to use Web3Auth with EVM in Nuxt
 
-## Setup
+## How to Use
 
-Make sure to install the dependencies:
+### Download Manually
 
 ```bash
-# npm
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/quick-starts/nuxt-modal-quick-start w3a-example
+```
+
+Install & Run:
+
+```bash
+cd w3a-example
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
+npm run serve
+# or
+cd w3a-example
+yarn
+yarn serve
 ```
 
-## Development Server
+## Important Links
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-```
+- [Website](https://web3auth.io)
+- [Docs](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/content-hub?type=guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Community Portal](https://community.web3auth.io)

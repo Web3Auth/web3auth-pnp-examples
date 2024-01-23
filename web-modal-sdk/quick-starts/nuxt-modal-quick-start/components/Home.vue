@@ -54,6 +54,11 @@ import Web3 from "web3";
 export default defineComponent({
   name: "Home",
   setup() {
+    // IMP START - SDK Initialization
+    // IMP START - Dashboard Registration
+    const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+    // IMP END - Dashboard Registration
+
     const chainConfig = {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
       chainId: "0xaa36a7", // Please use 0x1 for Mainnet, 11155111(0xaa36a7) for Sepolia Testnet
@@ -64,8 +69,6 @@ export default defineComponent({
       tickerName: "Ethereum",
     };
 
-    const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
     const web3auth = new Web3Auth({
       clientId,
       chainConfig,
@@ -74,7 +77,6 @@ export default defineComponent({
 
     const loggedIn = ref<boolean>(false);
     let provider = <IProvider | null>null;
-
     // IMP END - SDK Initialization
 
     onMounted(async () => {

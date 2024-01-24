@@ -1,25 +1,15 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import {
-  WALLET_ADAPTERS,
-  CHAIN_NAMESPACES,
-  IProvider,
-} from "@web3auth/base";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 // import RPC from "./evm.web3";
 import RPC from "./evm.ethers";
 import { initializeApp } from "firebase/app";
-import {
-  GithubAuthProvider,
-  getAuth,
-  signInWithPopup,
-  UserCredential,
-} from "firebase/auth";
+import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
 
-const clientId =
-  "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
 // Your web app's Firebase configuration
 
@@ -34,9 +24,7 @@ const firebaseConfig = {
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -44,12 +32,12 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x5", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth_goerli",
-          displayName: "Goerli Testnet",
-          blockExplorer: "https://goerli.etherscan.io/",
+          chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+          displayName: "Sepolia Testnet",
+          blockExplorer: "https://sepolia.etherscan.io/",
           ticker: "ETH",
-          tickerName: "Ethereum",
+          tickerName: "Ethereum Sepolia",
         };
 
         const web3auth = new Web3AuthNoModal({
@@ -72,8 +60,7 @@ function App() {
                 verifier: "aggregate-verifier-google-firebase",
                 verifierSubIdentifier: "w3a-google",
                 typeOfLogin: "google",
-                clientId:
-                  "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+                clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
               },
               firebaseGithub: {
                 verifier: "aggregate-verifier-google-firebase",
@@ -105,12 +92,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     console.log("web3authProvider", web3authProvider);
     setProvider(web3authProvider);
   };
@@ -134,17 +118,14 @@ function App() {
     const idToken = await loginRes.user.getIdToken(true);
     console.log("idToken", idToken);
 
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "firebaseGithub",
-        extraLoginOptions: {
-          id_token: idToken,
-          verifierIdField: "email",
-          domain: "http://localhost:3000",
-        },
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "firebaseGithub",
+      extraLoginOptions: {
+        id_token: idToken,
+        verifierIdField: "email",
+        domain: "http://localhost:3000",
+      },
+    });
     setProvider(web3authProvider);
   };
 

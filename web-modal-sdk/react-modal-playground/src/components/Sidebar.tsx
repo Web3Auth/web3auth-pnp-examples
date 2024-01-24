@@ -24,8 +24,8 @@ const Sidebar = () => {
     window.open(connectedChain.blockExplorer);
   }
   function goToFaucet() {
-    if (connectedChain.chainId === "0x5") {
-      window.open("https://goerlifaucet.com/");
+    if (connectedChain.chainId === "0xaa36a7") {
+      window.open("https://www.infura.io/faucet/sepolia");
     } else if (connectedChain.chainId === "0x13881") {
       window.open("https://faucet.polygon.technology/");
     }

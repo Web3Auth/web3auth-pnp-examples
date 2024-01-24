@@ -1,39 +1,30 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import {
-  WALLET_ADAPTERS,
-  CHAIN_NAMESPACES,
-  IProvider,
-} from "@web3auth/base";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 import RPC from "./evm.web3";
 // import RPC from './evm.ethers';
 
-const clientId =
-  "BG7vMGIhzy7whDXXJPZ-JHme9haJ3PmV1-wl9SJPGGs9Cjk5_8m682DJ-lTDmwBWJe-bEHYE_t9gw0cdboLEwR8"; // get from https://dashboard.web3auth.io
+const clientId = "BG7vMGIhzy7whDXXJPZ-JHme9haJ3PmV1-wl9SJPGGs9Cjk5_8m682DJ-lTDmwBWJe-bEHYE_t9gw0cdboLEwR8"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(
-    false
-  );
+  const [provider, setProvider] = useState<IProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x5", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth_goerli",
-          displayName: "Goerli Testnet",
-          blockExplorer: "https://goerli.etherscan.io/",
+          chainId: "0xaa36a7", // Use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+          displayName: "Ethereum Sepolia Testnet",
+          blockExplorer: "https://sepolia.etherscan.io/",
           ticker: "ETH",
-          tickerName: "Ethereum",
+          tickerName: "Ethereum Sepolia",
         };
 
         const web3auth = new Web3AuthNoModal({
@@ -55,8 +46,7 @@ function App() {
                 verifier: "w3a-agg-example",
                 verifierSubIdentifier: "w3a-google",
                 typeOfLogin: "google",
-                clientId:
-                  "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+                clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
               },
               auth0github: {
                 verifier: "w3a-agg-example",
@@ -101,12 +91,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     setProvider(web3authProvider);
   };
 
@@ -115,20 +102,17 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "auth0emailpasswordless",
-        extraLoginOptions: {
-          // domain: "https://web3auth.au.auth0.com",
-          // this corresponds to the field inside jwt which must be used to uniquely
-          // identify the user. This is mapped b/w google and email passwordless logins of Auth0
-          // verifierIdField: "email",
-          // isVerifierIdCaseSensitive: false,
-          login_hint: "hello@web3auth.io",
-        },
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "auth0emailpasswordless",
+      extraLoginOptions: {
+        // domain: "https://web3auth.au.auth0.com",
+        // this corresponds to the field inside jwt which must be used to uniquely
+        // identify the user. This is mapped b/w google and email passwordless logins of Auth0
+        // verifierIdField: "email",
+        // isVerifierIdCaseSensitive: false,
+        login_hint: "hello@web3auth.io",
+      },
+    });
     setProvider(web3authProvider);
   };
 
@@ -137,20 +121,17 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "auth0github",
-        extraLoginOptions: {
-          domain: "https://web3auth.au.auth0.com",
-          // this corresponds to the field inside jwt which must be used to uniquely
-          // identify the user. This is mapped b/w google and github logins
-          verifierIdField: "email",
-          isVerifierIdCaseSensitive: false,
-          connection: "github",
-        },
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "auth0github",
+      extraLoginOptions: {
+        domain: "https://web3auth.au.auth0.com",
+        // this corresponds to the field inside jwt which must be used to uniquely
+        // identify the user. This is mapped b/w google and github logins
+        verifierIdField: "email",
+        isVerifierIdCaseSensitive: false,
+        connection: "github",
+      },
+    });
     setProvider(web3authProvider);
   };
 
@@ -159,20 +140,17 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "auth0discord",
-        extraLoginOptions: {
-          domain: "https://web3auth.au.auth0.com",
-          // this corresponds to the field inside jwt which must be used to uniquely
-          // identify the user. This is mapped b/w google and github logins
-          verifierIdField: "email",
-          isVerifierIdCaseSensitive: false,
-          connection: "discord",
-        },
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "auth0discord",
+      extraLoginOptions: {
+        domain: "https://web3auth.au.auth0.com",
+        // this corresponds to the field inside jwt which must be used to uniquely
+        // identify the user. This is mapped b/w google and github logins
+        verifierIdField: "email",
+        isVerifierIdCaseSensitive: false,
+        connection: "discord",
+      },
+    });
     setProvider(web3authProvider);
   };
 
@@ -323,13 +301,10 @@ function App() {
         </a>{" "}
         Aggregate Verifier Example in React
       </h1>
-      <h3 className="sub-title">
-        Aggregate Verifier - Google, Email Passwordless, Discord & GitHub
-      </h3>
+      <h3 className="sub-title">Aggregate Verifier - Google, Email Passwordless, Discord & GitHub</h3>
 
       <h6 className="center">
-        Logging in with any of the below login methods will return the same
-        wallet address. Provided, you have the same email address for all the
+        Logging in with any of the below login methods will return the same wallet address. Provided, you have the same email address for all the
         logins.
       </h6>
 

@@ -19,10 +19,10 @@ function App() {
         const safeAuthInitOptions: SafeAuthInitOptions = {
           showWidgetButton: false,
           chainConfig: {
-            blockExplorerUrl: "https://goerli.etherscan.io",
-            chainId: "0x5",
-            displayName: "Ethereum Goerli",
-            rpcTarget: "https://rpc.ankr.com/eth_goerli",
+            blockExplorerUrl: "https://sepolia.etherscan.io/",
+            chainId: "0xaa36a7", // hex for 11155111
+            displayName: "Ethereum Sepolia",
+            rpcTarget: "https://rpc.ankr.com/eth_sepolia",
             ticker: "ETH",
             tickerName: "Ethereum",
           },
@@ -270,7 +270,7 @@ function App() {
           safeAuthSignInResponse?.eoa ? (
             <p>
               Your EOA:{" "}
-              <a href={`https://goerli.etherscan.io/address/${safeAuthSignInResponse?.eoa}`} target="_blank" rel="noreferrer">
+              <a href={`https://sepolia.etherscan.io/address/${safeAuthSignInResponse?.eoa}`} target="_blank" rel="noreferrer">
                 {safeAuthSignInResponse?.eoa}
               </a>
             </p>
@@ -285,7 +285,7 @@ function App() {
               {safeAuthSignInResponse?.safes?.map((safe: any, index: any) => (
                 <p key={index}>
                   Safe[{index}]:{" "}
-                  <a href={`https://goerli.etherscan.io/address/${safe}`} target="_blank" rel="noreferrer">
+                  <a href={`https://sepolia.etherscan.io/address/${safe}`} target="_blank" rel="noreferrer">
                     {safe}
                   </a>
                 </p>
@@ -294,7 +294,7 @@ function App() {
           ) : (
             <>
               <p>No Available Safes, Please create one by clicking the above button. </p>
-              <p> Note: You should have some goerli ETH in your account.</p>
+              <p> Note: You should have some sepolia ETH in your account.</p>
               <p>Please be patient, it takes time to create the SAFE!, depending upon network congestion.</p>
             </>
           )

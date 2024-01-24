@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import {
-  WALLET_ADAPTERS,
-  CHAIN_NAMESPACES,
-  IProvider,
-} from "@web3auth/base";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
@@ -12,14 +8,11 @@ import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 import axios from "axios";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -78,12 +71,9 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "discord",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "discord",
+    });
     setProvider(web3authProvider);
   };
 
@@ -182,6 +172,7 @@ function App() {
   }
 
   // Revoke access from Discord using access token
+  // Note: This is just for demonstration purposes and should only be done via a back channel, i.e., the server-side.
   const revokeAccessToken = async () => {
     try {
       const DISCORD_CLIENT_ID = ""; // use your app client id you got from discord
@@ -189,27 +180,23 @@ function App() {
       const ACCESS_TOKEN = ""; // access token from the discord
 
       const formData = new FormData();
-      formData.append('token', `${ACCESS_TOKEN}`);
+      formData.append("token", `${ACCESS_TOKEN}`);
 
-      const response = await axios.post(
-        'https://discord.com/api/oauth2/token/revoke',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${Buffer.from(`${DISCORD_CLIENT_ID}:${DISCORD_SECRET}`).toString('base64')}`,
-          },
-        }
-      );
+      const response = await axios.post("https://discord.com/api/oauth2/token/revoke", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${Buffer.from(`${DISCORD_CLIENT_ID}:${DISCORD_SECRET}`).toString("base64")}`,
+        },
+      });
 
       if (response.status === 200) {
-        console.log('Access token revoked successfully');
-        alert('Access token revoked successfully, try logging in again');
+        console.log("Access token revoked successfully");
+        alert("Access token revoked successfully, try logging in again");
       } else {
-        console.log('Failed to revoke access token');
+        console.log("Failed to revoke access token");
       }
     } catch (error) {
-      console.error('Error revoking access token:', (error as any).message);
+      console.error("Error revoking access token:", (error as any).message);
     }
   };
 

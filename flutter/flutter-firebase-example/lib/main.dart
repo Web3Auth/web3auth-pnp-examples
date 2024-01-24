@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// ignore: depend_on_referenced_packages
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -71,28 +71,32 @@ class _MyAppState extends State<MyApp> {
             "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ" // web3auth's plug and play client id
         );
 
-    await Web3AuthFlutter.init(Web3AuthOptions(
+    await Web3AuthFlutter.init(
+      Web3AuthOptions(
         clientId:
             'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ',
         network: Network.sapphire_mainnet,
         redirectUrl: redirectUrl,
         whiteLabel: WhiteLabelData(
-            appName: "Web3Auth Flutter App",
-            logoLight:
-                "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
-            logoDark:
-                "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
-            defaultLanguage: Language.en,
-            mode: ThemeModes.auto,
-            appUrl: "https://web3auth.io",
-            useLogoLoader: true,
-            theme: themeMap),
-        loginConfig: loginConfig));
+          appName: "Web3Auth Flutter App",
+          logoLight:
+              "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+          logoDark:
+              "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+          defaultLanguage: Language.en,
+          mode: ThemeModes.auto,
+          appUrl: "https://web3auth.io",
+          useLogoLoader: true,
+          theme: themeMap,
+        ),
+        loginConfig: loginConfig,
+      ),
+    );
 
     await Web3AuthFlutter.initialize();
 
     final String res = await Web3AuthFlutter.getPrivKey();
-    print(res);
+    log(res);
     if (res.isNotEmpty) {
       setState(() {
         logoutVisible = true;
@@ -102,8 +106,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Map<String, dynamic> user = jsonDecode(_result);
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -111,110 +113,114 @@ class _MyAppState extends State<MyApp> {
         ),
         body: SingleChildScrollView(
           child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-              ),
-              Visibility(
-                visible: !logoutVisible,
-                child: Column(
-                  children: [
-                    const Icon(
-                      Icons.flutter_dash,
-                      size: 80,
-                      color: Color(0xFF1389fd),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    const Text(
-                      'Web3Auth',
-                      style: TextStyle(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                Visibility(
+                  visible: !logoutVisible,
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.flutter_dash,
+                        size: 80,
+                        color: Color(0xFF1389fd),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      const Text(
+                        'Web3Auth',
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 36,
-                          color: Color(0xFF0364ff)),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      'Welcome to Web3Auth Flutter (JWT) Firebase Example',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      'Login with',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
+                          color: Color(0xFF0364ff),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        'Welcome to Web3Auth Flutter (JWT) Firebase Example',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Login with',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 245, 130, 13) // This is what you need!
-                            ),
+                          backgroundColor:
+                              const Color.fromARGB(255, 245, 130, 13),
+                          foregroundColor: Colors.white,
+                        ),
                         onPressed: _login(_withJWT),
-                        child: const Text('Login with JWT via Firebase')),
-                  ],
+                        child: const Text('Login with JWT via Firebase'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Visibility(
-                // ignore: sort_child_properties_last
-                child: Column(
-                  children: [
-                    Center(
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Colors.red[600] // This is what you need!
+                Visibility(
+                  visible: logoutVisible,
+                  child: ElevatedButtonTheme(
+                    data: ElevatedButtonThemeData(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 195, 47, 233),
+                        foregroundColor: Colors.white, // This is what you need!
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Center(
+                          child: ElevatedButton(
+                              // This is what you need!
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red[600],
+                                foregroundColor: Colors.white,
                               ),
-                          onPressed: _logout(),
-                          child: const Column(
-                            children: [
-                              Text('Logout'),
-                            ],
-                          )),
+                              onPressed: _logout(),
+                              child: const Column(
+                                children: [
+                                  Text('Logout'),
+                                ],
+                              )),
+                        ),
+                        const Text(
+                          'Blockchain calls',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        ElevatedButton(
+                          onPressed: _getAddress,
+                          child: const Text('Get Address'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _getBalance,
+                          child: const Text('Get Balance'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _sendTransaction,
+                          child: const Text('Send Transaction'),
+                        ),
+                      ],
                     ),
-                    const Text(
-                      'Blockchain calls',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 195, 47, 233) // This is what you need!
-                            ),
-                        onPressed: _getAddress,
-                        child: const Text('Get Address')),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 195, 47, 233) // This is what you need!
-                            ),
-                        onPressed: _getBalance,
-                        child: const Text('Get Balance')),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 195, 47, 233) // This is what you need!
-                            ),
-                        onPressed: _sendTransaction,
-                        child: const Text('Send Transaction')),
-                  ],
+                  ),
                 ),
-                visible: logoutVisible,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(_result),
-              )
-            ],
-          )),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(_result),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -231,9 +237,9 @@ class _MyAppState extends State<MyApp> {
           logoutVisible = true;
         });
       } on UserCancelledException {
-        print("User cancelled.");
+        log("User cancelled.");
       } on UnKnownException {
-        print("Unknown exception occurred");
+        log("Unknown exception occurred");
       }
     };
   }
@@ -247,43 +253,49 @@ class _MyAppState extends State<MyApp> {
         });
         await Web3AuthFlutter.logout();
       } on UserCancelledException {
-        print("User cancelled.");
+        log("User cancelled.");
       } on UnKnownException {
-        print("Unknown exception occurred");
+        log("Unknown exception occurred");
       }
     };
   }
 
   Future<Web3AuthResponse> _withJWT() async {
-    var idToken = "";
+    String idToken = "";
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: 'custom+id_token@firebase.login', password: 'Welcome@W3A');
-      idToken = (await credential.user?.getIdToken(true)).toString();
+        email: 'custom+id_token@firebase.login',
+        password: 'Welcome@W3A',
+      );
+      idToken = await credential.user?.getIdToken(true) ?? '';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        log('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        log('Wrong password provided for that user.');
       }
     }
 
-    return Web3AuthFlutter.login(LoginParams(
+    return Web3AuthFlutter.login(
+      LoginParams(
         loginProvider: Provider.jwt,
         mfaLevel: MFALevel.OPTIONAL,
-        extraLoginOptions:
-            ExtraLoginOptions(id_token: idToken, domain: 'firebase')));
+        extraLoginOptions: ExtraLoginOptions(
+          id_token: idToken,
+          domain: 'firebase',
+        ),
+      ),
+    );
   }
 
   Future<String> _getAddress() async {
     final prefs = await SharedPreferences.getInstance();
     final privateKey = prefs.getString('privateKey') ?? '0';
-    // const String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
 
-    // final client = Web3Client(rpcUrl, Client());
     final credentials = EthPrivateKey.fromHex(privateKey);
     final address = credentials.address;
-    debugPrint("Account, ${address.hexEip55}");
+
+    log("Account, ${address.hexEip55}");
     setState(() {
       _result = address.hexEip55.toString();
     });
@@ -298,7 +310,7 @@ class _MyAppState extends State<MyApp> {
     final credentials = EthPrivateKey.fromHex(privateKey);
     final address = credentials.address;
     final balance = await client.getBalance(address);
-    debugPrint(balance.toString());
+    log(balance.toString());
     setState(() {
       _result = balance.toString();
     });
@@ -314,17 +326,21 @@ class _MyAppState extends State<MyApp> {
     final address = credentials.address;
     try {
       final receipt = await client.sendTransaction(
-          credentials,
-          Transaction(
-            from: address,
-            to: EthereumAddress.fromHex(
-                '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
-            // gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 100),
-            value: EtherAmount.fromUnitAndValue(
-                EtherUnit.gwei, 5000000), // 0.005 ETH
+        credentials,
+        Transaction(
+          from: address,
+          to: EthereumAddress.fromHex(
+            '0x809D4310d578649D8539e718030EE11e603Ee8f3',
           ),
-          chainId: 5);
-      debugPrint(receipt);
+          // gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 100),
+          value: EtherAmount.fromInt(
+            EtherUnit.gwei,
+            5000000,
+          ), // 0.005 ETH
+        ),
+        chainId: 5,
+      );
+      log(receipt);
       setState(() {
         _result = receipt;
       });

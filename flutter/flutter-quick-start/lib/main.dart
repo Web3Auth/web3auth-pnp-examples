@@ -63,6 +63,9 @@ class _MyAppState extends State<MyApp> {
       clientId: clientId,
       network: Network.sapphire_mainnet,
       redirectUrl: redirectUrl,
+      // 259200 allows user to stay authenticated for 3 days with Web3Auth.
+      // Default is 86400, which is 1 day.
+      sessionTime: 259200,
     ));
 
     await Web3AuthFlutter.initialize();

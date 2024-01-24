@@ -81,6 +81,9 @@ class _MyAppState extends State<MyApp> {
           theme: themeMap,
         ),
         loginConfig: loginConfig,
+        // 259200 allows user to stay authenticated for 3 days with Web3Auth.
+        // Default is 86400, which is 1 day.
+        sessionTime: 259200,
       ),
     );
 

@@ -1,24 +1,17 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import {
-  WALLET_ADAPTERS,
-  CHAIN_NAMESPACES,
-  IProvider,
-} from "@web3auth/base";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 // import RPC from './ethersRPC' // for using ethers.js
 import RPC from "./web3RPC"; // for using web3.js
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -26,14 +19,14 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x5", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth_goerli",
-          displayName: "Goerli Testnet",
-          blockExplorer: "https://goerli.etherscan.io/",
+          chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+          displayName: "Ethereum Sepolia Testnet",
+          blockExplorer: "https://sepolia.etherscan.io/",
           ticker: "ETH",
-          tickerName: "Ethereum",
+          tickerName: "Ethereum Sepolia",
         };
-        
+
         const web3auth = new Web3AuthNoModal({
           clientId,
           chainConfig,
@@ -42,7 +35,7 @@ function App() {
         });
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-        
+
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
           adapterSettings: {
@@ -76,18 +69,15 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "jwt",
-        extraLoginOptions: {
-          domain: "https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com",
-          verifierIdField: "email",
-          response_type: "token",
-          scope: "email profile openid",
-        },
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "jwt",
+      extraLoginOptions: {
+        domain: "https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com",
+        verifierIdField: "email",
+        response_type: "token",
+        scope: "email profile openid",
+      },
+    });
     setProvider(web3authProvider);
   };
 

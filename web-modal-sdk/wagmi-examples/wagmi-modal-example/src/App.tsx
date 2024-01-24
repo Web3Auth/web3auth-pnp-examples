@@ -3,7 +3,7 @@ import { WagmiConfig, createConfig, configureChains, useAccount, useConnect, use
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { mainnet, goerli, polygonMumbai } from "wagmi/chains";
+import { mainnet, sepolia, polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { SendTransaction } from "./sendTransaction";
 import { NetworkSwitcher } from "./switchNetwork";
@@ -13,7 +13,7 @@ import { Balance } from "./balance";
 import { WriteContract } from "./writeContract";
 
 // Configure chains & providers with the Public provider.
-const { chains, publicClient, webSocketPublicClient } = configureChains([goerli, mainnet, polygonMumbai ], [publicProvider()]);
+const { chains, publicClient, webSocketPublicClient } = configureChains([sepolia, mainnet, polygonMumbai], [publicProvider()]);
 
 // Set up client
 const config = createConfig({
@@ -44,8 +44,6 @@ const config = createConfig({
   publicClient,
   webSocketPublicClient,
 });
-
-
 
 function Profile() {
   const { address, connector, isConnected } = useAccount();

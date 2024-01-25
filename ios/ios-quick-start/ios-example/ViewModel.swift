@@ -10,10 +10,10 @@ class ViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var navigationTitle: String = ""
     // IMP START - Get your Web3Auth Client ID from Dashboard
-    private var clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"
+    private var clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"
     // IMP END - Get your Web3Auth Client ID from Dashboard
     // IMP START - Whitelist bundle ID
-    private var network: Network = .cyan
+    private var network: Network = .sapphire_mainnet
     // IMP END - Whitelist bundle ID
     func setup() async {
         guard web3Auth == nil else { return }
@@ -48,6 +48,19 @@ class ViewModel: ObservableObject {
             } catch {
                 print("Error")
             }
+        }
+    }
+    
+    func logout() throws {
+        Task {
+            // IMP START - Logout
+            try await Web3Auth(.init(
+                clientId: clientId, network: .sapphire_mainnet
+            )).logout()
+            // IMP END - Logout
+            await MainActor.run(body: {
+                loggedIn = false
+            })
         }
     }
     

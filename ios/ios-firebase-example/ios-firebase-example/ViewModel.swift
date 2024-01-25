@@ -9,8 +9,8 @@ class ViewModel: ObservableObject {
     @Published var user: Web3AuthState?
     @Published var isLoading = false
     @Published var navigationTitle: String = ""
-    private var clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"
-    private var network: Network = .cyan
+    private var clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"
+    private var network: Network = .sapphire_mainnet
     func setup() async {
         guard web3Auth == nil else { return }
         await MainActor.run(body: {
@@ -39,9 +39,8 @@ class ViewModel: ObservableObject {
                     loginConfig: [
                         TypeOfLogin.jwt.rawValue:
                                 .init(
-                                    verifier: "web3auth-firebase-examples",
+                                    verifier: "w3a-firebase-demo",
                                     typeOfLogin: .jwt,
-                                    name: "Web3Auth-Firebase-JWT",
                                     clientId: self.clientId
                                 )
                     ],
@@ -75,6 +74,16 @@ class ViewModel: ObservableObject {
                 print("Error: ", error)
             }
         }
+    }
+    
+    func logout() async throws {
+        try  await Web3Auth(.init(
+            clientId: self.clientId, network: self.network
+        )).logout()
+        
+        await MainActor.run(body: {
+            loggedIn.toggle()
+        })
     }
     
     

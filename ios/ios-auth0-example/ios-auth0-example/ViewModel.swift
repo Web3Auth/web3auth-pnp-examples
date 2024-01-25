@@ -7,8 +7,8 @@ class ViewModel: ObservableObject {
     @Published var user: Web3AuthState?
     @Published var isLoading = false
     @Published var navigationTitle: String = ""
-    private var clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"
-    private var network: Network = .testnet
+    private var clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"
+    private var network: Network = .sapphire_mainnet
     func setup() async {
         guard web3Auth == nil else { return }
         await MainActor.run(body: {
@@ -35,10 +35,9 @@ class ViewModel: ObservableObject {
                     loginConfig: [
                         TypeOfLogin.jwt.rawValue:
                                 .init(
-                                    verifier: "web3auth-auth0-example",
+                                    verifier: "w3a-auth0-demo",
                                     typeOfLogin: .jwt,
-                                    name: "Web3Auth-Auth0-JWT",
-                                    clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT"
+                                    clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O"
                                 )
                     ],
                     whiteLabel: W3AWhiteLabelData(
@@ -58,7 +57,7 @@ class ViewModel: ObservableObject {
                     W3ALoginParams(
                     loginProvider: .JWT,
                     dappShare: nil,
-                    extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: "https://shahbaz-torus.us.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil, additionalParams: nil),
+                    extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: "https://web3auth.au.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil, additionalParams: nil),
                     mfaLevel: .NONE,
                     curve: .SECP256K1
                     ))
@@ -71,6 +70,18 @@ class ViewModel: ObservableObject {
                 print("Error")
             }
         }
+    }
+    
+    func logout() async throws {
+        try await Web3Auth(.init(
+           clientId: clientId,
+           network: network
+        )).logout()
+        
+        await MainActor.run(body: {
+            loggedIn = false
+        })
+                
     }
     
 }

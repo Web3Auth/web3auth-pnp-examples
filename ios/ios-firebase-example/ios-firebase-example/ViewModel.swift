@@ -17,7 +17,30 @@ class ViewModel: ObservableObject {
             isLoading = true
             navigationTitle = "Loading"
         })
-        web3Auth = await Web3Auth(.init(clientId: clientId, network: network))
+        web3Auth = await Web3Auth(W3AInitParams(
+            clientId: clientId, network: network,
+            loginConfig: [
+                TypeOfLogin.jwt.rawValue:
+                        .init(
+                            verifier: "w3a-firebase-demo",
+                            typeOfLogin: .jwt,
+                            clientId: self.clientId
+                        )
+            ],
+            whiteLabel: W3AWhiteLabelData(
+                    appName: "Web3Auth Stub",
+                    logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+                    logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+                    defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
+                    mode: .dark,
+                    theme: ["primary": "#d53f8c"]),
+            mfaSettings: MfaSettings(
+                deviceShareFactor: MfaSetting(enable: true, priority: 1),
+                backUpShareFactor: MfaSetting(enable: true, priority: 2),
+                socialBackupFactor: MfaSetting(enable: true, priority: 3),
+                passwordFactor: MfaSetting(enable: true, priority: 4)
+            )
+        ))
         await MainActor.run(body: {
             if self.web3Auth?.state != nil {
                 user = web3Auth?.state
@@ -33,31 +56,7 @@ class ViewModel: ObservableObject {
             do {
                 let res = try await Auth.auth().signIn(withEmail: "custom+id_token@firebase.login", password: "Welcome@W3A")
                 let id_token = try await res.user.getIDToken()
-                let result = try await Web3Auth(.init(
-                    clientId: self.clientId,
-                    network: self.network,
-                    loginConfig: [
-                        TypeOfLogin.jwt.rawValue:
-                                .init(
-                                    verifier: "w3a-firebase-demo",
-                                    typeOfLogin: .jwt,
-                                    clientId: self.clientId
-                                )
-                    ],
-                    whiteLabel: W3AWhiteLabelData(
-                            appName: "Web3Auth Stub",
-                            logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
-                            logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
-                            defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
-                            mode: .dark,
-                            theme: ["primary": "#d53f8c"]),
-                    mfaSettings: MfaSettings(
-                        deviceShareFactor: MfaSetting(enable: true, priority: 1),
-                        backUpShareFactor: MfaSetting(enable: true, priority: 2),
-                        socialBackupFactor: MfaSetting(enable: true, priority: 3),
-                        passwordFactor: MfaSetting(enable: true, priority: 4)
-                    )
-                )).login(
+                let result = try await web3Auth?.login(
                     W3ALoginParams(
                     loginProvider: .JWT,
                     dappShare: nil,
@@ -77,9 +76,7 @@ class ViewModel: ObservableObject {
     }
     
     func logout() async throws {
-        try  await Web3Auth(.init(
-            clientId: self.clientId, network: self.network
-        )).logout()
+        try  await web3Auth?.logout()
         
         await MainActor.run(body: {
             loggedIn.toggle()

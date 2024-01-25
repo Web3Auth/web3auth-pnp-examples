@@ -11,7 +11,7 @@ struct ContentView: View {
                     ProgressView()
                 } else {
                     if vm.loggedIn,let user = vm.user, let web3rpc = Web3RPC(user: user) {
-                        UserDetailView(user: vm.user, loggedIn: $vm.loggedIn, web3RPC: web3rpc)
+                        UserDetailView(web3RPC: web3rpc, viewModel: vm)
                     } else {
                         LoginView(vm: vm)
                     }

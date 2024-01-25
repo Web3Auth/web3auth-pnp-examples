@@ -318,7 +318,7 @@ class _MyAppState extends State<MyApp> {
             value: EtherAmount.fromUnitAndValue(
                 EtherUnit.gwei, 5000000), // 0.005 ETH
           ),
-          chainId: 5);
+          chainId: 11155111);
       debugPrint(receipt);
       setState(() {
         _result = receipt;

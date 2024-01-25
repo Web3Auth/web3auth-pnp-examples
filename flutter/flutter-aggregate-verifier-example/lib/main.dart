@@ -27,7 +27,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _result = '';
   bool logoutVisible = false;
-  String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
+  String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
 
   @override
   void dispose() {

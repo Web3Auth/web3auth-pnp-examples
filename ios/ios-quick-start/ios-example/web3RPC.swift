@@ -12,8 +12,8 @@ class Web3RPC : ObservableObject {
     public var address: EthereumAddress
     private var account: EthereumAccount
     private var latestBlock = 0
-    private var chainID = 5
-    private var RPC_URL = "https://rpc.ankr.com/eth_goerli"
+    private var chainID = 11155111
+    private var RPC_URL = "https://rpc.ankr.com/eth_sepolia"
     
     @Published var balance: Double = 0
     @Published var signedMessageHashString:String = ""

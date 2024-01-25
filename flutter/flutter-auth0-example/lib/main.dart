@@ -27,7 +27,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _result = '';
   bool logoutVisible = false;
-  String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
+  String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
 
   @override
   void dispose() {
@@ -254,7 +254,7 @@ class _MyAppState extends State<MyApp> {
   Future<String> _getAddress() async {
     final prefs = await SharedPreferences.getInstance();
     final privateKey = prefs.getString('privateKey') ?? '0';
-    // const String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
+    // const String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
 
     // final client = Web3Client(rpcUrl, Client());
     final credentials = EthPrivateKey.fromHex(privateKey);

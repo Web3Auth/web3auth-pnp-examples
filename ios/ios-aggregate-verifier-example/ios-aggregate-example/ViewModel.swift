@@ -41,7 +41,7 @@ class ViewModel: ObservableObject {
                 backUpShareFactor: MfaSetting(enable: true, priority: 2),
                 socialBackupFactor: MfaSetting(enable: true, priority: 3),
                 passwordFactor: MfaSetting(enable: true, priority: 4)
-            ),
+            )
         ))
         await MainActor.run(body: {
             if self.web3Auth?.state != nil {

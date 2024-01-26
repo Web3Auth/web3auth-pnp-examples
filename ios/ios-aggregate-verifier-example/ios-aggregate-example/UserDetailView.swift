@@ -3,12 +3,12 @@ import Web3Auth
 import web3
 
 struct UserDetailView: View {
-    @State var user: Web3AuthState?
-    @Binding var loggedIn: Bool
     @State private var showingAlert = false
     @StateObject var web3RPC: Web3RPC
+    @StateObject var viewModel: ViewModel
+    
     var body: some View {
-        if let user = user {
+        if let user = viewModel.user {
             List {
                 Section {
                     Text("\(user.privKey ?? "")")
@@ -86,11 +86,8 @@ struct UserDetailView: View {
                     Button {
                         Task.detached {
                             do {
-                                try await Web3Auth(.init(clientId: "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A",
-                                                         network: .mainnet)).logout()
-                                await MainActor.run(body: {
-                                    loggedIn.toggle()
-                                })                             } catch {
+                                try await viewModel.logout()
+                            } catch {
                                 DispatchQueue.main.async {
                                     showingAlert = true
                                 }
@@ -107,12 +104,5 @@ struct UserDetailView: View {
             }
             .listStyle(.automatic)
         }
-    }
-}
-
-struct UserDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        let user: Web3AuthState = .init(privKey: "12345", ed25519PrivKey: "32334", sessionId: "23234384y7735y47shdj", userInfo: nil, error: nil, coreKitKey: "45676", coreKitEd25519PrivKey: "84567")
-        UserDetailView(user: user , loggedIn: .constant(true), web3RPC: .init(user: user)!)
     }
 }

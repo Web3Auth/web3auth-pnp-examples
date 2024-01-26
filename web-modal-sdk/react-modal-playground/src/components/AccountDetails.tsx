@@ -31,7 +31,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
       <div className="md:p-8 p-4 mt-6 space-y-4 rounded-lg bg-white overflow-hidden w-full">
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 ">
           {user.profileImage && <img className="object-fill w-24 h-24 rounded-lg" src={user?.profileImage} referrerPolicy="no-referrer" />}
-          {!user.profileImage && (
+          {!user.profileImage && user.name && (
             <span className="flex justify-center items-center bg-purple_100 font-bold w-24 h-24 rounded-lg text-[80px] text-purple_800">
               {user?.name.charAt(0).toUpperCase()}
             </span>

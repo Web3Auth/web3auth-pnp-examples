@@ -2,20 +2,50 @@ import Foundation
 import Web3Auth
 
 class ViewModel: ObservableObject {
-    var web3Auth: Web3Auth?
+    lazy var web3Auth: Web3Auth? = nil
     @Published var loggedIn: Bool = false
     @Published var user: Web3AuthState?
     @Published var isLoading = false
     @Published var navigationTitle: String = ""
-    private var clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"
-    private var network: Network = .testnet
+    private var clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"
+    private var network: Network = .sapphire_mainnet
+    
     func setup() async {
         guard web3Auth == nil else { return }
         await MainActor.run(body: {
             isLoading = true
             navigationTitle = "Loading"
         })
-        web3Auth = await Web3Auth(.init(clientId: clientId, network: network))
+        web3Auth = await Web3Auth(W3AInitParams(
+            clientId: clientId, network: network,
+            loginConfig: [
+                TypeOfLogin.google.rawValue:
+                    .init(
+                        verifier: "aggregate-sapphire",
+                        typeOfLogin: .google,
+                        name: "Web3Auth-Aggregate-Verifier-Google-Example",
+                        clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
+                        verifierSubIdentifier: "w3a-google"
+                    )
+            ],
+            whiteLabel: W3AWhiteLabelData(
+                appName: "Web3Auth Stub",
+                logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+                logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+                defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
+                mode: .dark,
+                theme: ["primary": "#d53f8c"]
+            ),
+            mfaSettings:  MfaSettings(
+                deviceShareFactor: MfaSetting(enable: true, priority: 1),
+                backUpShareFactor: MfaSetting(enable: true, priority: 2),
+                socialBackupFactor: MfaSetting(enable: true, priority: 3),
+                passwordFactor: MfaSetting(enable: true, priority: 4)
+            ),
+            // 259200 allows user to stay authenticated for 3 days with Web3Auth.
+            // Default is 86400, which is 1 day.
+            sessionTime: 259200
+        ))
         await MainActor.run(body: {
             if self.web3Auth?.state != nil {
                 user = web3Auth?.state
@@ -29,33 +59,7 @@ class ViewModel: ObservableObject {
     func loginWithGoogle() {
         Task{
             do {
-                let result = try await Web3Auth(.init(
-                            clientId: clientId,
-                            network: network,
-                            loginConfig: [
-                                TypeOfLogin.google.rawValue:
-                                        .init(
-                                            verifier: "w3a-agg-example",
-                                            typeOfLogin: .google,
-                                            name: "Web3Auth-Aggregate-Verifier-Google-Example",
-                                            clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-                                            verifierSubIdentifier: "w3a-google"
-                                        )
-                            ],
-                            whiteLabel: W3AWhiteLabelData(
-                                    appName: "Web3Auth Stub",
-                                    logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
-                                    logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
-                                    defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
-                                    mode: .dark,
-                                    theme: ["primary": "#d53f8c"]),
-                            mfaSettings: MfaSettings(
-                                deviceShareFactor: MfaSetting(enable: true, priority: 1),
-                                backUpShareFactor: MfaSetting(enable: true, priority: 2),
-                                socialBackupFactor: MfaSetting(enable: true, priority: 3),
-                                passwordFactor: MfaSetting(enable: true, priority: 4)
-                            )
-                        )).login(
+                let result = try await web3Auth?.login(
                             W3ALoginParams(
                             loginProvider: .GOOGLE,
                             dappShare: nil,
@@ -76,20 +80,7 @@ class ViewModel: ObservableObject {
     func loginWithGitHub() {
         Task{
             do {
-                let result = try await Web3Auth(.init(
-                    clientId: clientId,
-                    network: network,
-                    loginConfig: [
-                        TypeOfLogin.jwt.rawValue:
-                                .init(
-                                    verifier: "w3a-agg-example",
-                                    typeOfLogin: .jwt,
-                                    name: "Web3Auth-Aggregate-Verifier-GitHub-Example",
-                                    clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu",
-                                    verifierSubIdentifier: "w3a-a0-github"
-                                )
-                    ]
-                )).login(
+                let result = try await web3Auth?.login(
                     W3ALoginParams(
                     loginProvider: .JWT,
                     dappShare: nil,
@@ -105,6 +96,13 @@ class ViewModel: ObservableObject {
                 print("Error")
             }
         }
+    }
+    
+    func logout() async throws {
+        try await web3Auth?.logout()
+        await MainActor.run(body: {
+            loggedIn = false
+        })
     }
 }
 

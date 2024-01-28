@@ -24,7 +24,7 @@ class Web3RPC : ObservableObject {
         self.user = user
         do{
             client = EthereumHttpClient(url: URL(string: RPC_URL)!)
-            account = try EthereumAccount(keyStorage: user as! EthereumSingleKeyStorageProtocol )
+            account = try EthereumAccount(keyStorage: user as EthereumSingleKeyStorageProtocol )
             address = account.address
         } catch {
              return nil
@@ -32,8 +32,8 @@ class Web3RPC : ObservableObject {
     }
     
     func getAccounts() {
-        self.publicAddress = address.value
-        print(address.value)
+        self.publicAddress = address.asString()
+        print(address.asString())
     }
     
 

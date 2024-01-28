@@ -1,5 +1,5 @@
-// ignore_for_file: avoid_print
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,22 +10,19 @@ import 'package:web3auth_flutter/output.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 // IMP END - Quick Start
 
-// ignore: depend_on_referenced_packages
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-// ignore: use_key_in_widget_constructors
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  // ignore: library_private_types_in_public_api
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -66,13 +63,16 @@ class _MyAppState extends State<MyApp> {
       clientId: clientId,
       network: Network.sapphire_mainnet,
       redirectUrl: redirectUrl,
+      // 259200 allows user to stay authenticated for 3 days with Web3Auth.
+      // Default is 86400, which is 1 day.
+      sessionTime: 259200,
     ));
 
     await Web3AuthFlutter.initialize();
     // IMP END - Initialize Web3Auth
 
     final String res = await Web3AuthFlutter.getPrivKey();
-    print(res);
+    log(res);
     if (res.isNotEmpty) {
       setState(() {
         logoutVisible = true;
@@ -110,9 +110,10 @@ class _MyAppState extends State<MyApp> {
                     const Text(
                       'Web3Auth',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36,
-                          color: Color(0xFF0364ff)),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 36,
+                        color: Color(0xFF0364ff),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -139,64 +140,61 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ),
                     ElevatedButton(
-                        onPressed: _login(
-                            () => _withEmailPasswordless(emailController.text)),
-                        child: const Text('Login with Email Passwordless')),
+                      onPressed: _login(
+                        () => _withEmailPasswordless(emailController.text),
+                      ),
+                      child: const Text('Login with Email Passwordless'),
+                    ),
                   ],
                 ),
               ),
-              Visibility(
-                // ignore: sort_child_properties_last
-                child: Column(
-                  children: [
-                    Center(
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Colors.red[600] // This is what you need!
-                              ),
-                          onPressed: _logout(),
-                          child: const Column(
-                            children: [
-                              Text('Logout'),
-                            ],
-                          )),
-                    ),
-                    const Text(
-                      'Blockchain calls',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 195, 47, 233) // This is what you need!
-                            ),
-                        onPressed: _getUserInfo,
-                        child: const Text('Get UserInfo')),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 195, 47, 233) // This is what you need!
-                            ),
-                        onPressed: _getAddress,
-                        child: const Text('Get Address')),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 195, 47, 233) // This is what you need!
-                            ),
-                        onPressed: _getBalance,
-                        child: const Text('Get Balance')),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                255, 195, 47, 233) // This is what you need!
-                            ),
-                        onPressed: _sendTransaction,
-                        child: const Text('Send Transaction')),
-                  ],
+              ElevatedButtonTheme(
+                data: ElevatedButtonThemeData(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 195, 47, 233),
+                    foregroundColor: Colors.white,
+                  ),
                 ),
-                visible: logoutVisible,
+                child: Visibility(
+                  visible: logoutVisible,
+                  child: Column(
+                    children: [
+                      Center(
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red[600],
+                              foregroundColor: Colors.white,
+                            ),
+                            onPressed: _logout(),
+                            child: const Column(
+                              children: [
+                                Text('Logout'),
+                              ],
+                            )),
+                      ),
+                      const Text(
+                        'Blockchain calls',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      ElevatedButton(
+                        onPressed: _getUserInfo,
+                        child: const Text('Get UserInfo'),
+                      ),
+                      ElevatedButton(
+                        onPressed: _getAddress,
+                        child: const Text('Get Address'),
+                      ),
+                      ElevatedButton(
+                        onPressed: _getBalance,
+                        child: const Text('Get Balance'),
+                      ),
+                      ElevatedButton(
+                        onPressed: _sendTransaction,
+                        child: const Text('Send Transaction'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -220,9 +218,9 @@ class _MyAppState extends State<MyApp> {
           logoutVisible = true;
         });
       } on UserCancelledException {
-        print("User cancelled.");
+        log("User cancelled.");
       } on UnKnownException {
-        print("Unknown exception occurred");
+        log("Unknown exception occurred");
       }
     };
   }
@@ -238,16 +236,16 @@ class _MyAppState extends State<MyApp> {
         await Web3AuthFlutter.logout();
         // IMP END - Logout
       } on UserCancelledException {
-        print("User cancelled.");
+        log("User cancelled.");
       } on UnKnownException {
-        print("Unknown exception occurred");
+        log("Unknown exception occurred");
       }
     };
   }
 
   Future<Web3AuthResponse> _withEmailPasswordless(String userEmail) async {
     try {
-      print(userEmail);
+      log(userEmail);
       // IMP START - Login
       return await Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
@@ -255,7 +253,7 @@ class _MyAppState extends State<MyApp> {
       ));
       // IMP END - Login
     } catch (e) {
-      print("Error during email/passwordless login: $e");
+      log("Error during email/passwordless login: $e");
       // Handle the error as needed
       // You might want to show a user-friendly message or log the error
       return Future.error("Login failed");
@@ -267,13 +265,13 @@ class _MyAppState extends State<MyApp> {
       // IMP START - Get User Info
       TorusUserInfo userInfo = await Web3AuthFlutter.getUserInfo();
       // IMP END - Get User Info
-      print(userInfo);
+      log(userInfo.toString());
       setState(() {
         _result = userInfo.toString();
       });
       return userInfo;
     } catch (e) {
-      print("Error during email/passwordless login: $e");
+      log("Error during email/passwordless login: $e");
       // Handle the error as needed
       // You might want to show a user-friendly message or log the error
       return Future.error("Login failed");
@@ -287,7 +285,7 @@ class _MyAppState extends State<MyApp> {
 
     final credentials = EthPrivateKey.fromHex(privateKey);
     final address = credentials.address;
-    debugPrint("Account, ${address.hexEip55}");
+    log("Account, ${address.hexEip55}");
     setState(() {
       _result = address.hexEip55.toString();
     });
@@ -307,10 +305,12 @@ class _MyAppState extends State<MyApp> {
       final weiBalance = await client.getBalance(address);
 
       // Convert wei to ether
-      final etherBalance =
-          EtherAmount.fromUnitAndValue(EtherUnit.ether, weiBalance.getInEther);
+      final etherBalance = EtherAmount.fromBigInt(
+        EtherUnit.ether,
+        weiBalance.getInEther,
+      );
 
-      debugPrint(etherBalance.toString());
+      log(etherBalance.toString());
 
       setState(() {
         _result = etherBalance.toString();
@@ -319,7 +319,7 @@ class _MyAppState extends State<MyApp> {
       return etherBalance;
     } catch (e) {
       // Handle errors as needed
-      print("Error getting balance: $e");
+      log("Error getting balance: $e");
       return EtherAmount.zero();
     }
   }
@@ -333,17 +333,21 @@ class _MyAppState extends State<MyApp> {
     final address = credentials.address;
     try {
       final receipt = await client.sendTransaction(
-          credentials,
-          Transaction(
-            from: address,
-            to: EthereumAddress.fromHex(
-                '0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8'),
-            // gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 100),
-            value: EtherAmount.fromUnitAndValue(
-                EtherUnit.gwei, 5000000), // 0.005 ETH
+        credentials,
+        Transaction(
+          from: address,
+          to: EthereumAddress.fromHex(
+            '0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8',
           ),
-          chainId: 5);
-      debugPrint(receipt);
+          // gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 100),
+          value: EtherAmount.fromInt(
+            EtherUnit.gwei,
+            5000000,
+          ), // 0.005 ETH
+        ),
+        chainId: 5,
+      );
+      log(receipt);
       setState(() {
         _result = receipt;
       });

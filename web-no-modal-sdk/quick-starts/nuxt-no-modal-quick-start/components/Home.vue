@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h2>
-      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer"> Web3Auth </a>
+      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer"> Web3Auth </a>
       Nuxt Quick Start
     </h2>
 

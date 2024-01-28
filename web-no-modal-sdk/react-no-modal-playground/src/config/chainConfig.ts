@@ -3,14 +3,14 @@ import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
 export const chain: {
   [key: string]: CustomChainConfig;
 } = {
-  "Goerli Testnet": {
+  "Sepolia Testnet": {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-    displayName: "Goerli",
-    tickerName: "Goerli",
+    chainId: "0xaa36a7",
+    displayName: "Ethereum Sepolia",
+    tickerName: "Ethereum Sepolia",
     ticker: "ETH",
-    rpcTarget: "https://rpc.ankr.com/eth_goerli",
-    blockExplorer: "https://goerli.etherscan.io",
+    rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+    blockExplorer: "https://sepolia.etherscan.io",
   },
   Ethereum: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -45,12 +45,12 @@ export const chain: {
   },
   "Base Chain (Coinbase)": {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x14A33", // hex of 56
-    rpcTarget: "https://goerli.base.org",
+    chainId: "0x14A34", // hex of 84532
+    rpcTarget: "https://sepolia.base.org",
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
-    displayName: "Base Goerli",
-    blockExplorer: "https://goerli.basescan.org/",
+    displayName: "Base Sepolia",
+    blockExplorer: "https://sepolia.basescan.org/",
     ticker: "ETH",
     tickerName: "ETH",
   },

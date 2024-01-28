@@ -24,8 +24,8 @@ const Sidebar = () => {
     window.open(connectedChain.blockExplorer);
   }
   function goToFaucet() {
-    if (connectedChain.chainId === "0x5") {
-      window.open("https://goerlifaucet.com/");
+    if (connectedChain.chainId === "0xaa36a7") {
+      window.open("https://www.infura.io/faucet/sepolia");
     } else if (connectedChain.chainId === "0x13881") {
       window.open("https://faucet.polygon.technology/");
     }
@@ -61,7 +61,7 @@ const Sidebar = () => {
             ? activePage("Server Side Verification")
             : linktoGo("Server Side Verification", goToServerSideVerification)}
           {linktoGo("Explorer Link", goToExplorer)}
-          {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet) : null}
+          {connectedChain.chainId === "0xaa36a7" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet) : null}
         </nav>
       </div>
       <UserProfile />

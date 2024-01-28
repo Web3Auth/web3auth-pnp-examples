@@ -20,12 +20,12 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x5", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth_goerli",
-          displayName: "Goerli Testnet",
-          blockExplorer: "https://goerli.etherscan.io/",
+          chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+          displayName: "Ethereum Sepolia Testnet",
+          blockExplorer: "https://sepolia.etherscan.io/",
           ticker: "ETH",
-          tickerName: "Ethereum",
+          tickerName: "Ethereum Sepolia",
         };
         const web3auth = new Web3AuthNoModal({
           clientId,

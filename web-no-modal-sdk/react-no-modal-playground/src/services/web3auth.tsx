@@ -51,7 +51,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   balance: null,
   chainId: null,
   playgroundConsole: "",
-  connectedChain: chain["Goerli Testnet"],
+  connectedChain: chain["Sepolia Testnet"],
   loginAuth0: async () => null,
   loginGoogle: async () => null,
   loginGitHub: async () => null,
@@ -89,7 +89,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [playgroundConsole, setPlaygroundConsole] = useState<string>("");
   const [chainId, setChainId] = useState<any>(null);
-  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Goerli Testnet"]);
+  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Sepolia Testnet"]);
   const [connected, setConnected] = useState<boolean>(false);
 
   const uiConsole = (...args: unknown[]) => {
@@ -112,11 +112,11 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
         const web3AuthInstance = new Web3AuthNoModal({
           clientId,
-          chainConfig: chain["Goerli Testnet"],
+          chainConfig: chain["Sepolia Testnet"],
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
         });
 
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: chain["Goerli Testnet"] } });
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: chain["Sepolia Testnet"] } });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,

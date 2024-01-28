@@ -284,14 +284,14 @@ function App() {
       return;
     }
     const newChain = {
-      chainId: "0x5",
-      displayName: "Goerli",
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      tickerName: "Goerli",
+      chainId: "0xaa36a7", // hex for 11155111
+      displayName: "Ethereum Sepolia",
+      tickerName: "Ethereum",
       ticker: "ETH",
       decimals: 18,
-      rpcTarget: "https://rpc.ankr.com/eth_goerli",
-      blockExplorer: "https://goerli.etherscan.io",
+      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+      blockExplorer: "https://sepolia.etherscan.io",
     };
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
@@ -302,7 +302,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await web3auth?.switchChain({ chainId: "0x5" });
+    await web3auth?.switchChain({ chainId: "0xaa36a7" });
     uiConsole("Chain Switched");
   };
 

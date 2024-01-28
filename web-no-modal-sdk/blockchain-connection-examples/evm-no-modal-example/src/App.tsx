@@ -21,10 +21,10 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth",
-          displayName: "Ethereum Mainnet",
-          blockExplorer: "https://goerli.etherscan.io",
+          chainId: "0xaa36a7",
+          rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+          displayName: "Ethereum Sepolia",
+          blockExplorer: "https://sepolia.etherscan.io",
           ticker: "ETH",
           tickerName: "Ethereum",
         };
@@ -201,14 +201,14 @@ function App() {
       return;
     }
     const newChain = {
-      chainId: "0x5",
-      displayName: "Goerli",
+      chainId: "0xaa36a7",
+      displayName: "Ethereum Sepolia",
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      tickerName: "Goerli",
+      tickerName: "Ethereum Sepolia",
       ticker: "ETH",
       decimals: 18,
-      rpcTarget: "https://rpc.ankr.com/eth_goerli",
-      blockExplorer: "https://goerli.etherscan.io",
+      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+      blockExplorer: "https://sepolia.etherscan.io",
     };
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
@@ -219,7 +219,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await web3auth?.switchChain({ chainId: "0x5" });
+    await web3auth?.switchChain({ chainId: "0xaa36a7" });
     uiConsole("Chain Switched");
   };
 

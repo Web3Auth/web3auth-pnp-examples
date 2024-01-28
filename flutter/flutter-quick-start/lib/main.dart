@@ -28,7 +28,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _result = '';
   bool logoutVisible = false;
-  String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
+  String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
   // TextEditingController for handling input from the text field
   final TextEditingController emailController = TextEditingController();
 
@@ -345,7 +345,7 @@ class _MyAppState extends State<MyApp> {
             5000000,
           ), // 0.005 ETH
         ),
-        chainId: 5,
+        chainId: 11155111,
       );
       log(receipt);
       setState(() {

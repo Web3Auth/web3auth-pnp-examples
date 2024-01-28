@@ -47,7 +47,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   balance: null,
   chainId: null,
   playgroundConsole: "",
-  connectedChain: chain["Goerli Testnet"],
+  connectedChain: chain["Sepolia Testnet"],
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => null,
@@ -82,7 +82,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [playgroundConsole, setPlaygroundConsole] = useState<string>("");
   const [chainId, setChainId] = useState<any>(null);
-  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Goerli Testnet"]);
+  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Sepolia Testnet"]);
   const [connected, setConnected] = useState<boolean>(false);
 
   const uiConsole = (...args: unknown[]) => {
@@ -105,7 +105,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
         const web3AuthInstance = new Web3Auth({
           clientId,
-          chainConfig: chain["Goerli Testnet"],
+          chainConfig: chain["Sepolia Testnet"],
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
           uiConfig: {
             mode: "light", // light, dark or auto

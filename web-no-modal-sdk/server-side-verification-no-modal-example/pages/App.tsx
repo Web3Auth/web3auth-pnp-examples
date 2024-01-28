@@ -27,7 +27,7 @@ function App() {
           chainId: "0x1",
           rpcTarget: "https://rpc.ankr.com/eth",
           displayName: "Ethereum Mainnet",
-          blockExplorer: "https://goerli.etherscan.io",
+          blockExplorer: "https://etherscan.io",
           ticker: "ETH",
           tickerName: "Ethereum",
         };

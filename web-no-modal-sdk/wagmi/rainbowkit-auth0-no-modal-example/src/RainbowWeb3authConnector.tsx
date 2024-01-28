@@ -58,7 +58,6 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
         options: {
           web3AuthInstance,
           loginParams: {
-            relogin: true,
             loginProvider: "jwt",
             extraLoginOptions: {
               domain: "https://web3auth.au.auth0.com",

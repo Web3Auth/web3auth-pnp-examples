@@ -19,12 +19,12 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x5", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth_goerli",
-          displayName: "Goerli Testnet",
-          blockExplorer: "https://goerli.etherscan.io/",
+          chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+          displayName: "Ethereum Sepolia Testnet",
+          blockExplorer: "https://sepolia.etherscan.io/",
           ticker: "ETH",
-          tickerName: "Ethereum",
+          tickerName: "Ethereum Sepolia",
         };
         const web3auth = new Web3AuthNoModal({
           clientId,
@@ -39,6 +39,9 @@ function App() {
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
+          loginSettings: {
+            mfaLevel: "optional",
+          },
           adapterSettings: {
             whiteLabel: {
               appName: "W3A Heroes",
@@ -49,6 +52,28 @@ function App() {
               mode: "dark", // whether to enable dark mode. defaultValue: auto
               theme: {
                 primary: "#00D1B2",
+              },
+            },
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
               },
             },
             loginConfig: {

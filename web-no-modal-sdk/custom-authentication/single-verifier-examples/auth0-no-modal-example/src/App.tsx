@@ -31,13 +31,16 @@ function App() {
           clientId,
           chainConfig,
           web3AuthNetwork: "sapphire_mainnet",
-          useCoreKitKey: false,
+          useCoreKitKey: true,
         });
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
+          loginSettings: {
+            mfaLevel: "optional",
+          },
           adapterSettings: {
             uxMode: "redirect",
             loginConfig: {
@@ -45,6 +48,28 @@ function App() {
                 verifier: "w3a-auth0-demo",
                 typeOfLogin: "jwt",
                 clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
+              },
+            },
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
               },
             },
           },

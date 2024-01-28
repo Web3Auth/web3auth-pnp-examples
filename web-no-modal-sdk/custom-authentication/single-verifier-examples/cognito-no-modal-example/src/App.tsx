@@ -31,19 +31,44 @@ function App() {
           clientId,
           chainConfig,
           web3AuthNetwork: "sapphire_mainnet",
-          useCoreKitKey: false,
+          useCoreKitKey: true,
         });
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
+          loginSettings: {
+            mfaLevel: "optional",
+          },
           adapterSettings: {
             loginConfig: {
               jwt: {
                 verifier: "w3a-cognito-demo",
                 typeOfLogin: "jwt",
                 clientId: "2upuksfh6n0n5c0nciirc1bdrv", //use your app client id you will get from aws cognito app
+              },
+            },
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
               },
             },
           },

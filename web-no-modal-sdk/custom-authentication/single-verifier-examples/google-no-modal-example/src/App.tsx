@@ -39,6 +39,9 @@ function App() {
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
+          loginSettings: {
+            mfaLevel: "optional",
+          },
           adapterSettings: {
             whiteLabel: {
               appName: "W3A Heroes",
@@ -49,6 +52,28 @@ function App() {
               mode: "dark", // whether to enable dark mode. defaultValue: auto
               theme: {
                 primary: "#00D1B2",
+              },
+            },
+            mfaSettings: {
+              deviceShareFactor: {
+                enable: true,
+                priority: 1,
+                mandatory: true,
+              },
+              backUpShareFactor: {
+                enable: true,
+                priority: 2,
+                mandatory: false,
+              },
+              socialBackupFactor: {
+                enable: true,
+                priority: 3,
+                mandatory: false,
+              },
+              passwordFactor: {
+                enable: true,
+                priority: 4,
+                mandatory: false,
               },
             },
             loginConfig: {

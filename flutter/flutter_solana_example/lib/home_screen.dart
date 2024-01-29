@@ -125,7 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   verticalGap,
                   OutlinedButton(
                     onPressed: () async {
-                      final privateKey = await Web3AuthFlutter.getPrivKey();
+                      final privateKey =
+                          await Web3AuthFlutter.getEd25519PrivKey();
                       if (context.mounted) {
                         copyContentToClipboard(context, privateKey);
                       }

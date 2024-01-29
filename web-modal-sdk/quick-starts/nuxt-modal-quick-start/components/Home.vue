@@ -1,9 +1,8 @@
-<!-- eslint-disable vue/no-ref-as-operand -->
 <template>
   <div id="app">
     <h2>
-      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer"> Web3Auth </a>
-      Vue.js Quick Start
+      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer"> Web3Auth </a>
+      Nuxt Quick Start
     </h2>
 
     <button v-if="!loggedIn" class="card" @click="login" style="cursor: pointer">Login</button>
@@ -33,7 +32,7 @@
 
     <footer class="footer">
       <a
-        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start"
+        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nuxt-modal-quick-start"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -46,23 +45,15 @@
 <script lang="ts">
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 // IMP END - Quick Start
 import Web3 from "web3";
 
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
+export default defineComponent({
   name: "Home",
-  props: {
-    msg: String,
-  },
   setup() {
-    const loggedIn = ref<boolean>(false);
-    let provider = <IProvider | null>null;
-
     // IMP START - SDK Initialization
     // IMP START - Dashboard Registration
     const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -78,24 +69,21 @@ export default {
       tickerName: "Ethereum",
     };
 
-    const web3auth = new Web3AuthNoModal({
+    const web3auth = new Web3Auth({
       clientId,
       chainConfig,
       web3AuthNetwork: "sapphire_mainnet",
     });
 
-    const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-    const openloginAdapter = new OpenloginAdapter({
-      privateKeyProvider: privateKeyProvider,
-    });
-    web3auth.configureAdapter(openloginAdapter);
+    const loggedIn = ref<boolean>(false);
+    let provider = <IProvider | null>null;
     // IMP END - SDK Initialization
 
     onMounted(async () => {
       const init = async () => {
         try {
           // IMP START - SDK Initialization
-          await web3auth.init();
+          await web3auth.initModal();
           // IMP END - SDK Initialization
           provider = web3auth.provider;
 
@@ -112,11 +100,8 @@ export default {
 
     const login = async () => {
       // IMP START - Login
-      provider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-        loginProvider: "google",
-      });
+      provider = await web3auth.connect();
       // IMP END - Login
-
       if (web3auth.connected) {
         loggedIn.value = true;
       }
@@ -211,7 +196,7 @@ export default {
       signMessage,
     };
   },
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

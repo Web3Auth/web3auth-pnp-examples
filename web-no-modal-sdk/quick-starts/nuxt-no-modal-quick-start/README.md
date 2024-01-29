@@ -1,18 +1,18 @@
-# Web3Auth (`@web3auth/modal`) x EVM x Vue.js
+# Web3Auth (`@web3auth/no-modal`) x EVM x Nuxt
 
-[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/pnp/web/modal)
+[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/pnp/web/no-modal)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-This example demonstrates how to use Web3Auth with EVM in Vue.js
+This example demonstrates how to use Web3Auth with EVM in Nuxt
 
 ## How to Use
 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start w3a-example
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/quick-starts/nuxt-no-modal-quick-start w3a-example
 ```
 
 Install & Run:

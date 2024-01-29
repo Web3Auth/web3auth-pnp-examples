@@ -1,9 +1,8 @@
-<!-- eslint-disable vue/no-ref-as-operand -->
 <template>
   <div id="app">
     <h2>
       <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer"> Web3Auth </a>
-      Vue.js Quick Start
+      Nuxt Quick Start
     </h2>
 
     <button v-if="!loggedIn" class="card" @click="login" style="cursor: pointer">Login</button>
@@ -33,7 +32,7 @@
 
     <footer class="footer">
       <a
-        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start"
+        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nuxt-modal-quick-start"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -47,18 +46,15 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
 import Web3 from "web3";
 
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
+export default defineComponent({
   name: "Home",
-  props: {
-    msg: String,
-  },
   setup() {
     const loggedIn = ref<boolean>(false);
     let provider = <IProvider | null>null;
@@ -70,7 +66,7 @@ export default {
 
     const chainConfig = {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0xaa36a7", // Please use 0x1 for Mainnet, 11155111(0xaa36a7) for Sepolia Testnet
+      chainId: "0xaa36a7", // Please use 0x1 for Mainnet, hex of 11155111 (0xaa36a7) for Sepolia Testnet
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
       displayName: "Sepolia Testnet",
       blockExplorer: "https://sepolia.etherscan.io/",
@@ -211,7 +207,7 @@ export default {
       signMessage,
     };
   },
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

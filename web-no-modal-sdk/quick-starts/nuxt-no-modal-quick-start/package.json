@@ -1,0 +1,27 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "//IMP START": "IMP START - Web3Auth Installation",
+  "devDependencies": {
+    "nuxt": "^3.9.3",
+    "vue": "^3.4.14",
+    "vite-plugin-node-polyfills": "^0.19.0",
+    "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@web3auth/base": "^7.3.1",
+    "@web3auth/ethereum-provider": "^7.3.1",
+    "@web3auth/no-modal": "^7.3.1",
+    "@web3auth/openlogin-adapter": "^7.3.1",
+    "web3": "^4.4.0"
+  },
+  "//IMP END": "IMP END- Web3Auth Installation"
+}

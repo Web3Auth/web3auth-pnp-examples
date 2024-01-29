@@ -98,3 +98,11 @@ tests/cases/user/prettier/prettier
 .eslintcache
 .expo
 build
+
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist

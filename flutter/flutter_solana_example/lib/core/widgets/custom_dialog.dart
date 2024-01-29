@@ -7,10 +7,10 @@ class CustomDialog extends StatelessWidget {
   final bool canceable;
 
   const CustomDialog({
-    Key? key,
+    super.key,
     required this.child,
     this.canceable = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

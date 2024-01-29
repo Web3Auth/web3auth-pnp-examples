@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_solana_example/core/extensions.dart';
 import 'package:flutter_solana_example/core/widgets/custom_dialog.dart';
 import 'package:flutter_solana_example/home_screen.dart';
 import 'package:web3auth_flutter/enums.dart';
 import 'package:web3auth_flutter/input.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late final TextEditingController textEditingController;
+  late final GlobalKey<FormState> formKey;
+
+  Widget get verticalGap => const SizedBox(height: 16);
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController = TextEditingController();
+    formKey = GlobalKey<FormState>();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -21,9 +41,33 @@ class LoginScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
             ),
-            const SizedBox(height: 16),
+            verticalGap,
+            Form(
+              key: formKey,
+              child: TextFormField(
+                controller: textEditingController,
+                validator: (email) {
+                  final isValidEmail = email != null && email.isValidEmail;
+                  if (isValidEmail) {
+                    return null;
+                  }
+                  return "Please enter a valid email";
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                ),
+              ),
+            ),
+            verticalGap,
             OutlinedButton(
-              onPressed: () => _login(context),
+              onPressed: () => _login(context, Provider.email_passwordless),
+              child: const Text("Login with Email passwordless"),
+            ),
+            verticalGap,
+            OutlinedButton(
+              onPressed: () => _login(context, Provider.google),
               child: const Text("Login with Google"),
             )
           ],
@@ -32,12 +76,27 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _login(BuildContext context) async {
+  Future<void> _login(
+    BuildContext context,
+    Provider loginProvider,
+  ) async {
     try {
+      final bool isEmailPasswordLessLogin =
+          loginProvider == Provider.email_passwordless;
+
+      if (!formKey.currentState!.validate()) {
+        return;
+      }
+
+      final userEmail = textEditingController.text;
+
       await Web3AuthFlutter.login(
         LoginParams(
-          loginProvider: Provider.google,
-          mfaLevel: MFALevel.MANDATORY,
+          loginProvider: loginProvider,
+          mfaLevel: MFALevel.DEFAULT,
+          extraLoginOptions: isEmailPasswordLessLogin
+              ? ExtraLoginOptions(login_hint: userEmail)
+              : null,
         ),
       );
 

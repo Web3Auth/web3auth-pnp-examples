@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_solana_example/core/extensions.dart';
@@ -6,6 +9,7 @@ import 'package:flutter_solana_example/core/solana/solana_provider.dart';
 import 'package:flutter_solana_example/core/widgets/custom_dialog.dart';
 import 'package:flutter_solana_example/login_screen.dart';
 import 'package:solana/solana.dart';
+import 'package:web3auth_flutter/output.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final Ed25519HDKeyPair keyPair;
   late final SolanaProvider provider;
   late double balance;
+  late final TorusUserInfo torusUserInfo;
 
   @override
   void initState() {
@@ -32,6 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> loadAccount(BuildContext context) async {
     try {
       final privateKey = await Web3AuthFlutter.getEd25519PrivKey();
+
+      // getUserInfo method can be used to fetch the user information
+      // such as email, name, isMFA enabled. Checkout documentation
+      // to know more.
+      torusUserInfo = await Web3AuthFlutter.getUserInfo();
 
       /// The ED25519 PrivateKey returns a key pair from
       /// which we only require first 32 byte.
@@ -84,7 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     balance.toString(),
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
-                  verticalGap,
+                  if (torusUserInfo.email != null) ...[
+                    verticalGap,
+                    Text(
+                      torusUserInfo.email!,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    )
+                  ],
                   Row(
                     children: [
                       const Spacer(),
@@ -132,9 +148,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                     child: const Text(
-                      "Copy private ",
+                      "Copy private key",
                     ),
-                  )
+                  ),
+                  verticalGap,
+                  OutlinedButton(
+                    onPressed: () async {
+                      log(jsonEncode(torusUserInfo.toJson()));
+                    },
+                    child: const Text("Log user infor in console"),
+                  ),
                 ],
               ),
             );

@@ -4,6 +4,7 @@ import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import Web3 from "web3";
 
 import "./App.css";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -13,15 +14,21 @@ const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io/",
+  blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "",
 };
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig: chainConfig }
+});
 
 const web3auth = new Web3Auth({
   clientId,
   chainConfig,
   web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider: privateKeyProvider,
 });
 
 function App() {

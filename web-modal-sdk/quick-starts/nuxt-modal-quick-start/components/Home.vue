@@ -48,6 +48,7 @@ import { ref, onMounted } from "vue";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import type { IProvider } from "@web3auth/base";
+import {EthereumPrivateKeyProvider} from "@web3auth/ethereum-provider";
 // IMP END - Quick Start
 import Web3 from "web3";
 
@@ -64,15 +65,21 @@ export default defineComponent({
       chainId: "0xaa36a7", // Please use 0x1 for Mainnet, 11155111(0xaa36a7) for Sepolia Testnet
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
       displayName: "Sepolia Testnet",
-      blockExplorer: "https://sepolia.etherscan.io/",
+      blockExplorerUrl: "https://sepolia.etherscan.io/",
       ticker: "ETH",
       tickerName: "Ethereum",
+      logo: "",
     };
+
+    const privateKeyProvider = new EthereumPrivateKeyProvider({
+      config: { chainConfig: chainConfig }
+    });
 
     const web3auth = new Web3Auth({
       clientId,
       chainConfig,
       web3AuthNetwork: "sapphire_mainnet",
+      privateKeyProvider: privateKeyProvider,
     });
 
     const loggedIn = ref<boolean>(false);

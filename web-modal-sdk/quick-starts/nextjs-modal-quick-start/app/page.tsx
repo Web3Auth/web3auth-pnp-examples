@@ -26,7 +26,7 @@ const chainConfig = {
   blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "",
+  logo: "https://images.toruswallet.io/eth.svg",
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({

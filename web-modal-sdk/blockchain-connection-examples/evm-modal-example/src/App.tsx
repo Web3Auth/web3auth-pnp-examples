@@ -1,154 +1,177 @@
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
+import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, getEvmChainConfig, CustomChainConfig } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
 
-// Plugins
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+
+// Wallet Services
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 // Adapters
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
-import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+// import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+// import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+// import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
+const chainConfig = {
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://web3auth.io/images/web3auth-logo.svg",
+};
+
+// Using Default ChainConfig
+let defaultChainConfig: CustomChainConfig | null = getEvmChainConfig(11155111); // 1 for Ethereum Mainnet
+let chainConfigPrivateKeyProvider;
+// Remove chainNamespace from defaultChainConfig
+if (defaultChainConfig && "chainNamespace" in defaultChainConfig) {
+  const { chainNamespace, ...newConfig } = defaultChainConfig;
+  chainConfigPrivateKeyProvider = { ...newConfig };
+}
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: chainConfigPrivateKeyProvider as any } });
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  uiConfig: {
+    uxMode: "redirect",
+    appName: "W3A Heroes",
+    appUrl: "https://web3auth.io/",
+    theme: {
+      primary: "#768729",
+    },
+    logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+    logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+    defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+    mode: "auto", // whether to enable dark mode. defaultValue: false
+    useLogoLoader: true,
+  },
+  privateKeyProvider: privateKeyProvider,
+};
+
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
+  const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3Auth({
-          clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-          // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
-          // Please remove this parameter if you're on the Base Plan
-          uiConfig: {
-            appName: "W3A",
-            theme: {
-              primary: "red",
-            },
-            mode: "dark",
-            logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-            logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-            loginGridCol: 3,
-            primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
-          },
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-        });
+        const web3auth = new Web3Auth(web3AuthOptions);
+
+        // const openloginAdapter = new OpenloginAdapter({
+        //   loginSettings: {
+        //     mfaLevel: "optional",
+        //   },
+        //   adapterSettings: {
+        //     uxMode: "redirect", // "redirect" | "popup"
+        //     whiteLabel: {
+        //       logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+        //       logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+        //       defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+        //       mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
+        //     },
+        //     mfaSettings: {
+        //       deviceShareFactor: {
+        //         enable: true,
+        //         priority: 1,
+        //         mandatory: true,
+        //       },
+        //       backUpShareFactor: {
+        //         enable: true,
+        //         priority: 2,
+        //         mandatory: false,
+        //       },
+        //       socialBackupFactor: {
+        //         enable: true,
+        //         priority: 3,
+        //         mandatory: false,
+        //       },
+        //       passwordFactor: {
+        //         enable: true,
+        //         priority: 4,
+        //         mandatory: false,
+        //       },
+        //     },
+        //   },
+        // });
+        // web3auth.configureAdapter(openloginAdapter);
 
         const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "optional",
-          },
-          adapterSettings: {
-            uxMode: "redirect", // "redirect" | "popup"
-            whiteLabel: {
-              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-              mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
-            },
-            mfaSettings: {
-              deviceShareFactor: {
-                enable: true,
-                priority: 1,
-                mandatory: true,
-              },
-              backUpShareFactor: {
-                enable: true,
-                priority: 2,
-                mandatory: false,
-              },
-              socialBackupFactor: {
-                enable: true,
-                priority: 3,
-                mandatory: false,
-              },
-              passwordFactor: {
-                enable: true,
-                priority: 4,
-                mandatory: false,
-              },
-            },
-          },
+          adapterSettings: { buildEnv: "testing" },
         });
         web3auth.configureAdapter(openloginAdapter);
 
-        // plugins and adapters are optional and can be added as per your requirement
-        // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/
+        // Only when you want to add External default adapters.
+        // const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
-        // adding torus wallet connector plugin
+        // adapters.forEach((adapter) => {
+        //   web3auth.configureAdapter(adapter);
+        // });
 
-        const torusPlugin = new TorusWalletConnectorPlugin({
-          torusWalletOpts: {},
-          walletInitOptions: {
-            whiteLabel: {
-              theme: { isDark: true, colors: { primary: "#00a8ff" } },
-              logoDark: "https://web3auth.io/images/web3auth-logo.svg",
-              logoLight: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-            },
-            useWalletConnect: true,
-            enableLogging: true,
-          },
+        const walletServicesPlugin = new WalletServicesPlugin({
+          wsEmbedOpts: {},
+          walletInitOptions: { whiteLabel: { showWidgetButton: true } },
         });
-        setTorusPlugin(torusPlugin);
-        await web3auth.addPlugin(torusPlugin);
+
+        setWalletServicesPlugin(walletServicesPlugin);
+
+        await web3auth.addPlugin(walletServicesPlugin);
 
         // read more about adapters here: https://web3auth.io/docs/sdk/pnp/web/adapters/
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1], "04309ed1007e77d1f119b85205bb779d");
-        const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          adapterSettings: { ...defaultWcSettings.adapterSettings },
-          loginSettings: { ...defaultWcSettings.loginSettings },
-        });
+        // const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1], "04309ed1007e77d1f119b85205bb779d");
+        // const walletConnectV2Adapter = new WalletConnectV2Adapter({
+        //   adapterSettings: { ...defaultWcSettings.adapterSettings },
+        //   loginSettings: { ...defaultWcSettings.loginSettings },
+        // });
 
-        web3auth.configureAdapter(walletConnectV2Adapter);
+        // web3auth.configureAdapter(walletConnectV2Adapter);
 
         // adding metamask adapter
-        const metamaskAdapter = new MetamaskAdapter({
-          clientId,
-          sessionTime: 3600, // 1 hour in seconds
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-        });
+        // const metamaskAdapter = new MetamaskAdapter({
+        //   clientId,
+        //   sessionTime: 3600, // 1 hour in seconds
+        //   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        //   chainConfig: {
+        //     chainNamespace: CHAIN_NAMESPACES.EIP155,
+        //     chainId: "0x1",
+        //     rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        //   },
+        // });
         // we can change the above settings using this function
-        metamaskAdapter.setAdapterSettings({
-          sessionTime: 86400, // 1 day in seconds
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-        });
+        // metamaskAdapter.setAdapterSettings({
+        //   sessionTime: 86400, // 1 day in seconds
+        //   chainConfig: {
+        //     chainNamespace: CHAIN_NAMESPACES.EIP155,
+        //     chainId: "0x1",
+        //     rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+        //   },
+        //   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        // });
 
-        // it will add/update  the metamask adapter in to web3auth class
-        web3auth.configureAdapter(metamaskAdapter);
+        // // it will add/update  the metamask adapter in to web3auth class
+        // web3auth.configureAdapter(metamaskAdapter);
 
-        const torusWalletAdapter = new TorusWalletAdapter({
-          clientId,
-        });
+        // const torusWalletAdapter = new TorusWalletAdapter({
+        //   clientId,
+        // });
 
-        // it will add/update  the torus-evm adapter in to web3auth class
-        web3auth.configureAdapter(torusWalletAdapter);
+        // // it will add/update  the torus-evm adapter in to web3auth class
+        // web3auth.configureAdapter(torusWalletAdapter);
 
         setWeb3auth(web3auth);
 
@@ -229,26 +252,20 @@ function App() {
   };
 
   const showWCM = async () => {
-    if (!torusPlugin) {
+    if (!walletServicesPlugin) {
       uiConsole("torus plugin not initialized yet");
       return;
     }
-    torusPlugin.showWalletConnectScanner();
+    walletServicesPlugin.showWalletConnectScanner();
     uiConsole();
   };
 
-  const initiateTopUp = async () => {
-    if (!torusPlugin) {
+  const showCheckout = async () => {
+    if (!walletServicesPlugin) {
       uiConsole("torus plugin not initialized yet");
       return;
     }
-    torusPlugin.initiateTopup("moonpay", {
-      selectedAddress: "0x8cFa648eBfD5736127BbaBd1d3cAe221B45AB9AF",
-      selectedCurrency: "USD",
-      fiatValue: 100,
-      selectedCryptoCurrency: "ETH",
-      chainNetwork: "mainnet",
-    });
+    walletServicesPlugin.showCheckout();
   };
 
   const getChainId = async () => {
@@ -274,7 +291,8 @@ function App() {
       ticker: "ETH",
       decimals: 18,
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      blockExplorer: "https://sepolia.etherscan.io",
+      blockExplorerUrl: "https://sepolia.etherscan.io",
+      logo: "",
     };
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
@@ -386,12 +404,12 @@ function App() {
         </div>
         <div>
           <button onClick={showWCM} className="card">
-            Show Wallet Connect Modal
+            Show Wallet Connect
           </button>
         </div>
         <div>
-          <button onClick={initiateTopUp} className="card">
-            initiateTopUp
+          <button onClick={showCheckout} className="card">
+            Show Checkout
           </button>
         </div>
         <div>

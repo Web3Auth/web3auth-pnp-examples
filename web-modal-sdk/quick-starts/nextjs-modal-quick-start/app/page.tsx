@@ -10,6 +10,7 @@ import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 // IMP END - Quick Start
 import Web3 from "web3";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration
@@ -22,15 +23,21 @@ const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io/",
+  blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "",
 };
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig: chainConfig }
+});
 
 const web3auth = new Web3Auth({
   clientId,
   chainConfig,
   web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider: privateKeyProvider,
 });
 // IMP END - SDK Initialization
 

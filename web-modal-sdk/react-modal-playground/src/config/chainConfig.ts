@@ -10,16 +10,18 @@ export const chain: {
     tickerName: "Ethereum",
     ticker: "ETH",
     rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-    blockExplorer: "https://sepolia.etherscan.io",
+    blockExplorerUrl: "https://sepolia.etherscan.io",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Ethereum: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
     displayName: "Ethereum Mainnet",
     rpcTarget: "https://rpc.ankr.com/eth",
-    blockExplorer: "https://etherscan.io",
+    blockExplorerUrl: "https://etherscan.io",
     ticker: "ETH",
     tickerName: "Ethereum",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Polygon: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -28,9 +30,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Polygon Mainnet",
-    blockExplorer: "https://polygonscan.com",
+    blockExplorerUrl: "https://polygonscan.com",
     ticker: "MATIC",
     tickerName: "Matic",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   "Polygon Mumbai Testnet": {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -39,9 +42,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Polygon Mumbai Testnet",
-    blockExplorer: "https://mumbai.polygonscan.com/",
+    blockExplorerUrl: "https://mumbai.polygonscan.com/",
     ticker: "MATIC",
     tickerName: "Matic",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   "Base Chain (Coinbase)": {
     // https://docs.base.org/using-base/
@@ -51,9 +55,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Base Sepolia",
-    blockExplorer: "https://sepolia-explorer.base.org/",
+    blockExplorerUrl: "https://sepolia-explorer.base.org/",
     ticker: "ETH",
     tickerName: "ETH",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   "BNB Chain": {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -62,9 +67,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Binance SmartChain Mainnet",
-    blockExplorer: "https://bscscan.com/",
+    blockExplorerUrl: "https://bscscan.com/",
     ticker: "BNB",
     tickerName: "BNB",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Avalanche: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -73,9 +79,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Avalanche C-Chain Mainnet",
-    blockExplorer: "https://subnets.avax.network/c-chain",
+    blockExplorerUrl: "https://subnets.avax.network/c-chain",
     ticker: "AVAX",
     tickerName: "AVAX",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Arbitrum: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -84,9 +91,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Arbitrum Mainnet",
-    blockExplorer: "https://arbiscan.io",
+    blockExplorerUrl: "https://arbiscan.io",
     ticker: "AETH",
     tickerName: "AETH",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Optimism: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -95,9 +103,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Optimism Mainnet",
-    blockExplorer: "https://optimistic.etherscan.io",
+    blockExplorerUrl: "https://optimistic.etherscan.io",
     ticker: "OP",
     tickerName: "OP",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Cronos: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -106,9 +115,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Cronos Mainnet",
-    blockExplorer: "https://cronoscan.com/",
+    blockExplorerUrl: "https://cronoscan.com/",
     ticker: "CRO",
     tickerName: "CRO",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Harmony: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -117,9 +127,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Harmony Mainnet",
-    blockExplorer: "https://explorer.harmony.one",
+    blockExplorerUrl: "https://explorer.harmony.one",
     ticker: "ONE",
     tickerName: "ONE",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Celo: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -128,9 +139,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Celo Mainnet",
-    blockExplorer: "https://explorer.celo.org",
+    blockExplorerUrl: "https://explorer.celo.org",
     ticker: "CELO",
     tickerName: "CELO",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Moonbeam: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -139,9 +151,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Moonbeam Mainnet",
-    blockExplorer: "https://moonbeam.moonscan.io",
+    blockExplorerUrl: "https://moonbeam.moonscan.io",
     ticker: "GLMR",
     tickerName: "GLMR",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Moonriver: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -150,9 +163,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Moonriver Mainnet",
-    blockExplorer: "https://moonriver.moonscan.io",
+    blockExplorerUrl: "https://moonriver.moonscan.io",
     ticker: "MOVR",
     tickerName: "MOVR",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Klaytn: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -161,9 +175,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Klaytn Mainnet",
-    blockExplorer: "https://scope.klaytn.com",
+    blockExplorerUrl: "https://scope.klaytn.com",
     ticker: "KLAY",
     tickerName: "KLAY",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Flare: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -172,9 +187,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services provided by Flare or other node providers
     displayName: "Flare Mainnet",
-    blockExplorer: "https://flare-explorer.flare.network/",
+    blockExplorerUrl: "https://flare-explorer.flare.network/",
     ticker: "FLR",
     tickerName: "FLR",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   Songbird: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -183,9 +199,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services provided by Flare or other node providers
     displayName: "Songbird canary network",
-    blockExplorer: "https://songbird-explorer.flare.network",
+    blockExplorerUrl: "https://songbird-explorer.flare.network",
     ticker: "SGB",
     tickerName: "SGB",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   zKatana: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -194,9 +211,10 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "zKatana Testnet",
-    blockExplorer: "https://zkatana.blockscout.com",
+    blockExplorerUrl: "https://zkatana.blockscout.com",
     ticker: "ETH",
     tickerName: "ETH",
+    logo: "https://web3auth.io/images/web3auth-logo.svg",
   },
   // SKALE: {
   //   chainNamespace: CHAIN_NAMESPACES.EIP155,

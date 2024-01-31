@@ -1,5 +1,7 @@
 import { getPublicCompressed } from "@toruslabs/eccrypto";
+import { THEME_MODES } from "@toruslabs/openlogin-utils";
 import { CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
 import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import * as jose from "jose";
@@ -103,14 +105,22 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       try {
         setIsLoading(true);
         const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+
+        const privateKeyProvider = new EthereumPrivateKeyProvider({
+          config: {
+            chainConfig: chain["Sepolia Testnet"],
+          },
+        });
+
         const web3AuthInstance = new Web3Auth({
           clientId,
           chainConfig: chain["Sepolia Testnet"],
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
           uiConfig: {
-            mode: "light", // light, dark or auto
+            mode: THEME_MODES.light, // light, dark or auto
             loginMethodsOrder: ["twitter"],
           },
+          privateKeyProvider,
         });
         const openloginAdapter = new OpenloginAdapter({
           // loginSettings: {

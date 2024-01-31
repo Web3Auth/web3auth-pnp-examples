@@ -28,7 +28,7 @@ const chainConfig = {
   blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "https://web3auth.io/images/web3auth-logo.svg",
+  logo: "https://images.toruswallet.io/eth.svg",
 };
 
 // Using Default ChainConfig
@@ -56,7 +56,7 @@ const web3AuthOptions: Web3AuthOptions = {
     logoLight: "https://web3auth.io/images/web3auth-logo.svg",
     logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
     defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
-    mode: "auto", // whether to enable dark mode. defaultValue: false
+    mode: "auto", // whether to enable dark mode. defaultValue: auto
     useLogoLoader: true,
   },
   privateKeyProvider: privateKeyProvider,

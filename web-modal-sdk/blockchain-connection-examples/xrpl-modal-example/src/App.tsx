@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, CustomChainConfig, IProvider, getXrplChainConfig } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
 import RPC from "./xrplRPC";
 import "./App.css";
+import { log } from "console";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -16,12 +17,20 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        const xrplProvider = new XrplPrivateKeyProvider({
+          config: {
+            chainConfig: getXrplChainConfig(2) as any // Testnet
+          },
+        });
+
+        console.log(xrplProvider.config);
+
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
-            chainId: "0x04",
-            rpcTarget: "https://s.altnet.rippletest.net:51234",
+            chainId: "0x02",
+            rpcTarget: "https://testnet-ripple-node.tor.us",
           },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
@@ -39,11 +48,9 @@ function App() {
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
           web3AuthNetwork: "sapphire_mainnet",
+          privateKeyProvider: xrplProvider,
         });
 
-        const xrplProvider: any = new XrplPrivateKeyProvider({
-          config: { chainConfig: getXRPLChainConfig("testnet") },
-        }); // devnet, testnet, mainnet
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
             mfaLevel: "optional",

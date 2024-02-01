@@ -61,6 +61,7 @@ const web3AuthOptions: Web3AuthOptions | BaseAdapterSettings | TorusWalletOption
   },
   privateKeyProvider: privateKeyProvider,
   sessionTime: 86400, // 1 day
+  // useCoreKitKey: true,
 };
 
 function App() {
@@ -106,6 +107,13 @@ function App() {
                 enable: true,
                 priority: 4,
                 mandatory: false,
+              },
+            },
+            loginConfig: {
+              google: {
+                verifier: "w3a-google-demo",
+                typeOfLogin: "google",
+                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", //use your app client id you got from google
               },
             },
           },

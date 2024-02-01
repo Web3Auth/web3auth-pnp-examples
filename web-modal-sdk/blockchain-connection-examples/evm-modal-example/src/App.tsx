@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig, CustomChainConfig } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig, CustomChainConfig, BaseAdapterSettings } from "@web3auth/base";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
@@ -16,8 +16,8 @@ import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 // import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
-import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
+import { TorusWalletAdapter, TorusWalletOptions } from "@web3auth/torus-evm-adapter";
+import { CoinbaseAdapter, CoinbaseAdapterOptions } from "@web3auth/coinbase-adapter";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -42,7 +42,7 @@ const chainConfig = {
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
-const web3AuthOptions: Web3AuthOptions = {
+const web3AuthOptions: Web3AuthOptions | BaseAdapterSettings | TorusWalletOptions | CoinbaseAdapterOptions = {
   clientId,
   chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
@@ -60,6 +60,7 @@ const web3AuthOptions: Web3AuthOptions = {
     useLogoLoader: true,
   },
   privateKeyProvider: privateKeyProvider,
+  sessionTime: 86400, // 1 day
 };
 
 function App() {
@@ -70,7 +71,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3Auth(web3AuthOptions);
+        const web3auth = new Web3Auth(web3AuthOptions as Web3AuthOptions);
 
         const openloginAdapter = new OpenloginAdapter({
           loginSettings: {
@@ -130,21 +131,22 @@ function App() {
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1], "04309ed1007e77d1f119b85205bb779d");
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
+          ...(web3AuthOptions as BaseAdapterSettings),
           adapterSettings: { ...defaultWcSettings.adapterSettings },
           loginSettings: { ...defaultWcSettings.loginSettings },
         });
         web3auth.configureAdapter(walletConnectV2Adapter);
 
         // adding metamask adapter
-        const metamaskAdapter = new MetamaskAdapter();
+        const metamaskAdapter = new MetamaskAdapter(web3AuthOptions as BaseAdapterSettings);
         web3auth.configureAdapter(metamaskAdapter);
 
         // adding torus evm adapter
-        const torusWalletAdapter = new TorusWalletAdapter();
+        const torusWalletAdapter = new TorusWalletAdapter(web3AuthOptions as TorusWalletOptions);
         web3auth.configureAdapter(torusWalletAdapter);
 
         // adding coinbase adapter
-        const coinbaseAdapter = new CoinbaseAdapter();
+        const coinbaseAdapter = new CoinbaseAdapter(web3AuthOptions as CoinbaseAdapterOptions);
         web3auth.configureAdapter(coinbaseAdapter);
 
         setWeb3auth(web3auth);

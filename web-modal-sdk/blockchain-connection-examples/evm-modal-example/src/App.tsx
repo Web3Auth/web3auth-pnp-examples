@@ -126,7 +126,7 @@ function App() {
           walletInitOptions: { whiteLabel: { showWidgetButton: true } },
         });
         setWalletServicesPlugin(walletServicesPlugin);
-        await web3auth.addPlugin(walletServicesPlugin);
+        web3auth.addPlugin(walletServicesPlugin);
 
         // read more about adapters here: https://web3auth.io/docs/sdk/pnp/web/adapters/
 

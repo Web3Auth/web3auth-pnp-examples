@@ -61,7 +61,7 @@ export default {
   },
   setup() {
     const loggedIn = ref<boolean>(false);
-    let provider = <IProvider | null>null;
+    let provider: IProvider | null = null;
 
     // IMP START - SDK Initialization
     // IMP START - Dashboard Registration
@@ -73,20 +73,25 @@ export default {
       chainId: "0xaa36a7", // Please use 0x1 for Mainnet, 11155111(0xaa36a7) for Sepolia Testnet
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
       displayName: "Sepolia Testnet",
-      blockExplorer: "https://sepolia.etherscan.io/",
+      blockExplorerUrl: "https://sepolia.etherscan.io/",
       ticker: "ETH",
       tickerName: "Ethereum",
+      logo: "https://openlogin.com/images/ethereum.png",
     };
+
+    const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
     const web3auth = new Web3AuthNoModal({
       clientId,
       chainConfig,
       web3AuthNetwork: "sapphire_mainnet",
+      privateKeyProvider,
     });
 
-    const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
     const openloginAdapter = new OpenloginAdapter({
-      privateKeyProvider: privateKeyProvider,
+      adapterSettings: {
+        uxMode: "redirect",
+      },
     });
     web3auth.configureAdapter(openloginAdapter);
     // IMP END - SDK Initialization

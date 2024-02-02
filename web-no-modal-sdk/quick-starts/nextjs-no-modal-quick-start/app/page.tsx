@@ -1,22 +1,20 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-shadow */
 
 "use client";
 
-import { useEffect, useState } from "react";
 // IMP START - Quick Start
-import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
+import { useEffect, useState } from "react";
 import Web3 from "web3";
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 const chainConfig = {
@@ -24,20 +22,25 @@ const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io/",
+  blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const web3auth = new Web3AuthNoModal({
   clientId,
   chainConfig,
   web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider,
 });
 
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider: privateKeyProvider,
+  adapterSettings: {
+    uxMode: "redirect",
+  },
 });
 web3auth.configureAdapter(openloginAdapter);
 // IMP END - SDK Initialization
@@ -67,12 +70,9 @@ function App() {
 
   const login = async () => {
     // IMP START - Login
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     // IMP END - Login
     setProvider(web3authProvider);
     if (web3auth.connected) {

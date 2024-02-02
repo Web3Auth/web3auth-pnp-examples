@@ -10,10 +10,10 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@web3auth/base": "^7.3.1",
-    "@web3auth/no-modal": "^7.3.1",
-    "@web3auth/ethereum-provider": "^7.3.1",
-    "@web3auth/openlogin-adapter": "^7.3.1",
+    "@web3auth/base": "^8.0.0-alpha.8",
+    "@web3auth/no-modal": "^8.0.0-alpha.8",
+    "@web3auth/ethereum-provider": "^8.0.0-alpha.8",
+    "@web3auth/openlogin-adapter": "^8.0.0-alpha.8",
     "empty-module": "^0.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@toruslabs/eslint-config-typescript": "^3.0.3",
+    "@toruslabs/eslint-config-typescript": "^2.0.0",
     "@types/jest": "^29.5.8",
     "@types/node": "^20.10.4",
     "@types/react": "^18.2.42",

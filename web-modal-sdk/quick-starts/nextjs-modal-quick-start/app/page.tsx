@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 // IMP START - Quick Start
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 // IMP END - Quick Start
 import Web3 from "web3";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -26,7 +26,7 @@ const chainConfig = {
   blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
+  logo: "https://images.toruswallet.io/eth.svg"
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -36,7 +36,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 const web3auth = new Web3Auth({
   clientId,
   chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider: privateKeyProvider,
 });
 // IMP END - SDK Initialization

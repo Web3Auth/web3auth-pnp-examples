@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import Web3 from "web3";
 
 import "./App.css";
@@ -27,7 +27,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 const web3auth = new Web3Auth({
   clientId,
   chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider: privateKeyProvider,
 });
 

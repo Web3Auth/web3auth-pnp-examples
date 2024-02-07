@@ -29,6 +29,7 @@ const chainConfig = {
   ticker: "ETH",
   tickerName: "Ethereum",
   logo: "https://images.toruswallet.io/eth.svg",
+  chainNamespace: CHAIN_NAMESPACES.EIP155
 };
 
 // Using Default ChainConfig
@@ -44,7 +45,6 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfi
 
 const web3AuthOptions: Web3AuthOptions | BaseAdapterSettings | TorusWalletOptions | CoinbaseAdapterOptions = {
   clientId,
-  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   uiConfig: {
     uxMode: "redirect",

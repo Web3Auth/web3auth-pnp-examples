@@ -49,7 +49,6 @@ function App() {
 
         const web3auth = new Web3Auth({
           clientId,
-          chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.SOLANA },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
@@ -61,6 +60,7 @@ function App() {
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+            uxMode: "redirect",
           },
           web3AuthNetwork: "sapphire_mainnet",
           privateKeyProvider: solanaPrivateKeyPrvoider

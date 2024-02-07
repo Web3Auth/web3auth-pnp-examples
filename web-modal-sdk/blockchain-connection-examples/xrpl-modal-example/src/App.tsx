@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, CustomChainConfig, IProvider, getXrplChainConfig } from "@web3auth/base";
+import { CHAIN_NAMESPACES, CustomChainConfig, IProvider, UX_MODE, WEB3AUTH_NETWORK, getXrplChainConfig } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
 import RPC from "./xrplRPC";
@@ -27,11 +27,6 @@ function App() {
 
         const web3auth = new Web3Auth({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.OTHER,
-            chainId: "0x02",
-            rpcTarget: "https://testnet-ripple-node.tor.us",
-          },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
@@ -46,8 +41,9 @@ function App() {
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+            uxMode: UX_MODE.REDIRECT,
           },
-          web3AuthNetwork: "sapphire_mainnet",
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           privateKeyProvider: xrplProvider,
         });
 

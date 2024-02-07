@@ -29,9 +29,12 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth({
   clientId,
-  chainConfig,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider
+  privateKeyProvider,
+  uiConfig: {
+    // For enabling direct mode
+    uxMode: "redirect",
+  }
 });
 // IMP END - SDK Initialization
 

@@ -33,7 +33,7 @@ const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider: privateKeyProvider,
-  // for enabling Redirect Mode
+  // For enabling Redirect Mode
   uiConfig: {
     uxMode: "redirect"
   }

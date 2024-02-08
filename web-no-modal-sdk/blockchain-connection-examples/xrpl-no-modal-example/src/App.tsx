@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
-  CHAIN_NAMESPACES,
+  getXrplChainConfig,
   IProvider,
+  UX_MODE,
   WALLET_ADAPTERS,
+  WEB3AUTH_NETWORK,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-// import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import {
-  XrplPrivateKeyProvider,
-  getXRPLChainConfig,
-} from "@web3auth/xrpl-provider";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
 import RPC from "./xrplRPC";
 import "./App.css";
 
@@ -27,22 +25,20 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const web3auth = new Web3AuthNoModal({
-          clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.OTHER,
-            chainId: "0x04",
-            rpcTarget: "https://s.altnet.rippletest.net:51234",
-          },
-          web3AuthNetwork: "sapphire_mainnet",
+        const privateKeyProvider = new XrplPrivateKeyProvider({
+          config: { chainConfig: getXrplChainConfig(2)! },
         });
 
-        const xrplProvider: any = new XrplPrivateKeyProvider({
-          config: { chainConfig: getXRPLChainConfig("testnet") },
-        }); // devnet, testnet, mainnet
+        const web3auth = new Web3AuthNoModal({
+          clientId,
+          privateKeyProvider,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        });
 
         const openloginAdapter = new OpenloginAdapter({
-          privateKeyProvider: xrplProvider,
+          adapterSettings: {
+            uxMode: UX_MODE.REDIRECT,
+          }
         });
         web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);

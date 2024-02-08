@@ -46,7 +46,7 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import type { IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -80,13 +80,13 @@ export default defineComponent({
     const web3auth = new Web3AuthNoModal({
       clientId,
       chainConfig,
-      web3AuthNetwork: "sapphire_mainnet",
+      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
       privateKeyProvider,
     });
 
     const openloginAdapter = new OpenloginAdapter({
       adapterSettings: {
-        uxMode: "redirect",
+        uxMode: UX_MODE.REDIRECT,
       },
     });
     web3auth.configureAdapter(openloginAdapter);

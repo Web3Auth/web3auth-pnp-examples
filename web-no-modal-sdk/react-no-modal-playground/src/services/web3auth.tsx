@@ -1,8 +1,8 @@
 import { getPublicCompressed } from "@toruslabs/eccrypto";
-import { CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CustomChainConfig, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import * as jose from "jose";
 import * as React from "react";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
@@ -110,13 +110,14 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       try {
         setIsLoading(true);
         const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-        const web3AuthInstance = new Web3AuthNoModal({
-          clientId,
-          chainConfig: chain["Sepolia Testnet"],
-          web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
-        });
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: chain["Sepolia Testnet"] } });
+
+        const web3AuthInstance = new Web3AuthNoModal({
+          clientId,
+          privateKeyProvider,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        });
 
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
@@ -125,7 +126,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           },
           adapterSettings: {
             clientId,
-            uxMode: "redirect", // "redirect" | "popup"
+            uxMode: UX_MODE.REDIRECT,
             loginConfig: {
               google: {
                 verifier: "aggregate-sapphire",

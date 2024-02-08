@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 // import RPC from './evm.web3';
@@ -19,23 +19,26 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
+          chainId: "0x1", // Please use 0x1 for Mainnet
           rpcTarget: "https://rpc.ankr.com/eth",
           displayName: "Ethereum Mainnet",
-          blockExplorer: "https://etherscan.io",
+          blockExplorerUrl: "https://etherscan.io/",
           ticker: "ETH",
           tickerName: "Ethereum",
+          logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
         };
+
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig,
-          web3AuthNetwork: "sapphire_mainnet",
-          useCoreKitKey: false,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+          privateKeyProvider,
         });
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
+            uxMode: UX_MODE.REDIRECT,
             loginConfig: {
               jwt: {
                 verifier: "w3a-node-demo",
@@ -44,7 +47,6 @@ function App() {
               },
             },
           },
-          privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);

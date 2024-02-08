@@ -3,6 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
   IProvider,
+  UX_MODE,
   WALLET_ADAPTERS,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -28,20 +29,24 @@ function App() {
           chainId: "0x1",
           rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
           displayName: "Algorand Mainnet",
-          blockExplorer: "",
+          blockExplorerUrl: "",
           ticker: "ALGO",
           tickerName: "Algorand",
+          logo: "",
         };
+
+        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
+
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig,
+          privateKeyProvider,
           web3AuthNetwork: "sapphire_mainnet",
         });
         
-        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
-
         const openloginAdapter = new OpenloginAdapter({
-          privateKeyProvider,
+          adapterSettings: {
+            uxMode: UX_MODE.REDIRECT,
+          },
         });
         web3auth.configureAdapter(openloginAdapter);
         setWeb3auth(web3auth);

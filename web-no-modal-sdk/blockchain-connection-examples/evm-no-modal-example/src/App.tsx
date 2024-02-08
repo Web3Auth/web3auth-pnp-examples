@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
@@ -21,25 +21,26 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0xaa36a7",
-          rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-          displayName: "Ethereum Sepolia",
-          blockExplorer: "https://sepolia.etherscan.io",
+          chainId: "0x1", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorerUrl: "https://etherscan.io/",
           ticker: "ETH",
           tickerName: "Ethereum",
+          logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
         };
+        
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+        
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig,
-          web3AuthNetwork: "sapphire_mainnet",
-        });
-
-        const privateKeyProvider = new EthereumPrivateKeyProvider({
-          config: { chainConfig },
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+          privateKeyProvider,
         });
 
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
+            uxMode: UX_MODE.REDIRECT,
             whiteLabel: {
               appName: "W3A Heroes",
               appUrl: "https://web3auth.io",
@@ -76,7 +77,7 @@ function App() {
             },
           },
           loginSettings: {
-            mfaLevel: "mandatory",
+            mfaLevel: "optional",
           },
           privateKeyProvider,
         });
@@ -118,6 +119,9 @@ function App() {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
+    if (web3auth.connected) {
+      setLoggedIn(true);
+    }
   };
 
   const loginWithSMS = async () => {
@@ -132,6 +136,9 @@ function App() {
       },
     });
     setProvider(web3authProvider);
+    if (web3auth.connected) {
+      setLoggedIn(true);
+    }
   };
 
   const loginWithEmail = async () => {
@@ -146,6 +153,9 @@ function App() {
       },
     });
     setProvider(web3authProvider);
+    if (web3auth.connected) {
+      setLoggedIn(true);
+    }
   };
 
   const loginWCModal = async () => {
@@ -155,6 +165,9 @@ function App() {
     }
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
     setProvider(web3authProvider);
+    if (web3auth.connected) {
+      setLoggedIn(true);
+    }
   };
 
   const authenticateUser = async () => {
@@ -208,7 +221,8 @@ function App() {
       ticker: "ETH",
       decimals: 18,
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      blockExplorer: "https://sepolia.etherscan.io",
+      blockExplorerUrl: "https://sepolia.etherscan.io",
+      logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
     };
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");

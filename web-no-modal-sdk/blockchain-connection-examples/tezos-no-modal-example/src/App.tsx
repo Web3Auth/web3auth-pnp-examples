@@ -3,7 +3,9 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
   IProvider,
+  UX_MODE,
   WALLET_ADAPTERS,
+  WEB3AUTH_NETWORK,
 } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -22,23 +24,27 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.OTHER,
-          chainId: "0x1",
+          chainId: "Tezos",
           rpcTarget: "https://rpc.tzbeta.net/",
           displayName: "Tezos",
-          blockExplorer: "https://tzstats.com",
+          blockExplorerUrl: "https://tzstats.com",
           ticker: "XTZ",
           tickerName: "Tezos",
+          logo: "",
         };
-        const web3authInstance = new Web3AuthNoModal({
-          clientId,
-          chainConfig,
-          web3AuthNetwork: "sapphire_mainnet",
-        });
 
         const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const web3authInstance = new Web3AuthNoModal({
+          clientId,
           privateKeyProvider,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        });
+
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            uxMode: UX_MODE.REDIRECT,
+          },
         });
         web3authInstance.configureAdapter(openloginAdapter);
         setWeb3auth(web3authInstance);

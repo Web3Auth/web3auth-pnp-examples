@@ -3,7 +3,7 @@
 import "react-toastify/dist/ReactToastify.css";
 
 import { getPublicCompressed } from "@toruslabs/eccrypto";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -18,57 +18,6 @@ function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth",
-          displayName: "Ethereum Mainnet",
-          blockExplorer: "https://etherscan.io",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-        };
-        const web3authInstance = new Web3AuthNoModal({
-          clientId,
-          chainConfig,
-          web3AuthNetwork: "sapphire_mainnet",
-        });
-
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-        const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "mandatory",
-            dappShare: "true",
-          },
-          adapterSettings: {
-            loginConfig: {
-              google: {
-                verifier: "w3a-google-demo",
-                typeOfLogin: "google",
-                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", // use your app client id you got from google
-              },
-            },
-          },
-          privateKeyProvider,
-        });
-        web3authInstance.configureAdapter(openloginAdapter);
-        setWeb3auth(web3authInstance);
-        await web3authInstance.init();
-        setProvider(web3authInstance.provider);
-        if (web3authInstance.connectedAdapterName) {
-          setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -136,11 +85,9 @@ function App() {
       return;
     }
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-      mfaLevel: "default",
       loginProvider: "google",
     });
     setProvider(web3authProvider);
-    await validateIdToken();
     setLoggedIn(true);
   };
 
@@ -193,6 +140,50 @@ function App() {
     uiConsole(result);
   };
 
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x1", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth",
+          displayName: "Ethereum Mainnet",
+          blockExplorerUrl: "https://etherscan.io/",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+          logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+        };
+
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+        const web3authInstance = new Web3AuthNoModal({
+          clientId,
+          privateKeyProvider,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        });
+
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            uxMode: UX_MODE.REDIRECT,
+          },
+          privateKeyProvider,
+        });
+        web3authInstance.configureAdapter(openloginAdapter);
+        setWeb3auth(web3authInstance);
+        await web3authInstance.init();
+        setProvider(web3authInstance.provider);
+        if (web3authInstance.connected) {
+          setLoggedIn(true);
+          await validateIdToken();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    init();
+  }, []);
+
   const loginView = (
     <>
       <div className="flex-container">
@@ -224,6 +215,11 @@ function App() {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={validateIdToken} className="card">
+            Validate ID Token
           </button>
         </div>
         <div>

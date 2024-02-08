@@ -19,15 +19,18 @@ let web3auth = null;
     tickerName: "Ethereum",
   };
 
+const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvider({ config: { chainConfig } });
+
   web3auth = new window.NoModal.Web3AuthNoModal({
     clientId,
-    chainConfig,
+    privateKeyProvider,
     web3AuthNetwork: "sapphire_mainnet",
   });
 
-  const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvider({ config: { chainConfig } });
   const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter({
-    privateKeyProvider,
+    adapterSettings: {
+      uxMode: "redirect",
+    },
   });
   web3auth.configureAdapter(openloginAdapter);
 

@@ -24,12 +24,10 @@ Future<void> main() async {
       clientId:
           "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
       network: Network.sapphire_mainnet,
-      buildEnv: BuildEnv.production,
       redirectUrl: redirectUrl,
       whiteLabel: WhiteLabelData(
         appName: "Solana Web3Auth Flutter",
         mode: ThemeModes.dark,
-        useLogoLoader: true,
       ),
     ),
   );

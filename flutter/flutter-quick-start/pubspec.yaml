@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   # // IMP START - Installation
-  web3auth_flutter: ^3.1.2
+  web3auth_flutter: ^3.1.4
   # // IMP END - Installation
   web3dart: ^2.7.2
   shared_preferences: ^2.2.2

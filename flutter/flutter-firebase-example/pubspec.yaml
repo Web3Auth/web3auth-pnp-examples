@@ -35,7 +35,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  web3auth_flutter: ^3.1.2
+  web3auth_flutter: ^3.1.4
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
   web3dart: ^2.7.2

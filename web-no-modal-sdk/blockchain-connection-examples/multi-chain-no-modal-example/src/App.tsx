@@ -15,8 +15,7 @@ import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
 import { hex2buf } from "@taquito/utils";
 // StarkEx and StarkNet
 //@ts-ignore
-import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
-
+import { ec } from "@starkware-industries/starkware-crypto-utils";
 // Polkadot
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
@@ -222,7 +221,7 @@ function App() {
       },
     });
     await polygonPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(polygonPrivateKeyProvider.provider as any);
+    const web3 = new Web3(polygonPrivateKeyProvider);
     const address = (await web3.eth.getAccounts())[0];
     return address;
   };
@@ -248,7 +247,7 @@ function App() {
       },
     });
     await bnbPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(bnbPrivateKeyProvider.provider as any);
+    const web3 = new Web3(bnbPrivateKeyProvider);
     const address = (await web3.eth.getAccounts())[0];
     return address;
   };
@@ -282,7 +281,7 @@ function App() {
 
     const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider.provider as any);
     const solana_address = await solanaWallet.requestAccounts();
-    return solana_address[0];
+    return "0x" +solana_address[0];
   };
 
   const getTezosAddress = async () => {
@@ -293,7 +292,7 @@ function App() {
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
     const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
-    const address = keyPairTezos?.pkh;
+    const address = "0x" +keyPairTezos?.pkh;
     return address;
   };
 
@@ -304,9 +303,9 @@ function App() {
     }
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
-    const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starkex_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
-    const address = starkex_account.pub.getX().toString("hex");
+    const keyPairStarkEx = ec.keyFromPrivate(privateKey, "hex");
+    const starkex_account = ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
+    const address = "0x" +starkex_account.pub.getX().toString("hex");
     return address;
   };
 
@@ -317,9 +316,9 @@ function App() {
     }
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
-    const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starknet_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
-    const address = starknet_account.pub.getX().toString("hex");
+    const keyPairStarkNet = ec.keyFromPrivate(privateKey, "hex");
+    const starknet_account = ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
+    const address = "0x" +starknet_account.pub.getX().toString("hex");
     return address;
   };
 
@@ -334,7 +333,7 @@ function App() {
     const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 
     const keyPair = keyring.addFromUri("0x" + privateKey);
-    const address = keyPair.address;
+    const address = "0x" +keyPair.address;
     return address;
   };
 

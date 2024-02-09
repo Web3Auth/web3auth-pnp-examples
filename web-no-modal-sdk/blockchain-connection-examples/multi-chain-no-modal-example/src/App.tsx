@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { web3AuthConfig, openloginAdapterConfig } from "./config/web3auth";
 // EVM
 import Web3 from "web3";
 // Solana
@@ -24,55 +25,18 @@ import { cryptoWaitReady } from "@polkadot/util-crypto";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ec as elliptic } from "elliptic";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
-  function getWeb3AuthNoModal(chainConfig: any): Web3AuthNoModal {
-    const web3authInstance: Web3AuthNoModal = new Web3AuthNoModal({
-      clientId,
-      chainConfig,
-      web3AuthNetwork: "sapphire_mainnet",
-    });
-    return web3authInstance;
-  }
-
   useEffect(() => {
     const init = async () => {
       try {
-        // ETH_Main_Net
-        const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth",
-          displayName: "Ethereum Mainnet",
-          blockExplorer: "https://etherscan.io",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-        };
-        const web3auth = getWeb3AuthNoModal(chainConfig);
+        const web3auth = new Web3AuthNoModal(web3AuthConfig);
         setWeb3auth(web3auth);
 
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-        const openloginAdapter = new OpenloginAdapter({
-          privateKeyProvider: privateKeyProvider,
-          loginSettings: {
-            mfaLevel: "default",
-          },
-          adapterSettings: {
-            whiteLabel: {
-              appName: "Your app Name",
-              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-              defaultLanguage: "en",
-              mode: "auto", // "light" or "dark" or "auto"
-            },
-          },
-        });
+        const openloginAdapter = new OpenloginAdapter(openloginAdapterConfig);
         web3auth.configureAdapter(openloginAdapter);
 
         await web3auth.init();

@@ -24,13 +24,10 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
   chainNamespace: CHAIN_NAMESPACES.EIP155
 };
+
+console.log(chainConfig);
 
 // Using Default ChainConfig
 // let defaultChainConfig: CustomChainConfig | null = getEvmChainConfig(11155111); // 1 for Ethereum Mainnet
@@ -137,7 +134,7 @@ function App() {
         // });
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1], "04309ed1007e77d1f119b85205bb779d");
+        const defaultWcSettings = await getWalletConnectV2Settings("eip155", ["1"], "04309ed1007e77d1f119b85205bb779d");
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           ...(web3AuthOptions as BaseAdapterSettings),
           adapterSettings: { ...defaultWcSettings.adapterSettings },
@@ -248,6 +245,7 @@ function App() {
       uiConsole("torus plugin not initialized yet");
       return;
     }
+    console.log(web3auth?.connected);
     await walletServicesPlugin.showCheckout();
   };
 

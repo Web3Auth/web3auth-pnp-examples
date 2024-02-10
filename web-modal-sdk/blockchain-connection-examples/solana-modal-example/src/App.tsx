@@ -25,15 +25,9 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const chainConfig = {
-    chainId: "0x3",
-    displayName: "Solana Testnet",
+    chainId: "0x3", 
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
-    tickerName: "SOLANA",
-    ticker: "SOL",
-    decimals: 18,
     rpcTarget: "https://api.testnet.solana.com",
-    blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
-    logo: "https://images.toruswallet.io/sol.svg"
   };
 
   useEffect(() => {
@@ -85,14 +79,14 @@ function App() {
         });
 
         await web3auth.addPlugin(torusPlugin);
-        
+
         // Setup external adapaters
         const solflareAdapter = new SolflareAdapter({
           clientId,
         });
         web3auth.configureAdapter(solflareAdapter);
 
-        
+
         const torusSolanaAdapter = new SolanaWalletAdapter({
           clientId
         });

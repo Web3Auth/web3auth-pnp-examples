@@ -32,6 +32,16 @@ const web3auth = new Web3AuthNoModal({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
+  uiConfig: {
+    mode: "dark",
+    useLogoLoader: true,
+    logoLight: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+    logoDark: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+    defaultLanguage: "en",
+    theme: {
+      primary: "#768729",
+    },
+  }
 });
 
 const openloginAdapter = new OpenloginAdapter({

@@ -47,7 +47,7 @@ function App() {
               logoLight: "https://web3auth.io/images/web3auth-logo.svg",
               logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-              mode: "auto", // whether to enable dark mode. defaultValue: false
+              mode: "light", // whether to enable dark mode. defaultValue: false
               theme: {
                 primary: "#768729",
               },
@@ -85,7 +85,7 @@ function App() {
         setWeb3auth(web3auth);
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1], "04309ed1007e77d1f119b85205bb779d");
+        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d",);
         const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           adapterSettings: {
@@ -214,7 +214,7 @@ function App() {
       return;
     }
     const newChain = {
-      chainId: "0xaa36a7",
+      chainId: "0xaa36a7", // for wallet connect make sure to pass in this chain in the loginSettings of the adapter.
       displayName: "Ethereum Sepolia",
       chainNamespace: CHAIN_NAMESPACES.EIP155,
       tickerName: "Ethereum Sepolia",

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
-  getXrplChainConfig,
+  CHAIN_NAMESPACES,
   IProvider,
   UX_MODE,
   WALLET_ADAPTERS,
@@ -25,8 +25,20 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainNamespace: CHAIN_NAMESPACES.XRPL,
+          chainId: "0x2",
+          rpcTarget: "https://testnet-ripple-node.tor.us",
+          wsTarget: "wss://s.altnet.rippletest.net",
+          ticker: "XRP",
+          tickerName: "XRPL",
+          displayName: "xrpl testnet",
+          blockExplorerUrl: "https://testnet.xrpl.org",
+          logo: "",
+        };
+
         const privateKeyProvider = new XrplPrivateKeyProvider({
-          config: { chainConfig: getXrplChainConfig(2)! },
+          config: { chainConfig },
         });
 
         const web3auth = new Web3AuthNoModal({

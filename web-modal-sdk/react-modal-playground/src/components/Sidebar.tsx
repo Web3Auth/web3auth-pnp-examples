@@ -20,6 +20,9 @@ const Sidebar = () => {
   function goToServerSideVerification() {
     navigate("/server-side-verification");
   }
+  function goToWalletService() {
+    navigate("/wallet-service");
+  }
   function goToExplorer() {
     window.open(connectedChain.blockExplorerUrl);
   }
@@ -63,6 +66,8 @@ const Sidebar = () => {
           {location.pathname === "/server-side-verification"
             ? activePage("Server Side Verification", 4)
             : linktoGo("Server Side Verification", goToServerSideVerification, 4)}
+          {location.pathname === "/wallet-service" ? activePage("Wallet Service", 6) : linktoGo("Wallet Service", goToWalletService, 6)}
+
           {linktoGo("Explorer Link", goToExplorer, 5)}
           {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet, 6) : null}
         </nav>

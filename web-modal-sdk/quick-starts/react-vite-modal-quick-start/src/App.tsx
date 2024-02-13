@@ -10,9 +10,14 @@ const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({

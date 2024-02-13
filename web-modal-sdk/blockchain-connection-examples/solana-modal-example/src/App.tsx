@@ -25,9 +25,14 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const chainConfig = {
-    chainId: "0x3", 
+    chainId: "0x3",
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     rpcTarget: "https://api.testnet.solana.com",
+    tickerName: "SOLANA",
+    ticker: "SOL",
+    decimals: 18,
+    blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
+    logo: "https://images.toruswallet.io/sol.svg"
   };
 
   useEffect(() => {

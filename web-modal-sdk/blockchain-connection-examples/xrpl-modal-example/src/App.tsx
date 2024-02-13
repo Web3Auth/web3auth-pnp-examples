@@ -14,12 +14,25 @@ function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const chainConfig = {
+    chainNamespace: CHAIN_NAMESPACES.XRPL,
+    chainId: "0x2",
+    // Avoid using public rpcTarget & wsTarget in production.
+    // Use services like Infura, Quicknode etc
+    rpcTarget: "https://ripple-node.tor.us",
+    wsTarget: "wss://s2.ripple.com",
+    ticker: "XRP",
+    tickerName: "XRPL",
+    displayName: "xrpl mainnet",
+    blockExplorer: "https://livenet.xrpl.org",
+  };
+
   useEffect(() => {
     const init = async () => {
       try {
         const xrplProvider = new XrplPrivateKeyProvider({
           config: {
-            chainConfig: getXrplChainConfig(2) as any // Testnet
+            chainConfig: chainConfig
           },
         });
 

@@ -25,8 +25,14 @@ function App() {
         const chainConfig = {
           chainId: "0x1", // Please use 0x1 for Mainnet
           rpcTarget: "https://rpc.ankr.com/eth",
-          chainNamespace: CHAIN_NAMESPACES.EIP155
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          displayName: "Ethereum Mainnet",
+          blockExplorerUrl: "https://etherscan.io/",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+          logo: "https://images.toruswallet.io/eth.svg",
         };
+
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: chainConfig } });
 

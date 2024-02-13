@@ -24,19 +24,13 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
-  chainNamespace: CHAIN_NAMESPACES.EIP155
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
 };
-
-console.log(chainConfig);
-
-// Using Default ChainConfig
-// let defaultChainConfig: CustomChainConfig | null = getEvmChainConfig(11155111); // 1 for Ethereum Mainnet
-// let chainConfigPrivateKeyProvider;
-// // Remove chainNamespace from defaultChainConfig
-// if (defaultChainConfig && "chainNamespace" in defaultChainConfig) {
-//   const { chainNamespace, ...newConfig } = defaultChainConfig;
-//   chainConfigPrivateKeyProvider = { ...newConfig };
-// }
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 

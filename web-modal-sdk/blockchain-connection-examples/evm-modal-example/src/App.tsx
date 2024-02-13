@@ -22,14 +22,16 @@ import { CoinbaseAdapter, CoinbaseAdapterOptions } from "@web3auth/coinbase-adap
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
+  chainId: "0xE", // hex of 14
+  rpcTarget: "https://flare-api.flare.network/ext/C/rpc",
+  // Avoid using public rpcTarget in production.
+  // Use services provided by Flare or other node providers
+  displayName: "Flare Mainnet",
+  blockExplorerUrl: "https://flare-explorer.flare.network/",
+  logo: "https://flare.network/wp-content/uploads/2021/02/Flare-Networks-Logo-1.png",
+  ticker: "FLR",
+  tickerName: "FLR",
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
@@ -52,6 +54,7 @@ const web3AuthOptions: Web3AuthOptions | BaseAdapterSettings | TorusWalletOption
   },
   privateKeyProvider: privateKeyProvider,
   sessionTime: 86400, // 1 day
+  enableLogging: true,
   // useCoreKitKey: true,
 };
 
@@ -266,16 +269,27 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    // const newChain = {
+    //   chainId: "0xaa36a7",
+    //   displayName: "Ethereum Sepolia",
+    //   chainNamespace: CHAIN_NAMESPACES.EIP155,
+    //   tickerName: "Ethereum",
+    //   ticker: "ETH",
+    //   decimals: 18,
+    //   rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+    //   blockExplorerUrl: "https://sepolia.etherscan.io",
+    //   logo: "",
+    // };
     const newChain = {
-      chainId: "0xaa36a7",
-      displayName: "Ethereum Sepolia",
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      tickerName: "Ethereum",
-      ticker: "ETH",
-      decimals: 18,
-      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      blockExplorerUrl: "https://sepolia.etherscan.io",
-      logo: "",
+      chainId: "0x19", // hex of 25, cronos mainnet
+      rpcTarget: "https://evm.cronos.org",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "Cronos Mainnet",
+      blockExplorerUrl: "https://cronoscan.com/",
+      ticker: "CRO",
+      tickerName: "CRO",
     };
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
@@ -286,7 +300,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await web3auth?.switchChain({ chainId: "0xaa36a7" });
+    await web3auth?.switchChain({ chainId: "0x19" });
     uiConsole("Chain Switched");
   };
 

@@ -10,7 +10,7 @@ export const chain: {
     tickerName: "Ethereum Sepolia",
     ticker: "ETH",
     rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-    logo: "",
+    logo: "https://images.toruswallet.io/eth.svg",
     blockExplorerUrl: "https://sepolia.etherscan.io",
   },
   Ethereum: {

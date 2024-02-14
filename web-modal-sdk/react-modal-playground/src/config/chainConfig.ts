@@ -13,7 +13,7 @@ export const chain: {
     tickerName: "Ethereum",
     logo: "https://images.toruswallet.io/eth.png",
   },
-  "Sepolia Testnet": {
+  Sepolia: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xaa36a7",
     displayName: "Ethereum Sepolia",

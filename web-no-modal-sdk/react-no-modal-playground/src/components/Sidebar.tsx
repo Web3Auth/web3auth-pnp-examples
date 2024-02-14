@@ -17,11 +17,14 @@ const Sidebar = () => {
   function goToContract() {
     navigate("/contract");
   }
+  function goToWalletService() {
+    navigate("/wallet-service");
+  }
   function goToServerSideVerification() {
     navigate("/server-side-verification");
   }
   function goToExplorer() {
-    window.open(connectedChain.blockExplorer);
+    window.open(connectedChain.blockExplorerUrl);
   }
   function goToFaucet() {
     if (connectedChain.chainId === "0xaa36a7") {
@@ -60,6 +63,8 @@ const Sidebar = () => {
           {location.pathname === "/server-side-verification"
             ? activePage("Server Side Verification")
             : linktoGo("Server Side Verification", goToServerSideVerification)}
+          {location.pathname === "/wallet-service" ? activePage("Wallet Service") : linktoGo("Wallet Service", goToWalletService)}
+
           {linktoGo("Explorer Link", goToExplorer)}
           {connectedChain.chainId === "0xaa36a7" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet) : null}
         </nav>

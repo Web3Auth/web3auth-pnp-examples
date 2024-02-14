@@ -50,7 +50,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   balance: null,
   chainId: null,
   playgroundConsole: "",
-  connectedChain: chain.sepolia,
+  connectedChain: chain.Sepolia,
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => null,

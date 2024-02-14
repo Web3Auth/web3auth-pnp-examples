@@ -1,7 +1,9 @@
 import { getPublicCompressed } from "@toruslabs/eccrypto";
-import { CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { ADAPTER_EVENTS, CHAIN_NAMESPACES, CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
 import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import * as jose from "jose";
 import * as React from "react";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
@@ -35,6 +37,7 @@ export interface IWeb3AuthContext {
   verifyServerSide: (idToken: string) => Promise<any>;
   switchChain: (network: string) => Promise<void>;
   updateConnectedChain: (network: string) => void;
+  showWalletUi: () => Promise<any>;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -47,7 +50,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   balance: null,
   chainId: null,
   playgroundConsole: "",
-  connectedChain: chain["Sepolia Testnet"],
+  connectedChain: chain.sepolia,
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => null,
@@ -63,6 +66,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   verifyServerSide: async () => {},
   switchChain: async () => null,
   updateConnectedChain: () => {},
+  showWalletUi: async () => {},
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -84,6 +88,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [chainId, setChainId] = useState<any>(null);
   const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Sepolia Testnet"]);
   const [connected, setConnected] = useState<boolean>(false);
+  const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
 
   const uiConsole = (...args: unknown[]) => {
     setPlaygroundConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${playgroundConsole}`);
@@ -99,19 +104,51 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   }, []);
 
   useEffect(() => {
+    const subscribeAuthEvents = (web3auth: Web3Auth) => {
+      // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
+      web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
+        console.log("Yeah!, you are successfully logged in", data);
+        setUser(data);
+        setWalletProvider(web3auth.provider!);
+      });
+
+      web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
+        console.log("connecting");
+      });
+
+      web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+        console.log("disconnected");
+        setUser(null);
+      });
+
+      web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
+        console.error("some error or user has cancelled login request", error);
+      });
+    };
+
     async function init() {
       try {
         setIsLoading(true);
         const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+        const currentChainConfig = chain.Ethereum;
+
+        const privateKeyProvider = new EthereumPrivateKeyProvider({
+          config: { chainConfig: currentChainConfig },
+        });
+
         const web3AuthInstance = new Web3Auth({
           clientId,
-          chainConfig: chain["Sepolia Testnet"],
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
+          chainConfig: currentChainConfig,
           uiConfig: {
             mode: "light", // light, dark or auto
             loginMethodsOrder: ["twitter"],
+            logoDark: "https://images.web3auth.io/web3auth-logo-w-light.svg",
+            logoLight: "https://images.web3auth.io/web3auth-logo-w-light.svg",
           },
+          privateKeyProvider,
         });
+
         const openloginAdapter = new OpenloginAdapter({
           // loginSettings: {
           //   mfaLevel: "optional",
@@ -143,6 +180,17 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           },
         });
         web3AuthInstance.configureAdapter(openloginAdapter);
+
+        // Configure & Add Wallet Services Plugin
+        if (currentChainConfig.chainNamespace !== CHAIN_NAMESPACES.SOLANA) {
+          const walletServicesPluginInstance = new WalletServicesPlugin({
+            wsEmbedOpts: {},
+            walletInitOptions: { whiteLabel: { showWidgetButton: true } },
+          });
+          setWalletServicesPlugin(walletServicesPluginInstance);
+          web3AuthInstance.addPlugin(walletServicesPluginInstance);
+        }
+
         await web3AuthInstance.initModal({
           modalConfig: {
             [WALLET_ADAPTERS.OPENLOGIN]: {
@@ -161,6 +209,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           setUser(await web3AuthInstance.getUserInfo());
           setConnected(true);
         }
+        subscribeAuthEvents(web3AuthInstance);
         setWeb3Auth(web3AuthInstance);
       } catch (error) {
         uiConsole(error);
@@ -348,6 +397,20 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
   };
 
+  const showWalletUi = async () => {
+    try {
+      if (!walletServicesPlugin) {
+        console.log("walletServicesPlugin not initialized yet");
+        uiConsole("walletServicesPlugin not initialized yet");
+        return;
+      }
+      uiConsole("open walletServicesPlugin");
+      return await walletServicesPlugin.showWalletUi();
+    } catch (e) {
+      uiConsole(e);
+    }
+  };
+
   const switchChain = async (network: string) => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -393,6 +456,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     verifyServerSide,
     switchChain,
     updateConnectedChain,
+    showWalletUi,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

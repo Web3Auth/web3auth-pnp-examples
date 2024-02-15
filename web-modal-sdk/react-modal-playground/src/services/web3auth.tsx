@@ -86,7 +86,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [playgroundConsole, setPlaygroundConsole] = useState<string>("");
   const [chainId, setChainId] = useState<any>(null);
-  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Sepolia Testnet"]);
+  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain.Sepolia);
   const [connected, setConnected] = useState<boolean>(false);
   const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
 

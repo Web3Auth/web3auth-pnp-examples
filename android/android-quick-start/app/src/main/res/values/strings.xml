@@ -13,4 +13,6 @@
     <string name="send_transaction">Send Transaction</string>
     <string name="home">Home</string>
     <string name="email_hint">name@email.com</string>
+    <string name="enable_mfa">Enable MFA</string>
+    <string name="launch_wallet_services">Launch Wallet Services</string>
 </resources>

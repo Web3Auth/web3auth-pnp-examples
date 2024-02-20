@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.code.gson:gson:2.9.1'
-    implementation 'com.github.Web3Auth:web3auth-android-sdk:6.0.0'
+    implementation 'com.github.web3auth:web3auth-android-sdk:6.0.0'
     implementation 'org.web3j:core:4.8.7-android'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

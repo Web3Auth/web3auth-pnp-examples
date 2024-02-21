@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@taquito/signer": "^13.0.0",
-    "@taquito/taquito": "^13.0.0",
+    "@taquito/signer": "^19.0.2",
+    "@taquito/taquito": "^19.0.2",
     "@taquito/utils": "^13.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

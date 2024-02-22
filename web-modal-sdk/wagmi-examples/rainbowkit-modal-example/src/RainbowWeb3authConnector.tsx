@@ -3,7 +3,6 @@ import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 import { THEME_MODES, LANGUAGES, UX_MODE } from "@toruslabs/openlogin-utils";
 
 const name = "My App Name";
@@ -61,22 +60,6 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
   });
   web3AuthInstance.configureAdapter(openloginAdapterInstance);
 
-  // Add Torus Wallet Plugin
-  const torusPlugin = new TorusWalletConnectorPlugin({
-    torusWalletOpts: {
-      buttonPosition: "bottom-left",
-    },
-    walletInitOptions: {
-      whiteLabel: {
-        theme: { isDark: false, colors: { primary: "#00a8ff" } },
-        logoDark: iconUrl,
-        logoLight: iconUrl,
-      },
-      useWalletConnect: true,
-      enableLogging: true,
-    },
-  });
-  web3AuthInstance.addPlugin(torusPlugin);
   return {
     id: "web3auth",
     name,

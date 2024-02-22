@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig, CustomChainConfig, BaseAdapterSettings } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, BaseAdapterSettings } from "@web3auth/base";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
@@ -13,7 +13,6 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 // Adapters
-// import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter, TorusWalletOptions } from "@web3auth/torus-evm-adapter";
@@ -70,7 +69,6 @@ function App() {
             mfaLevel: "optional",
           },
           adapterSettings: {
-            buildEnv: "testing",
             uxMode: "redirect", // "redirect" | "popup"
             whiteLabel: {
               logoLight: "https://web3auth.io/images/web3auth-logo.svg",
@@ -100,22 +98,12 @@ function App() {
                 mandatory: false,
               },
             },
-            loginConfig: {
-              google: {
-                verifier: "w3a-google-demo",
-                typeOfLogin: "google",
-                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", //use your app client id you got from google
-              },
-            },
           },
         });
         web3auth.configureAdapter(openloginAdapter);
 
         // Wallet Services Plugin
-        const walletServicesPlugin = new WalletServicesPlugin({
-          wsEmbedOpts: {},
-          walletInitOptions: { whiteLabel: { showWidgetButton: true } },
-        });
+        const walletServicesPlugin = new WalletServicesPlugin();
         setWalletServicesPlugin(walletServicesPlugin);
         web3auth.addPlugin(walletServicesPlugin);
 
@@ -266,17 +254,20 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+
     const newChain = {
-      chainId: "0xaa36a7",
-      displayName: "Ethereum Sepolia",
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      tickerName: "Ethereum",
-      ticker: "ETH",
-      decimals: 18,
-      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      blockExplorerUrl: "https://sepolia.etherscan.io",
-      logo: "",
+      chainId: "0x89", // hex of 137, polygon mainnet
+      rpcTarget: "https://rpc.ankr.com/polygon",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "Polygon Mainnet",
+      blockExplorerUrl: "https://polygonscan.com",
+      ticker: "MATIC",
+      tickerName: "MATIC",
+      logo: "https://images.toruswallet.io/polygon.svg"
     };
+
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
   };
@@ -286,7 +277,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await web3auth?.switchChain({ chainId: "0xaa36a7" });
+    await web3auth?.switchChain({ chainId: "0x89" });
     uiConsole("Chain Switched");
   };
 

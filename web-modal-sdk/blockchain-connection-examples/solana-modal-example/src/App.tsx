@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, CustomChainConfig, IProvider, getSolanaChainConfig } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import RPC from "./solanaRPC";
 import "./App.css";
 
-// Plugins
-import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
-
 // Adapters
-import { SolflareAdapter } from "@web3auth/solflare-adapter";
-import { SlopeAdapter } from "@web3auth/slope-adapter";
-import { SolanaPrivateKeyProvider, TorusInjectedProvider } from "@web3auth/solana-provider";
-import { log } from "console";
-import { PhantomAdapter } from "@web3auth/phantom-adapter";
-import { SolanaWalletAdapter } from "@web3auth/torus-solana-adapter";
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -38,9 +31,6 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // Using default ChainConfig
-        let defaultChainConfig: CustomChainConfig | null = getSolanaChainConfig(3); // 3 for Devnet
-        let chainConfigPrivateKeyProvider;
 
         const solanaPrivateKeyPrvoider = new SolanaPrivateKeyProvider({
           config: { chainConfig: chainConfig }
@@ -61,52 +51,21 @@ function App() {
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
             uxMode: "redirect",
           },
-          web3AuthNetwork: "sapphire_mainnet",
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           privateKeyProvider: solanaPrivateKeyPrvoider
         });
 
-        // adding solana wallet connector plugin
-
-        const torusPlugin = new SolanaWalletConnectorPlugin({
-          torusWalletOpts: {},
-          walletInitOptions: {
-            whiteLabel: {
-              name: "Whitelabel Demo",
-              theme: { isDark: true, colors: { torusBrand1: "#00a8ff" } },
-              logoDark: "https://web3auth.io/images/web3auth-logo.svg",
-              logoLight: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-              topupHide: true,
-              defaultLanguage: "en",
-            },
-            enableLogging: true,
-          },
-
-        });
-
-        await web3auth.addPlugin(torusPlugin);
 
         // Setup external adapaters
-        const solflareAdapter = new SolflareAdapter({
-          clientId,
+        const adapters = await getDefaultExternalAdapters({
+          options: {
+            clientId,
+            chainConfig,
+          }
         });
-        web3auth.configureAdapter(solflareAdapter);
-
-
-        const torusSolanaAdapter = new SolanaWalletAdapter({
-          clientId
+        adapters.forEach((adapter) => {
+          web3auth.configureAdapter(adapter);
         });
-        web3auth.configureAdapter(torusSolanaAdapter);
-
-
-        const slopeAdapter = new SlopeAdapter({
-          clientId,
-        });
-        web3auth.configureAdapter(slopeAdapter);
-
-        const phantomAdapter = new PhantomAdapter({
-          clientId,
-        });
-        web3auth.configureAdapter(phantomAdapter);
 
         setWeb3auth(web3auth);
 
@@ -266,16 +225,6 @@ function App() {
     uiConsole(receipt);
   };
 
-  const mintNFT = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const NFT = await rpc.mintNFT();
-    uiConsole(NFT);
-  };
-
   const signMessage = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -359,11 +308,6 @@ function App() {
         <div>
           <button onClick={signAllTransaction} className="card">
             Sign All Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={mintNFT} className="card">
-            Mint NFT
           </button>
         </div>
         <div>

@@ -128,12 +128,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
             clientId,
             uxMode: UX_MODE.REDIRECT,
             loginConfig: {
-              google: {
-                verifier: "aggregate-sapphire",
-                verifierSubIdentifier: "w3a-google",
-                typeOfLogin: "google",
-                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
-              },
               auth0: {
                 verifier: "aggregate-sapphire",
                 verifierSubIdentifier: "w3a-a0-email-passwordless",

@@ -5,7 +5,6 @@ import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK
 import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
@@ -25,7 +24,6 @@ const chainConfig = {
 
 function App() {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
-  const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
@@ -84,9 +82,6 @@ function App() {
         });
         web3auth.configureAdapter(openloginAdapter);
         
-        const walletServicesPlugin = new WalletServicesPlugin();
-        web3auth.addPlugin(walletServicesPlugin);
-        setWalletServicesPlugin(walletServicesPlugin);
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d",);
         const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
@@ -289,29 +284,29 @@ function App() {
     uiConsole(privateKey);
   };
 
-  const showWalletUi = async () => {
-    if (!walletServicesPlugin) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await walletServicesPlugin.showWalletUi();
-  };
+  // const showWalletUi = async () => {
+  //   if (!walletServicesPlugin) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   await walletServicesPlugin.showWalletUi();
+  // };
 
-  const showWalletConnectScanner = async () => {
-    if (!walletServicesPlugin) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await walletServicesPlugin.showWalletConnectScanner();
-  };
+  // const showWalletConnectScanner = async () => {
+  //   if (!walletServicesPlugin) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   await walletServicesPlugin.showWalletConnectScanner();
+  // };
 
-  const showCheckout = async () => {
-    if (!walletServicesPlugin) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await walletServicesPlugin.showCheckout();
-  };
+  // const showCheckout = async () => {
+  //   if (!walletServicesPlugin) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   await walletServicesPlugin.showCheckout();
+  // };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -348,7 +343,7 @@ function App() {
             Switch Chain
           </button>
         </div>
-        <div>
+        {/* <div>
           <button onClick={showWalletUi} className="card">
             Show Wallet UI
           </button>
@@ -362,7 +357,7 @@ function App() {
           <button onClick={showCheckout} className="card">
             Fiat to Crypto
           </button>
-        </div>
+        </div> */}
         <div>
           <button onClick={getAccounts} className="card">
             Get Accounts

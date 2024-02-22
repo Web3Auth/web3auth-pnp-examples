@@ -89,11 +89,6 @@ function App() {
               },
             },
             loginConfig: {
-              google: {
-                verifier: "w3a-google-demo",
-                typeOfLogin: "google",
-                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", //use your app client id you got from google
-              },
               facebook: {
                 verifier: "w3a-facebook-demo",
                 typeOfLogin: "facebook",
@@ -181,15 +176,6 @@ function App() {
                 },
                 sms_passwordless: {
                   name: "sms_passwordless",
-                  showOnModal: false,
-                },
-              },
-            },
-            [WALLET_ADAPTERS.METAMASK]: {
-              label: "metamask",
-              loginMethods: {
-                metamask: {
-                  name: "metamask",
                   showOnModal: false,
                 },
               },

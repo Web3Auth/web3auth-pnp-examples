@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, CustomChainConfig, IProvider, UX_MODE, WEB3AUTH_NETWORK, getXrplChainConfig } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
 import RPC from "./xrplRPC";
 import "./App.css";
-import { log } from "console";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 

@@ -1,6 +1,6 @@
 import { getPublicCompressed } from "@toruslabs/eccrypto";
 import { THEME_MODES, UX_MODE } from "@toruslabs/openlogin-utils";
-import { CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CustomChainConfig, IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
 import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -116,7 +116,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           clientId,
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
           uiConfig: {
-            mode: THEME_MODES.light, // light, dark or auto
+            mode: THEME_MODES.dark, // light, dark or auto
             loginMethodsOrder: ["twitter"],
           },
           privateKeyProvider,
@@ -152,19 +152,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           },
         });
         web3AuthInstance.configureAdapter(openloginAdapter);
-        await web3AuthInstance.initModal({
-          modalConfig: {
-            [WALLET_ADAPTERS.OPENLOGIN]: {
-              label: "openlogin",
-              loginMethods: {
-                twitter: {
-                  name: "X",
-                  mainOption: true,
-                },
-              },
-            },
-          },
-        });
+        await web3AuthInstance.initModal();
         if (web3AuthInstance.status === "connected") {
           setWalletProvider(web3AuthInstance.provider);
           setUser(await web3AuthInstance.getUserInfo());

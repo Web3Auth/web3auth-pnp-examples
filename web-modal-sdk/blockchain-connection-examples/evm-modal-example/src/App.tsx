@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, BaseAdapterSettings } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
@@ -13,10 +13,11 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 // Adapters
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
-import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-import { TorusWalletAdapter, TorusWalletOptions } from "@web3auth/torus-evm-adapter";
-import { CoinbaseAdapter, CoinbaseAdapterOptions } from "@web3auth/coinbase-adapter";
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+// import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+// import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+// import { TorusWalletAdapter, TorusWalletOptions } from "@web3auth/torus-evm-adapter";
+// import { CoinbaseAdapter, CoinbaseAdapterOptions } from "@web3auth/coinbase-adapter";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -33,7 +34,7 @@ const chainConfig = {
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
-const web3AuthOptions: Web3AuthOptions | BaseAdapterSettings | TorusWalletOptions | CoinbaseAdapterOptions = {
+const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   uiConfig: {
@@ -110,31 +111,31 @@ function App() {
         // read more about adapters here: https://web3auth.io/docs/sdk/pnp/web/adapters/
 
         // Only when you want to add External default adapters, which includes WalletConnect, Metamask, Torus EVM Wallet
-        // const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-        // adapters.forEach((adapter) => {
-        //   web3auth.configureAdapter(adapter);
-        // });
+        const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+        adapters.forEach((adapter) => {
+          web3auth.configureAdapter(adapter);
+        });
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", ["1"], "04309ed1007e77d1f119b85205bb779d");
-        const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          ...(web3AuthOptions as BaseAdapterSettings),
-          adapterSettings: { ...defaultWcSettings.adapterSettings },
-          loginSettings: { ...defaultWcSettings.loginSettings },
-        });
-        web3auth.configureAdapter(walletConnectV2Adapter);
+        // const defaultWcSettings = await getWalletConnectV2Settings("eip155", ["1"], "04309ed1007e77d1f119b85205bb779d");
+        // const walletConnectV2Adapter = new WalletConnectV2Adapter({
+        //   ...(web3AuthOptions as BaseAdapterSettings),
+        //   adapterSettings: { ...defaultWcSettings.adapterSettings },
+        //   loginSettings: { ...defaultWcSettings.loginSettings },
+        // });
+        // web3auth.configureAdapter(walletConnectV2Adapter);
 
-        // adding metamask adapter
-        const metamaskAdapter = new MetamaskAdapter(web3AuthOptions as BaseAdapterSettings);
-        web3auth.configureAdapter(metamaskAdapter);
+        // // adding metamask adapter
+        // const metamaskAdapter = new MetamaskAdapter(web3AuthOptions as BaseAdapterSettings);
+        // web3auth.configureAdapter(metamaskAdapter);
 
-        // adding torus evm adapter
-        const torusWalletAdapter = new TorusWalletAdapter(web3AuthOptions as TorusWalletOptions);
-        web3auth.configureAdapter(torusWalletAdapter);
+        // // adding torus evm adapter
+        // const torusWalletAdapter = new TorusWalletAdapter(web3AuthOptions as TorusWalletOptions);
+        // web3auth.configureAdapter(torusWalletAdapter);
 
-        // adding coinbase adapter
-        const coinbaseAdapter = new CoinbaseAdapter(web3AuthOptions as CoinbaseAdapterOptions);
-        web3auth.configureAdapter(coinbaseAdapter);
+        // // adding coinbase adapter
+        // const coinbaseAdapter = new CoinbaseAdapter(web3AuthOptions as CoinbaseAdapterOptions);
+        // web3auth.configureAdapter(coinbaseAdapter);
 
         setWeb3auth(web3auth);
 

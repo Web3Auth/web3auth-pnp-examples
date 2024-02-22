@@ -4,13 +4,11 @@ import {
   PublicKey,
   SystemProgram,
   Transaction,
-  Keypair,
   TransactionMessage,
   VersionedTransaction,
 } from "@solana/web3.js";
 import { CustomChainConfig, IProvider } from "@web3auth/base";
 import { SolanaWallet } from "@web3auth/solana-provider";
-import { Metaplex, keypairIdentity } from "@metaplex-foundation/js";
 
 export default class SolanaRpc {
   private provider: IProvider;
@@ -237,8 +235,8 @@ export default class SolanaRpc {
         lamports: 0.03 * LAMPORTS_PER_SOL,
       });
       const transactionMessage = new TransactionMessage({ recentBlockhash: blockhash, payerKey: new PublicKey(pubKey[0]), instructions: [transactionInstruction] })
-      const transactionMessage1 = new TransactionMessage({ recentBlockhash: blockhash, payerKey: new PublicKey(pubKey[0]), instructions: [transactionInstruction] })
-      const transactionMessage2 = new TransactionMessage({ recentBlockhash: blockhash, payerKey: new PublicKey(pubKey[0]), instructions: [transactionInstruction] })
+      const transactionMessage1 = new TransactionMessage({ recentBlockhash: blockhash, payerKey: new PublicKey(pubKey[0]), instructions: [transactionInstruction1] })
+      const transactionMessage2 = new TransactionMessage({ recentBlockhash: blockhash, payerKey: new PublicKey(pubKey[0]), instructions: [transactionInstruction2] })
       const transaction = new VersionedTransaction(transactionMessage.compileToV0Message());
       const transaction1 = new VersionedTransaction(transactionMessage1.compileToV0Message());
       const transaction2 = new VersionedTransaction(transactionMessage2.compileToV0Message());
@@ -249,53 +247,6 @@ export default class SolanaRpc {
       throw error;
       // return error as string;
     }
-  };
-
-  mintNFT = async (): Promise<string> => {
-    const solanaWallet = new SolanaWallet(this.provider);
-    const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
-      method: "solana_provider_config",
-      params: [],
-    });
-    const pubKey = await solanaWallet.requestAccounts();
-
-    const connection = new Connection(connectionConfig.rpcTarget);
-    const privateKey = await this.provider.request({
-      method: "solanaPrivateKey",
-    });
-    const keypair = Keypair.fromSecretKey(Buffer.from(privateKey as string, "hex"));
-
-    const metaplex = Metaplex.make(connection)
-    .use(keypairIdentity(keypair));
-
-    const imageBlob = await fetch("../public/image.png").then((response) => response.blob());
-    const reader = new FileReader();
-    reader.readAsDataURL(imageBlob);
-    const metadataURI = await metaplex.nfts().uploadMetadata({
-      name: "Helius NFT",
-      description: "Helius NFT created in the SolanaDev 101 course",
-  
-      // Image: await uploadIMG(imageName),
-      image: await new Promise<string>((resolve) => {
-        reader.onloadend = () => {
-          const base64data = reader.result?.toString().split(",")[1];
-          resolve(base64data as string);
-        };
-      }),
-      attributes: [
-        { trait_type: "Test", value: "Yes" },
-        { trait_type: "Logo", value: "Helius" },
-      ],
-    });
-
-    const nft = await metaplex.nfts().create({
-      uri: metadataURI as any,
-      name: "Helius NFT",
-      sellerFeeBasisPoints: 500, // 5%
-      creators: [{ address: pubKey[0] as any, share: 100 }],
-    });
-
-    return("NFT:"+ nft.mintAddress.toBase58());
   };
 
   getPrivateKey = async (): Promise<string> => {

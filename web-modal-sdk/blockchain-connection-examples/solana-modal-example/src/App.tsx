@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, CustomChainConfig, IProvider, getSolanaChainConfig } from "@web3auth/base";
 import RPC from "./solanaRPC";
 import "./App.css";
 
@@ -10,24 +10,44 @@ import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-p
 // Adapters
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
 import { SlopeAdapter } from "@web3auth/slope-adapter";
+import { SolanaPrivateKeyProvider, TorusInjectedProvider } from "@web3auth/solana-provider";
+import { log } from "console";
+import { PhantomAdapter } from "@web3auth/phantom-adapter";
+import { SolanaWalletAdapter } from "@web3auth/torus-solana-adapter";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
+
 function App() {
+
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const chainConfig = {
+    chainId: "0x3",
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    rpcTarget: "https://api.testnet.solana.com",
+    tickerName: "SOLANA",
+    ticker: "SOL",
+    decimals: 18,
+    blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
+    logo: "https://images.toruswallet.io/sol.svg"
+  };
+
   useEffect(() => {
     const init = async () => {
       try {
+        // Using default ChainConfig
+        let defaultChainConfig: CustomChainConfig | null = getSolanaChainConfig(3); // 3 for Devnet
+        let chainConfigPrivateKeyProvider;
+
+        const solanaPrivateKeyPrvoider = new SolanaPrivateKeyProvider({
+          config: { chainConfig: chainConfig }
+        })
+
         const web3auth = new Web3Auth({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-            rpcTarget: "https://summer-frosty-friday.solana-devnet.quiknode.pro/5430f85cfb9a90ac2763131b24d8a746f2d18825/", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
@@ -39,8 +59,10 @@ function App() {
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+            uxMode: "redirect",
           },
           web3AuthNetwork: "sapphire_mainnet",
+          privateKeyProvider: solanaPrivateKeyPrvoider
         });
 
         // adding solana wallet connector plugin
@@ -58,18 +80,33 @@ function App() {
             },
             enableLogging: true,
           },
+
         });
+
         await web3auth.addPlugin(torusPlugin);
 
+        // Setup external adapaters
         const solflareAdapter = new SolflareAdapter({
           clientId,
         });
         web3auth.configureAdapter(solflareAdapter);
 
+
+        const torusSolanaAdapter = new SolanaWalletAdapter({
+          clientId
+        });
+        web3auth.configureAdapter(torusSolanaAdapter);
+
+
         const slopeAdapter = new SlopeAdapter({
           clientId,
         });
         web3auth.configureAdapter(slopeAdapter);
+
+        const phantomAdapter = new PhantomAdapter({
+          clientId,
+        });
+        web3auth.configureAdapter(phantomAdapter);
 
         setWeb3auth(web3auth);
 
@@ -105,7 +142,8 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const newChain = {
+
+    const chainConfig = {
       chainId: "0x2",
       displayName: "Solana Testnet",
       chainNamespace: CHAIN_NAMESPACES.SOLANA,
@@ -113,9 +151,11 @@ function App() {
       ticker: "SOL",
       decimals: 18,
       rpcTarget: "https://api.testnet.solana.com",
-      blockExplorer: "https://explorer.solana.com/?cluster=testnet",
+      blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
+      logo: "https://images.toruswallet.io/sol.svg"
     };
-    await web3auth?.addChain(newChain);
+
+    await web3auth?.addChain(chainConfig);
     uiConsole("New Chain Added");
   };
 

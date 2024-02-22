@@ -20,10 +20,14 @@
     "@angular/platform-browser": "~14.2.7",
     "@angular/platform-browser-dynamic": "~14.2.7",
     "@angular/router": "~14.2.7",
-    "@web3auth/base": "^7.3.1",
-    "@web3auth/modal": "^7.3.1",
+    "@web3auth/base": "^8.0.0",
+    "@web3auth/ethereum-provider": "^8.0.0",
+    "@web3auth/modal": "^8.0.0",
     "empty-module": "^0.0.2",
-    "web3": "^4.1.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "web3": "^4.1.1",
+    "zone.js": "^0.12.0"
   },
   "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {

@@ -8,26 +8,36 @@ import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
 
 // Plugins
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [torusPlugin, setTorusPlugin] = useState<TorusWalletConnectorPlugin | null>(null);
+  const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const chainConfig = {
+          chainId: "0x1", // Please use 0x1 for Mainnet
+          rpcTarget: "https://rpc.ankr.com/eth",
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          displayName: "Ethereum Mainnet",
+          blockExplorerUrl: "https://etherscan.io/",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+          logo: "https://images.toruswallet.io/eth.svg",
+        };
+
+
+        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: chainConfig } });
+
         const web3auth = new Web3Auth({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
           // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
@@ -41,6 +51,7 @@ function App() {
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
           },
           web3AuthNetwork: "sapphire_mainnet",
+          privateKeyProvider: privateKeyProvider,
         });
 
         const openloginAdapter = new OpenloginAdapter({
@@ -108,19 +119,14 @@ function App() {
 
         // adding torus wallet connector plugin
 
-        const torusPlugin = new TorusWalletConnectorPlugin({
-          torusWalletOpts: {},
-          walletInitOptions: {
-            whiteLabel: {
-              theme: { isDark: true, colors: { primary: "#00a8ff" } },
-              logoDark: "https://web3auth.io/images/web3auth-logo.svg",
-              logoLight: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-            },
-            useWalletConnect: true,
-          },
+        // Wallet Services Plugin
+        const walletServicesPlugin = new WalletServicesPlugin({
+          wsEmbedOpts: {},
+          walletInitOptions: { whiteLabel: { showWidgetButton: true } },
         });
-        setTorusPlugin(torusPlugin);
-        await web3auth.addPlugin(torusPlugin);
+
+        setWalletServicesPlugin(walletServicesPlugin);
+        web3auth.addPlugin(walletServicesPlugin);
 
         setWeb3auth(web3auth);
 
@@ -246,26 +252,20 @@ function App() {
   };
 
   const showWCM = async () => {
-    if (!torusPlugin) {
-      uiConsole("torus plugin not initialized yet");
+    if (!walletServicesPlugin) {
+      uiConsole("WalletServicesPlugin is not initialized yet");
       return;
     }
-    torusPlugin.showWalletConnectScanner();
+    walletServicesPlugin.showWalletConnectScanner();
     uiConsole();
   };
 
   const initiateTopUp = async () => {
-    if (!torusPlugin) {
-      uiConsole("torus plugin not initialized yet");
+    if (!walletServicesPlugin) {
+      uiConsole("WalletServicesPlugin is not initialized yet");
       return;
     }
-    torusPlugin.initiateTopup("moonpay", {
-      selectedAddress: "0x8cFa648eBfD5736127BbaBd1d3cAe221B45AB9AF",
-      selectedCurrency: "USD",
-      fiatValue: 100,
-      selectedCryptoCurrency: "ETH",
-      chainNetwork: "mainnet",
-    });
+    walletServicesPlugin.showCheckout();
   };
 
   const getChainId = async () => {
@@ -291,7 +291,8 @@ function App() {
       ticker: "ETH",
       decimals: 18,
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      blockExplorer: "https://sepolia.etherscan.io",
+      blockExplorerUrl: "https://sepolia.etherscan.io",
+      logo: "https://images.toruswallet.io/eth.svg"
     };
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");

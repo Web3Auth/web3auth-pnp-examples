@@ -4,7 +4,6 @@ import { Web3Auth } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
 import { Chain } from "wagmi";
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
@@ -52,28 +51,6 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     },
   });
   web3AuthInstance.configureAdapter(openloginAdapterInstance);
-
-  // Add Torus Wallet Plugin (optional)
-  const torusPlugin = new TorusWalletConnectorPlugin({
-    torusWalletOpts: {
-      buttonPosition: "bottom-left",
-    },
-    walletInitOptions: {
-      whiteLabel: {
-        theme: {
-          isDark: false,
-          colors: {
-            primary: "#00a8ff",
-          },
-        },
-        logoDark: iconUrl,
-        logoLight: iconUrl,
-      },
-      useWalletConnect: true,
-      enableLogging: true,
-    },
-  });
-  web3AuthInstance.addPlugin(torusPlugin);
 
   return new Web3AuthConnector({
     chains: chains as any,

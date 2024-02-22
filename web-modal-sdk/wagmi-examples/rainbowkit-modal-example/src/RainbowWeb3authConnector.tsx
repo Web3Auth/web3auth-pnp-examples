@@ -3,7 +3,7 @@ import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+import { THEME_MODES, LANGUAGES, UX_MODE } from "@toruslabs/openlogin-utils";
 
 const name = "My App Name";
 const iconUrl = "https://web3auth.io/docs/content-hub/logo-ethereum.png";
@@ -31,10 +31,10 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
       theme: {
         primary: "red",
       },
-      mode: "dark",
+      mode: THEME_MODES.dark,
       logoLight: "https://web3auth.io/images/web3auth-logo.svg",
       logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+      defaultLanguage: LANGUAGES.en , // en, de, ja, ko, zh, es, fr, pt, nl
       loginGridCol: 3,
       primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
       modalZIndex: "2147483647",
@@ -47,34 +47,19 @@ export const rainbowWeb3AuthConnector = ({ chains }) => {
   const openloginAdapterInstance = new OpenloginAdapter({
     privateKeyProvider,
     adapterSettings: {
-      uxMode: "redirect",
+      uxMode: UX_MODE.REDIRECT,
       whiteLabel: {
-        name: "Your app Name",
+
+        appName: "Your app Name",
         logoLight: "https://web3auth.io/images/web3auth-logo.svg",
         logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-        defaultLanguage: "en",
-        dark: true, // whether to enable dark mode. defaultValue: false
+        defaultLanguage: LANGUAGES.en,
+        mode: THEME_MODES.dark,
       },
     },
   });
   web3AuthInstance.configureAdapter(openloginAdapterInstance);
 
-  // Add Torus Wallet Plugin
-  const torusPlugin = new TorusWalletConnectorPlugin({
-    torusWalletOpts: {
-      buttonPosition: "bottom-left",
-    },
-    walletInitOptions: {
-      whiteLabel: {
-        theme: { isDark: false, colors: { primary: "#00a8ff" } },
-        logoDark: iconUrl,
-        logoLight: iconUrl,
-      },
-      useWalletConnect: true,
-      enableLogging: true,
-    },
-  });
-  web3AuthInstance.addPlugin(torusPlugin);
   return {
     id: "web3auth",
     name,

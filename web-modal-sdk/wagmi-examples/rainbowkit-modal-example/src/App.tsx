@@ -1,55 +1,62 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
-import { ConnectButton, connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { createConfig, WagmiConfig, configureChains } from "wagmi";
-import { rainbowWeb3AuthConnector } from "./RainbowWeb3authConnector";
-import { mainnet, polygon, optimism, arbitrum, base, zora } from 'wagmi/chains';
-import { rainbowWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
-import { publicProvider } from "wagmi/providers/public";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ConnectButton, RainbowKitProvider, connectorsForWallets } from "@rainbow-me/rainbowkit";
+import {
+  rainbowWallet,
+  walletConnectWallet,
+} from '@rainbow-me/rainbowkit/wallets';
+import { WagmiProvider, http, createConfig } from 'wagmi'
+import {RainbowWeb3authConnector} from "./RainbowWeb3authConnector";
+import { sepolia, mainnet, polygon } from "wagmi/chains";
 
-const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora],
+const connectors = connectorsForWallets(
   [
-    publicProvider()
-  ]
+    {
+      groupName: 'Recommended',
+      wallets: [rainbowWallet, walletConnectWallet, RainbowWeb3authConnector],
+    },
+  ],
+  {
+    appName: 'My RainbowKit App',
+    projectId: '04309ed1007e77d1f119b85205bb779d',
+  }
 );
 
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Recommended',
-    wallets: [
-      rainbowWallet({ projectId: "04309ed1007e77d1f119b85205bb779d", chains }),
-      rainbowWeb3AuthConnector({ chains }),
-      metaMaskWallet({ projectId: "04309ed1007e77d1f119b85205bb779d", chains }),
-    ],
+const config = createConfig({
+  chains: [mainnet, sepolia, polygon],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [polygon.id]: http(),
   },
-]);
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
   connectors,
-  publicClient,
 });
+
+
+const queryClient = new QueryClient()
 
 export default function App() {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontFamily: "sans-serif",
-          }}>
-          <ConnectButton />
-        </div>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: "sans-serif",
+            }}>
+            <ConnectButton />
+          </div>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

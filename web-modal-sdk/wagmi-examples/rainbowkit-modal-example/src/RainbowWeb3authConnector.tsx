@@ -1,107 +1,50 @@
+// Web3Auth Libraries
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { Wallet } from '@rainbow-me/rainbowkit';
 import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { THEME_MODES, LANGUAGES, UX_MODE } from "@toruslabs/openlogin-utils";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { mainnet } from "wagmi/chains";
 
-const name = "My App Name";
-const iconUrl = "https://web3auth.io/docs/content-hub/logo-ethereum.png";
-
-//@ts-ignore
-export const rainbowWeb3AuthConnector = ({ chains }) => {
+export const RainbowWeb3authConnector = (): Wallet => {
   // Create Web3Auth Instance
+  const name = "My App Name";
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x" + chains[0].id.toString(16),
-    rpcTarget: chains[0].rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
-    displayName: chains[0].name,
-    tickerName: chains[0].nativeCurrency?.name,
-    ticker: chains[0].nativeCurrency?.symbol,
-    blockExplorer: chains[0].blockExplorers?.default.url[0],
+    chainId: "0x" + mainnet.id.toString(16),
+    rpcTarget: mainnet.rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    displayName: mainnet.name,
+    tickerName: mainnet.nativeCurrency?.name,
+    ticker: mainnet.nativeCurrency?.symbol,
+    blockExplorerUrl: mainnet.blockExplorers?.default.url[0] as string,
   };
+
+  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
   const web3AuthInstance = new Web3Auth({
     clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
     chainConfig,
-    // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
-    // Please remove this parameter if you're on the Base Plan
-    uiConfig: {
-      appName: "W3A",
-      // appLogo: "https://web3auth.io/images/web3auth-logo.svg", // Your App Logo Here
-      theme: {
-        primary: "red",
-      },
-      mode: THEME_MODES.dark,
-      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-      defaultLanguage: LANGUAGES.en , // en, de, ja, ko, zh, es, fr, pt, nl
-      loginGridCol: 3,
-      primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
-      modalZIndex: "2147483647",
-    },
-    web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
-  });
-
-  // Add openlogin adapter for customisations
-  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-  const openloginAdapterInstance = new OpenloginAdapter({
     privateKeyProvider,
-    adapterSettings: {
-      uxMode: UX_MODE.REDIRECT,
-      whiteLabel: {
-
-        appName: "Your app Name",
-        logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-        logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-        defaultLanguage: LANGUAGES.en,
-        mode: THEME_MODES.dark,
-      },
+    uiConfig: {
+      appName: name,
+      loginMethodsOrder: ["github", "google"],
+      defaultLanguage: "en",
+      modalZIndex: "2147483647",
+      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      uxMode: "redirect",
+      mode: "light",
     },
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+    enableLogging: true,
   });
-  web3AuthInstance.configureAdapter(openloginAdapterInstance);
 
   return {
     id: "web3auth",
     name,
-    iconUrl,
+    iconUrl: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
     iconBackground: "#fff",
-    createConnector: () => {
-      const connector = new Web3AuthConnector({
-        chains: chains,
-        options: {
-          web3AuthInstance,
-          modalConfig: {
-            [WALLET_ADAPTERS.OPENLOGIN]: {
-              label: "Social Login",
-              loginMethods: {
-                facebook: {
-                  name: "facebook",
-                  showOnModal: false,
-                },
-              },
-            },
-            [WALLET_ADAPTERS.WALLET_CONNECT_V2]: {
-              label: "Wallet Connect",
-              showOnModal: false,
-            },
-            [WALLET_ADAPTERS.TORUS_EVM]: {
-              label: "Torus EVM",
-              showOnModal: false,
-            },
-            [WALLET_ADAPTERS.METAMASK]: {
-              label: "Metamask",
-              showOnModal: false,
-            },
-            [WALLET_ADAPTERS.COINBASE]: {
-              label: "Coinbase",
-              showOnModal: false,
-            },
-          },
-        },
-      });
-      return {
-        connector,
-      };
-    },
-  };
-};
+    createConnector: () => Web3AuthConnector({
+      web3AuthInstance,
+  })};
+}

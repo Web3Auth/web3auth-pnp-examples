@@ -43,13 +43,13 @@ function App() {
           // Please remove this parameter if you're on the Base Plan
           uiConfig: {
             appName: "W3A",
-            // appLogo: "https://web3auth.io/images/web3auth-logo.svg", // Your App Logo Here
+            // appLogo: "https://web3auth.io/images/web3authlog.png", // Your App Logo Here
             theme: {
               primary: "red",
             },
             mode: "dark",
-            logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-            logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+            logoLight: "https://web3auth.io/images/web3authlog.png",
+            logoDark: "https://web3auth.io/images/web3authlogodark.png",
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
@@ -66,8 +66,8 @@ function App() {
           adapterSettings: {
             uxMode: "redirect", // "redirect" | "popup"
             whiteLabel: {
-              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+              logoLight: "https://web3auth.io/images/web3authlog.png",
+              logoDark: "https://web3auth.io/images/web3authlogodark.png",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
               // dark: false, // whether to enable dark mode. defaultValue: false
             },

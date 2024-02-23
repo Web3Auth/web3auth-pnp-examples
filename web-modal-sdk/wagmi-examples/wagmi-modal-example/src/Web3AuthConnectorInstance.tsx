@@ -2,13 +2,13 @@
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3Auth } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter, OPENLOGIN_NETWORK } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-import { Chain } from "wagmi";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, WALLET_ADAPTERS } from "@web3auth/base";
+import { Chain } from "wagmi/chains";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
   // Create Web3Auth Instance
-  const iconUrl = "https://web3auth.io/docs/contents/logo-ethereum.png";
+  const name = "My App Name";
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x" + chains[0].id.toString(16),
@@ -16,46 +16,55 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     displayName: chains[0].name,
     tickerName: chains[0].nativeCurrency?.name,
     ticker: chains[0].nativeCurrency?.symbol,
-    blockExplorer: chains[0].blockExplorers?.default.url[0] as string,
+    blockExplorerUrl: chains[0].blockExplorers?.default.url[0] as string,
   };
+
+  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
   const web3AuthInstance = new Web3Auth({
     clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
     chainConfig,
-    // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
-    // Please remove this parameter if you're on the Base Plan
+    privateKeyProvider,
     uiConfig: {
-      appName: "W3A",
-      // appLogo: "https://web3auth.io/images/web3auth-logo.svg", // Your App Logo Here
-      theme: {
-        primary: "red",
-      },
-      mode: "dark",
-      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-      loginGridCol: 3,
-      primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+      appName: name,
+      loginMethodsOrder: ["github", "google"],
+      defaultLanguage: "en",
       modalZIndex: "2147483647",
+      logoLight: "https://web3auth.io/images/web3authlog.png",
+      logoDark: "https://web3auth.io/images/web3authlogodark.png",
+      uxMode: "redirect",
+      mode: "light",
     },
-    web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
     enableLogging: true,
   });
 
-  // Add openlogin adapter for customisations
-  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-  const openloginAdapterInstance = new OpenloginAdapter({
-    privateKeyProvider,
-    adapterSettings: {
-      uxMode: "redirect",
-    },
+  const walletServicesPlugin = new WalletServicesPlugin({
+    walletInitOptions: {
+      whiteLabel: {
+        showWidgetButton: true,
+      }
+    }
   });
-  web3AuthInstance.configureAdapter(openloginAdapterInstance);
+  web3AuthInstance.addPlugin(walletServicesPlugin);
 
-  return new Web3AuthConnector({
-    chains: chains as any,
-    options: {
-      web3AuthInstance,
+  const modalConfig = {
+    [WALLET_ADAPTERS.OPENLOGIN]: {
+      label: "openlogin",
+      loginMethods: {
+        facebook: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "facebook login",
+          showOnModal: false,
+        },
+      },
+      // setting it to false will hide all social login methods from modal.
+      showOnModal: true,
     },
+  }
+
+  return Web3AuthConnector({
+      web3AuthInstance,
+      modalConfig,
   });
 }

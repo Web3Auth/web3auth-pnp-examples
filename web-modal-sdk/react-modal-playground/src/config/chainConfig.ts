@@ -11,7 +11,7 @@ export const chain: {
     ticker: "ETH",
     rpcTarget: "https://rpc.ankr.com/eth_sepolia",
     blockExplorerUrl: "https://sepolia.etherscan.io",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Ethereum: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -21,7 +21,7 @@ export const chain: {
     blockExplorerUrl: "https://etherscan.io",
     ticker: "ETH",
     tickerName: "Ethereum",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Polygon: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -33,7 +33,7 @@ export const chain: {
     blockExplorerUrl: "https://polygonscan.com",
     ticker: "MATIC",
     tickerName: "Matic",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   "Polygon Mumbai Testnet": {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -45,7 +45,7 @@ export const chain: {
     blockExplorerUrl: "https://mumbai.polygonscan.com/",
     ticker: "MATIC",
     tickerName: "Matic",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   "Base Chain (Coinbase)": {
     // https://docs.base.org/using-base/
@@ -58,7 +58,7 @@ export const chain: {
     blockExplorerUrl: "https://sepolia-explorer.base.org/",
     ticker: "ETH",
     tickerName: "ETH",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   "BNB Chain": {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -70,7 +70,7 @@ export const chain: {
     blockExplorerUrl: "https://bscscan.com/",
     ticker: "BNB",
     tickerName: "BNB",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Avalanche: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -82,7 +82,7 @@ export const chain: {
     blockExplorerUrl: "https://subnets.avax.network/c-chain",
     ticker: "AVAX",
     tickerName: "AVAX",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Arbitrum: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -94,7 +94,7 @@ export const chain: {
     blockExplorerUrl: "https://arbiscan.io",
     ticker: "AETH",
     tickerName: "AETH",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Optimism: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -106,7 +106,7 @@ export const chain: {
     blockExplorerUrl: "https://optimistic.etherscan.io",
     ticker: "OP",
     tickerName: "OP",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Cronos: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -118,7 +118,7 @@ export const chain: {
     blockExplorerUrl: "https://cronoscan.com/",
     ticker: "CRO",
     tickerName: "CRO",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Harmony: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -130,7 +130,7 @@ export const chain: {
     blockExplorerUrl: "https://explorer.harmony.one",
     ticker: "ONE",
     tickerName: "ONE",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Celo: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -142,7 +142,7 @@ export const chain: {
     blockExplorerUrl: "https://explorer.celo.org",
     ticker: "CELO",
     tickerName: "CELO",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Moonbeam: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -154,7 +154,7 @@ export const chain: {
     blockExplorerUrl: "https://moonbeam.moonscan.io",
     ticker: "GLMR",
     tickerName: "GLMR",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Moonriver: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -166,7 +166,7 @@ export const chain: {
     blockExplorerUrl: "https://moonriver.moonscan.io",
     ticker: "MOVR",
     tickerName: "MOVR",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Klaytn: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -178,7 +178,7 @@ export const chain: {
     blockExplorerUrl: "https://scope.klaytn.com",
     ticker: "KLAY",
     tickerName: "KLAY",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Flare: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -190,7 +190,7 @@ export const chain: {
     blockExplorerUrl: "https://flare-explorer.flare.network/",
     ticker: "FLR",
     tickerName: "FLR",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   Songbird: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -202,7 +202,7 @@ export const chain: {
     blockExplorerUrl: "https://songbird-explorer.flare.network",
     ticker: "SGB",
     tickerName: "SGB",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   zKatana: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -214,7 +214,7 @@ export const chain: {
     blockExplorerUrl: "https://zkatana.blockscout.com",
     ticker: "ETH",
     tickerName: "ETH",
-    logo: "https://web3auth.io/images/web3auth-logo.svg",
+    logo: "https://web3auth.io/images/web3authlog.png",
   },
   // SKALE: {
   //   chainNamespace: CHAIN_NAMESPACES.EIP155,

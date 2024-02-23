@@ -44,8 +44,8 @@ const web3AuthOptions: Web3AuthOptions = {
     theme: {
       primary: "#7ed6df",
     },
-    logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-    logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+    logoLight: "https://web3auth.io/images/web3authlog.png",
+    logoDark: "https://web3auth.io/images/web3authlogodark.png",
     defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
     mode: "auto", // whether to enable dark mode. defaultValue: auto
     useLogoLoader: true,
@@ -72,8 +72,8 @@ function App() {
           adapterSettings: {
             uxMode: "redirect", // "redirect" | "popup"
             whiteLabel: {
-              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+              logoLight: "https://web3auth.io/images/web3authlog.png",
+              logoDark: "https://web3auth.io/images/web3authlogodark.png",
               defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
               mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
             },

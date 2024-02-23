@@ -1,7 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { ConnectButton, RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { WagmiProvider, http, createConfig } from "wagmi";
+import { WagmiProvider, http } from "wagmi";
 import { rainbowWeb3AuthConnector } from "./RainbowWeb3authConnector";
 import { rainbowWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

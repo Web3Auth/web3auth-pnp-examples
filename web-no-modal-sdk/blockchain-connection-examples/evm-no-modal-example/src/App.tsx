@@ -38,8 +38,8 @@ function App() {
           uiConfig: {
             appName: "W3A Heroes",
             appUrl: "https://web3auth.io",
-            logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-            logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+            logoLight: "https://web3auth.io/images/web3authlog.png",
+            logoDark: "https://web3auth.io/images/web3authlogodark.png",
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             mode: "light", // whether to enable dark mode. defaultValue: false
             theme: {

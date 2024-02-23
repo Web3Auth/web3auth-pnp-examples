@@ -44,8 +44,8 @@ function App() {
             appName: "W3A Heroes",
             mode: "light",
             // loginMethodsOrder: ["apple", "google", "twitter"],
-            logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-            logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+            logoLight: "https://web3auth.io/images/web3authlog.png",
+            logoDark: "https://web3auth.io/images/web3authlogodark.png",
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"

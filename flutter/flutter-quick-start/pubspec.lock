@@ -441,10 +441,10 @@ packages:
     dependency: "direct main"
     description:
       name: web3auth_flutter
-      sha256: "391b407e328d1ab77dcab5eed78d5bfc2c9a489ee39d1bdd80aad4ba746cf2d8"
+      sha256: d2d854d195a3f02fd2e9ace7d76522434d34c868ddb174d6f98afc77d84ad5cc
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.2"
+    version: "3.1.5"
   web3dart:
     dependency: "direct main"
     description:

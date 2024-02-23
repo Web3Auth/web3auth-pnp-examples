@@ -25,7 +25,9 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+// IMP START - Quick Start
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+// IMP END - Quick Start
   String _result = '';
   bool logoutVisible = false;
   String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
@@ -35,13 +37,29 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     super.dispose();
+    // IMP START - Quick Start
+    WidgetsBinding.instance.removeObserver(this);
+    // IMP END - Quick Start
   }
 
   @override
   void initState() {
     super.initState();
+    // IMP START - Quick Start
+    WidgetsBinding.instance.addObserver(this);
+    // IMP END - Quick Start
     initPlatformState();
   }
+  
+  // IMP START - Quick Start
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the user cancellation on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setResultUrl();
+    }
+  }
+  // IMP END - Quick Start
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
@@ -63,6 +81,7 @@ class _MyAppState extends State<MyApp> {
       clientId: clientId,
       network: Network.sapphire_mainnet,
       redirectUrl: redirectUrl,
+      buildEnv: BuildEnv.production,
       // 259200 allows user to stay authenticated for 3 days with Web3Auth.
       // Default is 86400, which is 1 day.
       sessionTime: 259200,

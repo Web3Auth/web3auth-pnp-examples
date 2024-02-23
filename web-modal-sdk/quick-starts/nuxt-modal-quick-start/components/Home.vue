@@ -77,10 +77,6 @@ export default defineComponent({
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
       privateKeyProvider: privateKeyProvider,
-      uiConfig: {
-        // For enabling direct mode
-        uxMode: "redirect",
-      }
     });
 
     const loggedIn = ref<boolean>(false);

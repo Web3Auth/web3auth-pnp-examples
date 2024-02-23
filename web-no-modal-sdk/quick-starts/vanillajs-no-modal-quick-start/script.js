@@ -27,11 +27,7 @@ const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvide
     web3AuthNetwork: "sapphire_mainnet",
   });
 
-  const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter({
-    adapterSettings: {
-      uxMode: "redirect",
-    },
-  });
+  const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter();
   web3auth.configureAdapter(openloginAdapter);
 
   await web3auth.init();

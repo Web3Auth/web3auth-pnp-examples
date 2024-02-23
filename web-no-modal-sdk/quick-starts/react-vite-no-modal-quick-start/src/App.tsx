@@ -29,11 +29,7 @@ const web3auth = new Web3AuthNoModal({
   privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    uxMode: UX_MODE.REDIRECT,
-  },
-});
+const openloginAdapter = new OpenloginAdapter();
 web3auth.configureAdapter(openloginAdapter);
 
 function App() {

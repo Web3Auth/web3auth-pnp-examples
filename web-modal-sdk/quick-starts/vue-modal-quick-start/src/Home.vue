@@ -99,10 +99,6 @@ export default {
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
       privateKeyProvider: privateKeyProvider,
-      uiConfig: {
-        // For enabling direct mode
-        uxMode: "redirect",
-      }
     });
     // IMP END - SDK Initialization
 

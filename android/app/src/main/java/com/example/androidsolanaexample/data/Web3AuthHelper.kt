@@ -1,4 +1,4 @@
-package com.example.androidsolanaexample.ui.data
+package com.example.androidsolanaexample.data
 
 import android.net.Uri
 import com.web3auth.core.types.LoginParams
@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture
 interface Web3AuthHelper {
     suspend fun login(loginParams: LoginParams): CompletableFuture<Web3AuthResponse>
     suspend fun logOut(): CompletableFuture<Void>
-    suspend fun getSolanaPrivateKey(): String
+    fun getSolanaPrivateKey(): String
 
     suspend fun getUserInfo(): UserInfo
     suspend fun initialize(): CompletableFuture<Void>

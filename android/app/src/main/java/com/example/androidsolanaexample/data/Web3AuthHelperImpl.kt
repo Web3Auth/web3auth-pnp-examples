@@ -7,7 +7,7 @@ import com.web3auth.core.types.UserInfo
 import com.web3auth.core.types.Web3AuthResponse
 import java.util.concurrent.CompletableFuture
 
-class Web3AuthHelperImp(
+class Web3AuthHelperImpl(
     private val web3Auth: Web3Auth
 ): Web3AuthHelper {
     override suspend fun login(loginParams: LoginParams): CompletableFuture<Web3AuthResponse> {

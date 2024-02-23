@@ -1,5 +1,6 @@
 package com.example.androidsolanaexample.ui.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +18,7 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun MinimalDialog( onDismissRequest: () -> Unit,  content: String) {
+    Log.d("Content", content)
     Dialog(onDismissRequest = {onDismissRequest()}) {
         Card(
             modifier = Modifier

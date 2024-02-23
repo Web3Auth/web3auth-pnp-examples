@@ -3,7 +3,9 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
   IProvider,
+  UX_MODE,
   WALLET_ADAPTERS,
+  WEB3AUTH_NETWORK,
 } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -28,22 +30,29 @@ function App() {
           chainId: "0x1",
           rpcTarget: "https://rpc.ankr.com/eth",
           displayName: "Aptos Mainnet",
-          blockExplorer: "",
+          blockExplorerUrl: "",
           ticker: "APT",
           tickerName: "Aptos",
+          logo: "",
         };
-        const web3auth = new Web3AuthNoModal({
-          clientId,
-          chainConfig,
-          web3AuthNetwork: "sapphire_mainnet",
-        });
-        setWeb3auth(web3auth);
+
         const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const web3auth = new Web3AuthNoModal({
+          clientId,
           privateKeyProvider,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        });
+
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            uxMode: UX_MODE.REDIRECT,
+          },
         });
         web3auth.configureAdapter(openloginAdapter);
+
+        setWeb3auth(web3auth);
+
         await web3auth.init();
         setProvider(web3auth.provider);
         if (web3auth.connected) {

@@ -21,7 +21,7 @@ const Sidebar = () => {
     navigate("/server-side-verification");
   }
   function goToExplorer() {
-    window.open(connectedChain.blockExplorer);
+    window.open(connectedChain.blockExplorerUrl);
   }
   function goToFaucet() {
     if (connectedChain.chainId === "0xaa36a7") {
@@ -31,19 +31,20 @@ const Sidebar = () => {
     }
   }
   const location = useLocation();
-  function linktoGo(label: string, path: any) {
+  function linktoGo(label: string, path: any, id: number) {
     return (
       <div
         onClick={() => path()}
+        key={id}
         className="flex items-center px-4 py-2 mb-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-primary  cursor-pointer"
       >
         <span className="text-sm font-normal">{label}</span>
       </div>
     );
   }
-  function activePage(label: string) {
+  function activePage(label: string, id: number) {
     return (
-      <div className="flex items-center px-4 py-2 mb-2 rounded-lg bg-gray-100 text-primary cursor-pointer">
+      <div key={id} className="flex items-center px-4 py-2 mb-2 rounded-lg bg-gray-100 text-primary cursor-pointer">
         <span className="text-sm font-bold">{label}</span>
       </div>
     );
@@ -54,14 +55,16 @@ const Sidebar = () => {
       <div className="py-3">
         <strong className="px-4 block p-1 text-xs font-medium text-gray-400 uppercase">MENU</strong>
         <nav className="flex flex-col mt-6">
-          {location.pathname === "/" ? activePage("Main Page") : linktoGo("Main Page", goToHome)}
-          {location.pathname === "/transaction" ? activePage("Signing/ Transaction") : linktoGo("Signing/ Transaction", goToTransaction)}
-          {location.pathname === "/contract" ? activePage("Smart Contract Interactions") : linktoGo("Smart Contract Interactions", goToContract)}
+          {location.pathname === "/" ? activePage("Main Page", 1) : linktoGo("Main Page", goToHome, 1)}
+          {location.pathname === "/transaction" ? activePage("Signing/ Transaction", 2) : linktoGo("Signing/ Transaction", goToTransaction, 2)}
+          {location.pathname === "/contract"
+            ? activePage("Smart Contract Interactions", 3)
+            : linktoGo("Smart Contract Interactions", goToContract, 3)}
           {location.pathname === "/server-side-verification"
-            ? activePage("Server Side Verification")
-            : linktoGo("Server Side Verification", goToServerSideVerification)}
-          {linktoGo("Explorer Link", goToExplorer)}
-          {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet) : null}
+            ? activePage("Server Side Verification", 4)
+            : linktoGo("Server Side Verification", goToServerSideVerification, 4)}
+          {linktoGo("Explorer Link", goToExplorer, 5)}
+          {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet, 6) : null}
         </nav>
       </div>
       <UserProfile />

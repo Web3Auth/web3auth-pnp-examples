@@ -21,7 +21,7 @@ const Sidebar = () => {
     navigate("/server-side-verification");
   }
   function goToExplorer() {
-    window.open(connectedChain.blockExplorer);
+    window.open(connectedChain.blockExplorerUrl);
   }
   function goToFaucet() {
     if (connectedChain.chainId === "0xaa36a7") {

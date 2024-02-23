@@ -31,11 +31,8 @@
     </div>
 
     <footer class="footer">
-      <a
-        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nuxt-modal-quick-start"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nuxt-modal-quick-start"
+        target="_blank" rel="noopener noreferrer">
         Source code
       </a>
     </footer>
@@ -46,8 +43,9 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import type { IProvider } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 // IMP END - Quick Start
 import Web3 from "web3";
 
@@ -60,19 +58,29 @@ export default defineComponent({
     // IMP END - Dashboard Registration
 
     const chainConfig = {
+      chainId: "0x1", // Please use 0x1 for Mainnet
+      rpcTarget: "https://rpc.ankr.com/eth",
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0xaa36a7", // Please use 0x1 for Mainnet, 11155111(0xaa36a7) for Sepolia Testnet
-      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      displayName: "Sepolia Testnet",
-      blockExplorer: "https://sepolia.etherscan.io/",
+      displayName: "Ethereum Mainnet",
+      blockExplorerUrl: "https://etherscan.io/",
       ticker: "ETH",
       tickerName: "Ethereum",
+      logo: "https://images.toruswallet.io/eth.svg",
     };
+
+
+    const privateKeyProvider = new EthereumPrivateKeyProvider({
+      config: { chainConfig: chainConfig }
+    });
 
     const web3auth = new Web3Auth({
       clientId,
-      chainConfig,
-      web3AuthNetwork: "sapphire_mainnet",
+      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+      privateKeyProvider: privateKeyProvider,
+      uiConfig: {
+        // For enabling direct mode
+        uxMode: "redirect",
+      }
     });
 
     const loggedIn = ref<boolean>(false);
@@ -250,7 +258,7 @@ a {
   flex-flow: row wrap;
 }
 
-.flex-container > div {
+.flex-container>div {
   width: 100px;
   margin: 10px;
   text-align: center;

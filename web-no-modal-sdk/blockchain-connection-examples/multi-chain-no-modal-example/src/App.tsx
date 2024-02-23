@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -21,61 +21,41 @@ import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 
-//@ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ec as elliptic } from "elliptic";
-
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  privateKeyProvider,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    uxMode: UX_MODE.REDIRECT,
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
-
-  function getWeb3AuthNoModal(chainConfig: any): Web3AuthNoModal {
-    const web3authInstance: Web3AuthNoModal = new Web3AuthNoModal({
-      clientId,
-      chainConfig,
-      web3AuthNetwork: "sapphire_mainnet",
-    });
-    return web3authInstance;
-  }
 
   useEffect(() => {
     const init = async () => {
       try {
-        // ETH_Main_Net
-        const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth",
-          displayName: "Ethereum Mainnet",
-          blockExplorer: "https://etherscan.io",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-        };
-        const web3auth = getWeb3AuthNoModal(chainConfig);
-        setWeb3auth(web3auth);
-
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-        const openloginAdapter = new OpenloginAdapter({
-          privateKeyProvider: privateKeyProvider,
-          loginSettings: {
-            mfaLevel: "default",
-          },
-          adapterSettings: {
-            whiteLabel: {
-              appName: "Your app Name",
-              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-              logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-              defaultLanguage: "en",
-              mode: "auto", // "light" or "dark" or "auto"
-            },
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
-
         await web3auth.init();
 
         setProvider(web3auth.provider);
@@ -212,17 +192,20 @@ function App() {
     const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
         chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "0x13881",
           rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
           displayName: "Polygon Mumbai",
-          blockExplorer: "https://mumbai.polygonscan.com/",
+          blockExplorerUrl: "https://mumbai.polygonscan.com/",
           ticker: "MATIC",
           tickerName: "MATIC",
+          logo: "https://cryptologos.cc/logos/polygon-matic-logo.png"
         },
       },
     });
     await polygonPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(polygonPrivateKeyProvider.provider as any);
+
+    const web3 = new Web3(polygonPrivateKeyProvider as EthereumPrivateKeyProvider);
     const address = (await web3.eth.getAccounts())[0];
     return address;
   };
@@ -238,17 +221,19 @@ function App() {
     const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
         chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "0x38",
           rpcTarget: "https://rpc.ankr.com/bsc",
           displayName: "Binance SmartChain Mainnet",
-          blockExplorer: "https://bscscan.com/",
+          blockExplorerUrl: "https://bscscan.com/",
           ticker: "BNB",
           tickerName: "BNB",
+          logo: "https://cryptologos.cc/logos/bnb-bnb-logo.png"
         },
       },
     });
     await bnbPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(bnbPrivateKeyProvider.provider as any);
+    const web3 = new Web3(bnbPrivateKeyProvider as EthereumPrivateKeyProvider);
     const address = (await web3.eth.getAccounts())[0];
     return address;
   };
@@ -268,19 +253,21 @@ function App() {
     const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
       config: {
         chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.SOLANA,
           chainId: "0x3",
           rpcTarget: "https://api.devnet.solana.com",
           displayName: "Solana Mainnet",
-          blockExplorer: "https://explorer.solana.com/",
+          blockExplorerUrl: "https://explorer.solana.com/",
           ticker: "SOL",
           tickerName: "Solana",
+          logo: "",
         },
       },
     });
     await solanaPrivateKeyProvider.setupProvider(ed25519key);
     console.log(solanaPrivateKeyProvider.provider);
 
-    const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider.provider as any);
+    const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider as SolanaPrivateKeyProvider);
     const solana_address = await solanaWallet.requestAccounts();
     return solana_address[0];
   };

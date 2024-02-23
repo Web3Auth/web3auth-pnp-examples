@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import { Component } from "@angular/core";
 // IMP START - Quick Start
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
 import Web3 from "web3";
@@ -17,20 +18,24 @@ const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io/",
+  blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "ethereum-logo.svg",
 };
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const web3auth = new Web3AuthNoModal({
   clientId,
-  chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
 });
 
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider: privateKeyProvider,
+  adapterSettings: {
+    uxMode: UX_MODE.REDIRECT,
+  },
 });
 web3auth.configureAdapter(openloginAdapter);
 // IMP END - SDK Initialization
@@ -40,7 +45,6 @@ web3auth.configureAdapter(openloginAdapter);
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
 })
-
 export class AppComponent {
   title = "angular-app";
 
@@ -72,12 +76,9 @@ export class AppComponent {
   login = async () => {
     // IMP START - Login
 
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     // IMP END - Login
 
     this.provider = web3authProvider;

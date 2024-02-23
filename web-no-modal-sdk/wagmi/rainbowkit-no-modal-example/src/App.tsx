@@ -1,40 +1,38 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
-import { ConnectButton, connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { createConfig, WagmiConfig, configureChains } from "wagmi";
+import { ConnectButton, RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { WagmiProvider, http } from "wagmi";
 import { rainbowWeb3AuthConnector } from "./RainbowWeb3authConnector";
-import { mainnet, polygon, optimism, arbitrum, base, zora } from 'wagmi/chains';
 import { rainbowWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
-import { publicProvider } from "wagmi/providers/public";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { sepolia, mainnet, polygon } from "wagmi/chains";
 
-const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora],
-  [
-    publicProvider()
-  ]
-);
-
-const connectors = connectorsForWallets([
-  {
+const config = getDefaultConfig({
+  appName: 'My RainbowKit App',
+  projectId: '04309ed1007e77d1f119b85205bb779d',
+  chains: [mainnet, sepolia, polygon],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [polygon.id]: http(),
+  },
+  wallets: [{
     groupName: 'Recommended',
     wallets: [
-      rainbowWallet({ projectId: "04309ed1007e77d1f119b85205bb779d", chains }),
-      rainbowWeb3AuthConnector({ chains }),
-      metaMaskWallet({ projectId: "04309ed1007e77d1f119b85205bb779d", chains }),
+      rainbowWallet,
+      rainbowWeb3AuthConnector,
+      metaMaskWallet,
     ],
-  },
-]);
-
-const wagmiConfig = createConfig({
-  autoConnect: false,
-  connectors,
-  publicClient,
+  }],
 });
+
+const queryClient = new QueryClient()
 
 export default function App() {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+      <RainbowKitProvider>
         <div
           style={{
             position: "fixed",
@@ -50,6 +48,7 @@ export default function App() {
           <ConnectButton />
         </div>
       </RainbowKitProvider>
-    </WagmiConfig>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

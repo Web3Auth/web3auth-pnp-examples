@@ -3,7 +3,9 @@ import { Web3AuthNoModal as Web3Auth } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
   IProvider,
+  UX_MODE,
   WALLET_ADAPTERS,
+  WEB3AUTH_NETWORK,
 } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -29,22 +31,26 @@ function App() {
           chainId: "theta-testnet-001",
           rpcTarget: "https://rpc.sentry-02.theta-testnet.polypore.xyz",
           displayName: "Cosmos Mainnet",
-          blockExplorer: "https://explorer.theta-testnet.polypore.xyz",
+          blockExplorerUrl: "https://explorer.theta-testnet.polypore.xyz",
           ticker: "ATOM",
           tickerName: "Cosmos",
+          logo: "",
         };
+
+        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
+
         const web3auth = new Web3Auth({
           clientId,
-          chainConfig,
-          web3AuthNetwork: "sapphire_mainnet",
+          privateKeyProvider,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
         });
 
         setWeb3auth(web3auth);
 
-        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
-
         const openloginAdapter = new OpenloginAdapter({
-          privateKeyProvider,
+          adapterSettings: {
+            uxMode: UX_MODE.REDIRECT,
+          },
         });
         web3auth.configureAdapter(openloginAdapter);
 

@@ -19,9 +19,11 @@ let web3auth = null;
     tickerName: "Ethereum",
   };
 
+  const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvider({ config: { chainConfig } });
+
   web3auth = new window.Modal.Web3Auth({
     clientId,
-    chainConfig,
+    privateKeyProvider,
     web3AuthNetwork: "sapphire_mainnet",
   });
 

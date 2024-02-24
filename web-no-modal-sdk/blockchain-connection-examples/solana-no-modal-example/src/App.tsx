@@ -3,7 +3,9 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import {
   CHAIN_NAMESPACES,
   IProvider,
+  UX_MODE,
   WALLET_ADAPTERS,
+  WEB3AUTH_NETWORK,
 } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
@@ -28,24 +30,26 @@ function App() {
           chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
           rpcTarget: "https://api.devnet.solana.com",
           displayName: "Solana Devnet",
-          blockExplorer: "https://explorer.solana.com",
+          blockExplorerUrl: "https://explorer.solana.com",
           ticker: "SOL",
           tickerName: "Solana Token",
+          logo: "",
         };
+
+        const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
+
         const web3auth = new Web3AuthNoModal({
           clientId,
-          chainConfig,
-          web3AuthNetwork: "sapphire_mainnet",
+          privateKeyProvider,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
         });
 
         setWeb3auth(web3auth);
 
-        const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
-
         const openloginAdapter = new OpenloginAdapter({
           privateKeyProvider,
           adapterSettings: {
-            uxMode: "redirect",
+            uxMode: UX_MODE.REDIRECT,
           }
         });
         web3auth.configureAdapter(openloginAdapter);

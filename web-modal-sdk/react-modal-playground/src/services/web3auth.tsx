@@ -1,5 +1,7 @@
 import { getPublicCompressed } from "@toruslabs/eccrypto";
-import { CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { THEME_MODES, UX_MODE } from "@toruslabs/openlogin-utils";
+import { CustomChainConfig, IProvider } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
 import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import * as jose from "jose";
@@ -103,21 +105,28 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       try {
         setIsLoading(true);
         const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+
+        const privateKeyProvider = new EthereumPrivateKeyProvider({
+          config: {
+            chainConfig: chain["Sepolia Testnet"],
+          },
+        });
+
         const web3AuthInstance = new Web3Auth({
           clientId,
-          chainConfig: chain["Sepolia Testnet"],
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
           uiConfig: {
-            mode: "light", // light, dark or auto
+            mode: THEME_MODES.dark, // light, dark or auto
             loginMethodsOrder: ["twitter"],
           },
+          privateKeyProvider,
         });
         const openloginAdapter = new OpenloginAdapter({
           // loginSettings: {
           //   mfaLevel: "optional",
           // },
           adapterSettings: {
-            uxMode: "redirect", // "redirect" | "popup"
+            uxMode: UX_MODE.REDIRECT, // "redirect" | "popup"
             // mfaSettings: {
             //   deviceShareFactor: {
             //     enable: true,
@@ -143,19 +152,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           },
         });
         web3AuthInstance.configureAdapter(openloginAdapter);
-        await web3AuthInstance.initModal({
-          modalConfig: {
-            [WALLET_ADAPTERS.OPENLOGIN]: {
-              label: "openlogin",
-              loginMethods: {
-                twitter: {
-                  name: "X",
-                  mainOption: true,
-                },
-              },
-            },
-          },
-        });
+        await web3AuthInstance.initModal();
         if (web3AuthInstance.status === "connected") {
           setWalletProvider(web3AuthInstance.provider);
           setUser(await web3AuthInstance.getUserInfo());

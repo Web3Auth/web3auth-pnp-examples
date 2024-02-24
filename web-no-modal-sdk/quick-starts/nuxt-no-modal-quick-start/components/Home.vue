@@ -46,7 +46,7 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import type { IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -69,21 +69,22 @@ export default defineComponent({
       chainId: "0xaa36a7", // Please use 0x1 for Mainnet, hex of 11155111 (0xaa36a7) for Sepolia Testnet
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
       displayName: "Sepolia Testnet",
-      blockExplorer: "https://sepolia.etherscan.io/",
+      blockExplorerUrl: "https://sepolia.etherscan.io/",
       ticker: "ETH",
       tickerName: "Ethereum",
+      logo: "https://openlogin.com/images/ethereum.png",
     };
+
+    const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
     const web3auth = new Web3AuthNoModal({
       clientId,
       chainConfig,
-      web3AuthNetwork: "sapphire_mainnet",
+      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+      privateKeyProvider,
     });
 
-    const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-    const openloginAdapter = new OpenloginAdapter({
-      privateKeyProvider: privateKeyProvider,
-    });
+    const openloginAdapter = new OpenloginAdapter();
     web3auth.configureAdapter(openloginAdapter);
     // IMP END - SDK Initialization
 

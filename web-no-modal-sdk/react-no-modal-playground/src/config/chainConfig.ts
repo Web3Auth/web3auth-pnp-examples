@@ -10,14 +10,16 @@ export const chain: {
     tickerName: "Ethereum Sepolia",
     ticker: "ETH",
     rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-    blockExplorer: "https://sepolia.etherscan.io",
+    logo: "",
+    blockExplorerUrl: "https://sepolia.etherscan.io",
   },
   Ethereum: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
     displayName: "Ethereum Mainnet",
     rpcTarget: "https://rpc.ankr.com/eth",
-    blockExplorer: "https://etherscan.io",
+    logo: "",
+    blockExplorerUrl: "https://etherscan.io",
     ticker: "ETH",
     tickerName: "Ethereum",
   },
@@ -28,7 +30,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Polygon Mainnet",
-    blockExplorer: "https://polygonscan.com",
+    logo: "",
+    blockExplorerUrl: "https://polygonscan.com",
     ticker: "MATIC",
     tickerName: "Matic",
   },
@@ -39,7 +42,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Polygon Mumbai Testnet",
-    blockExplorer: "https://mumbai.polygonscan.com/",
+    logo: "",
+    blockExplorerUrl: "https://mumbai.polygonscan.com/",
     ticker: "MATIC",
     tickerName: "Matic",
   },
@@ -50,7 +54,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Base Sepolia",
-    blockExplorer: "https://sepolia.basescan.org/",
+    logo: "",
+    blockExplorerUrl: "https://sepolia.basescan.org/",
     ticker: "ETH",
     tickerName: "ETH",
   },
@@ -61,7 +66,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Binance SmartChain Mainnet",
-    blockExplorer: "https://bscscan.com/",
+    logo: "",
+    blockExplorerUrl: "https://bscscan.com/",
     ticker: "BNB",
     tickerName: "BNB",
   },
@@ -72,7 +78,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Avalanche C-Chain Mainnet",
-    blockExplorer: "https://subnets.avax.network/c-chain",
+    logo: "",
+    blockExplorerUrl: "https://subnets.avax.network/c-chain",
     ticker: "AVAX",
     tickerName: "AVAX",
   },
@@ -83,7 +90,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Arbitrum Mainnet",
-    blockExplorer: "https://arbiscan.io",
+    logo: "",
+    blockExplorerUrl: "https://arbiscan.io",
     ticker: "AETH",
     tickerName: "AETH",
   },
@@ -94,7 +102,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Optimism Mainnet",
-    blockExplorer: "https://optimistic.etherscan.io",
+    logo: "",
+    blockExplorerUrl: "https://optimistic.etherscan.io",
     ticker: "OP",
     tickerName: "OP",
   },
@@ -105,7 +114,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Cronos Mainnet",
-    blockExplorer: "https://cronoscan.com/",
+    logo: "",
+    blockExplorerUrl: "https://cronoscan.com/",
     ticker: "CRO",
     tickerName: "CRO",
   },
@@ -116,7 +126,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Harmony Mainnet",
-    blockExplorer: "https://explorer.harmony.one",
+    logo: "",
+    blockExplorerUrl: "https://explorer.harmony.one",
     ticker: "ONE",
     tickerName: "ONE",
   },
@@ -127,7 +138,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Celo Mainnet",
-    blockExplorer: "https://explorer.celo.org",
+    logo: "",
+    blockExplorerUrl: "https://explorer.celo.org",
     ticker: "CELO",
     tickerName: "CELO",
   },
@@ -138,7 +150,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Moonbeam Mainnet",
-    blockExplorer: "https://moonbeam.moonscan.io",
+    logo: "",
+    blockExplorerUrl: "https://moonbeam.moonscan.io",
     ticker: "GLMR",
     tickerName: "GLMR",
   },
@@ -149,7 +162,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Moonriver Mainnet",
-    blockExplorer: "https://moonriver.moonscan.io",
+    logo: "",
+    blockExplorerUrl: "https://moonriver.moonscan.io",
     ticker: "MOVR",
     tickerName: "MOVR",
   },
@@ -160,7 +174,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "Klaytn Mainnet",
-    blockExplorer: "https://scope.klaytn.com",
+    logo: "",
+    blockExplorerUrl: "https://scope.klaytn.com",
     ticker: "KLAY",
     tickerName: "KLAY",
   },
@@ -171,7 +186,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services provided by Flare or other node providers
     displayName: "Flare Mainnet",
-    blockExplorer: "https://flare-explorer.flare.network/",
+    logo: "",
+    blockExplorerUrl: "https://flare-explorer.flare.network/",
     ticker: "FLR",
     tickerName: "FLR",
   },
@@ -182,7 +198,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services provided by Flare or other node providers
     displayName: "Songbird canary network",
-    blockExplorer: "https://songbird-explorer.flare.network",
+    logo: "",
+    blockExplorerUrl: "https://songbird-explorer.flare.network",
     ticker: "SGB",
     tickerName: "SGB",
   },
@@ -193,7 +210,8 @@ export const chain: {
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
     displayName: "zKatana Testnet",
-    blockExplorer: "https://zkatana.blockscout.com",
+    logo: "",
+    blockExplorerUrl: "https://zkatana.blockscout.com",
     ticker: "ETH",
     tickerName: "ETH",
   },
@@ -204,7 +222,8 @@ export const chain: {
   //   // Avoid using public rpcTarget in production.
   //   // Use services like Infura, Quicknode etc
   //   displayName: "SKALE Europa Hub Mainnet",
-  //   blockExplorer: "https://elated-tan-skat.explorer.mainnet.skalenodes.com/",
+  //   logo:"",
+  // blockExplorerUrl: "https://elated-tan-skat.explorer.mainnet.skalenodes.com/",
   //   ticker: "sFUEL",
   //   tickerName: "sFUEL",
   // },

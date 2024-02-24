@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -25,10 +25,11 @@ import { cryptoWaitReady } from "@polkadot/util-crypto";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ec as elliptic } from "elliptic";
 
+
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -175,12 +176,14 @@ function App() {
     const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
         chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "0x13881",
           rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
           displayName: "Polygon Mumbai",
-          blockExplorer: "https://mumbai.polygonscan.com/",
+          blockExplorerUrl: "https://mumbai.polygonscan.com/",
           ticker: "MATIC",
           tickerName: "MATIC",
+          logo: "https://cryptologos.cc/logos/polygon-matic-logo.png"
         },
       },
     });
@@ -201,12 +204,14 @@ function App() {
     const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
         chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "0x38",
           rpcTarget: "https://rpc.ankr.com/bsc",
           displayName: "Binance SmartChain Mainnet",
-          blockExplorer: "https://bscscan.com/",
+          blockExplorerUrl: "https://bscscan.com/",
           ticker: "BNB",
           tickerName: "BNB",
+          logo: "https://cryptologos.cc/logos/bnb-bnb-logo.png"
         },
       },
     });
@@ -231,19 +236,21 @@ function App() {
     const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
       config: {
         chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.SOLANA,
           chainId: "0x3",
           rpcTarget: "https://api.devnet.solana.com",
           displayName: "Solana Mainnet",
-          blockExplorer: "https://explorer.solana.com/",
+          blockExplorerUrl: "https://explorer.solana.com/",
           ticker: "SOL",
           tickerName: "Solana",
+          logo: "",
         },
       },
     });
     await solanaPrivateKeyProvider.setupProvider(ed25519key);
     console.log(solanaPrivateKeyProvider.provider);
 
-    const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider.provider as any);
+    const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider as SolanaPrivateKeyProvider);
     const solana_address = await solanaWallet.requestAccounts();
     return "0x" +solana_address[0];
   };

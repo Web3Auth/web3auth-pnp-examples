@@ -22,7 +22,7 @@ class Web3AuthHelperImpl(
         return web3Auth.getEd25519PrivKey()
     }
 
-    override suspend fun getUserInfo(): UserInfo {
+    override fun getUserInfo(): UserInfo {
       try {
           return web3Auth.getUserInfo()!!
       } catch (e: Exception) {

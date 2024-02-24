@@ -11,7 +11,7 @@ interface Web3AuthHelper {
     suspend fun logOut(): CompletableFuture<Void>
     fun getSolanaPrivateKey(): String
 
-    suspend fun getUserInfo(): UserInfo
+    fun getUserInfo(): UserInfo
     suspend fun initialize(): CompletableFuture<Void>
 
     suspend fun setResultUrl(uri: Uri?): Unit

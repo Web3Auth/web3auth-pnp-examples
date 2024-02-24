@@ -4,16 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidsolanaexample.data.Web3AuthHelper
 import com.example.androidsolanaexample.domain.SolanaUseCase
-import com.web3auth.core.decodeBase64URLString
 import com.web3auth.core.types.LoginParams
 import com.web3auth.core.types.Provider
+import com.web3auth.core.types.UserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.launch
-import org.sol4k.Base58
 import org.sol4k.Keypair
-import java.util.Base64
 
 @OptIn(ExperimentalStdlibApi::class)
 class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val solanaUseCase: SolanaUseCase): ViewModel() {
@@ -31,7 +29,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val sola
         return web3AuthHelper.getSolanaPrivateKey()
     }
 
-    fun prepareHotAccount() {
+    private fun prepareKeyPair() {
         solanaKeyPair = Keypair.fromSecretKey(solanaPrivateKey().hexToByteArray())
     }
     fun login(){
@@ -39,7 +37,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val sola
         viewModelScope.launch {
             try {
                 web3AuthHelper.login(loginParams = loginParams).await()
-                prepareHotAccount()
+                prepareKeyPair()
                 _isLoggedIn.emit(true)
             } catch (error: Exception){
                 _isLoggedIn.emit(false)
@@ -60,7 +58,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val sola
             try {
                 val isLoggedIn = web3AuthHelper.isUserAuthenticated()
                 if(isLoggedIn) {
-                    prepareHotAccount()
+                    prepareKeyPair()
                 }
                 _isLoggedIn.emit(isLoggedIn)
             }  catch (e: Exception) {
@@ -119,5 +117,14 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val sola
               e.localizedMessage?.let { onSign( null, it) }
           }
         }
+    }
+
+    fun userInfo(onAvailable:(userInfo: UserInfo?, error: String?) -> Unit) {
+       try {
+           val info = web3AuthHelper.getUserInfo()
+           onAvailable(info,null)
+       } catch (e: Exception) {
+           e.localizedMessage?.let { onAvailable( null, it) }
+       }
     }
 }

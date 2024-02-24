@@ -1,5 +1,4 @@
-import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { Web3AuthNoModalOptions } from "@web3auth/no-modal";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, UX_MODE, Web3AuthNoModalOptions } from "@web3auth/base";
 import { OpenloginAdapterOptions } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
@@ -10,31 +9,23 @@ const chainConfig = {
     chainId: "0x1",
     rpcTarget: "https://rpc.ankr.com/eth",
     displayName: "Ethereum Mainnet",
-    blockExplorer: "https://etherscan.io",
+    blockExplorerUrl: "https://etherscan.io",
     ticker: "ETH",
     tickerName: "Ethereum",
+    logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
   };
+
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 export const web3AuthConfig: Web3AuthNoModalOptions = {
-        clientId: clientId,
-        web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-        chainConfig: chainConfig,
-    };
+    clientId,
+  privateKeyProvider,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+};
 
 
 export const openloginAdapterConfig: OpenloginAdapterOptions ={
-    privateKeyProvider: privateKeyProvider,
-    loginSettings: {
-      mfaLevel: "default",
-    },
     adapterSettings: {
-      whiteLabel: {
-        appName: "Your app Name",
-        logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-        logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-        defaultLanguage: "en",
-        mode: "auto", // "light" or "dark" or "auto"
-      },
+      uxMode: UX_MODE.REDIRECT,
     },
   };

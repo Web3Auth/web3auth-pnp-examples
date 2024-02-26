@@ -28,6 +28,6 @@
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "typescript": "5.1.6",
-    "utf-8-validate": "^5.0.10"
+    "utf-8-validate": "^6.0.3"
   }
 }

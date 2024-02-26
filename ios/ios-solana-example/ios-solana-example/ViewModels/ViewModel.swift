@@ -12,6 +12,8 @@ class ViewModel: ObservableObject {
     var web3AuthHelper: Web3AuthHelper!
     
     @Published var isUserAuthenticated: Bool = false
+    @Published var isErrorAvailable: Bool = false
+    var error: String = ""
     
     
     func initilize() {
@@ -36,6 +38,10 @@ class ViewModel: ObservableObject {
                     self.isUserAuthenticated = false
                 }
             } catch let error {
+                DispatchQueue.main.async {
+                    self.isErrorAvailable = true
+                    self.error = error.localizedDescription
+                }
                 print(error)
             }
         }
@@ -49,6 +55,10 @@ class ViewModel: ObservableObject {
                     self.isUserAuthenticated = true
                 }
             } catch let error {
+                DispatchQueue.main.async {
+                    self.isErrorAvailable = true
+                    self.error = error.localizedDescription
+                }
                 print(error.localizedDescription)
             }
         }

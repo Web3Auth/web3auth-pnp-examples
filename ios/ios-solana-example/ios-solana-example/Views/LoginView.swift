@@ -20,7 +20,13 @@ struct LoginView: View {
                 Text("Sign in with Google")
             }).buttonStyle(.bordered)
             Spacer()
-        }.padding(.all, 8)
+        }.padding(.all, 8).alert(isPresented: Binding<Bool>(
+            get: { self.viewModel.isErrorAvailable},
+            set: { _ in self.viewModel.isErrorAvailable.toggle()}
+        ), content: {
+            Alert(title: Text(viewModel.error), dismissButton: .default(Text("Okay"))
+            )
+        })
         
     }
 }

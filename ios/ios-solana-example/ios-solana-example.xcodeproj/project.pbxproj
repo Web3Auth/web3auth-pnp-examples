@@ -111,9 +111,7 @@
 				28DFB2C22B8C3EE3005DDCB6 /* Helpers */,
 				28DFB2C12B8C3E7F005DDCB6 /* ViewModels */,
 				28DFB2C02B8C3E70005DDCB6 /* Views */,
-				285651652B8BAFE000796F67 /* Data */,
 				285651352B8A555900796F67 /* ios_solana_exampleApp.swift */,
-				285651372B8A555900796F67 /* ContentView.swift */,
 				285651392B8A555A00796F67 /* Assets.xcassets */,
 				2856513B2B8A555A00796F67 /* Preview Content */,
 			);
@@ -145,16 +143,10 @@
 			path = "ios-solana-exampleUITests";
 			sourceTree = "<group>";
 		};
-		285651652B8BAFE000796F67 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
 		28DFB2C02B8C3E70005DDCB6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				285651372B8A555900796F67 /* ContentView.swift */,
 				28DFB2C72B8C4F53005DDCB6 /* LoginView.swift */,
 				28DFB2C92B8C4F5F005DDCB6 /* HomeView.swift */,
 			);

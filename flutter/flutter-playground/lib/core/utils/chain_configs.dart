@@ -40,7 +40,7 @@ final chainConfigs = [
   {
     "chainNamespace": ChainNamespace.solana.name,
     "chainId": "devnet",
-    "rpcTarget": "https://rpc.ankr.com/polygon_mumbai",
+    "rpcTarget": "https://api.devnet.solana.com",
     "displayName": "Solana Devnet",
     "blockExplorerUrl": "https://explorer.solana.com/?cluster=devnet/",
     "ticker": "SOL",

@@ -10,11 +10,15 @@ class ChainConfigModel extends ChainConfig {
     required super.logo,
     required super.blockExplorerUrl,
     required super.chainId,
+    required super.isEVMChain,
   });
 
   factory ChainConfigModel.fromJson(Map<String, String> json) {
+    final nameSpace = ChainNamespace.values.byName(json['chainNamespace']!);
+    final isEVM = nameSpace == ChainNamespace.eip155;
     return ChainConfigModel(
-      chainNamespace: ChainNamespace.values.byName(json['chainNamespace']!),
+      isEVMChain: isEVM,
+      chainNamespace: nameSpace,
       displayName: json['displayName']!,
       ticker: json['ticker']!,
       rpcTarget: json['rpcTarget']!,

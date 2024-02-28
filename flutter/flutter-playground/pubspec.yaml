@@ -11,7 +11,8 @@ dependencies:
     sdk: flutter
   get_it: ^7.6.7
   hex: ^0.2.0
-  solana: ^0.30.3
+  http: ^1.2.0
+  solana: ^0.30.0+1
   web3auth_flutter: ^3.1.6
   web3dart: ^2.7.2
 

@@ -4,7 +4,7 @@ extension StringExtension on String {
   List<int> get hexToBytes => HEX.decode(this);
 
   String get addressAbbreviation =>
-      "${substring(0, 4)}...${substring(length - 4, length)}";
+      "${substring(0, 8)}...${substring(length - 8, length)}";
 
   bool get isValidEmail {
     final regex = RegExp(

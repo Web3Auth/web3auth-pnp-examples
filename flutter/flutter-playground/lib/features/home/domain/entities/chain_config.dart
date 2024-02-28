@@ -8,8 +8,10 @@ class ChainConfig {
   final String blockExplorerUrl;
   final String chainId;
   final String? logo;
+  final bool isEVMChain;
 
   ChainConfig({
+    required this.isEVMChain,
     required this.chainNamespace,
     required this.displayName,
     required this.ticker,

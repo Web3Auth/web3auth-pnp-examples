@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/core/service_locator.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/features/home/domain/entities/account.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
 import 'package:flutter_playground/features/home/domain/repositories/chain_config_repostiory.dart';
@@ -57,10 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Flutter Playground"),
+        title: const Text(StringConstants.appBarTitle),
       ),
-      drawer: SideDrawer(
-        selectedChainConfig: chainConfigs.first,
+      drawer: ValueListenableBuilder(
+        valueListenable: selectedChainConfig,
+        builder: (_, __, ___) {
+          return SideDrawer(
+            defaultIndex: 0,
+            selectedChainConfig: selectedChainConfig.value,
+          );
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),

@@ -9,6 +9,7 @@ class ChainConfig {
   final String chainId;
   final String? logo;
   final bool isEVMChain;
+  final String wss;
 
   ChainConfig({
     required this.isEVMChain,
@@ -19,5 +20,6 @@ class ChainConfig {
     required this.blockExplorerUrl,
     required this.logo,
     required this.chainId,
+    required this.wss,
   });
 }

@@ -1,7 +1,6 @@
-import 'package:flutter_playground/core/utils/chain_configs.dart';
-import 'package:flutter_playground/features/home/data/datasource/chain_datasource.dart';
-import 'package:flutter_playground/features/home/data/datasource/ethereum_datasource.dart';
-import 'package:flutter_playground/features/home/data/datasource/solana_datasource.dart';
+import 'package:flutter_playground/core/chain_provider.dart';
+import 'package:flutter_playground/core/evm/ethereum_provider.dart';
+import 'package:flutter_playground/core/solana/solana_provider.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
 import 'package:hex/hex.dart';
 
@@ -20,11 +19,11 @@ extension StringExtension on String {
 }
 
 extension ChainConfigExtension on ChainConfig {
-  ChainDataSource prepareDataSource() {
+  ChainProvider prepareChainProvider() {
     if (isEVMChain) {
-      return EthereumDataSource(rpcTarget: rpcTarget);
+      return EthereumProvider(rpcTarget: rpcTarget);
     } else {
-      return SolanaDataSource(rpcTarget: rpcTarget);
+      return SolanaProvider(rpcTarget: rpcTarget, wss: wss);
     }
   }
 }

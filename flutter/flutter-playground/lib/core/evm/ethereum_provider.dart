@@ -1,16 +1,16 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:flutter_playground/features/home/data/datasource/chain_datasource.dart';
+import 'package:flutter_playground/core/chain_provider.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 
-class EthereumDataSource extends ChainDataSource {
+class EthereumProvider extends ChainProvider {
   final Web3Client web3client;
 
-  EthereumDataSource({required String rpcTarget})
+  EthereumProvider({required String rpcTarget})
       : web3client = Web3Client(
           rpcTarget,
           Client(),

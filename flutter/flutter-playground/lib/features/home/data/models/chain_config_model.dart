@@ -11,6 +11,7 @@ class ChainConfigModel extends ChainConfig {
     required super.blockExplorerUrl,
     required super.chainId,
     required super.isEVMChain,
+    required super.wss,
   });
 
   factory ChainConfigModel.fromJson(Map<String, String> json) {
@@ -25,6 +26,7 @@ class ChainConfigModel extends ChainConfig {
       logo: json['logo'],
       blockExplorerUrl: json['blockExplorerUrl']!,
       chainId: json['chainId']!,
+      wss: json['wss']!,
     );
   }
 }

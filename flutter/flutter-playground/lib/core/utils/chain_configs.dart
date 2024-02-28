@@ -9,6 +9,7 @@ final chainConfigs = [
     "rpcTarget": "https://rpc.ankr.com/eth_sepolia",
     "blockExplorerUrl": "https://sepolia.etherscan.io",
     "logo": "https://web3auth.io/images/web3authlog.png",
+    "wss": '',
   },
   {
     "chainNamespace": ChainNamespace.eip155.name,
@@ -18,6 +19,7 @@ final chainConfigs = [
     "blockExplorerUrl": "https://etherscan.io",
     "ticker": "ETH",
     "logo": "https://web3auth.io/images/web3authlog.png",
+    "wss": '',
   },
   {
     "chainNamespace": ChainNamespace.eip155.name,
@@ -27,6 +29,7 @@ final chainConfigs = [
     "blockExplorerUrl": "https://polygonscan.com",
     "ticker": "MATIC",
     "logo": "https://web3auth.io/images/web3authlog.png",
+    "wss": '',
   },
   {
     "chainNamespace": ChainNamespace.eip155.name,
@@ -36,6 +39,7 @@ final chainConfigs = [
     "blockExplorerUrl": "https://mumbai.polygonscan.com/",
     "ticker": "MATIC",
     "logo": "https://web3auth.io/images/web3authlog.png",
+    "wss": '',
   },
   {
     "chainNamespace": ChainNamespace.solana.name,
@@ -45,5 +49,6 @@ final chainConfigs = [
     "blockExplorerUrl": "https://explorer.solana.com/?cluster=devnet/",
     "ticker": "SOL",
     "logo": "https://web3auth.io/images/web3authlog.png",
+    "wss": "ws://api.devnet.solana.com"
   },
 ];

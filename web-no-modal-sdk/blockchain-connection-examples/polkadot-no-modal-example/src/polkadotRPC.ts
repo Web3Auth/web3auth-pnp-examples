@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
-import { cryptoWaitReady } from "@polkadot/util-crypto";
+/* import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
+import { cryptoWaitReady } from "@polkadot/util-crypto"; */
 import { IProvider } from "@web3auth/base";
 
 export default class PolkadotRPC {

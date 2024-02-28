@@ -1,53 +1,49 @@
-import { useEffect, useState } from "react";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import "./App.css";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import RPC from "./immutableRPC";
+import { useEffect, useState } from "react";
+import "./App.css";
+
+import RPC from "./polymeshRPC";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
-function App() {
+export default function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
         const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth",
-          displayName: "Ethereum Mainnet",
-          blockExplorerUrl: "https://etherscan.io/",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-          logo: "https://assets-global.website-files.com/61c0a31b90958801836efe1b/62d08014db27c031ec24b6f6_polymesh-symbol.svg",
+          chainNamespace: CHAIN_NAMESPACES.OTHER,
+          chainId: "0x5", // '0x1' for mainnet
+          rpcTarget: "https://testnet-rpc.polymesh.live", // 'https://mainnet-rpc.polymesh.network' for mainnet
+          displayName: "Polymesh Testnet", // 'Polymesh Mainnet' for mainnet
+          blockExplorer: "https://polymesh-testnet.subscan.io", // 'https://polymesh.subscan.io' for mainnet
+          ticker: "POLYX",
+          tickerName: "Polymesh",
         };
-
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-        const web3auth = new Web3AuthNoModal({
+        const web3authInstance = new Web3AuthNoModal({
           clientId,
-          privateKeyProvider,
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+          chainConfig,
+          web3AuthNetwork: "sapphire_mainnet",
         });
+        setWeb3auth(web3authInstance);
+
+        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
         const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            uxMode: UX_MODE.REDIRECT,
-          },
+          privateKeyProvider,
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3authInstance.configureAdapter(openloginAdapter);
 
-        setWeb3auth(web3auth);
+        await web3authInstance.init();
 
-        await web3auth.init();
-
-        setProvider(web3auth.provider);
-        if (web3auth.connected) {
+        setProvider(web3authInstance.provider);
+        if (web3authInstance.connectedAdapterName) {
           setLoggedIn(true);
         }
       } catch (error) {
@@ -58,15 +54,12 @@ function App() {
     init();
   }, []);
 
-  const registerAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
-    const rpc = new RPC(provider);
-    const response = await rpc.registerAccounts();
-    uiConsole(response);
-  };
+  }
 
   const login = async () => {
     if (!web3auth) {
@@ -96,6 +89,7 @@ function App() {
       return;
     }
     const user = await web3auth.getUserInfo();
+    console.log(user);
     uiConsole(user);
   };
 
@@ -109,14 +103,38 @@ function App() {
     setLoggedIn(false);
   };
 
-  const getAccounts = async () => {
+  const onGetPolymeshPrivateKey = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const privateKey = await rpc.getPolymeshPrivateKey();
+    uiConsole("Private Key", privateKey);
+  };
+
+  const getPublicKey = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
-    const address = await rpc.getAccounts();
-    uiConsole("ETH Address: " + address.ethAddress, "Stark Address: " + address.starkAddress);
+    const userAccount = await rpc.getKey();
+    uiConsole("Public Key", userAccount);
+  };
+
+  const getSignersIdentity = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const identity = await rpc.getIdentity();
+    if (!identity) {
+      uiConsole("No Identity found for the connected key, visit https://testnet-onboarding.polymesh.live to create an onchain identity");
+    } else {
+      uiConsole("Identity ID", identity);
+    }
   };
 
   const getBalance = async () => {
@@ -126,25 +144,19 @@ function App() {
     }
     const rpc = new RPC(provider);
     const balance = await rpc.getBalance();
-    uiConsole("Eth Balance", balance);
+    uiConsole("Balance", balance);
   };
 
-  const sendTransaction = async () => {
+  const transferPolyx = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole("Submitting POLYX transfer...");
     const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
+    const result = await rpc.transferPolyx();
+    uiConsole("Transaction Details", result);
   };
-
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
 
   const loggedInView = (
     <>
@@ -160,23 +172,28 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={getAccounts} className="card">
-            Get ETH and Stark Accounts
+          <button onClick={onGetPolymeshPrivateKey} className="card">
+            Get Private Key
           </button>
         </div>
         <div>
-          <button onClick={registerAccounts} className="card">
-            Register your L1 and L2 Keypair
+          <button onClick={getPublicKey} className="card">
+            Get Signing Key
+          </button>
+        </div>
+        <div>
+          <button onClick={getSignersIdentity} className="card">
+            Get Identity ID
           </button>
         </div>
         <div>
           <button onClick={getBalance} className="card">
-            Get Eth Balance
+            Get Balance
           </button>
         </div>
         <div>
-          <button onClick={sendTransaction} className="card">
-            Send Funds from L1 to L2
+          <button onClick={transferPolyx} className="card">
+            Send Transaction
           </button>
         </div>
         <div>
@@ -203,14 +220,14 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & React ImmutableX Example
+        & React Polymesh Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/immutablex-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/polymesh-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -220,5 +237,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

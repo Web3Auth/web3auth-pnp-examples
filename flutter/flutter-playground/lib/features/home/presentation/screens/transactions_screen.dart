@@ -94,15 +94,18 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
   Future<void> _signMessage(BuildContext context) async {
     try {
+      showLoader(context);
       final signature = await chainProvider.signMessage(
         signMessageTextController.text,
       );
       if (context.mounted) {
+        removeDialog(context);
         showInfoDialog(context, signature);
       }
     } catch (e, _) {
       log(e.toString(), stackTrace: _);
       if (context.mounted) {
+        removeDialog(context);
         showInfoDialog(context, e.toString());
       }
     }
@@ -110,6 +113,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
   Future<void> _sendTransaction(BuildContext context) async {
     try {
+      showLoader(context);
       final amount = double.parse(amountTextController.text);
       final hash = await chainProvider.sendTransaction(
         destinationTextController.text,
@@ -117,11 +121,13 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       );
 
       if (context.mounted) {
+        removeDialog(context);
         showInfoDialog(context, hash);
       }
     } catch (e, _) {
       log(e.toString(), stackTrace: _);
       if (context.mounted) {
+        removeDialog(context);
         showInfoDialog(context, e.toString());
       }
     }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_playground/core/extensions.dart';
+import 'package:flutter_playground/core/widgets/custom_dialog.dart';
 import 'package:flutter_playground/features/home/domain/entities/account.dart';
 import 'package:web3auth_flutter/output.dart';
 
@@ -34,7 +36,9 @@ class AccountDetails extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                copyContentToClipboard(context, account.publicAddress);
+              },
               icon: const Icon(
                 Icons.copy,
                 size: 14,
@@ -62,5 +66,13 @@ class AccountDetails extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void copyContentToClipboard(BuildContext context, String content) {
+    Clipboard.setData(
+      ClipboardData(text: content),
+    );
+
+    showInfoDialog(context, "Copied to clipboard\n\n$content");
   }
 }

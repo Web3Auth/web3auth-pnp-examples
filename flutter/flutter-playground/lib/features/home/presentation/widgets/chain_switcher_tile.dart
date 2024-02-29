@@ -36,7 +36,7 @@ class ChainSwitchTile extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           border: Border.all(width: 0.5),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

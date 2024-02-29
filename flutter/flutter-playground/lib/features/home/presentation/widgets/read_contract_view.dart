@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_playground/core/extensions.dart';
 import 'package:flutter_playground/core/widgets/custom_filled_buttond.dart';
 import 'package:flutter_playground/core/widgets/custom_text_field.dart';
 
@@ -29,7 +30,8 @@ class _ReadContractViewState extends State<ReadContractView> {
           const SizedBox(height: 8),
           CustomTextField(
             textEditingController: widget.contractAddressController,
-            hintText: '0x1c7d4b196cb0c7b01d743fbc6116a902379c7238',
+            hintText: '0x1c7d4b196cb0c7b01d743fbc6116a902379c7238'
+                .addressAbbreviation,
           ),
           const SizedBox(height: 24),
           CustomFilledButton(

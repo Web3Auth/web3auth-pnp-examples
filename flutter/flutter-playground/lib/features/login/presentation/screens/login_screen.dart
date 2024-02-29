@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_playground/core/extensions.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_dialog.dart';
+import 'package:flutter_playground/core/widgets/custom_filled_buttond.dart';
 import 'package:flutter_playground/features/home/presentation/screens/home_screen.dart';
 import 'package:web3auth_flutter/enums.dart';
 import 'package:web3auth_flutter/input.dart';
@@ -65,33 +65,10 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
               maxLines: 2,
             ),
             verticalGap,
-            Form(
-              key: formKey,
-              child: TextFormField(
-                controller: textEditingController,
-                validator: (email) {
-                  final isValidEmail = email != null && email.isValidEmail;
-                  if (isValidEmail) {
-                    return null;
-                  }
-                  return "Please enter a valid email";
-                },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
-                ),
-              ),
-            ),
             verticalGap,
-            FilledButton(
-              onPressed: () => _login(context, Provider.email_passwordless),
-              child: const Text("Login with Email passwordless"),
-            ),
-            verticalGap,
-            FilledButton(
-              onPressed: () => _login(context, Provider.google),
-              child: const Text("Login with Google"),
+            CustomFilledButton(
+              onTap: () => _login(context, Provider.google),
+              text: "Login with Google",
             )
           ],
         ),

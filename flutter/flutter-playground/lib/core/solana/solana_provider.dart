@@ -58,4 +58,20 @@ class SolanaProvider extends ChainProvider {
       privateKey: privateKey.hexToBytes.take(32).toList(),
     );
   }
+
+  @override
+  Future<dynamic> readContract(
+    String address,
+    String function,
+    List<dynamic> params,
+  ) {
+    // TODO: implement readContract
+    throw UnimplementedError();
+  }
+
+  @override
+  Future writeContract(String address, String function, List params) {
+    // TODO: implement writeContract
+    throw UnimplementedError();
+  }
 }

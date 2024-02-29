@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
+import 'package:flutter_playground/features/home/presentation/screens/smart_contract_interaction_screen.dart';
 import 'package:flutter_playground/features/home/presentation/screens/transactions_screen.dart';
 import 'package:web3auth_flutter/enums.dart';
 
@@ -68,8 +69,9 @@ class _SideDrawerState extends State<SideDrawer> {
                       onTap: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (_) {
-                          return TransactionsScreen(
-                              selectedChainConfig: widget.selectedChainConfig);
+                          return SmartContractInteractionScreen(
+                            selectedChainConfig: widget.selectedChainConfig,
+                          );
                         }));
                         selectedIndex.value = index;
                       },

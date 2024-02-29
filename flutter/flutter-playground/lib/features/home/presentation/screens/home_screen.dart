@@ -8,7 +8,7 @@ import 'package:flutter_playground/features/home/domain/entities/chain_config.da
 import 'package:flutter_playground/features/home/domain/repositories/chain_config_repostiory.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/account_details.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/balance_widget.dart';
-import 'package:flutter_playground/features/home/presentation/widgets/drawer.dart';
+import 'package:flutter_playground/core/widgets/drawer.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/chain_switcher_tile.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/home_header.dart';
 import 'package:web3auth_flutter/output.dart';

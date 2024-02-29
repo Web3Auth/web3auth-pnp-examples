@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter_playground/core/chain_provider.dart';
+import 'package:flutter_playground/core/erc_20.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
@@ -60,5 +61,49 @@ class EthereumProvider extends ChainProvider {
     final privateKey = await Web3AuthFlutter.getPrivKey();
     final Credentials credentials = EthPrivateKey.fromHex(privateKey);
     return credentials;
+  }
+
+  @override
+  Future<dynamic> readContract(
+    String address,
+    String function,
+    List<dynamic> params,
+  ) async {
+    final contract = DeployedContract(
+      ContractAbi.fromJson(erc20Abi, 'Contract'),
+      EthereumAddress.fromHex(address),
+    );
+
+    final readFunction = contract.function(function);
+    final result = await web3client.call(
+      contract: contract,
+      function: readFunction,
+      params: params,
+    );
+
+    return result;
+  }
+
+  @override
+  Future writeContract(String address, String function, List params) async {
+    final contract = DeployedContract(
+      ContractAbi.fromJson(erc20Abi, 'Contract'),
+      EthereumAddress.fromHex(address),
+    );
+
+    final writeFunction = contract.function(function);
+    final Credentials credentials = await _prepareCredentials();
+    final result = await web3client.sendTransaction(
+      credentials,
+      Transaction.callContract(
+        contract: contract,
+        function: writeFunction,
+        parameters: params,
+      ),
+      chainId: null,
+      fetchChainIdFromNetworkId: true,
+    );
+
+    return result;
   }
 }

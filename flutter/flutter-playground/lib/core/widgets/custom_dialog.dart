@@ -79,9 +79,10 @@ showInfoDialog(
                 const SizedBox(
                   height: 8,
                 ),
-                Center(
+                SizedBox(
+                  width: double.infinity,
                   child: Text(info),
-                )
+                ),
               ],
             ),
           ),

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
 import 'package:flutter_playground/features/home/presentation/screens/smart_contract_interaction_screen.dart';
 import 'package:flutter_playground/features/home/presentation/screens/transactions_screen.dart';
+import 'package:flutter_playground/features/login/presentation/screens/login_screen.dart';
 import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 class SideDrawer extends StatefulWidget {
   final ChainConfig selectedChainConfig;
-  final int defaultIndex;
 
   const SideDrawer({
     super.key,
     required this.selectedChainConfig,
-    required this.defaultIndex,
   });
 
   @override
@@ -19,19 +19,9 @@ class SideDrawer extends StatefulWidget {
 }
 
 class _SideDrawerState extends State<SideDrawer> {
-  final List<String> drawerItems = [
-    'Main Page',
-    'Transaction',
-    'Smart Contract Interacations',
-    'Disconnect',
-  ];
-
-  late final ValueNotifier selectedIndex;
-
   @override
   void initState() {
     super.initState();
-    selectedIndex = ValueNotifier(widget.defaultIndex);
   }
 
   bool get isEvmChain {
@@ -49,72 +39,86 @@ class _SideDrawerState extends State<SideDrawer> {
             title: Text('Menu'),
           ),
           const Divider(),
-          Expanded(
-            child: ValueListenableBuilder(
-              valueListenable: selectedIndex,
-              builder: (_, __, ___) {
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  itemCount: drawerItems.length,
-                  itemBuilder: (context, index) {
-                    final item = drawerItems[index];
-
-                    if (!widget.selectedChainConfig.isEVMChain && index == 2) {
-                      return const Offstage();
-                    }
-
-                    return DrawerTile(
-                      item: item,
-                      isSelected: index == selectedIndex.value,
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) {
-                          return SmartContractInteractionScreen(
-                            selectedChainConfig: widget.selectedChainConfig,
-                          );
-                        }));
-                        selectedIndex.value = index;
-                      },
-                    );
-                  },
+          DrawerTile(
+            item: 'Transaction',
+            onTap: () {
+              _navigateToScreen(
+                context,
+                TransactionsScreen(
+                  selectedChainConfig: widget.selectedChainConfig,
+                ),
+              );
+            },
+          ),
+          if (widget.selectedChainConfig.isEVMChain) ...[
+            DrawerTile(
+              item: 'Smart Contract Interactions',
+              onTap: () {
+                _navigateToScreen(
+                  context,
+                  SmartContractInteractionScreen(
+                    selectedChainConfig: widget.selectedChainConfig,
+                  ),
                 );
               },
             ),
+          ],
+          DrawerTile(
+            item: 'Disconnect',
+            onTap: () async {
+              await Web3AuthFlutter.logout();
+              if (context.mounted) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) {
+                    return const LoginScreen();
+                  }),
+                );
+              }
+            },
           ),
         ],
       ),
     );
   }
+
+  void _navigateToScreen(BuildContext context, screen) {
+    if (context.mounted) {
+      Navigator.pop(context);
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+        return screen;
+      }));
+    }
+  }
 }
 
 class DrawerTile extends StatelessWidget {
   final String item;
-  final bool isSelected;
+
   final VoidCallback onTap;
 
   const DrawerTile({
     super.key,
     required this.item,
-    required this.isSelected,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onTap,
-      style: ButtonStyle(
-        alignment: Alignment.centerLeft,
-        backgroundColor: MaterialStatePropertyAll(
-          isSelected ? Theme.of(context).hoverColor : null,
-        ),
-        shape: MaterialStatePropertyAll(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      width: double.infinity,
+      child: TextButton(
+        onPressed: onTap,
+        style: ButtonStyle(
+          alignment: Alignment.centerLeft,
+          shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
           ),
         ),
+        child: Text(item),
       ),
-      child: Text(item),
     );
   }
 }

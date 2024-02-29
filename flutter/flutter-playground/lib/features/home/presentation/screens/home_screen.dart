@@ -64,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
         valueListenable: selectedChainConfig,
         builder: (_, __, ___) {
           return SideDrawer(
-            defaultIndex: 0,
             selectedChainConfig: selectedChainConfig.value,
           );
         },

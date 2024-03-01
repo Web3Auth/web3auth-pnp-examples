@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 
 class BalanceWidget extends StatelessWidget {
   final String balance;
@@ -28,8 +29,8 @@ class BalanceWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Wallet Balance", style: labelLargeTheme),
-            Text("Chain ID", style: labelLargeTheme),
+            Text(StringConstants.walletBalanceText, style: labelLargeTheme),
+            Text(StringConstants.chainIdText, style: labelLargeTheme),
           ],
         ),
         const SizedBox(height: 8),

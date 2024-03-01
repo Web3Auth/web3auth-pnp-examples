@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/core/extensions.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_filled_buttond.dart';
 import 'package:flutter_playground/core/widgets/custom_text_field.dart';
 
@@ -26,21 +27,20 @@ class _ReadContractViewState extends State<ReadContractView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('ERC 20 Contract Address'),
+          const Text(StringConstants.erc20ContractAddressText),
           const SizedBox(height: 8),
           CustomTextField(
             textEditingController: widget.contractAddressController,
-            hintText: '0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8'
-                .addressAbbreviation,
+            hintText: StringConstants.dummyContractAddress.addressAbbreviation,
           ),
           const SizedBox(height: 24),
           CustomFilledButton(
-            text: "Fetch balance",
+            text: StringConstants.fetchBalanceText,
             onTap: widget.onFetchBalance,
           ),
           const SizedBox(height: 8),
           CustomFilledButton(
-            text: "Get total supply",
+            text: StringConstants.getTotalSupplyText,
             onTap: widget.onTotalSupply,
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/core/extensions.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_filled_buttond.dart';
 import 'package:flutter_playground/core/widgets/custom_text_field.dart';
 
@@ -27,24 +28,22 @@ class _WriteContractViewState extends State<WriteContractView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('ERC 20 Contract Address'),
+          const Text(StringConstants.erc20ContractAddressText),
           const SizedBox(height: 8),
           CustomTextField(
-            hintText: "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8"
-                .addressAbbreviation,
+            hintText: StringConstants.dummyContractAddress.addressAbbreviation,
             textEditingController: widget.contractAddressController,
           ),
           const SizedBox(height: 24),
-          const Text('Spender Contract Address'),
+          const Text(StringConstants.spenderContractAddressText),
           const SizedBox(height: 8),
           CustomTextField(
-            hintText: "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8"
-                .addressAbbreviation,
+            hintText: StringConstants.dummyContractAddress.addressAbbreviation,
             textEditingController: widget.spenderAddressController,
           ),
           const SizedBox(height: 24),
           CustomFilledButton(
-            text: "Revoke approval",
+            text: StringConstants.revokeApprovalText,
             onTap: widget.revokeApproval,
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_filled_buttond.dart';
 import 'package:flutter_playground/core/widgets/custom_text_field.dart';
 
@@ -23,14 +24,14 @@ class _SignMessageViewState extends State<SignMessageView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Message'),
+          const Text(StringConstants.messageText),
           const SizedBox(height: 8),
           CustomTextField(
             textEditingController: widget.textEditingController,
           ),
           const SizedBox(height: 24),
           CustomFilledButton(
-            text: "Sign Message",
+            text: StringConstants.signMessageText,
             onTap: widget.onSign,
           )
         ],

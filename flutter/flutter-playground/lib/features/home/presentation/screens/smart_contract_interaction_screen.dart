@@ -49,7 +49,7 @@ class _SmartContractInteractionScreenState
           child: Column(
             children: [
               Text(
-                "Smart Contract Interactions",
+                StringConstants.smartContractInteractionsText,
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall
@@ -59,8 +59,8 @@ class _SmartContractInteractionScreenState
               const TabBar(
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: [
-                  Tab(text: "Read from Contract"),
-                  Tab(text: "Write from Contract"),
+                  Tab(text: StringConstants.readFromContractText),
+                  Tab(text: StringConstants.writeToContractText),
                 ],
               ),
               const SizedBox(height: 24),
@@ -100,13 +100,16 @@ class _SmartContractInteractionScreenState
         contractAddressTextController.text,
         'approve',
         [
-          EthereumAddress.fromHex('0xcEB7380d00A4750863a241BF74C7469f1C61F5F7'),
+          EthereumAddress.fromHex(spenderAddressTextController.text),
           BigInt.zero
         ],
       );
       if (context.mounted) {
         removeDialog(context);
-        showInfoDialog(context, "Revoke Transaction Hash:\n\n$result");
+        showInfoDialog(
+          context,
+          "${StringConstants.revokeTransactionHashText}:\n\n$result",
+        );
       }
     } catch (e, _) {
       log(e.toString(), stackTrace: _);
@@ -129,7 +132,10 @@ class _SmartContractInteractionScreenState
       log(result.toString());
       if (context.mounted) {
         removeDialog(context);
-        showInfoDialog(context, "Balance:\n\n${result.first}");
+        showInfoDialog(
+          context,
+          "${StringConstants.balanceText}:\n\n${result.first}",
+        );
       }
     } catch (e, _) {
       log(e.toString(), stackTrace: _);
@@ -151,7 +157,10 @@ class _SmartContractInteractionScreenState
       log(result.toString());
       if (context.mounted) {
         removeDialog(context);
-        showInfoDialog(context, "Total Supply:\n\n${result.first}");
+        showInfoDialog(
+          context,
+          "${StringConstants.totalSupplyText}:\n\n${result.first}",
+        );
       }
     } catch (e, _) {
       log(e.toString(), stackTrace: _);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_filled_buttond.dart';
 import 'package:flutter_playground/core/widgets/custom_text_field.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
@@ -37,7 +38,7 @@ class _CustomChainDetailsScreenState extends State<CustomChainDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Custom chain details'),
+        title: const Text(StringConstants.customChainDetailsText),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -51,48 +52,48 @@ class _CustomChainDetailsScreenState extends State<CustomChainDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 verticalGap,
-                const Text('Display name'),
+                const Text(StringConstants.displayNameText),
                 verticalGap,
                 CustomTextField(
-                  hintText: 'Arbitrum Sep...',
+                  hintText: StringConstants.displayNameHint,
                   textEditingController: displayNameController,
                   validator: _validator,
                 ),
                 const SizedBox(height: 24),
-                const Text('Native chain ticker'),
+                const Text(StringConstants.nativeChainTickerText),
                 verticalGap,
                 CustomTextField(
-                  hintText: 'AET...',
+                  hintText: StringConstants.tickerHint,
                   textEditingController: tickerController,
                   validator: _validator,
                 ),
                 const SizedBox(height: 24),
-                const Text('Chain id'),
+                const Text(StringConstants.chainIdText),
                 verticalGap,
                 CustomTextField(
-                  hintText: '0x414..',
+                  hintText: StringConstants.chainIdHint,
                   textEditingController: chainIdController,
                   validator: _validator,
                 ),
                 const SizedBox(height: 24),
-                const Text('RPC url'),
+                const Text(StringConstants.rpcUrlText),
                 verticalGap,
                 CustomTextField(
-                  hintText: 'https://sepolia...',
+                  hintText: StringConstants.rpcUrlHint,
                   textEditingController: rpcTargetController,
                   validator: _validator,
                 ),
                 const SizedBox(height: 24),
-                const Text('Blockchain explorer'),
+                const Text(StringConstants.blockchainExplorerText),
                 verticalGap,
                 CustomTextField(
-                  hintText: 'https://sepolia.ar...',
+                  hintText: StringConstants.blockchainExplorerHint,
                   textEditingController: blockExplorerController,
                   validator: _validator,
                 ),
                 const SizedBox(height: 24),
                 CustomFilledButton(
-                  text: "Add chain",
+                  text: StringConstants.addChainText,
                   onTap: () {
                     _addChain(context);
                   },
@@ -110,7 +111,7 @@ class _CustomChainDetailsScreenState extends State<CustomChainDetailsScreen> {
       return null;
     }
 
-    return "Please enter valid value";
+    return StringConstants.validationErrorText;
   }
 
   void _addChain(BuildContext context) {

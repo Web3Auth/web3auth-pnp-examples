@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_filled_buttond.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
 import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
@@ -69,7 +70,7 @@ class _ChaninSwitcherBottomSheetState extends State<ChaninSwitcherBottomSheet> {
                 homeProvider.addNewChain(chainConfig);
               }
             },
-            text: "Add Custom Ethereum Chain",
+            text: StringConstants.addCustomChainText,
           ),
         ),
         const SizedBox(height: 16),

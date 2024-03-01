@@ -50,7 +50,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
           child: Column(
             children: [
               Text(
-                "Signing/Transaction",
+                StringConstants.signingAndTransactionText,
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall
@@ -60,8 +60,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               const TabBar(
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: [
-                  Tab(text: "Sign Message"),
-                  Tab(text: "Send Transaction"),
+                  Tab(text: StringConstants.signMessageText),
+                  Tab(text: StringConstants.sendTransactionText),
                 ],
               ),
               const SizedBox(height: 24),

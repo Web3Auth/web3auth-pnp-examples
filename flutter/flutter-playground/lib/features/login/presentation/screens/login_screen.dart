@@ -15,17 +15,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
-  late final TextEditingController textEditingController;
-  late final GlobalKey<FormState> formKey;
-
   Widget get verticalGap => const SizedBox(height: 16);
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    textEditingController = TextEditingController();
-    formKey = GlobalKey<FormState>();
   }
 
   @override
@@ -68,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
             verticalGap,
             CustomFilledButton(
               onTap: () => _login(context, Provider.google),
-              text: "Login with Google",
+              text: StringConstants.loginWithGoogleText,
             )
           ],
         ),
@@ -81,24 +76,10 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
     Provider loginProvider,
   ) async {
     try {
-      final bool isEmailPasswordLessLogin =
-          loginProvider == Provider.email_passwordless;
-
-      if (isEmailPasswordLessLogin) {
-        if (!formKey.currentState!.validate()) {
-          return;
-        }
-      }
-
-      final userEmail = textEditingController.text;
-
       await Web3AuthFlutter.login(
         LoginParams(
           loginProvider: loginProvider,
           mfaLevel: MFALevel.DEFAULT,
-          extraLoginOptions: isEmailPasswordLessLogin
-              ? ExtraLoginOptions(login_hint: userEmail)
-              : null,
         ),
       );
 

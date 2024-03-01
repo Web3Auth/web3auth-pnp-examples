@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -9,7 +10,7 @@ class HomeHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Welcome to Web3Auth Flutter Playground",
+          StringConstants.welcomeText,
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
@@ -18,7 +19,7 @@ class HomeHeader extends StatelessWidget {
         ),
         const SizedBox(height: 48),
         Text(
-          "Your account details",
+          StringConstants.yourAccountDetailsText,
           style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 16),
         ),
       ],

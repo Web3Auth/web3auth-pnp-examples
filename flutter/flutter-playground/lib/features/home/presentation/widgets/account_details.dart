@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_playground/core/extensions.dart';
+import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_dialog.dart';
 import 'package:flutter_playground/features/home/domain/entities/account.dart';
 import 'package:web3auth_flutter/output.dart';
@@ -65,7 +66,7 @@ class AccountDetails extends StatelessWidget {
                 ),
               ),
             ),
-            child: const Text("View user info"),
+            child: const Text(StringConstants.viewUserInfoText),
           ),
         )
       ],
@@ -75,7 +76,11 @@ class AccountDetails extends StatelessWidget {
   void _showUserDetails(BuildContext context) {
     const jsonEncoder = JsonEncoder.withIndent(' ');
     final jsonString = jsonEncoder.convert(userInfo);
-    showInfoDialog(context, "User information:\n\n$jsonString", true);
+    showInfoDialog(
+      context,
+      "${StringConstants.userInformationText}:\n\n$jsonString",
+      true,
+    );
   }
 
   void copyContentToClipboard(BuildContext context, String content) {
@@ -83,6 +88,9 @@ class AccountDetails extends StatelessWidget {
       ClipboardData(text: content),
     );
 
-    showInfoDialog(context, "Copied to clipboard\n\n$content");
+    showInfoDialog(
+      context,
+      "${StringConstants.copiedToClipboardText}\n\n$content",
+    );
   }
 }

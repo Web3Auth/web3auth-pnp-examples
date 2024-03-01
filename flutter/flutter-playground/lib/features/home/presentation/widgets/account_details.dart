@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_playground/core/extensions.dart';
@@ -50,7 +52,9 @@ class AccountDetails extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              _showUserDetails(context);
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
                 Theme.of(context).hoverColor,
@@ -66,6 +70,12 @@ class AccountDetails extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void _showUserDetails(BuildContext context) {
+    const jsonEncoder = JsonEncoder.withIndent(' ');
+    final jsonString = jsonEncoder.convert(userInfo);
+    showInfoDialog(context, "User information:\n\n$jsonString", true);
   }
 
   void copyContentToClipboard(BuildContext context, String content) {

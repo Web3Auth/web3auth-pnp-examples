@@ -15,7 +15,7 @@ class ChainSwitchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(4),
       onTap: () {
         showModalBottomSheet(
           context: context,

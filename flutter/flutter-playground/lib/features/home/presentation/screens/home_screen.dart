@@ -72,39 +72,41 @@ class _HomeScreenState extends State<HomeScreen> {
           stream: streamController.stream,
           builder: (context, snapShot) {
             if (snapShot.connectionState == ConnectionState.active) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 24),
-                  const HomeHeader(),
-                  const SizedBox(height: 12),
-                  ChainSwitchTile(
-                    onSelect: (chainConfig) {
-                      homeProvider.updateSelectedChain(chainConfig);
-                      loadAccount(true);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  const Divider(),
-                  const SizedBox(height: 16),
-                  AccountDetails(
-                    userInfo: userInfo,
-                    account: snapShot.requireData,
-                  ),
-                  const SizedBox(height: 24),
-                  Consumer<HomeProvider>(builder: (
-                    _,
-                    homeProvider,
-                    __,
-                  ) {
-                    final chain = homeProvider.selectedChain;
-                    return BalanceWidget(
-                      balance: snapShot.data!.balance,
-                      ticker: chain.ticker,
-                      chainId: chain.chainId,
-                    );
-                  }),
-                ],
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 24),
+                    const HomeHeader(),
+                    const SizedBox(height: 12),
+                    ChainSwitchTile(
+                      onSelect: (chainConfig) {
+                        homeProvider.updateSelectedChain(chainConfig);
+                        loadAccount(true);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    const SizedBox(height: 16),
+                    AccountDetails(
+                      userInfo: userInfo,
+                      account: snapShot.requireData,
+                    ),
+                    const SizedBox(height: 24),
+                    Consumer<HomeProvider>(builder: (
+                      _,
+                      homeProvider,
+                      __,
+                    ) {
+                      final chain = homeProvider.selectedChain;
+                      return BalanceWidget(
+                        balance: snapShot.data!.balance,
+                        ticker: chain.ticker,
+                        chainId: chain.chainId,
+                      );
+                    }),
+                  ],
+                ),
               );
             }
             return const Center(child: CircularProgressIndicator.adaptive());

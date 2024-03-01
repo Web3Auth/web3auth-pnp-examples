@@ -6,17 +6,14 @@ import 'package:flutter_playground/core/extensions.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_dialog.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
+import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/read_contract_view.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/write_contract_view.dart';
+import 'package:provider/provider.dart';
 import 'package:web3dart/credentials.dart';
 
 class SmartContractInteractionScreen extends StatefulWidget {
-  final ChainConfig selectedChainConfig;
-
-  const SmartContractInteractionScreen({
-    super.key,
-    required this.selectedChainConfig,
-  });
+  const SmartContractInteractionScreen({super.key});
 
   @override
   State<SmartContractInteractionScreen> createState() =>
@@ -25,6 +22,7 @@ class SmartContractInteractionScreen extends StatefulWidget {
 
 class _SmartContractInteractionScreenState
     extends State<SmartContractInteractionScreen> {
+  late final ChainConfig selectedChain;
   late final ChainProvider chainProvider;
   late final TextEditingController contractAddressTextController;
   late final TextEditingController spenderAddressTextController;
@@ -32,7 +30,8 @@ class _SmartContractInteractionScreenState
   @override
   void initState() {
     super.initState();
-    chainProvider = widget.selectedChainConfig.prepareChainProvider();
+    selectedChain = context.read<ChainConfigProvider>().selectedChain;
+    chainProvider = selectedChain.prepareChainProvider();
     contractAddressTextController = TextEditingController();
     spenderAddressTextController = TextEditingController();
   }

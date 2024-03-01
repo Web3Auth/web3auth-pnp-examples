@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
+import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
 import 'package:flutter_playground/features/home/presentation/screens/smart_contract_interaction_screen.dart';
 import 'package:flutter_playground/features/home/presentation/screens/transactions_screen.dart';
 import 'package:flutter_playground/features/login/presentation/screens/login_screen.dart';
-import 'package:web3auth_flutter/enums.dart';
+import 'package:provider/provider.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 class SideDrawer extends StatefulWidget {
-  final ChainConfig selectedChainConfig;
-
-  const SideDrawer({
-    super.key,
-    required this.selectedChainConfig,
-  });
+  const SideDrawer({super.key});
 
   @override
   State<SideDrawer> createState() => _SideDrawerState();
 }
 
 class _SideDrawerState extends State<SideDrawer> {
+  late final ChainConfig selectedChain;
+
   @override
   void initState() {
     super.initState();
-  }
-
-  bool get isEvmChain {
-    return widget.selectedChainConfig.chainNamespace == ChainNamespace.eip155;
+    selectedChain = context.read<ChainConfigProvider>().selectedChain;
   }
 
   @override
@@ -42,23 +37,16 @@ class _SideDrawerState extends State<SideDrawer> {
           DrawerTile(
             item: 'Transaction',
             onTap: () {
-              _navigateToScreen(
-                context,
-                TransactionsScreen(
-                  selectedChainConfig: widget.selectedChainConfig,
-                ),
-              );
+              _navigateToScreen(context, const TransactionsScreen());
             },
           ),
-          if (widget.selectedChainConfig.isEVMChain) ...[
+          if (selectedChain.isEVMChain) ...[
             DrawerTile(
               item: 'Smart Contract Interactions',
               onTap: () {
                 _navigateToScreen(
                   context,
-                  SmartContractInteractionScreen(
-                    selectedChainConfig: widget.selectedChainConfig,
-                  ),
+                  const SmartContractInteractionScreen(),
                 );
               },
             ),

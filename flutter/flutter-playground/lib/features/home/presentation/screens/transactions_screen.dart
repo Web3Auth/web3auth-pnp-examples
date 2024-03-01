@@ -6,16 +6,13 @@ import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_dialog.dart';
 import 'package:flutter_playground/core/chain_provider.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
+import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/send_transaction_view.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/sign_message_view.dart';
+import 'package:provider/provider.dart';
 
 class TransactionsScreen extends StatefulWidget {
-  final ChainConfig selectedChainConfig;
-
-  const TransactionsScreen({
-    super.key,
-    required this.selectedChainConfig,
-  });
+  const TransactionsScreen({super.key});
 
   @override
   State<TransactionsScreen> createState() => _TransactionsScreenState();
@@ -23,6 +20,7 @@ class TransactionsScreen extends StatefulWidget {
 
 class _TransactionsScreenState extends State<TransactionsScreen> {
   late final ChainProvider chainProvider;
+  late final ChainConfig selectedChain;
   late final TextEditingController signMessageTextController;
   late final TextEditingController amountTextController;
   late final TextEditingController destinationTextController;
@@ -30,7 +28,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   @override
   void initState() {
     super.initState();
-    chainProvider = widget.selectedChainConfig.prepareChainProvider();
+    selectedChain = context.read<ChainConfigProvider>().selectedChain;
+    chainProvider = selectedChain.prepareChainProvider();
     signMessageTextController = TextEditingController(
       text: "Welcome to Web3Auth",
     );

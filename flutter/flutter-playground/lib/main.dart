@@ -3,6 +3,8 @@ import 'package:flutter_playground/core/service_locator.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/utils/web3auth_utils.dart';
 import 'package:flutter_playground/features/home/domain/repositories/chain_config_repostiory.dart';
+import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:web3auth_flutter/enums.dart';
 import 'package:web3auth_flutter/input.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
@@ -28,11 +30,15 @@ void main() async {
 
   await Web3AuthFlutter.initialize();
 
-  final chainConfigs =
-      ServiceLocator.getIt<ChainConfigRepository>().prepareChains();
-  print(chainConfigs);
+  final chainConfigRepository = ServiceLocator.getIt<ChainConfigRepository>();
+  final chainConfigs = chainConfigRepository.prepareChains();
 
-  runApp(const MainApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => ChainConfigProvider(chainConfigs),
+    builder: (_, __) {
+      return const MainApp();
+    },
+  ));
 }
 
 class MainApp extends StatefulWidget {

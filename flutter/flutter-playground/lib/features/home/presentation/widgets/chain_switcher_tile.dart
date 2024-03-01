@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
-import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
+import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/chain_switcher.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +40,7 @@ class ChainSwitchTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              context.watch<ChainConfigProvider>().selectedChain.displayName,
+              context.watch<HomeProvider>().selectedChain.displayName,
             ),
             const Icon(Icons.arrow_drop_down)
           ],

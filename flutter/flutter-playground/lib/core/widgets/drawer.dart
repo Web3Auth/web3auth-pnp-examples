@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
-import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
+import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
 import 'package:flutter_playground/features/home/presentation/screens/smart_contract_interaction_screen.dart';
 import 'package:flutter_playground/features/home/presentation/screens/transactions_screen.dart';
 import 'package:flutter_playground/features/login/presentation/screens/login_screen.dart';
@@ -20,7 +20,7 @@ class _SideDrawerState extends State<SideDrawer> {
   @override
   void initState() {
     super.initState();
-    selectedChain = context.read<ChainConfigProvider>().selectedChain;
+    selectedChain = context.read<HomeProvider>().selectedChain;
   }
 
   @override

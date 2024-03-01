@@ -3,7 +3,7 @@ import 'package:flutter_playground/core/service_locator.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/utils/web3auth_utils.dart';
 import 'package:flutter_playground/features/home/domain/repositories/chain_config_repostiory.dart';
-import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
+import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:web3auth_flutter/enums.dart';
 import 'package:web3auth_flutter/input.dart';
@@ -34,7 +34,7 @@ void main() async {
   final chainConfigs = chainConfigRepository.prepareChains();
 
   runApp(ChangeNotifierProvider(
-    create: (_) => ChainConfigProvider(chainConfigs),
+    create: (_) => HomeProvider(chainConfigs),
     builder: (_, __) {
       return const MainApp();
     },

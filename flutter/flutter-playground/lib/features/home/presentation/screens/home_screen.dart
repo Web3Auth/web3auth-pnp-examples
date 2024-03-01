@@ -5,7 +5,7 @@ import 'package:flutter_playground/core/service_locator.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/features/home/domain/entities/account.dart';
 import 'package:flutter_playground/features/home/domain/repositories/chain_config_repostiory.dart';
-import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
+import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/account_details.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/balance_widget.dart';
 import 'package:flutter_playground/core/widgets/drawer.dart';
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final TorusUserInfo userInfo;
 
   late final StreamController<Account> streamController;
-  late final ChainConfigProvider chainConfigProvider;
+  late final HomeProvider homeProvider;
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     chainConfigRepository = ServiceLocator.getIt<ChainConfigRepository>();
 
     streamController = StreamController<Account>();
-    chainConfigProvider = Provider.of<ChainConfigProvider>(
+    homeProvider = Provider.of<HomeProvider>(
       context,
       listen: false,
     );
@@ -52,8 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
       userInfo = await Web3AuthFlutter.getUserInfo();
     }
     final account = await chainConfigRepository.prepareAccount(
-      chainConfigProvider.selectedChain,
+      homeProvider.selectedChain,
     );
+
+    homeProvider.updateChainAddress(account.publicAddress);
     streamController.add(account);
   }
 
@@ -78,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 12),
                   ChainSwitchTile(
                     onSelect: (chainConfig) {
-                      chainConfigProvider.updateSelectedChain(chainConfig);
+                      homeProvider.updateSelectedChain(chainConfig);
                       loadAccount(true);
                     },
                   ),
@@ -90,12 +92,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     account: snapShot.requireData,
                   ),
                   const SizedBox(height: 24),
-                  Consumer<ChainConfigProvider>(builder: (
+                  Consumer<HomeProvider>(builder: (
                     _,
-                    chainConfigProvider,
+                    homeProvider,
                     __,
                   ) {
-                    final chain = chainConfigProvider.selectedChain;
+                    final chain = homeProvider.selectedChain;
                     return BalanceWidget(
                       balance: snapShot.data!.balance,
                       ticker: chain.ticker,

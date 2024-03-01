@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/core/widgets/custom_filled_buttond.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
-import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
+import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
 import 'package:flutter_playground/features/home/presentation/screens/custom_chain_details.dart';
 import 'package:provider/provider.dart';
 
@@ -19,12 +19,12 @@ class ChaninSwitcherBottomSheet extends StatefulWidget {
 }
 
 class _ChaninSwitcherBottomSheetState extends State<ChaninSwitcherBottomSheet> {
-  late final ChainConfigProvider chainConfigProvider;
+  late final HomeProvider homeProvider;
 
   @override
   void initState() {
     super.initState();
-    chainConfigProvider = Provider.of(context, listen: false);
+    homeProvider = Provider.of(context, listen: false);
   }
 
   @override
@@ -39,13 +39,13 @@ class _ChaninSwitcherBottomSheetState extends State<ChaninSwitcherBottomSheet> {
           ),
         ),
         const Divider(endIndent: 16, indent: 16),
-        Consumer<ChainConfigProvider>(builder: (context, _, __) {
+        Consumer<HomeProvider>(builder: (context, _, __) {
           return Expanded(
             child: ListView.builder(
-              itemCount: chainConfigProvider.chains.length,
+              itemCount: homeProvider.chains.length,
               itemBuilder: (_, index) {
-                final chainConfig = chainConfigProvider.chains[index];
-                final selectedChain = chainConfigProvider.selectedChain;
+                final chainConfig = homeProvider.chains[index];
+                final selectedChain = homeProvider.selectedChain;
                 final isSelected = chainConfig.chainId == selectedChain.chainId;
                 return ListTile(
                   selected: isSelected,
@@ -66,7 +66,7 @@ class _ChaninSwitcherBottomSheetState extends State<ChaninSwitcherBottomSheet> {
               final ChainConfig? chainConfig = await _addNewChain();
 
               if (chainConfig != null) {
-                chainConfigProvider.addNewChain(chainConfig);
+                homeProvider.addNewChain(chainConfig);
               }
             },
             text: "Add Custom Ethereum Chain",

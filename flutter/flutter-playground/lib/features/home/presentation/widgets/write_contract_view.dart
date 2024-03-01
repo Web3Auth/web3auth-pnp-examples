@@ -30,7 +30,7 @@ class _WriteContractViewState extends State<WriteContractView> {
           const Text('ERC 20 Contract Address'),
           const SizedBox(height: 8),
           CustomTextField(
-            hintText: "0x1c7d4b196cb0c7b01d743fbc6116a902379c7238"
+            hintText: "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8"
                 .addressAbbreviation,
             textEditingController: widget.contractAddressController,
           ),
@@ -38,7 +38,7 @@ class _WriteContractViewState extends State<WriteContractView> {
           const Text('Spender Contract Address'),
           const SizedBox(height: 8),
           CustomTextField(
-            hintText: "0x1c7d4b196cb0c7b01d743fbc6116a902379c7238"
+            hintText: "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8"
                 .addressAbbreviation,
             textEditingController: widget.spenderAddressController,
           ),

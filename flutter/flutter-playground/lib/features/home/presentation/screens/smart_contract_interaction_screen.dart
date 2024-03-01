@@ -6,7 +6,7 @@ import 'package:flutter_playground/core/extensions.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_dialog.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
-import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
+import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/read_contract_view.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/write_contract_view.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +30,7 @@ class _SmartContractInteractionScreenState
   @override
   void initState() {
     super.initState();
-    selectedChain = context.read<ChainConfigProvider>().selectedChain;
+    selectedChain = context.read<HomeProvider>().selectedChain;
     chainProvider = selectedChain.prepareChainProvider();
     contractAddressTextController = TextEditingController();
     spenderAddressTextController = TextEditingController();
@@ -120,10 +120,11 @@ class _SmartContractInteractionScreenState
   Future<void> _fetchBalance() async {
     try {
       showLoader(context);
+      final userAddress = context.read<HomeProvider>().chainAddress;
       final result = await chainProvider.readContract(
         contractAddressTextController.text,
         'balanceOf',
-        [EthereumAddress.fromHex('0xcEB7380d00A4750863a241BF74C7469f1C61F5F7')],
+        [EthereumAddress.fromHex(userAddress)],
       );
       log(result.toString());
       if (context.mounted) {

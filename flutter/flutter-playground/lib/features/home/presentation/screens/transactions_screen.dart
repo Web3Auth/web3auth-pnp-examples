@@ -6,7 +6,7 @@ import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_dialog.dart';
 import 'package:flutter_playground/core/chain_provider.dart';
 import 'package:flutter_playground/features/home/domain/entities/chain_config.dart';
-import 'package:flutter_playground/features/home/presentation/provider/chain_config_provider.dart';
+import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/send_transaction_view.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/sign_message_view.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +28,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   @override
   void initState() {
     super.initState();
-    selectedChain = context.read<ChainConfigProvider>().selectedChain;
+    selectedChain = context.read<HomeProvider>().selectedChain;
     chainProvider = selectedChain.prepareChainProvider();
     signMessageTextController = TextEditingController(
       text: "Welcome to Web3Auth",

@@ -25,7 +25,23 @@ class AccountDetails extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Image.network(userInfo.profileImage!),
+          child: Image.network(
+            userInfo.profileImage!,
+            errorBuilder: (_, __, ___) {
+              return Container(
+                width: 120,
+                height: 120,
+                alignment: Alignment.center,
+                color: Theme.of(context).primaryColor,
+                child: Text(
+                  userInfo.name![0].toUpperCase(),
+                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        color: Theme.of(context).canvasColor,
+                      ),
+                ),
+              );
+            },
+          ),
         ),
         const SizedBox(height: 8),
         Text(

@@ -46,5 +46,6 @@ class StringConstants {
   static const String messageText = 'Message';
   static const String spenderContractAddressText = "Spender's contract address";
   static const String revokeApprovalText = 'Revoke approval';
-  static const String loginWithGoogleText = "Login with Google";
+  static const String loginWithEmailPasswordlessText =
+      "Login with Email Passwordless";
 }

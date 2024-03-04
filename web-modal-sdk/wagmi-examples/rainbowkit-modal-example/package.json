@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@rainbow-me/rainbowkit": "2.0.0",
+    "@rainbow-me/rainbowkit": "2.0.1",
     "@tanstack/react-query": "^5.22.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",

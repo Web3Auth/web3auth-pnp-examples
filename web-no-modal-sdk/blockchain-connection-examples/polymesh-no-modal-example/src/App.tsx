@@ -1,4 +1,4 @@
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, CustomChainConfig } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -17,12 +17,12 @@ export default function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const chainConfig = {
+        const chainConfig: CustomChainConfig = {
           chainNamespace: CHAIN_NAMESPACES.OTHER,
           chainId: "0x5", // '0x1' for mainnet
           rpcTarget: "https://testnet-rpc.polymesh.live", // 'https://mainnet-rpc.polymesh.network' for mainnet
           displayName: "Polymesh Testnet", // 'Polymesh Mainnet' for mainnet
-          blockExplorer: "https://polymesh-testnet.subscan.io", // 'https://polymesh.subscan.io' for mainnet
+          blockExplorerUrl: "https://polymesh-testnet.subscan.io", // 'https://polymesh.subscan.io' for mainnet
           ticker: "POLYX",
           tickerName: "Polymesh",
         };

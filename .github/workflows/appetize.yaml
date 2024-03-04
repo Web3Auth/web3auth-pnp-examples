@@ -1,0 +1,44 @@
+
+
+name: Upload Android and iOS build on appetize
+
+on:
+  push:
+    branches:
+       - 'release/**'
+
+defaults:
+  run:
+    working-directory: ./android/android-quick-start
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v3
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+      
+      - name: Set execution flag for gradlew
+        run: chmod +x gradlew
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Build apk debug project
+        run: ./gradlew assembleDebug
+      
+       - name: Upload to Appetize
+        uses: appetizeio/github-action-appetize@v1.0.1
+        with:
+          apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}
+          publicKey: ${{ secrets.ANDROID_QUICK_START_PUBLIC_KEY }}
+          appFile: app/build/outputs/apk/debug/app-debug.apk
+          platform: 'android'
+
+      
+
+  
+

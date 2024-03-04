@@ -5,7 +5,7 @@ name: Upload Android and iOS build on appetize
 on:
   push:
     branches:
-       - 'release/**'
+       - 'feat/**'
 
 defaults:
   run:

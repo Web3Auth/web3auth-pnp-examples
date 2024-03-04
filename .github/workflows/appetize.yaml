@@ -30,7 +30,7 @@ jobs:
       - name: Build apk debug project
         run: ./gradlew assembleDebug
       
-       - name: Upload to Appetize
+      - name: Upload to Appetize
         uses: appetizeio/github-action-appetize@v1.0.1
         with:
           apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}

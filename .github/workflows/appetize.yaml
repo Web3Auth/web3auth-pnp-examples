@@ -1,9 +1,8 @@
-name: Upload Android and iOS build on appetize
+name: Upload Android Quick Start on Appetize
 
 on:
-  push:
-    branches:
-      - "feat/**"
+  pull_request:
+    types: [ labeled ]
 
 defaults:
   run:
@@ -11,6 +10,7 @@ defaults:
 
 jobs:
   build:
+    if: ${{ github.event.label.name == 'appetize' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

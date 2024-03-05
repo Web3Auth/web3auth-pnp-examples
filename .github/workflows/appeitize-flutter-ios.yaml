@@ -38,10 +38,14 @@ jobs:
           pod install
 
       - name: Build iOS simulator build
-        run: xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphonesimulator -derivedDataPath build
+        run: |
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphonesimulator -derivedDataPath build
       
       - name: Compress iOS build
-        run: tar -czf ios_build.tar.gz build/Build/Products/Debug-iphonesimulator 
+        run: |
+          cd ios
+          tar -czf ios_build.tar.gz build/Build/Products/Debug-iphonesimulator 
 
       - name: Upload Android buil to Appetize
         uses: appetizeio/github-action-appetize@v1.0.1

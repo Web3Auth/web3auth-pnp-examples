@@ -1,9 +1,9 @@
-name: Upload Android and iOS build on appetize
+name: Upload Android Quick Start build on appetize
 
 on:
-  push:
-    branches:
-      - "feat/**"
+  pull_request:
+     paths:
+      - './android/android-quick-start/**'
 
 defaults:
   run:

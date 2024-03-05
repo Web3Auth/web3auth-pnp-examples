@@ -1,7 +1,9 @@
-name: Upload Flutter iOS Quick Start build on appetize
+name: Upload Flutter Android & iOS Quick Start build on appetize
 
 on:
   pull_request:
+    paths:
+      - './flutter/flutter-quick-start/**'
 
 defaults:
   run:

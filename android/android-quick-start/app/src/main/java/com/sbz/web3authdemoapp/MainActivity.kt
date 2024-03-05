@@ -104,14 +104,6 @@ class MainActivity : AppCompatActivity() {
         val getTransactionButton = findViewById<Button>(R.id.getTransaction)
         getTransactionButton.setOnClickListener { sendTransaction(0.001, "0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8") }
         getTransactionButton.visibility = View.GONE
-
-        val getEnableMFAButton = findViewById<Button>(R.id.enableMFA)
-        getEnableMFAButton.setOnClickListener { enableMFA() }
-        getEnableMFAButton.visibility = View.GONE
-
-        val getLaunchWalletServicesButton = findViewById<Button>(R.id.launchWalletServices)
-        getLaunchWalletServicesButton.setOnClickListener { launchWalletServices() }
-        getLaunchWalletServicesButton.visibility = View.GONE
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -119,45 +111,6 @@ class MainActivity : AppCompatActivity() {
 
         // Handle user signing in when app is active
         web3Auth.setResultUrl(intent?.data)
-    }
-
-    private fun enableMFA() {
-        // IMP START - Enable MFA
-       val completableFuture = web3Auth.enableMFA()
-        // IMP START - Enable MFA
-        completableFuture.whenComplete{_, error ->
-            if (error == null) {
-                Log.d("MainActivity_Web3Auth", "Launched successfully")
-                // Add your logic
-            } else {
-                // Add your logic on error
-                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
-            }
-        }
-    }
-
-    private fun launchWalletServices() {
-        // IMP START - Launch Wallet Services
-        val loginParams = LoginParams(Provider.EMAIL_PASSWORDLESS, extraLoginOptions = ExtraLoginOptions(login_hint = web3Auth.getUserInfo()!!.email))
-        val completableFuture = web3Auth.launchWalletServices(
-            loginParams, ChainConfig(
-                chainId = "0x1",
-                rpcTarget = "https://rpc.ankr.com/eth",
-                ticker = "ETH",
-                chainNamespace = ChainNamespace.EIP155
-            )
-        )
-        // IMP START - Launch Wallet Services
-
-        completableFuture.whenComplete{_, error ->
-            if(error == null) {
-                // Add your logic
-                Log.d("MainActivity_Web3Auth", "Wallet services launched successfully")
-            } else {
-                // Add your logic for error
-                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
-            }
-        }
     }
 
     private fun signIn() {
@@ -204,8 +157,6 @@ class MainActivity : AppCompatActivity() {
         val getBalanceButton = findViewById<Button>(R.id.getBalance)
         val getMessageButton = findViewById<Button>(R.id.getMessage)
         val getTransactionButton = findViewById<Button>(R.id.getTransaction)
-        val getEnableMFAButton = findViewById<Button>(R.id.enableMFA)
-        val getLaunchWalletServicesButton = findViewById<Button>(R.id.launchWalletServices)
         emailInput = findViewById(R.id.emailInput)
 
 
@@ -230,8 +181,6 @@ class MainActivity : AppCompatActivity() {
             getBalanceButton.visibility = View.VISIBLE
             getMessageButton.visibility = View.VISIBLE
             getTransactionButton.visibility = View.VISIBLE
-            getEnableMFAButton.visibility = View.VISIBLE
-            getLaunchWalletServicesButton.visibility = View.VISIBLE
 
         } else {
             contentTextView.visibility = View.GONE
@@ -242,8 +191,6 @@ class MainActivity : AppCompatActivity() {
             getBalanceButton.visibility = View.GONE
             getMessageButton.visibility = View.GONE
             getTransactionButton.visibility = View.GONE
-            getEnableMFAButton.visibility = View.GONE
-            getLaunchWalletServicesButton.visibility = View.GONE
         }
     }
 

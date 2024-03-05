@@ -1,0 +1,40 @@
+name: Upload Flutter iOS Quick Start build on appetize
+
+on:
+  pull_request:
+
+defaults:
+  run:
+    working-directory: ./flutter/flutter-quick-start/ios
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with: 
+          channel: stable
+      
+      - name: Install Dependencies
+        run: flutter pub get   
+      
+      - name: Build APK
+        run: flutter build apk --debug  
+
+      - name: Build iOS simulator build
+        run: xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphonesimulator -derivedDataPath build
+      
+      - name: Compress iOS build
+        run: tar -czf ios_build.tar.gz build/Build/Products/Debug-iphonesimulator 
+
+      - name: Upload iOS build to Appetize
+        uses: appetizeio/github-action-appetize@v1.0.1
+        with:
+          apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}
+          publicKey: ${{ secrets.FLUTTER_IOS_QUICK_START_PUBLIC_KEY }}
+          appFile: ./flutter/flutter-quick-start/ios/ios_build.tar.gz
+          platform: "ios"

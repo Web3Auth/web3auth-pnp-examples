@@ -22,8 +22,8 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get   
       
-      - name: Build APK
-        run: flutter build apk --debug  
+      # - name: Build APK
+      #   run: flutter build apk --debug  
 
       - name: Build iOS simulator build
         run: xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphonesimulator -derivedDataPath build

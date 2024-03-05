@@ -26,7 +26,7 @@ npm install
 ### 4. Configure a new Application in Microsoft Entra.
 
 You'll need the Application (client) ID and the Directory (tenant) ID.
-Then you can add a redirect URI (in our example is http://localhost:5005/ms/callback)
+Then you can add a redirect URI (in our example is `http://localhost:5005/ms/callback`)
 
 <img width="980" alt="image" src="https://github.com/rtomas/microsoft-oauth-for-web3auth/assets/944960/25803c18-02a5-488b-85e8-67b948d72799">
 
@@ -52,7 +52,7 @@ JWKS_FILE_NAME=jwks.json
 
 `npm run dev`
 
-Open your browser and navigate to http://localhost:5005/ms/login to initiate the Microsoft OAuth flow.
+Open your browser and navigate to `http://localhost:5005/ms/login` to initiate the Microsoft OAuth flow.
 
 ## How it works?
 

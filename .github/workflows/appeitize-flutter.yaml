@@ -5,7 +5,7 @@ on:
     types:
       - closed
     paths:
-      - './flutter/flutter-quick-start/**'
+      - 'flutter/flutter-quick-start/**'
 
 defaults:
   run:

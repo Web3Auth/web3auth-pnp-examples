@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/core/service_locator.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
+import 'package:flutter_playground/core/widgets/custom_text_button.dart';
 import 'package:flutter_playground/features/home/domain/entities/account.dart';
 import 'package:flutter_playground/features/home/domain/repositories/chain_config_repostiory.dart';
 import 'package:flutter_playground/features/home/presentation/provider/home_provider.dart';
+import 'package:flutter_playground/features/home/presentation/screens/smart_contract_interaction_screen.dart';
+import 'package:flutter_playground/features/home/presentation/screens/transactions_screen.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/account_details.dart';
 import 'package:flutter_playground/features/home/presentation/widgets/balance_widget.dart';
 import 'package:flutter_playground/core/widgets/drawer.dart';
@@ -105,6 +108,34 @@ class _HomeScreenState extends State<HomeScreen> {
                         chainId: chain.chainId,
                       );
                     }),
+                    const SizedBox(height: 16),
+                    Consumer<HomeProvider>(builder: (_, __, ___) {
+                      return Column(
+                        children: [
+                          CustomTextButton(
+                              onTap: () {
+                                _navigationToScreen(
+                                  context,
+                                  const TransactionsScreen(),
+                                );
+                              },
+                              text: 'Transaction'),
+                          if (homeProvider.selectedChain.isEVMChain) ...[
+                            const SizedBox(height: 16),
+                            CustomTextButton(
+                              onTap: () {
+                                _navigationToScreen(
+                                  context,
+                                  const SmartContractInteractionScreen(),
+                                );
+                              },
+                              text:
+                                  StringConstants.smartContractInteractionsText,
+                            ),
+                          ]
+                        ],
+                      );
+                    }),
                   ],
                 ),
               );
@@ -114,5 +145,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void _navigationToScreen(BuildContext context, Widget screen) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return screen;
+    }));
   }
 }

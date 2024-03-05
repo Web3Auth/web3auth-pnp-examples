@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_playground/core/extensions.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
 import 'package:flutter_playground/core/widgets/custom_dialog.dart';
+import 'package:flutter_playground/core/widgets/custom_text_button.dart';
 import 'package:flutter_playground/features/home/domain/entities/account.dart';
 import 'package:web3auth_flutter/output.dart';
 
@@ -23,68 +24,77 @@ class AccountDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.network(
-            userInfo.profileImage!,
-            errorBuilder: (_, __, ___) {
-              return Container(
-                width: 120,
-                height: 120,
-                alignment: Alignment.center,
-                color: Theme.of(context).primaryColor,
-                child: Text(
-                  userInfo.name![0].toUpperCase(),
-                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                        color: Theme.of(context).canvasColor,
-                      ),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          userInfo.name!,
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 16),
-        ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              account.publicAddress.addressAbbreviation,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                userInfo.profileImage!,
+                errorBuilder: (_, __, ___) {
+                  return Container(
+                    width: 120,
+                    height: 120,
+                    alignment: Alignment.center,
+                    color: Theme.of(context).primaryColor,
+                    child: Text(
+                      userInfo.name![0].toUpperCase(),
+                      style:
+                          Theme.of(context).textTheme.displayMedium?.copyWith(
+                                color: Theme.of(context).canvasColor,
+                              ),
+                    ),
+                  );
+                },
+              ),
             ),
             const SizedBox(width: 16),
-            IconButton(
-              onPressed: () {
-                copyContentToClipboard(context, account.publicAddress);
-              },
-              icon: const Icon(
-                Icons.copy,
-                size: 14,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  userInfo.name!,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayLarge
+                      ?.copyWith(fontSize: 24, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  userInfo.email!,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(
+                      account.publicAddress.addressAbbreviation,
+                    ),
+                    const SizedBox(width: 16),
+                    IconButton(
+                      onPressed: () {
+                        copyContentToClipboard(context, account.publicAddress);
+                      },
+                      icon: const Icon(
+                        Icons.copy,
+                        size: 14,
+                      ),
+                    )
+                  ],
+                ),
+              ],
             )
           ],
         ),
-        const SizedBox(height: 16),
-        SizedBox(
-          width: double.infinity,
-          child: TextButton(
-            onPressed: () {
-              _showUserDetails(context);
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-                Theme.of(context).hoverColor,
-              ),
-              shape: MaterialStatePropertyAll(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-            child: const Text(StringConstants.viewUserInfoText),
-          ),
-        )
+        const SizedBox(height: 24),
+        CustomTextButton(
+          onTap: () {
+            _showUserDetails(context);
+          },
+          text: StringConstants.viewUserInfoText,
+        ),
       ],
     );
   }

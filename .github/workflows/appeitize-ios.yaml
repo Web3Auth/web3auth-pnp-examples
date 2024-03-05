@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Build iOS simulator build
-        run: xcodebuild -scheme ios-example -sdk iphonesimulator -derivedDataPath build
+        run: xcodebuild clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -scheme ios-example -sdk iphonesimulator -derivedDataPath build
       
       - name: Compress iOS build
         run: tar -czf ios_build.tar.gz build/Build/Products/Debug-iphonesimulator 

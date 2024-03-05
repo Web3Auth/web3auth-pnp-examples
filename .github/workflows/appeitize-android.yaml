@@ -2,6 +2,8 @@ name: Upload Android Quick Start build on appetize
 
 on:
   pull_request:
+     types:
+      - closed
      paths:
       - './android/android-quick-start/**'
 
@@ -10,7 +12,8 @@ defaults:
     working-directory: ./android/android-quick-start
 
 jobs:
-  build:
+  build-and-upload:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

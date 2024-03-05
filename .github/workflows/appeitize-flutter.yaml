@@ -2,6 +2,8 @@ name: Upload Flutter Android & iOS Quick Start build on appetize
 
 on:
   pull_request:
+    types:
+      - closed
     paths:
       - './flutter/flutter-quick-start/**'
 
@@ -10,7 +12,8 @@ defaults:
     working-directory: ./flutter/flutter-quick-start/
 
 jobs:
-  build:
+  build-and-upload:
+    if: github.event.pull_request.merged == true
     runs-on: macos-latest
     steps:
       - name: Checkout

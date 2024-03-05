@@ -1,0 +1,66 @@
+name: Upload React Native Android & iOS Quick Start build on appetize
+
+on:
+  pull_request:
+    # types:
+    #   - closed
+    # paths:
+    #   - 'react-native/rn-bare-quick-start/**'
+
+defaults:
+  run:
+    working-directory: ./react-native/rn-bare-quick-start/
+
+jobs:
+  build-and-upload:
+    # if: github.event.pull_request.merged == true
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "17"
+          cache: "gradle"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build APK 
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Pod Install
+        run: |
+          cd ios 
+          pod install
+
+      - name: Build iOS simulator build
+        run: |
+          cd ios
+          xcodebuild -scheme web3authrnexample -sdk iphonesimulator -derivedDataPath build
+      
+      - name: Compress iOS build
+        run: |
+          cd ios
+          tar -czf ios_build.tar.gz build/Build/Products/Debug-iphonesimulator 
+
+      - name: Upload Android buil to Appetize
+        uses: appetizeio/github-action-appetize@v1.0.1
+        with:
+          apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}
+          publicKey: ${{ secrets.RN_ANDROID_QUICK_START_PUBLIC_KEY }}
+          appFile: ./react-native/rn-bare-quick-start/build/app/outputs/apk/debug/app-debug.apk
+          platform: "android"
+
+      - name: Upload iOS build to Appetize
+        uses: appetizeio/github-action-appetize@v1.0.1
+        with:
+          apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}
+          publicKey: ${{ secrets.RN_IOS_QUICK_START_PUBLIC_KEY }}
+          appFile: ./react-native/rn-bare-quick-start/ios/ios_build.tar.gz
+          platform: "ios"

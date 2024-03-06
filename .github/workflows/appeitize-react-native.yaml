@@ -4,8 +4,8 @@ on:
   pull_request:
     # types:
     #   - closed
-    # paths:
-    #   - 'react-native/rn-bare-quick-start/**'
+    paths:
+      - 'react-native/rn-bare-quick-start/**'
 
 defaults:
   run:
@@ -54,7 +54,7 @@ jobs:
         with:
           apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}
           publicKey: ${{ secrets.RN_ANDROID_QUICK_START_PUBLIC_KEY }}
-          appFile: ./react-native/rn-bare-quick-start/build/app/outputs/apk/debug/app-debug.apk
+          appFile: ./react-native/rn-bare-quick-start/android/app/build/outputs/apk/debug/app-debug.apk
           platform: "android"
 
       - name: Upload iOS build to Appetize

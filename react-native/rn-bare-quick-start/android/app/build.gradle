@@ -69,6 +69,10 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
+    packagingOptions {
+        pickFirst '**/lib/arm64-v8a/libcrypto.so'
+    }
+    
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion

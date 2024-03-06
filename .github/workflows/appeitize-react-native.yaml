@@ -42,7 +42,7 @@ jobs:
       - name: Build iOS simulator build
         run: |
           cd ios
-          xcodebuild -scheme web3authrnexample -sdk iphonesimulator -derivedDataPath build
+          xcodebuild -workspace web3authrnexample.xcworkspace -scheme web3authrnexample -sdk iphonesimulator -derivedDataPath build
       
       - name: Compress iOS build
         run: |

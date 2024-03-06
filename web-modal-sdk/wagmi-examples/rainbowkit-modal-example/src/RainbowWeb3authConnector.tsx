@@ -2,7 +2,8 @@ import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3Auth } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { Wallet } from "@rainbow-me/rainbowkit";
+import { Wallet, WalletDetailsParams } from "@rainbow-me/rainbowkit";
+import { createConnector as createWagmiConnector } from "wagmi";
 
 const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -45,7 +46,11 @@ export const rainbowWeb3AuthConnector = (): Wallet => ({
   iconBackground: "#fff",
   installed: true,
   downloadUrls: {},
-  createConnector: () => Web3AuthConnector({
-    web3AuthInstance
-  }),
+  createConnector: (walletDetails: WalletDetailsParams) =>
+    createWagmiConnector((config) => ({
+      ...Web3AuthConnector({
+        web3AuthInstance,
+      })(config),
+      ...walletDetails,
+    })),
 });

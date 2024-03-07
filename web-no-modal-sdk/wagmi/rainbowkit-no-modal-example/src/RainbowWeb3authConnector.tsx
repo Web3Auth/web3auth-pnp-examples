@@ -37,7 +37,6 @@ uiConfig: {
   },
 }
 });
-
 const openloginAdapter = new OpenloginAdapter({
 adapterSettings: {
   uxMode: UX_MODE.REDIRECT,
@@ -57,6 +56,9 @@ export const rainbowWeb3AuthConnector = (): Wallet =>  ({
       createWagmiConnector((config) => ({
         ...Web3AuthConnector({
           web3AuthInstance,
+          loginParams: {
+            loginProvider: "google",
+          },          
         })(config),
         ...walletDetails,
       })),

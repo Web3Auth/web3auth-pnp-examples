@@ -12,7 +12,6 @@ code {
     monospace;
 }
 
-
-#w3a-modal {
-  z-index: inherit!important
+.w3a-parent-container {
+  z-index: 9999999999 !important;
 }

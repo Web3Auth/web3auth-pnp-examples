@@ -1,9 +1,9 @@
-name: Upload Flutter Android & iOS Quick Start build on appetize
+name: Upload Flutter Android & iOS Quick Start build on appeitize
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
+    branches:
+      - main
     paths:
       - 'flutter/flutter-quick-start/**'
 
@@ -13,7 +13,6 @@ defaults:
 
 jobs:
   build-and-upload:
-    if: github.event.pull_request.merged == true
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -52,7 +51,7 @@ jobs:
           cd ios
           tar -czf ios_build.tar.gz build/Build/Products/Debug-iphonesimulator 
 
-      - name: Upload Android buil to Appetize
+      - name: Upload Android build to Appeitize
         uses: appetizeio/github-action-appetize@v1.0.1
         with:
           apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}
@@ -60,7 +59,7 @@ jobs:
           appFile: ./flutter/flutter-quick-start/build/app/outputs/apk/debug/app-debug.apk
           platform: "android"
 
-      - name: Upload iOS build to Appetize
+      - name: Upload iOS build to Appeitize
         uses: appetizeio/github-action-appetize@v1.0.1
         with:
           apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}

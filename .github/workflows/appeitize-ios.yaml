@@ -1,7 +1,7 @@
 name: Upload iOS Quick Start build on appetize
 
 on:
-  pull_request:
+  push:
     # types:
     #   - closed
     # paths:
@@ -18,9 +18,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
+      - name: Resolve Dependencies
+        run: xcodebuild -resolvePackageDependencies -project ios-example.xcodeproj -scheme ios-example     
+            
       - name: Build iOS simulator build
-        run: xcodebuild clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -scheme ios-example -sdk iphonesimulator -derivedDataPath build
+        run: xcodebuild build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -scheme ios-example -sdk iphonesimulator -derivedDataPath build
       
       - name: Compress iOS build
         run: tar -czf ios_build.tar.gz build/Build/Products/Debug-iphonesimulator 

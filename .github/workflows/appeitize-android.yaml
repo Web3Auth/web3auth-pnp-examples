@@ -1,10 +1,10 @@
-name: Upload Android Quick Start build on appetize
+name: Upload Android Quick Start build on appeitize
 
 on:
-  pull_request:
-     types:
-      - closed
-     paths:
+  push:
+    branches:
+      - main
+    paths:
       - 'android/android-quick-start/**'
 
 defaults:
@@ -13,7 +13,6 @@ defaults:
 
 jobs:
   build-and-upload:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,7 +34,7 @@ jobs:
       - name: Build apk debug project
         run: ./gradlew assembleDebug
 
-      - name: Upload to Appetize
+      - name: Upload to Appeitize
         uses: appetizeio/github-action-appetize@v1.0.1
         with:
           apiToken: ${{ secrets.APPETIZE_SECRET_KEY }}

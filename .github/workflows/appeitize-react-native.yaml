@@ -2,8 +2,8 @@ name: Upload React Native Android & iOS Quick Start build on appeitize
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
     paths:
       - 'react-native/rn-bare-quick-start/**'
 

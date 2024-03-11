@@ -3,7 +3,8 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { Wallet } from "@rainbow-me/rainbowkit";
+import { Wallet, WalletDetailsParams } from "@rainbow-me/rainbowkit";
+import { createConnector as createWagmiConnector } from "wagmi";
 
 const clientId =
 "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -36,7 +37,6 @@ uiConfig: {
   },
 }
 });
-
 const openloginAdapter = new OpenloginAdapter({
 adapterSettings: {
   uxMode: UX_MODE.REDIRECT,
@@ -52,10 +52,14 @@ export const rainbowWeb3AuthConnector = (): Wallet =>  ({
     iconBackground: "#fff",
     installed: true,
     downloadUrls: {},
-    createConnector: () => Web3AuthConnector({
-      web3AuthInstance,
-      loginParams: {
-        loginProvider: "google",
-      },
-    }),
+    createConnector: (walletDetails: WalletDetailsParams) =>
+      createWagmiConnector((config) => ({
+        ...Web3AuthConnector({
+          web3AuthInstance,
+          loginParams: {
+            loginProvider: "google",
+          },          
+        })(config),
+        ...walletDetails,
+      })),
   });

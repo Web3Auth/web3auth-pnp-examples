@@ -74,18 +74,6 @@
             android:text="@string/send_transaction" />
 
         <Button
-            android:id="@+id/enableMFA"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/enable_mfa" />
-
-        <Button
-            android:id="@+id/launchWalletServices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/launch_wallet_services" />
-
-        <Button
             android:id="@+id/signOutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

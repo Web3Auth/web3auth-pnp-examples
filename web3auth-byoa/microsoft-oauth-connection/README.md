@@ -45,7 +45,7 @@ AZURE_TENANT_ID=## create one in https://entra.microsoft.com/##
 AZURE_CODE_CHALLENGE=##create pair with CODE_VERIFIER in https://tonyxu-io.github.io/pkce-generator/##
 AZURE_CODE_VERIFIER=##create pair with CODE_CHALLENGE in https://tonyxu-io.github.io/pkce-generator/##
 PRIVATE_KEY_FILE_NAME=privateKey.pem
-JWKS_FILE_NAME=jwks.json
+WEB3AUTH_VERIFIER=## create one in https://dashboard.web3auth.io ##
 ```
 
 ### 7. Run the application:

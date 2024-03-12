@@ -15,6 +15,7 @@ const privateKey = fs.readFileSync(process.env.PRIVATE_KEY_FILE_NAME);
 const githubClientId = process.env.GITHUB_CLIENT_ID;
 const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 const githubRedirectUri = process.env.GITHUB_REDIRECT_URI;
+const web3authVerifier = process.env.WEB3AUTH_VERIFIER;
 
 app.use(cors());
 
@@ -39,10 +40,11 @@ web3auth.init({ provider: privateKeyProvider });
 
 const getPrivateKey = async (idToken, verifierId) => {
     const web3authNodeprovider = await web3auth.connect({
-        verifier: "w3a-github-oauth-demo",
+        verifier: web3authVerifier,
         verifierId,
         idToken,
     });
+    
     // The private key returned here is the CoreKitKey
     const ethPrivateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
     const ethPublicAddress = await web3authNodeprovider.request({ method: "eth_accounts" });
@@ -104,12 +106,14 @@ const generateJwtToken = (userData) => {
     return jwt.sign(payload, privateKey, { algorithm: "RS256", keyid: "33c21a45d72adfdc99a20" });
 };
 
+// init the process in this link
 app.get("/github/login", (req, res) => {
     res.redirect(
         `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${githubRedirectUri}`
     );
 });
 
+// callback from github
 app.get("/github/callback", async (req, res) => {
     const code = req.query.code;
 

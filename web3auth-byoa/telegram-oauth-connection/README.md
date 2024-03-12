@@ -1,14 +1,6 @@
-# GitHub OAuth Server for Web3Auth
+# Telegram OAuth Server for Web3Auth
 
-This project is a demonstration of integrating Web3Auth with GitHub OAuth for authentication. Web3Auth is a decentralized authentication protocol that allows users to sign in to applications using their Ethereum wallets. In this demo, GitHub OAuth is used to authenticate users, and Web3Auth is employed to provide Ethereum private key access.
-
-## Features
-
-- GitHub OAuth integration for user authentication.
-- Web3Auth integration for Ethereum private key access.
-- Generates a JSON Web Token (JWT) containing GitHub user information.
-- Provides Ethereum private key and public address associated with the authenticated GitHub user.
-- Demonstrates the exchange of GitHub OAuth code for an access token.
+This project is a demonstration of integrating Web3Auth with Telegram OAuth for authentication. Web3Auth is a decentralized authentication protocol that allows users to sign in to applications using their Ethereum wallets. In this demo, Telegram OAuth is used to authenticate users, and Web3Auth is employed to provide Ethereum private key access.
 
 ## Getting Started
 
@@ -19,36 +11,29 @@ Follow these steps to set up and run the project:
 
 2. Install dependencies:
 ```
-cd web3auth-byoa/github-oauth-connection
+cd web3auth-byoa/telegram-oauth-connection
 npm install
 ```
 
 3. Create a `.env` file in the project root and set the following variables:
 
 ```env
-GITHUB_CLIENT_ID=##create a github app https://github.com/settings/apps/
-GITHUB_CLIENT_SECRET=##create a github app https://github.com/settings/apps/
-GITHUB_REDIRECT_URI=http://localhost:5005/github/callback
+TELEGRAM_APP_TOKEN=#token from telegram bot (complete) 
+TELEGRAM_APP_NAME=#name from telegram bot
+SERVER_HOST_URL=# get URL from running  ngrok http 5005
 PRIVATE_KEY_FILE_NAME=privateKey.pem
-WEB3AUTH_VERIFIER=#create a verifier at https://dashboard.web3auth.io
+WEB3AUTH_VERIFIER_ID=w3a-telegram-oauth-demo #create a verifier at https://dashboard.web3auth.io
 ```
 
-   Replace `your-github-client-id` and `your-github-client-secret` with your GitHub OAuth application information.
+4. Run the application in 2 consoles:
 
-4. Run the application:
+   ```bash
+   ngrok http 5005 
+   ```
 
    ```bash
    npm start
    ```
+4. Add the URL from ngrok to the `.env` file as `SERVER_HOST_URL` and go to the Telegram Father Bot and send `/setdomain` and set the URL from ngrok from the your bot.
 
-5. Open your browser and navigate to `http://localhost:5005/github/login` to initiate the GitHub OAuth flow.
-
-
-Follow the complete guide to run the project in : https://web3auth.io/docs/guides/github-oauth-web3auth-integration
-
-
-References
-- [Custom JWT providers in Web3auth](https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers)
-- [Github OAUTH 2.0 flow](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps#web-application-flow)
-
-
+5. Open your browser and navigate to `http://<URL>/telegram/login` to initiate the Telegram OAuth flow. 

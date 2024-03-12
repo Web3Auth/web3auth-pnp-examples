@@ -22,13 +22,8 @@ build/
 .idea/
 *.code-workspace
 
-# Ignore package-lock.json for npm
-package-lock.json
-
 # Ignore yarn.lock for Yarn
 yarn.lock
 
 # Ignore .DS_Store files (macOS)
 .DS_Store
-
-privateKey.pem

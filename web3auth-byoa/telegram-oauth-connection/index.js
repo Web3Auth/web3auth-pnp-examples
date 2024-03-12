@@ -6,40 +6,25 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 const dotenv = require("dotenv");
-const verifyAuthResult = require("@use-telegram-auth/server");
-const {createHash} = require("crypto");
-const { AuthDataValidator } = require('@telegram-auth/server');
-const {urlStrToAuthDataMap} = require('@telegram-auth/server/utils');
-const helmet = require('helmet');
+const path = require('path');
+const { AuthDataValidator } = require( '@telegram-auth/server');
+const { objectToAuthDataMap } = require('@telegram-auth/server/utils');
 
 
 dotenv.config();
 
+
 const app = express();
 const port = 5005;
 
-const privateKey = fs.readFileSync(process.env.PRIVATE_KEY_FILE_NAME);
-const githubClientId = process.env.GITHUB_CLIENT_ID;
-const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
-const githubRedirectUri = process.env.GITHUB_REDIRECT_URI;
 
+const privateKey = fs.readFileSync(process.env.PRIVATE_KEY_FILE_NAME);
+const WEB3AUTH_VERIFIER_ID= process.env.WEB3AUTH_VERIFIER_ID;
+const TELEGRAM_BOT_NAME = process.env.TELEGRAM_BOT_NAME;
+const TELEGRAM_REDIRECT_URI = process.env.SERVER_HOST_URL + "/telegram/callback";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
 app.use(cors());
-app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        "frame-ancestors": ["'self'", "http://127.0.0.1:5005"]
-      }
-    })
-  );
-app.use(function(req, res, next) {
-    console.log("req.url", req.params);
-
-    if (req.url.includes("#")) {
-      req.url = req.url.replace("#", "?");
-    }
-    next();
- });
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
     config: {
@@ -62,10 +47,11 @@ web3auth.init({ provider: privateKeyProvider });
 
 const getPrivateKey = async (idToken, verifierId) => {
     const web3authNodeprovider = await web3auth.connect({
-        verifier: "w3a-github-oauth-demo",
+        verifier: WEB3AUTH_VERIFIER_ID,
         verifierId,
         idToken,
     });
+    
     // The private key returned here is the CoreKitKey
     const ethPrivateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
     const ethPublicAddress = await web3authNodeprovider.request({ method: "eth_accounts" });
@@ -76,99 +62,52 @@ const getPrivateKey = async (idToken, verifierId) => {
     return ethData;
 }
 
-const exchangeCodeForAccessToken = async (code) => {
-    try {
-        const { data } = await axios.post(
-            "https://github.com/login/oauth/access_token",
-            {
-                client_id: githubClientId,
-                client_secret: githubClientSecret,
-                code: code,
-            },
-            {
-                headers: { Accept: "application/json" },
-            }
-        );
-        return data.access_token;
-    } catch (error) {
-        console.error("Error exchanging code for access token:", error);
-        throw new Error("Error during GitHub authentication");
-    }
-};
-
-const fetchGitHubUserDetails = async (accessToken) => {
-    try {
-        const { data } = await axios.get('https://api.github.com/user', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-            },
-        });
-        return data;
-    } catch (error) {
-        console.error("Error fetching GitHub user details:", error);
-        throw new Error("Failed to fetch user details");
-    }
-};
 
 const generateJwtToken = (userData) => {
     const payload = {
-        github_id: userData.id,
-        username: userData.login,
-        avatar_url: userData.avatar_url,
+        telegram_id: userData.id,
+        username: userData.username,
+        avatar_url: userData.photo_url,
         sub: userData.id.toString(),
-        name: userData.name,
-        email: userData.email || null,
-        aud: "https://github.com/login/oauth/access_token",
-        iss: "https://github.com",
+        name: userData.first_name,
+        iss: "https://telegram.com", 
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
     };
 
-    return jwt.sign(payload, privateKey, { algorithm: "RS256", keyid: "33c21a45d72adfdc99a20" });
+    return jwt.sign(payload, privateKey, { algorithm: "RS256", keyid: "fc5be8134b6dada92b52" });
 };
 
-app.get("/telegram/login", (req, res) => {
-     //6959558062:AAGKn92pAqeV42UoYTykUwZ0LyueEnlvGqY
-    const telegramBotId = "6959558062"; // 6959558062
-    const telegramRedirectUri = "http://127.0.0.1:5005/telegram/callback/";
-    const domain = "http://127.0.0.1";
-     /* res.redirect(
-        `https://oauth.telegram.org/auth?bot_id=${telegramBotId}&return_to=${telegramRedirectUri}&origin=${domain}`
-    ); */ 
-    res.header("Content-Security-Policy", "http://127.0.0.1");
+// this is the start point
+app.get("/telegram/login", async (req, res) => {
+    // load file, replace string and send it
+    const file = path.join(__dirname, 'login.html');
+    fs.readFile(file, 'utf8', (err, data) => {
+        if (err) {
+            return console.log(err);
+        }
+        const result = data.replace(/{{TELEGRAM_BOT_NAME}}/g, TELEGRAM_BOT_NAME).replace(/{{TELEGRAM_BOT_CALLBACK}}/g, TELEGRAM_REDIRECT_URI);
+
+        res.send(result);
+    });
     
-        res.send(`<h1>Hello, anonymous!</h1>
-        <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="oauth_w3a_bot" data-size="large" data-auth-url="http://127.0.0.1:5005/telegram/callback/" data-request-access="write"></script>
-        `);
-});
+}); 
+
 
 app.get("/telegram/callback", async (req, res) => {
-    const validator = new AuthDataValidator({ botToken: 6959558062 });
-
-    // convert the data from the URL to a map
-    const data = urlStrToAuthDataMap(req.url);
-
-    const tgAuthResult = req.query.tgAuthResult;
-    console.log(req);
-
+    const token = TELEGRAM_BOT_TOKEN;
+    const validator = new AuthDataValidator({ botToken: token });
+    const data = objectToAuthDataMap(req.query || {});
     try {
-        res.status(500).send(JSON.stringify(req));
-        const telegramBotToken = "AAGKn92pAqeV42UoYTykUwZ0LyueEnlvGqY";
-        const HASHED_BOT_TOKEN = createHash("sha256").update(telegramBotToken).digest();
-
-        const result = verifyAuthResult(tgAuthResult, HASHED_BOT_TOKEN);
-        console.log(result);
-        /* const accessToken = await exchangeCodeForAccessToken(code);
-        console.log('accessToken', accessToken);
-        const userData = await fetchGitHubUserDetails(accessToken);
-        console.log('userData', userData);
-        const jwtToken = generateJwtToken(userData);
-        console.log('jwtToken', userData);
-        const ethData = await getPrivateKey(jwtToken, userData.id.toString());
-        res.json({ userData, jwtToken, ethData }); */
+        // validate the data
+        const user = await validator.validate(data);
+        const JWTtoken = generateJwtToken(user);
+        // get the private key and address
+        const ethData = await getPrivateKey(JWTtoken, user.id.toString());
+        res.json({ user, JWTtoken, ethData });
+        
     } catch (error) {
         console.error(error);
-        res.status(500).send("Error during GitHub authentication");
     }
 });
 

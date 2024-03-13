@@ -30,7 +30,7 @@ function App() {
           chainNamespace: CHAIN_NAMESPACES.OTHER,
           chainId: "fd2adfa8",
           rpcTarget: "https://fullnode.devnet.sui.io:443",
-          displayName: "Sui Mainnet",
+          displayName: "Sui Devnet",
           blockExplorerUrl: "https://suiexplorer.com/?network=devnet",
           ticker: "SUI",
           tickerName: "Sui",
@@ -52,6 +52,7 @@ function App() {
             uxMode: UX_MODE.REDIRECT,
           },
         });
+        
         web3auth.configureAdapter(openloginAdapter);
 
         await web3auth.init();

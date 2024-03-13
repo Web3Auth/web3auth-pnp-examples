@@ -6,23 +6,20 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 const dotenv = require("dotenv");
-const path = require('path');
-const { AuthDataValidator } = require( '@telegram-auth/server');
-const { objectToAuthDataMap } = require('@telegram-auth/server/utils');
-
+const path = require("path");
+const { AuthDataValidator } = require("@telegram-auth/server");
+const { objectToAuthDataMap } = require("@telegram-auth/server/utils");
 
 dotenv.config();
-
 
 const app = express();
 const port = 5005;
 
-
 const privateKey = fs.readFileSync(process.env.PRIVATE_KEY_FILE_NAME);
-const WEB3AUTH_VERIFIER_ID= process.env.WEB3AUTH_VERIFIER_ID;
-const TELEGRAM_BOT_NAME = process.env.TELEGRAM_BOT_NAME;
-const TELEGRAM_REDIRECT_URI = process.env.SERVER_HOST_URL + "/telegram/callback";
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const { WEB3AUTH_VERIFIER_ID } = process.env;
+const { TELEGRAM_BOT_NAME } = process.env;
+const { TELEGRAM_BOT_TOKEN } = process.env;
+const TELEGRAM_REDIRECT_URI = `${process.env.SERVER_HOST_URL}/telegram/callback`;
 
 app.use(cors());
 
@@ -51,7 +48,7 @@ const getPrivateKey = async (idToken, verifierId) => {
         verifierId,
         idToken,
     });
-    
+
     // The private key returned here is the CoreKitKey
     const ethPrivateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
     const ethPublicAddress = await web3authNodeprovider.request({ method: "eth_accounts" });
@@ -60,8 +57,7 @@ const getPrivateKey = async (idToken, verifierId) => {
         ethPublicAddress,
     };
     return ethData;
-}
-
+};
 
 const generateJwtToken = (userData) => {
     const payload = {
@@ -70,9 +66,9 @@ const generateJwtToken = (userData) => {
         avatar_url: userData.photo_url,
         sub: userData.id.toString(),
         name: userData.first_name,
-        iss: "https://telegram.com", 
+        iss: "https://telegram.com",
         iat: Math.floor(Date.now() / 1000),
-        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        exp: Math.floor(Date.now() / 1000) + 60 * 60,
     };
 
     return jwt.sign(payload, privateKey, { algorithm: "RS256", keyid: "fc5be8134b6dada92b52" });
@@ -81,8 +77,8 @@ const generateJwtToken = (userData) => {
 // this is the start point
 app.get("/telegram/login", async (req, res) => {
     // load file, replace string and send it
-    const file = path.join(__dirname, 'login.html');
-    fs.readFile(file, 'utf8', (err, data) => {
+    const file = path.join(__dirname, "login.html");
+    fs.readFile(file, "utf8", (err, data) => {
         if (err) {
             return console.log(err);
         }
@@ -90,9 +86,7 @@ app.get("/telegram/login", async (req, res) => {
 
         res.send(result);
     });
-    
-}); 
-
+});
 
 app.get("/telegram/callback", async (req, res) => {
     const token = TELEGRAM_BOT_TOKEN;
@@ -105,7 +99,6 @@ app.get("/telegram/callback", async (req, res) => {
         // get the private key and address
         const ethData = await getPrivateKey(JWTtoken, user.id.toString());
         res.json({ user, JWTtoken, ethData });
-        
     } catch (error) {
         console.error(error);
     }

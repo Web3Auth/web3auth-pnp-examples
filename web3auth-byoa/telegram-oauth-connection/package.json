@@ -1,5 +1,5 @@
 {
-  "name": "gh-oauth-web3auth-server",
+  "name": "telegram-oauth-web3auth-server",
   "version": "0.0.1",
   "description": "Telegram OAuth server for Web3Auth Usage",
   "main": "index.js",

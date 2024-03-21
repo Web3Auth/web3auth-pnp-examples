@@ -35,7 +35,7 @@ export interface IWeb3AuthContext {
   readContract: (contractAddress: string, contractABI: any) => Promise<string>;
   writeContract: (contractAddress: string, contractABI: any, updatedValue: string) => Promise<string>;
   verifyServerSide: (idToken: string) => Promise<any>;
-  switchChain: (network: string) => Promise<void>;
+  switchChain: (customChainConfig: CustomChainConfig) => Promise<void>;
   updateConnectedChain: (network: string) => void;
 }
 
@@ -345,19 +345,23 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
   };
 
-  const switchChain = async (network: string) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
+  const switchChain = async (chainConfig: CustomChainConfig) => {
+    if (!web3Auth || !provider) {
+      uiConsole("Web3Auth or provider is not initialized yet");
       return;
     }
 
-    await web3Auth.addChain(chain[network]);
-    await web3Auth.switchChain(chain[network]);
-    setChainId(await provider.getChainId());
-    setAddress(await provider.getAddress());
-    setBalance(await provider.getBalance());
-
-    uiConsole("Chain Switched");
+    try {
+      await web3Auth.addChain(chainConfig);
+      await web3Auth.switchChain(chainConfig);
+      setChainId(await provider.getChainId());
+      setAddress(await provider.getAddress());
+      setBalance(await provider.getBalance());
+      setConnectedChain(chainConfig);
+      uiConsole("Chain switched successfully");
+    } catch (error) {
+      uiConsole("Failed to switch chain", error);
+    }
   };
 
   const updateConnectedChain = (network: string) => {

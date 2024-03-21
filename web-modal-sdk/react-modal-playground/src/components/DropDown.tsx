@@ -1,5 +1,6 @@
 import React, { FC, useState } from "react";
 
+import { chain } from "../config/chainConfig";
 import { useWeb3Auth } from "../services/web3auth";
 
 interface DropdownProps {
@@ -17,12 +18,15 @@ const Dropdown: FC<DropdownProps> = ({ options, rounded, label, onChange }) => {
   } else {
     classSelect = "w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm z-0";
   }
-  const { switchChain } = useWeb3Auth();
+  const { switchChain, getChainId } = useWeb3Auth();
 
-  const handleChange = (e: any) => {
+  const handleChange = async (e: any) => {
     const { value } = e.target;
     setSelectedOption(value);
-    switchChain(value);
+    if (value !== "Other" && (await getChainId()) !== chain[value].chainId) {
+      console.log(value);
+      switchChain(chain[value]);
+    }
     if (onChange) onChange(value);
   };
 

@@ -21,12 +21,12 @@ const Sidebar = () => {
     navigate("/server-side-verification");
   }
   function goToExplorer() {
-    window.open(connectedChain.blockExplorerUrl);
+    window.open(connectedChain?.blockExplorerUrl || "");
   }
   function goToFaucet() {
-    if (connectedChain.chainId === "0xaa36a7") {
+    if (connectedChain?.chainId === "0xaa36a7") {
       window.open("https://www.infura.io/faucet/sepolia");
-    } else if (connectedChain.chainId === "0x13881") {
+    } else if (connectedChain?.chainId === "0x13881") {
       window.open("https://faucet.polygon.technology/");
     }
   }
@@ -64,7 +64,7 @@ const Sidebar = () => {
             ? activePage("Server Side Verification", 4)
             : linktoGo("Server Side Verification", goToServerSideVerification, 4)}
           {linktoGo("Explorer Link", goToExplorer, 5)}
-          {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet, 6) : null}
+          {connectedChain?.chainId === "0x5" || connectedChain?.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet, 6) : null}
         </nav>
       </div>
       <UserProfile />

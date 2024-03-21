@@ -23,6 +23,9 @@ const Sidebar = () => {
   function goToExplorer() {
     window.open(connectedChain?.blockExplorerUrl || "");
   }
+  function goToSounceCode() {
+    window.open("https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground");
+  }
   function goToFaucet() {
     if (connectedChain?.chainId === "0xaa36a7") {
       window.open("https://www.infura.io/faucet/sepolia");
@@ -64,7 +67,8 @@ const Sidebar = () => {
             ? activePage("Server Side Verification", 4)
             : linktoGo("Server Side Verification", goToServerSideVerification, 4)}
           {linktoGo("Explorer Link", goToExplorer, 5)}
-          {connectedChain?.chainId === "0x5" || connectedChain?.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet, 6) : null}
+          {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet, 6) : null}
+          {linktoGo("Source Code", goToSounceCode, 6)}
         </nav>
       </div>
       <UserProfile />

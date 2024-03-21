@@ -116,8 +116,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           clientId,
           web3AuthNetwork: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET,
           uiConfig: {
-            mode: THEME_MODES.dark, // light, dark or auto
-            loginMethodsOrder: ["twitter"],
+            mode: THEME_MODES.light, // light, dark or auto
+            loginMethodsOrder: ["google"],
           },
           privateKeyProvider,
         });
@@ -153,12 +153,18 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         });
         web3AuthInstance.configureAdapter(openloginAdapter);
         await web3AuthInstance.initModal();
+        setWeb3Auth(web3AuthInstance);
         if (web3AuthInstance.status === "connected") {
           setWalletProvider(web3AuthInstance.provider);
           setUser(await web3AuthInstance.getUserInfo());
           setConnected(true);
+        } else {
+          try {
+            await web3AuthInstance.connect();
+          } catch (error) {
+            uiConsole(error);
+          }
         }
-        setWeb3Auth(web3AuthInstance);
       } catch (error) {
         uiConsole(error);
       } finally {
@@ -174,7 +180,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    await web3Auth.connect();
+
+    try {
+      await web3Auth.connect();
+    } catch (error) {
+      uiConsole(error);
+    }
 
     if (web3Auth.status === "connected") {
       setWalletProvider(web3Auth.provider);

@@ -6,7 +6,7 @@
     "@solana/web3.js": "^1.90.0",
     "@solflare-wallet/sdk": "^1.4.2",
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^14.2.2",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.18",

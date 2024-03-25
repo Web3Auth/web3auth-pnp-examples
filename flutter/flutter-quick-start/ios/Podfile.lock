@@ -18,14 +18,14 @@ PODS:
     - GenericJSON (~> 2.0)
     - Logging (~> 1.0.0)
     - secp256k1.swift (~> 0.1)
-  - Web3Auth (7.5.0):
+  - Web3Auth (7.5.1):
     - CryptoSwift (~> 1.8.0)
     - KeychainSwift (~> 20.0.0)
     - TorusSessionManager (~> 3.0.1)
     - web3.swift (~> 1.6.0)
   - web3auth_flutter (2.0.1):
     - Flutter
-    - Web3Auth (~> 7.5.0)
+    - Web3Auth (~> 7.5.1)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -63,8 +63,8 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   TorusSessionManager: 829495789427b7ad7e29f2b535092a44f3900b42
   web3.swift: 2263d1e12e121b2c42ffb63a5a7beb1acaf33959
-  Web3Auth: ebfbcefa4d343c93ec1df88e50f74a115125e833
-  web3auth_flutter: 5a6ca40dc689af62523a9f00924c884fa3788276
+  Web3Auth: 92765f42b9b1443a359475c39d2ae163a212eac5
+  web3auth_flutter: 86975c81b0271df0955b22dc34a532351eab6358
 
 PODFILE CHECKSUM: 617d992413452517fc165846a57084923e4df00d
 

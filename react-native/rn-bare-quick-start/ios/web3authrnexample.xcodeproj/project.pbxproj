@@ -11,6 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		282AD40F2B99D9320041EFFF /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 282AD40E2B99D9320041EFFF /* main.jsbundle */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C0B54FEE671476A660BB535D /* libPods-web3authrnexample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFB3B5B451BA587932B3B10D /* libPods-web3authrnexample.a */; };
 		D024554A3410324F7E30C042 /* libPods-web3authrnexample-web3authrnexampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2257644705CD9D5FED879CB8 /* libPods-web3authrnexample-web3authrnexampleTests.a */; };
@@ -37,6 +38,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = web3authrnexample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = web3authrnexample/main.m; sourceTree = "<group>"; };
 		2257644705CD9D5FED879CB8 /* libPods-web3authrnexample-web3authrnexampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-web3authrnexample-web3authrnexampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		282AD40E2B99D9320041EFFF /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		2FC8CA1E70FAEC497B81DAF0 /* Pods-web3authrnexample-web3authrnexampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-web3authrnexample-web3authrnexampleTests.release.xcconfig"; path = "Target Support Files/Pods-web3authrnexample-web3authrnexampleTests/Pods-web3authrnexample-web3authrnexampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		7D23A6D00B49E0A2258ED9CC /* Pods-web3authrnexample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-web3authrnexample.release.xcconfig"; path = "Target Support Files/Pods-web3authrnexample/Pods-web3authrnexample.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = web3authrnexample/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				282AD40E2B99D9320041EFFF /* main.jsbundle */,
 			);
 			name = web3authrnexample;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				282AD40F2B99D9320041EFFF /* main.jsbundle in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

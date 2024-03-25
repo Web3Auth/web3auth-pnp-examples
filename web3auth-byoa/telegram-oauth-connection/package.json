@@ -20,7 +20,7 @@
     "axios": "^1.6.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2"
   }
 }

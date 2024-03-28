@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { web3AuthConfig, openloginAdapterConfig } from "./config/web3auth";
 // EVM
 import Web3 from "web3";
 // Solana
@@ -15,47 +16,30 @@ import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
 import { hex2buf } from "@taquito/utils";
 // StarkEx and StarkNet
 //@ts-ignore
-import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
-
+import { ec } from "@starkware-industries/starkware-crypto-utils";
 // Polkadot
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+//@ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ec as elliptic } from "elliptic";
 
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  privateKeyProvider,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-});
-
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    uxMode: UX_MODE.REDIRECT,
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
+  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
+        const web3auth = new Web3AuthNoModal(web3AuthConfig);
+        setWeb3auth(web3auth);
+
+        const openloginAdapter = new OpenloginAdapter(openloginAdapterConfig);
+        web3auth.configureAdapter(openloginAdapter);
+
         await web3auth.init();
 
         setProvider(web3auth.provider);
@@ -204,8 +188,7 @@ function App() {
       },
     });
     await polygonPrivateKeyProvider.setupProvider(privateKey);
-
-    const web3 = new Web3(polygonPrivateKeyProvider as EthereumPrivateKeyProvider);
+    const web3 = new Web3(polygonPrivateKeyProvider);
     const address = (await web3.eth.getAccounts())[0];
     return address;
   };
@@ -233,7 +216,7 @@ function App() {
       },
     });
     await bnbPrivateKeyProvider.setupProvider(privateKey);
-    const web3 = new Web3(bnbPrivateKeyProvider as EthereumPrivateKeyProvider);
+    const web3 = new Web3(bnbPrivateKeyProvider);
     const address = (await web3.eth.getAccounts())[0];
     return address;
   };
@@ -269,7 +252,7 @@ function App() {
 
     const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider as SolanaPrivateKeyProvider);
     const solana_address = await solanaWallet.requestAccounts();
-    return solana_address[0];
+    return "0x" +solana_address[0];
   };
 
   const getTezosAddress = async () => {
@@ -280,7 +263,7 @@ function App() {
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
     const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
-    const address = keyPairTezos?.pkh;
+    const address = "0x" +keyPairTezos?.pkh;
     return address;
   };
 
@@ -291,9 +274,9 @@ function App() {
     }
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
-    const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starkex_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
-    const address = starkex_account.pub.getX().toString("hex");
+    const keyPairStarkEx = ec.keyFromPrivate(privateKey, "hex");
+    const starkex_account = ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
+    const address = "0x" +starkex_account.pub.getX().toString("hex");
     return address;
   };
 
@@ -304,9 +287,9 @@ function App() {
     }
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
-    const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
-    const starknet_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
-    const address = starknet_account.pub.getX().toString("hex");
+    const keyPairStarkNet = ec.keyFromPrivate(privateKey, "hex");
+    const starknet_account = ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
+    const address = "0x" +starknet_account.pub.getX().toString("hex");
     return address;
   };
 
@@ -321,7 +304,7 @@ function App() {
     const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 
     const keyPair = keyring.addFromUri("0x" + privateKey);
-    const address = keyPair.address;
+    const address = "0x" +keyPair.address;
     return address;
   };
 

@@ -7,7 +7,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@toruslabs/config": "^2.0.2",
     "@toruslabs/eccrypto": "^4.0.0",
-    "@toruslabs/openlogin-utils": "^6.2.9",
+    "@toruslabs/openlogin-utils": "^8.0.0",
     "@web3auth/base": "^8.0.0",
     "@web3auth/ethereum-provider": "^8.0.1",
     "@web3auth/modal": "^8.0.1",

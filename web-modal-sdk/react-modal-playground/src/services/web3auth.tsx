@@ -5,8 +5,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
 import { OPENLOGIN_NETWORK, OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import * as jose from "jose";
-import * as React from "react";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 import { chain } from "../config/chainConfig";
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
@@ -19,6 +18,8 @@ export interface IWeb3AuthContext {
   user: any;
   address: string;
   balance: string;
+  chainList: { [key: string]: CustomChainConfig };
+  chainListOptionSelected: string;
   chainId: string;
   playgroundConsole: string;
   connectedChain: CustomChainConfig;
@@ -36,7 +37,7 @@ export interface IWeb3AuthContext {
   writeContract: (contractAddress: string, contractABI: any, updatedValue: string) => Promise<string>;
   verifyServerSide: (idToken: string) => Promise<any>;
   switchChain: (customChainConfig: CustomChainConfig) => Promise<void>;
-  updateConnectedChain: (network: string) => void;
+  updateConnectedChain: (network: string | CustomChainConfig) => void;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -49,7 +50,9 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   balance: null,
   chainId: null,
   playgroundConsole: "",
-  connectedChain: chain["Sepolia Testnet"],
+  chainList: chain,
+  chainListOptionSelected: "sepolia",
+  connectedChain: chain.sepolia,
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => null,
@@ -84,9 +87,10 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [playgroundConsole, setPlaygroundConsole] = useState<string>("");
   const [chainId, setChainId] = useState<any>(null);
-  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain["Sepolia Testnet"]);
+  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain.sepolia);
   const [connected, setConnected] = useState<boolean>(false);
-
+  const [chainList, setChainDetails] = useState(chain);
+  const [chainListOptionSelected, setChainListOptionSelected] = useState("sepolia");
   const uiConsole = (...args: unknown[]) => {
     setPlaygroundConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${playgroundConsole}`);
     console.log(...args);
@@ -108,7 +112,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({
           config: {
-            chainConfig: chain["Sepolia Testnet"],
+            chainConfig: chainList.sepolia,
           },
         });
 
@@ -356,6 +360,30 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
   };
 
+  const updateConnectedChain = (chainDetails: string | CustomChainConfig) => {
+    if (typeof chainDetails === "string") {
+      setConnectedChain(chainList[chainDetails]);
+      setChainListOptionSelected(chainDetails);
+      return;
+    }
+    if (typeof chainDetails === "object") {
+      if (
+        !(
+          chainDetails.displayName in
+          Object.keys(chainList).map(function (k) {
+            return chainList[k].displayName;
+          })
+        )
+      ) {
+        setChainDetails({ ...chain, custom: chainDetails });
+      }
+      setConnectedChain(chainDetails);
+      setChainListOptionSelected("custom");
+      return;
+    }
+    uiConsole("No network or chainDetails provided");
+  };
+
   const switchChain = async (chainConfig: CustomChainConfig) => {
     if (!web3Auth || !provider) {
       uiConsole("Web3Auth or provider is not initialized yet");
@@ -363,20 +391,18 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
 
     try {
+      setIsLoading(true);
       await web3Auth.addChain(chainConfig);
       await web3Auth.switchChain(chainConfig);
       setChainId(await provider.getChainId());
       setAddress(await provider.getAddress());
       setBalance(await provider.getBalance());
-      setConnectedChain(chainConfig);
+      updateConnectedChain(chainConfig);
+      setIsLoading(false);
       uiConsole("Chain switched successfully");
     } catch (error) {
       uiConsole("Failed to switch chain", error);
     }
-  };
-
-  const updateConnectedChain = (network: string) => {
-    setConnectedChain(chain[network]);
   };
 
   const contextProvider = {
@@ -390,6 +416,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     playgroundConsole,
     connectedChain,
     connected,
+    chainList,
+    chainListOptionSelected,
     login,
     logout,
     getUserInfo,

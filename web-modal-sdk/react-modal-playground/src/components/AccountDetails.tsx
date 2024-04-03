@@ -1,8 +1,7 @@
-import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
+import { CustomChainConfig } from "@web3auth/base";
 import React, { JSX, useEffect, useState } from "react";
 
 import Dropdown from "../components/DropDown";
-import { chain } from "../config/chainConfig";
 import { useWeb3Auth } from "../services/web3auth";
 
 interface AccountDetailsProps {
@@ -10,45 +9,31 @@ interface AccountDetailsProps {
 }
 
 function AccountDetails({ children }: AccountDetailsProps) {
-  const { address, balance, switchChain, user, getUserInfo, updateConnectedChain, connectedChain } = useWeb3Auth();
+  const {
+    address,
+    balance,
+    user,
+    getUserInfo,
+    updateConnectedChain,
+    connectedChain,
+    isLoading,
+    chainList,
+    switchChain,
+    getChainId,
+    chainListOptionSelected,
+  } = useWeb3Auth();
   const [addressToShow, setAddressToShow] = useState<string>(address || "");
-  const [selectedChain, setSelectedChain] = useState<string>(Object.keys(chain)[0]);
-  const [chainDetails, setChainDetails] = useState<CustomChainConfig>(chain[selectedChain]);
-  const [isOtherSelected, setIsOtherSelected] = useState<boolean>(false);
+  const [selectedChain, setSelectedChain] = useState<string>(Object.keys(chainList)[0]);
+  const [chainDetails, setChainDetails] = useState<CustomChainConfig>(chainList[selectedChain]);
 
   useEffect(() => {
     setAddressToShow(address || "");
-
-    if (selectedChain === "Other") {
-      setChainDetails({
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "",
-        displayName: "",
-        rpcTarget: "",
-        blockExplorerUrl: "",
-        ticker: "",
-        tickerName: "",
-        logo: "",
-      });
-      setIsOtherSelected(true);
-    } else {
-      setChainDetails(chain[selectedChain]);
-      setIsOtherSelected(false);
-    }
+    setChainDetails(chainList[selectedChain]);
   }, [selectedChain, address]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     console.log(chainDetails);
-    // Directly attempt to switch to the provided chain details when "Other" is selected
-    if (isOtherSelected) {
-      // Ensure chainDetails includes necessary modifications for a custom chain
-      // For example, ensure chainId and other required fields are appropriately set
-      await switchChain({
-        ...chainDetails,
-        chainId: chainDetails.chainId, // Example adjustment, convert to hex if it's not already
-      });
-    }
   };
 
   return (
@@ -57,23 +42,18 @@ function AccountDetails({ children }: AccountDetailsProps) {
         <h1 className="text-lg font-bold">Your Account Details</h1>
         <Dropdown
           rounded
-          options={[...Object.keys(chain), "Other"]}
-          onChange={(option) => {
-            if (option === "Other") {
-              // Directly update state for "Other" without calling switchChain
-              setSelectedChain(option);
-              // Optionally update connectedChain or handle it as per your app's logic
-              // For example, you might want to reset connectedChain to a default state or leave it as is
-              updateConnectedChain(option);
-            } else {
-              // Proceed with switchChain call for valid chain selections
-              if (!isOtherSelected) {
-                switchChain(chain[option]);
-              }
-              updateConnectedChain(option);
-              setSelectedChain(option);
-              setIsOtherSelected(option === "Other");
+          options={[...Object.keys(chainList)]}
+          selectedOption={chainListOptionSelected}
+          displayOptions={Object.keys(chainList).map(function (k) {
+            return chainList[k].displayName;
+          })}
+          onChange={async (option) => {
+            if ((await getChainId()) !== chainList[option].chainId) {
+              console.log(option);
+              await switchChain(chainList[option]);
             }
+            updateConnectedChain(option);
+            setSelectedChain(option);
           }}
         />
       </div>
@@ -128,14 +108,8 @@ function AccountDetails({ children }: AccountDetailsProps) {
       </div>
 
       <div className="p-8 mt-6 rounded-lg bg-white flex flex-col space-y-4">
-        <h2 className="text-lg font-bold">Chain Config</h2>
+        <h2 className="text-lg font-bold">Use Custom Chain Config</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <label htmlFor="chainNamespace" className="text-sm min-w-[120px]">
-              Chain Namespace:
-            </label>
-            <input type="text" id="chainNamespace" value={chainDetails.chainNamespace} readOnly className="form-input flex-1 bg-gray-200" />
-          </div>
           {Object.entries(chainDetails).map(
             ([field, value], index) =>
               field !== "chainNamespace" && (
@@ -147,20 +121,29 @@ function AccountDetails({ children }: AccountDetailsProps) {
                     type="text"
                     id={field}
                     value={(value as string) || ""}
-                    onChange={(e) => isOtherSelected && setChainDetails({ ...chainDetails, [field]: e.target.value })}
+                    onChange={(e) => setChainDetails({ ...chainDetails, [field]: e.target.value })}
                     className="form-input flex-1"
-                    readOnly={!isOtherSelected}
                   />{" "}
                 </div>
               )
           )}
-          {isOtherSelected && (
+          {isLoading ? (
+            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path
+                className="opacity-75"
+                fill="#0364ff"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          ) : (
             <button
               type="submit"
               className="flex flex-row rounded-full px-6 py-3 text-white justify-center items-center cursor-pointer"
               style={{ backgroundColor: "#0364ff" }}
+              onClick={() => switchChain(chainDetails)}
             >
-              Submit Chain Info
+              Change Network Config
             </button>
           )}
         </form>

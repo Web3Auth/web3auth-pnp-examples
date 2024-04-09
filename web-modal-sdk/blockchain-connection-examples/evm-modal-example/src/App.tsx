@@ -3,7 +3,8 @@ import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
+import RPC from "./viem"; // for using viem
+// import RPC from "./web3RPC";
 // import RPC from "./ethersRPC"; // for using ethers.js
 
 // Providers
@@ -22,15 +23,16 @@ import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
+  chainId: "0x13882", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc-amoy.polygon.technology/",
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  displayName: "Ethereum Mainnet",
+  displayName: "Amoy",
   blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
+  ticker: "MATIC",
+  tickerName: "MATIC",
   logo: "https://images.toruswallet.io/eth.svg",
-};
+}; 
+
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 

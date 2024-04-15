@@ -55,27 +55,30 @@ export default class EthereumRpc {
 
   async sendTransaction(): Promise<any> {
     try {
-      const web3 = new Web3(this.provider as any)
+      const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
-      const fromAddress = (await web3.eth.getAccounts())[0]
+      const fromAddress = (await web3.eth.getAccounts())[0];
 
-      const destination = fromAddress
+      const destination = fromAddress;
 
-      const amount = web3.utils.toWei('0.001', 'ether') // Convert 1 ether to wei
-
-      // Submit transaction to the blockchain and wait for it to be mined
-      const receipt = await web3.eth.sendTransaction({
+      const amount = web3.utils.toWei("0.001", "ether"); // Convert 1 ether to wei
+      let transaction = {
         from: fromAddress,
         to: destination,
+        data: "0x",
         value: amount,
-        maxPriorityFeePerGas: '5000000000', // Max priority fee per gas
-        maxFeePerGas: '6000000000000', // Max fee per gas
-      })
+      }
 
-      return receipt
+      // calculate gas transaction before sending
+      transaction = { ...transaction, gas: await web3.eth.estimateGas(transaction)} as any;
+
+      // Submit transaction to the blockchain and wait for it to be mined
+      const receipt = await web3.eth.sendTransaction(transaction);
+
+      return this.toStringJson(receipt);
     } catch (error) {
-      return error as string
+      return error as string;
     }
   }
 
@@ -123,5 +126,14 @@ export default class EthereumRpc {
     } catch (error) {
       return error as string
     }
+  }
+
+  toStringJson(data: any) {
+    // can't serialize a BigInt, so this hack
+    return JSON.parse(JSON.stringify(data, (key, value) =>
+        typeof value === 'bigint'
+            ? value.toString()
+            : value // return everything else unchanged
+    ));
   }
 }

@@ -177,10 +177,10 @@ function App() {
       config: {
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x13881",
-          rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-          displayName: "Polygon Mumbai",
-          blockExplorerUrl: "https://mumbai.polygonscan.com/",
+          chainId: "0x13882",
+          rpcTarget: "https://rpc-amoy.polygon.technology/",
+          displayName: "Polygon Amoy Testnet",
+          blockExplorerUrl: "https://www.oklink.com/amoy",
           ticker: "MATIC",
           tickerName: "MATIC",
           logo: "https://cryptologos.cc/logos/polygon-matic-logo.png"

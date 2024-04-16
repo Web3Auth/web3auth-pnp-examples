@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK , WALLET_ADAPTERS} from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
@@ -14,7 +14,7 @@ import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 // Adapters
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
- import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+// import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 // import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 // import { TorusWalletAdapter, TorusWalletOptions } from "@web3auth/torus-evm-adapter";
 // import { CoinbaseAdapter, CoinbaseAdapterOptions } from "@web3auth/coinbase-adapter";
@@ -104,9 +104,9 @@ function App() {
         web3auth.configureAdapter(openloginAdapter);
 
         // Wallet Services Plugin
-       /*  const walletServicesPlugin = new WalletServicesPlugin();
+        const walletServicesPlugin = new WalletServicesPlugin();
         setWalletServicesPlugin(walletServicesPlugin);
-        web3auth.addPlugin(walletServicesPlugin); */
+        web3auth.addPlugin(walletServicesPlugin);
 
         // read more about adapters here: https://web3auth.io/docs/sdk/pnp/web/adapters/
 
@@ -141,33 +141,33 @@ function App() {
 
         await web3auth.initModal();
 
-        await web3auth.initModal({
-          modalConfig: {
-            [WALLET_ADAPTERS.OPENLOGIN]: {
-              label: "openlogin",
-              loginMethods: {
-                // Disable facebook and reddit
-                facebook: {
-                  name: "facebook",
-                  showOnModal: false
-                },
-                reddit: {
-                  name: "reddit",
-                  showOnModal: false
-                },
-                // Disable email_passwordless and sms_passwordless
-                email_passwordless: {
-                  name: "email_passwordless",
-                  showOnModal: false
-                },
-                sms_passwordless: {
-                  name: "sms_passwordless",
-                  showOnModal: false
-                }
-              }
-            }
-          }
-        });
+        // await web3auth.initModal({
+        //   modalConfig: {
+        //     [WALLET_ADAPTERS.OPENLOGIN]: {
+        //       label: "openlogin",
+        //       loginMethods: {
+        //         // Disable facebook and reddit
+        //         facebook: {
+        //           name: "facebook",
+        //           showOnModal: false
+        //         },
+        //         reddit: {
+        //           name: "reddit",
+        //           showOnModal: false
+        //         },
+        //         // Disable email_passwordless and sms_passwordless
+        //         email_passwordless: {
+        //           name: "email_passwordless",
+        //           showOnModal: false
+        //         },
+        //         sms_passwordless: {
+        //           name: "sms_passwordless",
+        //           showOnModal: false
+        //         }
+        //       }
+        //     }
+        //   }
+        // });
         if (web3auth.connected) {
           setLoggedIn(true);
         }

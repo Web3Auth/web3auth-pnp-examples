@@ -20,22 +20,22 @@ const newChain = {
 };
 
 function App() {
-  const { initModal, web3auth, isConnected, connect, authenticateUser, logout, addPlugin, addChain, switchChain, userInfo, isMFAEnabled } =
+  const { initModal, web3auth, isConnected, connect, authenticateUser, logout, addPlugin, addChain, switchChain, userInfo, isMFAEnabled,  } =
     useWeb3Auth();
   const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
 
   useEffect(() => {
-    console.log("web3auth", web3auth?.status);
+    // console.log("web3auth", web3auth?.status);
     console.log("provider", provider);
     console.log("web3auth.provider", provider);
     const init = async () => {
       try {
         // Wallet Services Plugin
         const walletServicesPluginInstance = new WalletServicesPlugin();
-        if (!walletServicesPlugin) {
+        if (web3auth && !walletServicesPlugin) {
           setWalletServicesPlugin(walletServicesPluginInstance);
-          web3auth?.addPlugin(walletServicesPluginInstance);
+          addPlugin(walletServicesPluginInstance);
         }
 
         if (web3auth) {
@@ -47,7 +47,7 @@ function App() {
     };
 
     init();
-  }, [web3auth]);
+  }, [addPlugin, initModal, provider, walletServicesPlugin, web3auth]);
 
   const showWCM = async () => {
     if (!walletServicesPlugin) {

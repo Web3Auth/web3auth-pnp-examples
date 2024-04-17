@@ -81,6 +81,8 @@ const web3AuthOptions: Web3AuthOptions = {
     },
   });
 
+  //const walletServicesPlugin = new WalletServicesPlugin();
+
 
 const web3AuthContextConfig: Web3AuthContextConfig = {
     web3AuthOptions,

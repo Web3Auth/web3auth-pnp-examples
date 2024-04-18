@@ -23,7 +23,7 @@ class EthereumProvider extends ChainProvider {
       EthereumAddress.fromHex(address),
     );
     
-    // The result we from Web3Client is in wei, the smallest value. To convert
+    // The result we get from Web3Client is in wei, the smallest value. To convert
     // the value to ether, you can divide it with 10^18, where 18 denotes the
     // decimals for wei.
     // 

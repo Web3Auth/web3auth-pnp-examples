@@ -14,8 +14,11 @@ import 'features/login/presentation/screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ServiceLocator.setUp();
 
+  // Set up ServiceLoactor used for dependency injection.
+  ServiceLocator.setUp();
+  
+  // Initialize the Web3AuthFlutter instance. 
   await Web3AuthFlutter.init(
     Web3AuthOptions(
       clientId: StringConstants.web3AuthClientId,
@@ -29,10 +32,11 @@ void main() async {
   );
 
   await Web3AuthFlutter.initialize();
-
+  
   final chainConfigRepository = ServiceLocator.getIt<ChainConfigRepository>();
   final chainConfigs = chainConfigRepository.prepareChains();
-
+  
+  // Setup HomeProvider for state management.
   runApp(ChangeNotifierProvider(
     create: (_) => HomeProvider(chainConfigs),
     builder: (_, __) {
@@ -64,6 +68,8 @@ class _MainAppState extends State<MainApp> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
+              // If snapshot.data is empty, it means there's no private key,
+              // and no active user session.
               if (snapshot.data!.isNotEmpty) {
                 return const HomeScreen();
               }

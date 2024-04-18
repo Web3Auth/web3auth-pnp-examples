@@ -14,16 +14,20 @@ class HomeProvider with ChangeNotifier {
     _selectedChain = chains.first;
     _chains = List.from(chains);
   }
-
+  
+  /// Update the selected chain
   void updateSelectedChain(ChainConfig chain) {
     _selectedChain = chain;
     notifyListeners();
   }
-
+  
+  /// Update the chain address for corresponding
+  /// selected chain.
   void updateChainAddress(String address) {
     _chainAddress = address;
   }
-
+  
+  /// Add a new custom EVM chain on runtime.
   void addNewChain(ChainConfig newChain) {
     _chains.add(newChain);
     notifyListeners();

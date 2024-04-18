@@ -50,15 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  // loadAccount function is used to fetch the account
+  // details such as balance, user address, and private key
+  // for currently selected chain.
   Future<void> loadAccount(bool isReload) async {
     if (!isReload) {
       userInfo = await Web3AuthFlutter.getUserInfo();
     }
+
     final account = await chainConfigRepository.prepareAccount(
       homeProvider.selectedChain,
     );
 
     homeProvider.updateChainAddress(account.publicAddress);
+    // We streamController to control data flow in the application.
     streamController.add(account);
   }
 
@@ -74,6 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: StreamBuilder<Account>(
           stream: streamController.stream,
           builder: (context, snapShot) {
+            // Check if the AsyncSnapshot is in active connection,
+            // and if it's true, build the UI.
             if (snapShot.connectionState == ConnectionState.active) {
               return SingleChildScrollView(
                 child: Column(
@@ -82,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 24),
                     const HomeHeader(),
                     const SizedBox(height: 12),
+                    // Helps users to switch chain in the wallet.
                     ChainSwitchTile(
                       onSelect: (chainConfig) {
                         homeProvider.updateSelectedChain(chainConfig);
@@ -91,6 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 16),
                     const Divider(),
                     const SizedBox(height: 16),
+                    // Displays user details, such as email,
+                    // user name, and logo.
                     AccountDetails(
                       userInfo: userInfo,
                       account: snapShot.requireData,
@@ -102,6 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       __,
                     ) {
                       final chain = homeProvider.selectedChain;
+                      // Displays user balance.
                       return BalanceWidget(
                         balance: snapShot.data!.balance,
                         ticker: chain.ticker,
@@ -113,13 +124,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Column(
                         children: [
                           CustomTextButton(
-                              onTap: () {
-                                _navigationToScreen(
-                                  context,
-                                  const TransactionsScreen(),
-                                );
-                              },
-                              text: 'Transaction'),
+                            onTap: () {
+                              _navigationToScreen(
+                                context,
+                                const TransactionsScreen(),
+                              );
+                            },
+                            text: 'Transaction',
+                          ),
+
+                          // Disable the SmartContractInteractionScreen for
+                          // non evm chains.
                           if (homeProvider.selectedChain.isEVMChain) ...[
                             const SizedBox(height: 16),
                             CustomTextButton(
@@ -147,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Helper function to navigate to different screens.
   void _navigationToScreen(BuildContext context, Widget screen) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return screen;

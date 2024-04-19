@@ -95,10 +95,15 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
 
   Future<void> _login(BuildContext context) async {
     try {
+      // Validate the form, and TextField. In case of invalide
+      // form state, return back.
       if (!formKey.currentState!.validate()) {
         return;
       }
-
+      
+      // It can be used to set the OAuth login options for corresponding 
+      // loginProvider. For instance, you'll need to pass user's email address as
+      // login_hint when the Provider is email_passwordless.
       await Web3AuthFlutter.login(
         LoginParams(
           loginProvider: Provider.email_passwordless,
@@ -108,7 +113,8 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
           ),
         ),
       );
-
+       
+      // If login is successful, navigate user to HomeScreen.
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) {

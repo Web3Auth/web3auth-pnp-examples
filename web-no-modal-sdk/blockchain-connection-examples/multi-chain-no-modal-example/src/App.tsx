@@ -25,7 +25,6 @@ import { cryptoWaitReady } from "@polkadot/util-crypto";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ec as elliptic } from "elliptic";
 
-
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
@@ -178,12 +177,12 @@ function App() {
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "0x13882",
-          rpcTarget: "https://rpc-amoy.polygon.technology/",
+          rpcTarget: "https://rpc.ankr.com/polygon_amoy",
           displayName: "Polygon Amoy Testnet",
-          blockExplorerUrl: "https://www.oklink.com/amoy",
+          blockExplorerUrl: "https://amoy.polygonscan.com",
           ticker: "MATIC",
           tickerName: "MATIC",
-          logo: "https://cryptologos.cc/logos/polygon-matic-logo.png"
+          logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
         },
       },
     });
@@ -211,7 +210,7 @@ function App() {
           blockExplorerUrl: "https://bscscan.com/",
           ticker: "BNB",
           tickerName: "BNB",
-          logo: "https://cryptologos.cc/logos/bnb-bnb-logo.png"
+          logo: "https://cryptologos.cc/logos/bnb-bnb-logo.png",
         },
       },
     });
@@ -252,7 +251,7 @@ function App() {
 
     const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider as SolanaPrivateKeyProvider);
     const solana_address = await solanaWallet.requestAccounts();
-    return "0x" +solana_address[0];
+    return "0x" + solana_address[0];
   };
 
   const getTezosAddress = async () => {
@@ -263,7 +262,7 @@ function App() {
     const rpc = new RPC(provider);
     const privateKey = await rpc.getPrivateKey();
     const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
-    const address = "0x" +keyPairTezos?.pkh;
+    const address = "0x" + keyPairTezos?.pkh;
     return address;
   };
 
@@ -276,7 +275,7 @@ function App() {
     const privateKey = await rpc.getPrivateKey();
     const keyPairStarkEx = ec.keyFromPrivate(privateKey, "hex");
     const starkex_account = ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
-    const address = "0x" +starkex_account.pub.getX().toString("hex");
+    const address = "0x" + starkex_account.pub.getX().toString("hex");
     return address;
   };
 
@@ -289,7 +288,7 @@ function App() {
     const privateKey = await rpc.getPrivateKey();
     const keyPairStarkNet = ec.keyFromPrivate(privateKey, "hex");
     const starknet_account = ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
-    const address = "0x" +starknet_account.pub.getX().toString("hex");
+    const address = "0x" + starknet_account.pub.getX().toString("hex");
     return address;
   };
 
@@ -304,7 +303,7 @@ function App() {
     const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 
     const keyPair = keyring.addFromUri("0x" + privateKey);
-    const address = "0x" +keyPair.address;
+    const address = "0x" + keyPair.address;
     return address;
   };
 

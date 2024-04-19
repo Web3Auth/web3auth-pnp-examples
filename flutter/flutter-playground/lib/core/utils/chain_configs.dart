@@ -34,9 +34,9 @@ final chainConfigs = [
   {
     "chainNamespace": ChainNamespace.eip155.name,
     "chainId": "0x13882",
-    "rpcTarget": "https://rpc-amoy.polygon.technology/",
+    "rpcTarget": "https://rpc.ankr.com/polygon_amoy",
     "displayName": "Polygon Amoy Testnet",
-    "blockExplorerUrl": "https://www.oklink.com/amoy",
+    "blockExplorerUrl": "https://amoy.polygonscan.com",
     "ticker": "MATIC",
     "logo": "https://web3auth.io/images/web3authlog.png",
     "wss": '',

@@ -22,7 +22,13 @@ class EthereumProvider extends ChainProvider {
     final balance = await web3client.getBalance(
       EthereumAddress.fromHex(address),
     );
-
+    
+    // The result we get from Web3Client is in wei, the smallest value. To convert
+    // the value to ether, you can divide it with 10^18, where 18 denotes the
+    // decimals for wei.
+    // 
+    // For the sample, we'll use a helper function from web3dart package which
+    // has the same implementation. 
     return balance.getValueInUnit(EtherUnit.ether).toStringAsFixed(4);
   }
 
@@ -57,6 +63,10 @@ class EthereumProvider extends ChainProvider {
     return bytesToHex(signBytes);
   }
 
+  // Prepares the Credentials used for signing the message, 
+  // and transaction on EVM chains. EVM ecosystem uses the 
+  // scep2561k curve. You can use the Web3AuthFlutter.getPrivKey
+  // to retrieve the scep2561K compatible private key.
   Future<Credentials> _prepareCredentials() async {
     final privateKey = await Web3AuthFlutter.getPrivKey();
     final Credentials credentials = EthPrivateKey.fromHex(privateKey);
@@ -69,6 +79,8 @@ class EthereumProvider extends ChainProvider {
     String function,
     List<dynamic> params,
   ) async {
+    // For this sample, we are using the ERC 20 Contract. The same can be
+    // used for any of the EVM smart contract.
     final contract = DeployedContract(
       ContractAbi.fromJson(erc20Abi, 'Contract'),
       EthereumAddress.fromHex(address),
@@ -86,6 +98,8 @@ class EthereumProvider extends ChainProvider {
 
   @override
   Future writeContract(String address, String function, List params) async {
+    // For this sample, we are using the ERC 20 Contract. The same can be
+    // used for any of the EVM smart contract.
     final contract = DeployedContract(
       ContractAbi.fromJson(erc20Abi, 'Contract'),
       EthereumAddress.fromHex(address),

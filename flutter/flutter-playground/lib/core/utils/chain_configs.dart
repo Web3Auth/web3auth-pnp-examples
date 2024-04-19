@@ -33,8 +33,8 @@ final chainConfigs = [
   },
   {
     "chainNamespace": ChainNamespace.eip155.name,
-    "chainId": "80002",
-    "rpcTarget": "https://rpc-amoy.polygon.technology",
+    "chainId": "0x13882",
+    "rpcTarget": "https://rpc-amoy.polygon.technology/",
     "displayName": "Polygon Amoy Testnet",
     "blockExplorerUrl": "https://www.oklink.com/amoy",
     "ticker": "MATIC",

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         web3 = Web3j.build(HttpService(rpcUrl))
-        loginParams = LoginParams(Provider.JWT, extraLoginOptions = ExtraLoginOptions(domain = "https://web3auth.au.auth0.com", verifierIdField = "sub"))
+        loginParams = LoginParams(Provider.JWT, extraLoginOptions = ExtraLoginOptions(domain = "https://web3auth.au.auth0.com", verifierIdField = "email"))
 
         web3Auth = Web3Auth(
            Web3AuthOptions(

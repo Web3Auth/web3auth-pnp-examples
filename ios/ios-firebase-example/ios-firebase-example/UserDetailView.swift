@@ -7,6 +7,7 @@ struct UserDetailView: View {
     @State private var showingAlert = false
     @StateObject var web3RPC: Web3RPC
     @StateObject var viewModel: ViewModel
+    @State private var signature = ""
     
     var body: some View {
         if let user = viewModel.user {
@@ -80,6 +81,41 @@ struct UserDetailView: View {
                 }
                 header: {
                     Text("Blockchain Calls")
+                }
+                
+                Section(
+                    header: Text("Web3Auth Operations")
+                ) {
+                    Button {
+                        viewModel.launchWalletServices()
+                    } label: {
+                        Text("Launch Wallet Services")
+                    }
+                    
+                    Button {
+                        viewModel.enableMFA()
+                    } label: {
+                        Text("Enable MFA")
+                    }
+                    
+                    Button {
+                        viewModel.request()
+                    } label: {
+                        Text("Request Signature")
+                    }
+                    
+                    Button {
+                        viewModel.getSignature{
+                            result in
+                            self.signature = result
+                        }
+                    } label: {
+                        Text("Get Signature")
+                    }
+                    
+                    if(!signature.isEmpty) {
+                        Text(signature)
+                    }
                 }
                 
                 

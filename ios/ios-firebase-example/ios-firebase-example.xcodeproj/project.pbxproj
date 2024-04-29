@@ -641,8 +641,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Web3Auth/web3auth-swift-sdk/";
 			requirement = {
-				branch = "feat/wallet-services";
-				kind = branch;
+				kind = exactVersion;
+				version = 8.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

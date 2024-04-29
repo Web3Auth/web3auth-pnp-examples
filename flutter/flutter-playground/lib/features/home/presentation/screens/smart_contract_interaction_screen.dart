@@ -40,54 +40,49 @@ class _SmartContractInteractionScreenState
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(StringConstants.appBarTitle),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text(
-                StringConstants.smartContractInteractionsText,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 24),
-              const TabBar(
-                indicatorSize: TabBarIndicatorSize.tab,
-                tabs: [
-                  Tab(text: StringConstants.readFromContractText),
-                  Tab(text: StringConstants.writeToContractText),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text(
+              StringConstants.smartContractInteractionsText,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 24),
+            const TabBar(
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab(text: StringConstants.readFromContractText),
+                Tab(text: StringConstants.writeToContractText),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  ReadContractView(
+                    contractAddressController: contractAddressTextController,
+                    onFetchBalance: () {
+                      _fetchBalance();
+                    },
+                    onTotalSupply: () {
+                      _getTotalSupply();
+                    },
+                  ),
+                  WriteContractView(
+                    revokeApproval: () {
+                      _revokeApproval();
+                    },
+                    contractAddressController: contractAddressTextController,
+                    spenderAddressController: spenderAddressTextController,
+                  ),
                 ],
               ),
-              const SizedBox(height: 24),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    ReadContractView(
-                      contractAddressController: contractAddressTextController,
-                      onFetchBalance: () {
-                        _fetchBalance();
-                      },
-                      onTotalSupply: () {
-                        _getTotalSupply();
-                      },
-                    ),
-                    WriteContractView(
-                      revokeApproval: () {
-                        _revokeApproval();
-                      },
-                      contractAddressController: contractAddressTextController,
-                      spenderAddressController: spenderAddressTextController,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

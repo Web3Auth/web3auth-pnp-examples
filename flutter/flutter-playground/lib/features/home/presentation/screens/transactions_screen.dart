@@ -41,51 +41,46 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(StringConstants.appBarTitle),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text(
-                StringConstants.signingAndTransactionText,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 24),
-              const TabBar(
-                indicatorSize: TabBarIndicatorSize.tab,
-                tabs: [
-                  Tab(text: StringConstants.signMessageText),
-                  Tab(text: StringConstants.sendTransactionText),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text(
+              StringConstants.signingAndTransactionText,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 24),
+            const TabBar(
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab(text: StringConstants.signMessageText),
+                Tab(text: StringConstants.sendTransactionText),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  SignMessageView(
+                    textEditingController: signMessageTextController,
+                    onSign: () {
+                      _signMessage(context);
+                    },
+                  ),
+                  SendTransactionView(
+                    amountController: amountTextController,
+                    destinationController: destinationTextController,
+                    onSend: () {
+                      _sendTransaction(context);
+                    },
+                  ),
                 ],
               ),
-              const SizedBox(height: 24),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    SignMessageView(
-                      textEditingController: signMessageTextController,
-                      onSign: () {
-                        _signMessage(context);
-                      },
-                    ),
-                    SendTransactionView(
-                      amountController: amountTextController,
-                      destinationController: destinationTextController,
-                      onSend: () {
-                        _sendTransaction(context);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

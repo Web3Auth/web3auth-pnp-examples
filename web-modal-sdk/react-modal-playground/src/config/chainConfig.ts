@@ -223,7 +223,7 @@ export const chain: {
   //   // Avoid using public rpcTarget in production.
   //   // Use services like Infura, Quicknode etc
   //   displayName: "SKALE Europa Hub Mainnet",
-  //   blockExplorer: "https://elated-tan-skat.explorer.mainnet.skalenodes.com/",
+  //   blockExplorerUrl: "https://elated-tan-skat.explorer.mainnet.skalenodes.com/",
   //   ticker: "sFUEL",
   //   tickerName: "sFUEL",
   // },

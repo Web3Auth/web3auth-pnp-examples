@@ -35,18 +35,18 @@ function App() {
           clientId,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           privateKeyProvider,
-          // uiConfig: {
+          uiConfig: {
           //   appName: "W3A Heroes",
           //   appUrl: "https://web3auth.io",
           //   logoLight: "https://web3auth.io/images/web3authlog.png",
           //   logoDark: "https://web3auth.io/images/web3authlogodark.png",
           //   defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-          //   mode: "light", // whether to enable dark mode. defaultValue: false
-          //   theme: {
-          //     primary: "#768729",
-          //   },
-          //   useLogoLoader: true,
-          // }
+          //  mode: "light", // whether to enable dark mode. defaultValue: false
+            theme: {
+              primary: "#768729",
+            },
+            useLogoLoader: true,
+          }
         });
         
         const openloginAdapter = new OpenloginAdapter({

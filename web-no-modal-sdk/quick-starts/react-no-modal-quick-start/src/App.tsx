@@ -11,8 +11,7 @@ import "./App.css";
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 const chainConfig = {
@@ -20,7 +19,7 @@ const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io/",
+  blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
 };
@@ -34,7 +33,6 @@ const web3auth = new Web3AuthNoModal({
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider: privateKeyProvider,
-  
 });
 web3auth.configureAdapter(openloginAdapter);
 // IMP END - SDK Initialization
@@ -64,12 +62,9 @@ function App() {
 
   const login = async () => {
     // IMP START - Login
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     // IMP END - Login
     setProvider(web3authProvider);
     if (web3auth.connected) {

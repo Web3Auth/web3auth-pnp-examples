@@ -14,7 +14,9 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             if(viewModel.isAccountLoaded) {
+                
                 SegmentedControlView(viewModel: viewModel)
+            
             } else {
                 ProgressView()
             }

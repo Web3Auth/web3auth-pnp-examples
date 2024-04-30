@@ -32,8 +32,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tkey/curvelib.swift",
       "state" : {
-        "revision" : "9f88bd5e56d1df443a908f7a7e81ae4f4d9170ea",
-        "version" : "1.0.1"
+        "revision" : "c9c3df6ab812de32bae61fc0cd1bf6d45170ebf0",
+        "version" : "1.8.2"
+      }
+    },
+    {
+      "identity" : "curvelib.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tkey/curvelib.swift",
+      "state" : {
+        "revision" : "7dad3bf1793de263f83406c08c18c9316abf082f",
+        "version" : "0.1.2"
       }
     },
     {
@@ -149,8 +158,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Web3Auth/session-manager-swift.git",
       "state" : {
-        "revision" : "20cc7bff065d7fe53164d17e7714a3f17d4cea2a",
-        "version" : "4.0.2"
+        "revision" : "c89d9205a1ce38cd6c6374b906a9039d9cc03f05",
+        "version" : "3.1.1"
       }
     },
     {
@@ -194,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
       "state" : {
-        "revision" : "fc63f0cf4e55a4597407a9fc95b16a2bc44b4982",
-        "version" : "2.64.0"
+        "revision" : "359c461e5561d22c6334828806cc25d759ca7aa6",
+        "version" : "2.65.0"
       }
     },
     {
@@ -212,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-http2.git",
       "state" : {
-        "revision" : "0904bf0feb5122b7e5c3f15db7df0eabe623dd87",
-        "version" : "1.30.0"
+        "revision" : "c6afe04165c865faaa687b42c32ed76dfcc91076",
+        "version" : "1.31.0"
       }
     },
     {
@@ -266,8 +275,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Web3Auth/web3auth-swift-sdk/",
       "state" : {
-        "revision" : "d8d4b7478288068a67a0d4ad17c9cfc96a4ac54e",
-        "version" : "8.1.0"
+        "revision" : "5cbf88d3d1556bd9d19cbf28b50a2420c8947951",
+        "version" : "7.5.1"
       }
     },
     {

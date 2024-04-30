@@ -49,7 +49,6 @@ class MainViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.isUserAuthenticated = false
                 }
-                loadAccount(showLoader: true)
             } catch let error {
                 showAlert(message: error.localizedDescription)
                 print(error)
@@ -64,6 +63,7 @@ class MainViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.isUserAuthenticated = true
                 }
+                loadAccount(showLoader: true)
             } catch let error {
                 showAlert(message: error.localizedDescription)
                 print(error.localizedDescription)
@@ -159,10 +159,10 @@ class MainViewModel: ObservableObject {
                 let localBalance = try await ethereumHelper.getBalance()
                 self.useInfo = try web3AuthHelper.getUserDetails()
                 DispatchQueue.main.async {
+                    self.balance = localBalance
                     if(showLoader) {
                         self.isAccountLoaded = true
                     }
-                    self.balance = localBalance
                 }
             } catch {
                 showAlert(message: error.localizedDescription)

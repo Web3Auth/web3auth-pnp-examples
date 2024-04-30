@@ -52,9 +52,16 @@ struct AccountView: View {
                     })
                 }.listRowSeparator(.hidden)
                 Button(action: {
-                    
+                    viewModel.showAlert(
+                        message: viewModel.useInfo.debugDescription
+                    )
                 }, label: {
                     Text("View User Info").frame(maxWidth: .infinity)
+                }).listRowSeparator(.hidden).buttonStyle(.bordered)
+                Button(role: .destructive, action: {
+                    viewModel.logOut()
+                }, label: {
+                    Text("Logout").frame(maxWidth: .infinity)
                 }).listRowSeparator(.hidden).buttonStyle(.bordered)
                 HStack(content: {
                     VStack(

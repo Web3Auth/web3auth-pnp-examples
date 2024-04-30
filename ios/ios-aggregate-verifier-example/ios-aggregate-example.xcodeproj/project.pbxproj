@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2833BEE52BD6368700243B09 /* web3.swift in Frameworks */ = {isa = PBXBuildFile; productRef = 2833BEE42BD6368700243B09 /* web3.swift */; };
 		4D9FEEE5294BAC380035414D /* ios_aggregate_exampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEEE4294BAC380035414D /* ios_aggregate_exampleApp.swift */; };
 		4D9FEEE7294BAC380035414D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEEE6294BAC380035414D /* ContentView.swift */; };
 		4D9FEEE9294BAC3A0035414D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D9FEEE8294BAC3A0035414D /* Assets.xcassets */; };
@@ -62,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2833BEE52BD6368700243B09 /* web3.swift in Frameworks */,
 				4D9FEF10294BAC850035414D /* Web3Auth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -162,6 +164,7 @@
 			name = "ios-aggregate-example";
 			packageProductDependencies = (
 				4D9FEF0F294BAC850035414D /* Web3Auth */,
+				2833BEE42BD6368700243B09 /* web3.swift */,
 			);
 			productName = "ios-aggregate-example";
 			productReference = 4D9FEEE1294BAC380035414D /* ios-aggregate-example.app */;
@@ -237,6 +240,7 @@
 			mainGroup = 4D9FEED8294BAC380035414D;
 			packageReferences = (
 				4D9FEF0E294BAC850035414D /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */,
+				2833BEE32BD6368700243B09 /* XCRemoteSwiftPackageReference "web3" */,
 			);
 			productRefGroup = 4D9FEEE2294BAC380035414D /* Products */;
 			projectDirPath = "";
@@ -607,17 +611,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2833BEE32BD6368700243B09 /* XCRemoteSwiftPackageReference "web3" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/argentlabs/web3.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.1;
+			};
+		};
 		4D9FEF0E294BAC850035414D /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/web3auth/web3auth-swift-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.5.0;
+				minimumVersion = 8.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2833BEE42BD6368700243B09 /* web3.swift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2833BEE32BD6368700243B09 /* XCRemoteSwiftPackageReference "web3" */;
+			productName = web3.swift;
+		};
 		4D9FEF0F294BAC850035414D /* Web3Auth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4D9FEF0E294BAC850035414D /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */;

@@ -24,7 +24,11 @@ struct ContentView: View {
         }
         .onAppear {
             Task {
-                await vm.setup()
+                do {
+                    try await vm.setup()
+                } catch let error {
+                    print(error)
+                }
             }
         }
     }

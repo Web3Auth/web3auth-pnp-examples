@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
               verticalGap,
               verticalGap,
               CustomTextField(
-                hintText: 'abc@gmail.com',
+                hintText: 'username@email.xyz',
                 textEditingController: emailController,
                 validator: (value) {
                   if (value != null && value.isValidEmail) {
@@ -100,8 +100,8 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
       if (!formKey.currentState!.validate()) {
         return;
       }
-      
-      // It can be used to set the OAuth login options for corresponding 
+
+      // It can be used to set the OAuth login options for corresponding
       // loginProvider. For instance, you'll need to pass user's email address as
       // login_hint when the Provider is email_passwordless.
       await Web3AuthFlutter.login(
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
           ),
         ),
       );
-       
+
       // If login is successful, navigate user to HomeScreen.
       if (context.mounted) {
         Navigator.of(context).pushReplacement(

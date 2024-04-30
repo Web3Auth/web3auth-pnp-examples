@@ -28,9 +28,9 @@
       }
     },
     {
-      "identity" : "cryptoswift",
+      "identity" : "curvelib.swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
+      "location" : "https://github.com/tkey/curvelib.swift",
       "state" : {
         "revision" : "c9c3df6ab812de32bae61fc0cd1bf6d45170ebf0",
         "version" : "1.8.2"

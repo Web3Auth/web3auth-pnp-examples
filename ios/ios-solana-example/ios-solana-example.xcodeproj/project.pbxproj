@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2833BEE82BD6383C00243B09 /* SolanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2833BEE72BD6383C00243B09 /* SolanaSwift */; };
+		2833BEEB2BD6384800243B09 /* Web3Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 2833BEEA2BD6384800243B09 /* Web3Auth */; };
 		285651362B8A555900796F67 /* ios_solana_exampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285651352B8A555900796F67 /* ios_solana_exampleApp.swift */; };
 		285651382B8A555900796F67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285651372B8A555900796F67 /* ContentView.swift */; };
 		2856513A2B8A555A00796F67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 285651392B8A555A00796F67 /* Assets.xcassets */; };
@@ -14,8 +16,6 @@
 		285651472B8A555A00796F67 /* ios_solana_exampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285651462B8A555A00796F67 /* ios_solana_exampleTests.swift */; };
 		285651512B8A555A00796F67 /* ios_solana_exampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285651502B8A555A00796F67 /* ios_solana_exampleUITests.swift */; };
 		285651532B8A555A00796F67 /* ios_solana_exampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285651522B8A555A00796F67 /* ios_solana_exampleUITestsLaunchTests.swift */; };
-		28DFB2BC2B8BB341005DDCB6 /* SolanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 28DFB2BB2B8BB341005DDCB6 /* SolanaSwift */; };
-		28DFB2BF2B8BB38E005DDCB6 /* Web3Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 28DFB2BE2B8BB38E005DDCB6 /* Web3Auth */; };
 		28DFB2C42B8C3EFA005DDCB6 /* Web3AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DFB2C32B8C3EFA005DDCB6 /* Web3AuthHelper.swift */; };
 		28DFB2C62B8C4D7A005DDCB6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DFB2C52B8C4D7A005DDCB6 /* ViewModel.swift */; };
 		28DFB2C82B8C4F53005DDCB6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DFB2C72B8C4F53005DDCB6 /* LoginView.swift */; };
@@ -63,8 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28DFB2BC2B8BB341005DDCB6 /* SolanaSwift in Frameworks */,
-				28DFB2BF2B8BB38E005DDCB6 /* Web3Auth in Frameworks */,
+				2833BEE82BD6383C00243B09 /* SolanaSwift in Frameworks */,
+				2833BEEB2BD6384800243B09 /* Web3Auth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,8 +187,8 @@
 			);
 			name = "ios-solana-example";
 			packageProductDependencies = (
-				28DFB2BB2B8BB341005DDCB6 /* SolanaSwift */,
-				28DFB2BE2B8BB38E005DDCB6 /* Web3Auth */,
+				2833BEE72BD6383C00243B09 /* SolanaSwift */,
+				2833BEEA2BD6384800243B09 /* Web3Auth */,
 			);
 			productName = "ios-solana-example";
 			productReference = 285651322B8A555900796F67 /* ios-solana-example.app */;
@@ -263,8 +263,8 @@
 			);
 			mainGroup = 285651292B8A555900796F67;
 			packageReferences = (
-				28DFB2BA2B8BB341005DDCB6 /* XCRemoteSwiftPackageReference "solana-swift" */,
-				28DFB2BD2B8BB38E005DDCB6 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */,
+				2833BEE62BD6383C00243B09 /* XCRemoteSwiftPackageReference "solana-swift" */,
+				2833BEE92BD6384800243B09 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */,
 			);
 			productRefGroup = 285651332B8A555900796F67 /* Products */;
 			projectDirPath = "";
@@ -646,7 +646,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		28DFB2BA2B8BB341005DDCB6 /* XCRemoteSwiftPackageReference "solana-swift" */ = {
+		2833BEE62BD6383C00243B09 /* XCRemoteSwiftPackageReference "solana-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/p2p-org/solana-swift.git";
 			requirement = {
@@ -654,25 +654,25 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		28DFB2BD2B8BB38E005DDCB6 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */ = {
+		2833BEE92BD6384800243B09 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Web3Auth/web3auth-swift-sdk/";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.5.1;
+				minimumVersion = 8.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		28DFB2BB2B8BB341005DDCB6 /* SolanaSwift */ = {
+		2833BEE72BD6383C00243B09 /* SolanaSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 28DFB2BA2B8BB341005DDCB6 /* XCRemoteSwiftPackageReference "solana-swift" */;
+			package = 2833BEE62BD6383C00243B09 /* XCRemoteSwiftPackageReference "solana-swift" */;
 			productName = SolanaSwift;
 		};
-		28DFB2BE2B8BB38E005DDCB6 /* Web3Auth */ = {
+		2833BEEA2BD6384800243B09 /* Web3Auth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 28DFB2BD2B8BB38E005DDCB6 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */;
+			package = 2833BEE92BD6384800243B09 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */;
 			productName = Web3Auth;
 		};
 /* End XCSwiftPackageProductDependency section */

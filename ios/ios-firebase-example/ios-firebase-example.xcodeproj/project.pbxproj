@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0D005DFA29CCB28100F7F4F7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0D005DF929CCB28100F7F4F7 /* FirebaseAuth */; };
 		27B35B442A3F5A3C0004BB99 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27B35B432A3F5A3B0004BB99 /* GoogleService-Info.plist */; };
+		2833BEDF2BD6226E00243B09 /* web3.swift in Frameworks */ = {isa = PBXBuildFile; productRef = 2833BEDE2BD6226E00243B09 /* web3.swift */; };
+		2833BEF12BD6761200243B09 /* Web3Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 2833BEF02BD6761200243B09 /* Web3Auth */; };
 		4D9FEEE5294BAC380035414D /* ios_firebase_exampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEEE4294BAC380035414D /* ios_firebase_exampleApp.swift */; };
 		4D9FEEE7294BAC380035414D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEEE6294BAC380035414D /* ContentView.swift */; };
 		4D9FEEE9294BAC3A0035414D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D9FEEE8294BAC3A0035414D /* Assets.xcassets */; };
@@ -16,7 +18,6 @@
 		4D9FEEF6294BAC3A0035414D /* ios_firebase_exampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEEF5294BAC3A0035414D /* ios_firebase_exampleTests.swift */; };
 		4D9FEF00294BAC3A0035414D /* ios_firebase_exampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEEFF294BAC3A0035414D /* ios_firebase_exampleUITests.swift */; };
 		4D9FEF02294BAC3A0035414D /* ios_firebase_exampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEF01294BAC3A0035414D /* ios_firebase_exampleUITestsLaunchTests.swift */; };
-		4D9FEF10294BAC850035414D /* Web3Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 4D9FEF0F294BAC850035414D /* Web3Auth */; };
 		4D9FEF12294BACB10035414D /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEF11294BACB10035414D /* ViewModel.swift */; };
 		4D9FEF14294BACC90035414D /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEF13294BACC90035414D /* UserDetailView.swift */; };
 		4D9FEF16294BACD80035414D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FEF15294BACD80035414D /* LoginView.swift */; };
@@ -65,7 +66,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D9FEF10294BAC850035414D /* Web3Auth in Frameworks */,
+				2833BEDF2BD6226E00243B09 /* web3.swift in Frameworks */,
+				2833BEF12BD6761200243B09 /* Web3Auth in Frameworks */,
 				0D005DFA29CCB28100F7F4F7 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -166,8 +168,9 @@
 			);
 			name = "ios-firebase-example";
 			packageProductDependencies = (
-				4D9FEF0F294BAC850035414D /* Web3Auth */,
 				0D005DF929CCB28100F7F4F7 /* FirebaseAuth */,
+				2833BEDE2BD6226E00243B09 /* web3.swift */,
+				2833BEF02BD6761200243B09 /* Web3Auth */,
 			);
 			productName = "ios-firebase-example";
 			productReference = 4D9FEEE1294BAC380035414D /* ios-firebase-example.app */;
@@ -242,8 +245,9 @@
 			);
 			mainGroup = 4D9FEED8294BAC380035414D;
 			packageReferences = (
-				4D9FEF0E294BAC850035414D /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */,
 				0D005DF829CCB28100F7F4F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				2833BEDD2BD6226E00243B09 /* XCRemoteSwiftPackageReference "web3" */,
+				2833BEEF2BD6761200243B09 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */,
 			);
 			productRefGroup = 4D9FEEE2294BAC380035414D /* Products */;
 			projectDirPath = "";
@@ -453,6 +457,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ios-firebase-example/Preview Content\"";
+				DEVELOPMENT_TEAM = HYCGKU63WD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -481,6 +486,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ios-firebase-example/Preview Content\"";
+				DEVELOPMENT_TEAM = HYCGKU63WD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -623,12 +629,20 @@
 				minimumVersion = 9.0.0;
 			};
 		};
-		4D9FEF0E294BAC850035414D /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */ = {
+		2833BEDD2BD6226E00243B09 /* XCRemoteSwiftPackageReference "web3" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/web3auth/web3auth-swift-sdk";
+			repositoryURL = "https://github.com/argentlabs/web3.swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.5.0;
+				minimumVersion = 1.6.1;
+			};
+		};
+		2833BEEF2BD6761200243B09 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Web3Auth/web3auth-swift-sdk/";
+			requirement = {
+				kind = exactVersion;
+				version = 8.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -639,9 +653,14 @@
 			package = 0D005DF829CCB28100F7F4F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		4D9FEF0F294BAC850035414D /* Web3Auth */ = {
+		2833BEDE2BD6226E00243B09 /* web3.swift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4D9FEF0E294BAC850035414D /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */;
+			package = 2833BEDD2BD6226E00243B09 /* XCRemoteSwiftPackageReference "web3" */;
+			productName = web3.swift;
+		};
+		2833BEF02BD6761200243B09 /* Web3Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2833BEEF2BD6761200243B09 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */;
 			productName = Web3Auth;
 		};
 /* End XCSwiftPackageProductDependency section */

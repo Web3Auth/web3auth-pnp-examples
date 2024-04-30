@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 // IMP START - Quick Start
+import { useEffect, useState } from "react";
+// IMP END - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-// IMP END - Quick Start
 import Web3 from "web3";
 
 import "./App.css";
@@ -20,31 +20,22 @@ const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
+  blockExplorer: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const web3auth = new Web3AuthNoModal({
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-  uiConfig: {
-    mode: "dark",
-    useLogoLoader: true,
-    logoLight: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    logoDark: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    defaultLanguage: "en",
-    theme: {
-      primary: "#768729",
-    },
-  }
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
-const openloginAdapter = new OpenloginAdapter();
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider: privateKeyProvider,
+  
+});
 web3auth.configureAdapter(openloginAdapter);
 // IMP END - SDK Initialization
 

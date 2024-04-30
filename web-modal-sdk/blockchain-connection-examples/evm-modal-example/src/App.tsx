@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+import { useEffect } from "react";
+import { useWeb3Auth, useWalletServicesPlugin } from "@web3auth/modal-react-hooks";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
@@ -20,24 +19,15 @@ const newChain = {
 };
 
 function App() {
-  const { initModal, web3auth, isConnected, connect, authenticateUser, logout, addPlugin, addChain, switchChain, userInfo, isMFAEnabled,  } =
-    useWeb3Auth();
-  const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(null);
+  const { initModal, web3auth, isConnected, connect, authenticateUser, logout, addChain, switchChain, userInfo, isMFAEnabled, enableMFA } = useWeb3Auth();
+  const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
 
   useEffect(() => {
     // console.log("web3auth", web3auth?.status);
-    console.log("provider", provider);
-    console.log("web3auth.provider", provider);
+    console.log("provider", web3auth?.provider);
+    console.log("web3auth.provider", web3auth?.provider);
     const init = async () => {
       try {
-        // Wallet Services Plugin
-        const walletServicesPluginInstance = new WalletServicesPlugin();
-        if (web3auth && !walletServicesPlugin) {
-          setWalletServicesPlugin(walletServicesPluginInstance);
-          addPlugin(walletServicesPluginInstance);
-        }
-
         if (web3auth) {
           await initModal();
         }
@@ -47,102 +37,74 @@ function App() {
     };
 
     init();
-  }, [addPlugin, initModal, provider, walletServicesPlugin, web3auth]);
-
-  const showWCM = async () => {
-    if (!walletServicesPlugin) {
-      uiConsole("walletservices plugin not initialized yet");
-      return;
-    }
-    await walletServicesPlugin.showWalletConnectScanner();
-    uiConsole();
-  };
-
-  const showCheckout = async () => {
-    if (!walletServicesPlugin) {
-      uiConsole("walletservices plugin not initialized yet");
-      return;
-    }
-    console.log(web3auth?.connected);
-    await walletServicesPlugin.showCheckout();
-  };
-
-  const showWalletUi = async () => {
-    if (!walletServicesPlugin) {
-      uiConsole("walletservices plugin not initialized yet");
-      return;
-    }
-    if (web3auth?.connected) {
-      await walletServicesPlugin?.showWalletUi();
-    }
-  };
+  }, [initModal, web3auth]);
 
   const getChainId = async () => {
-    if (provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider! as IProvider);
+    const rpc = new RPC(web3auth?.provider as IProvider);
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
 
   const getAccounts = async () => {
-    if (provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider! as IProvider);
+    const rpc = new RPC(web3auth?.provider as IProvider);
     const address = await rpc.getAccounts();
     uiConsole(address);
   };
 
   const getBalance = async () => {
-    if (provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider! as IProvider);
+    const rpc = new RPC(web3auth?.provider as IProvider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
 
   const sendTransaction = async () => {
-    if (provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider! as IProvider);
+    const rpc = new RPC(web3auth?.provider as IProvider);
     const receipt = await rpc.sendTransaction();
     uiConsole(receipt);
   };
 
   const signMessage = async () => {
-    if (provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider! as IProvider);
+    const rpc = new RPC(web3auth?.provider as IProvider);
     const signedMessage = await rpc.signMessage();
     uiConsole(signedMessage);
   };
 
   const readContract = async () => {
-    if (provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider! as IProvider);
+    const rpc = new RPC(web3auth?.provider as IProvider);
     const message = await rpc.readContract();
     uiConsole(message);
   };
 
   const writeContract = async () => {
-    if (provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider! as IProvider);
+    const rpc = new RPC(web3auth?.provider as IProvider);
     const receipt = await rpc.writeContract();
     uiConsole(receipt);
     if (receipt) {
@@ -153,11 +115,11 @@ function App() {
   };
 
   const getPrivateKey = async () => {
-    if (provider) {
+    if (!web3auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider! as IProvider);
+    const rpc = new RPC(web3auth?.provider as IProvider);
     const privateKey = await rpc.getPrivateKey();
     uiConsole(privateKey);
   };
@@ -194,12 +156,23 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={showWalletUi} className="card">
+          <button
+            disabled={isMFAEnabled}
+            onClick={() => {
+              enableMFA({});
+            }}
+            className="card"
+          >
+            Enable MFA
+          </button>
+        </div>
+        <div>
+          <button onClick={showWalletUI} className="card">
             Show Wallet UI
           </button>
         </div>
         <div>
-          <button onClick={showWCM} className="card">
+          <button onClick={showWalletConnectScanner} className="card">
             Show Wallet Connect
           </button>
         </div>
@@ -215,8 +188,13 @@ function App() {
         </div>
         <div>
           <button
-            onClick={() => {
-              addChain(newChain);
+            onClick={async () => {
+              try {
+                await addChain(newChain);
+                uiConsole("New Chain Added");
+              } catch (error) {
+                uiConsole(error);
+              }
             }}
             className="card"
           >
@@ -225,8 +203,13 @@ function App() {
         </div>
         <div>
           <button
-            onClick={() => {
-              switchChain({ chainId: newChain.chainId });
+            onClick={async () => {
+              try {
+                await switchChain({ chainId: newChain.chainId });
+                uiConsole("Switched to new Chain");
+              } catch (error) {
+                uiConsole(error);
+              }
             }}
             className="card"
           >
@@ -254,12 +237,18 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={readContract} className="card">
+          <button onClick={() => {
+             const message = readContract();
+             uiConsole(message);
+          }} className="card">
             Read Contract
           </button>
         </div>
         <div>
-          <button onClick={writeContract} className="card">
+          <button onClick={() => {
+            const message = writeContract();
+            uiConsole(message);
+          }} className="card">
             Write Contract
           </button>
         </div>
@@ -286,15 +275,7 @@ function App() {
   );
 
   const unloggedInView = (
-    <button
-      onClick={async () => {
-        console.log(web3auth.status);
-        if (web3auth.status === "ready") {
-          setProvider(await connect());
-        }
-      }}
-      className="card"
-    >
+    <button onClick={connect} className="card">
       Login
     </button>
   );

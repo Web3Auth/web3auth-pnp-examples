@@ -81,13 +81,13 @@ const web3AuthOptions: Web3AuthOptions = {
     },
   });
 
-  //const walletServicesPlugin = new WalletServicesPlugin();
+  const walletServicesPlugin = new WalletServicesPlugin();
 
 
 const web3AuthContextConfig: Web3AuthContextConfig = {
     web3AuthOptions,
     adapters: [openloginAdapter],
-    plugins: [],
+    plugins: [walletServicesPlugin],
 };
 
 export default web3AuthContextConfig;

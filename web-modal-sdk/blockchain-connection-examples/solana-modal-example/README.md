@@ -9,6 +9,12 @@ This example demonstrates how to use Web3Auth with Solana in React.
 
 ## How to Use
 
+
+### One-Click Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fblockchain-connection-examples%2Fsolana-modal-example&project-name=w3a-solana-modal&repository-name=w3a-solana-modal)
+
+
 ### Download Manually
 
 ```bash

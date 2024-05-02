@@ -9,6 +9,10 @@ This example demonstrates how to use Web3Auth with Polkadot.
 
 ## How to Use
 
+### One-Click Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fblockchain-connection-examples%2Fpolymesh-no-modal-example&project-name=w3a-polymesh-no-modal&repository-name=w3a-polymesh-no-modal)
+
 ### Download Manually
 
 ```bash
@@ -27,7 +31,7 @@ yarn
 yarn start
 ```
 
-Before you can use "Send Transaction", first click on "Get Signing Key" to retrieve your Polymesh `ss58EncodedKey`. Then visit the [Polymesh Onboarding UI](https://testnet-onboarding.polymesh.live/). Follow the steps to associate your key with an onchain identity, selecting `MockID` as the CDD Provider. You key will be assigned a Polymesh DID and you key will be seeded with some test tokens.
+Before you can use "Send Transaction", first click on "Get Signing Key" to retrieve your Polymesh `ss58EncodedKey`. Then visit the [Polymesh Onboarding UI](https://testnet-onboarding.polymesh.live/). Follow the steps to associate your key with an on-chain identity, selecting `MockID` as the CDD Provider. Your key will be assigned a Polymesh DID and your key will be seeded with some test tokens.
 
 ## Important Links
 

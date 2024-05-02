@@ -1,8 +1,9 @@
 import { CustomChainConfig } from "@web3auth/base";
+import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import React, { JSX, useEffect, useState } from "react";
 
 import Dropdown from "../components/DropDown";
-import { useWeb3Auth } from "../services/web3auth";
+import { usePlayground } from "../services/playground";
 
 interface AccountDetailsProps {
   children?: JSX.Element | JSX.Element[];
@@ -12,7 +13,6 @@ function AccountDetails({ children }: AccountDetailsProps) {
   const {
     address,
     balance,
-    user,
     getUserInfo,
     updateConnectedChain,
     connectedChain,
@@ -21,7 +21,8 @@ function AccountDetails({ children }: AccountDetailsProps) {
     switchChain,
     getChainId,
     chainListOptionSelected,
-  } = useWeb3Auth();
+  } = usePlayground();
+  const { userInfo } = useWeb3Auth();
   const [addressToShow, setAddressToShow] = useState<string>(address || "");
   const [selectedChain, setSelectedChain] = useState<string>(Object.keys(chainList)[0]);
   const [chainDetails, setChainDetails] = useState<CustomChainConfig>(chainList[selectedChain]);
@@ -59,14 +60,14 @@ function AccountDetails({ children }: AccountDetailsProps) {
       </div>
       <div className="md:p-8 p-4 mt-6 space-y-4 rounded-lg bg-white overflow-hidden w-full">
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
-          {user.profileImage && <img className="object-fill w-24 h-24 rounded-lg" src={user?.profileImage} referrerPolicy="no-referrer" />}
-          {!user.profileImage && user.name && (
+          {userInfo?.profileImage && <img className="object-fill w-24 h-24 rounded-lg" src={userInfo?.profileImage} referrerPolicy="no-referrer" />}
+          {!userInfo?.profileImage && userInfo?.name && (
             <span className="flex justify-center items-center bg-purple-100 font-bold w-24 h-24 rounded-lg text-[80px] text-purple-800">
-              {user?.name.charAt(0).toUpperCase()}
+              {userInfo?.name.charAt(0).toUpperCase()}
             </span>
           )}
           <div className="space-y-2 md:space-y-0 md:pl-8 flex flex-col justify-between">
-            <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{user?.name}</span>
+            <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{userInfo?.name}</span>
             <div
               className="w-fit text-[8px] sm:text-sm bg-gray-100 text-gray-600 p-1 pl-3 pr-3 rounded-full z-0 flex flex-row justify-between space-x-4 items-center cursor-pointer"
               onClick={() => {

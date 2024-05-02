@@ -1,12 +1,14 @@
+import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import React from "react";
 
 import web3AuthLogoWhite from "../assets/web3authLogoWhite.svg";
-import { useWeb3Auth } from "../services/web3auth";
+import { usePlayground } from "../services/playground";
 
 const ConnectWeb3AuthButton = () => {
-  const { connected, login } = useWeb3Auth();
+  const { isConnected } = useWeb3Auth();
+  const { login } = usePlayground();
 
-  if (connected) {
+  if (isConnected) {
     return null;
   }
   return (

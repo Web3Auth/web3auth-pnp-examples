@@ -1,15 +1,17 @@
+import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import UserProfile from "../components/UserProfile";
-import { useWeb3Auth } from "../services/web3auth";
+import { usePlayground } from "../services/playground";
 
 interface DrawerProps {
   isOpen: boolean;
   setOpen: any;
 }
 const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
-  const { logout, connectedChain } = useWeb3Auth();
+  const { connectedChain } = usePlayground();
+  const { logout } = useWeb3Auth();
 
   const navigate = useNavigate();
   function goToHome() {
@@ -78,7 +80,7 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
               <div
                 onClick={() => {
                   setOpen(false);
-                  logout();
+                  logout({ cleanup: true });
                 }}
                 className="flex items-center px-4 py-2 mb-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-primary  cursor-pointer"
               >

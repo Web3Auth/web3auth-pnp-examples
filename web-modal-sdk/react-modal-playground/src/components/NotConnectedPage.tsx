@@ -1,11 +1,11 @@
 import React from "react";
 
-import { useWeb3Auth } from "../services/web3auth";
+import { usePlayground } from "../services/playground";
 import ConnectWeb3AuthButton from "./ConnectWeb3AuthButton";
 import SourceCode from "./SourceCode";
 
 const NotConnectedPage = () => {
-  const { isLoading } = useWeb3Auth();
+  const { isLoading } = usePlayground();
 
   return (
     <div className="w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-center overflow-scroll p-4">

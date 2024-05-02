@@ -2,10 +2,10 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import UserProfile from "../components/UserProfile";
-import { useWeb3Auth } from "../services/web3auth";
+import { usePlayground } from "../services/playground";
 
 const Sidebar = () => {
-  const { connectedChain } = useWeb3Auth();
+  const { connectedChain } = usePlayground();
 
   const navigate = useNavigate();
   function goToHome() {

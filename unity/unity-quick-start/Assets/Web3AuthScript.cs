@@ -38,7 +38,7 @@ public class Web3AuthScript : MonoBehaviour
 
         web3Auth.setOptions(new Web3AuthOptions()
         {
-            clientId,
+            clientId = clientId,
             redirectUrl = new System.Uri("w3aexample://com.web3auth.unityexample/auth"),
             network = Web3Auth.Network.SAPPHIRE_MAINNET,
         });

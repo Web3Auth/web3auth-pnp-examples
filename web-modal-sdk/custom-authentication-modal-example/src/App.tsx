@@ -6,6 +6,7 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
+//import RPC from "./viemRPC"; // for using viem
 
 // Plugins
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";

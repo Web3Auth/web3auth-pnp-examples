@@ -10,8 +10,10 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-// import RPC from "../components/evm.web3";
 import RPC from "../components/evm.ethers";
+// import RPC from "../components/evm.web3";
+// import RPC from "../components/evm.viem";
+
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 function App() {

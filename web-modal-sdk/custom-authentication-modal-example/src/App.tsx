@@ -4,9 +4,9 @@ import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
+//import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
-//import RPC from "./viemRPC"; // for using viem
+import RPC from "./viemRPC"; // for using viem
 
 // Plugins
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";

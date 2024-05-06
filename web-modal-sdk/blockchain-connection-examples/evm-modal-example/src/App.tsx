@@ -3,8 +3,8 @@ import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
-import RPC from "./web3RPC";  // for using web3.js
-// import RPC from "./viemRPC"; // for using viem
+// import RPC from "./web3RPC";  // for using web3.js
+ import RPC from "./viemRPC"; // for using viem
 // import RPC from "./ethersRPC"; // for using ethers.js
 
 // Providers

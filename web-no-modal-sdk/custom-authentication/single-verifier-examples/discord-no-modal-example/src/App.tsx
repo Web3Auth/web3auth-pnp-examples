@@ -6,9 +6,9 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import axios from "axios";
 
 import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
+//import RPC from "./web3RPC"; // for using web3.js
 // import RPC from './ethersRPC' // for using ethers.js
-// import RPC from './viemRPC' // for using viem
+import RPC from './viemRPC' // for using viem
 
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io

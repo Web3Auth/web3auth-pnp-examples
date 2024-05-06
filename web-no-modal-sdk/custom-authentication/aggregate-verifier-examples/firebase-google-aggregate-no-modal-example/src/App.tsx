@@ -6,9 +6,9 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { initializeApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
 import "./App.css";
-import RPC from "./evm.ethers";
+// import RPC from "./evm.ethers";
 // import RPC from "./evm.web3";
-// import RPC from "./evm.viem";
+import RPC from "./evm.viem";
 
 const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 

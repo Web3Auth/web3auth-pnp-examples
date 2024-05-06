@@ -1,5 +1,5 @@
 import { createWalletClient, createPublicClient, custom, formatEther, parseEther} from 'viem'
-import { mainnet, polygonAmoy } from 'viem/chains'
+import { mainnet, polygonAmoy, sepolia } from 'viem/chains'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IProvider } from "@web3auth/base";
@@ -45,6 +45,8 @@ export default class EthereumRpc {
     switch (this.provider.chainId) {
         case "1":
             return mainnet;
+        case "0xaa36a7":
+              return sepolia;
         case "0x13882":
             return polygonAmoy;
         default:
@@ -139,7 +141,7 @@ async getAddresses(): Promise<any> {
       });
     console.log(hash)
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    console.log(receipt.toString(), receipt, "1")
+    
 
     return this.toObject(receipt); 
   }
@@ -207,7 +209,7 @@ async getAddresses(): Promise<any> {
     )
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    console.log(receipt.toString(), receipt, "1")
+    
 
     return this.toObject(receipt); 
   }

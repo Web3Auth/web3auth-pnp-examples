@@ -139,7 +139,7 @@ async getAddresses(): Promise<any> {
       });
     console.log(hash)
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    console.log(receipt.toString(), receipt, "1")
+    
 
     return this.toObject(receipt); 
   }
@@ -212,7 +212,7 @@ async getAddresses(): Promise<any> {
     )
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    console.log(receipt.toString(), receipt, "1")
+    
 
     return this.toObject(receipt); 
   }

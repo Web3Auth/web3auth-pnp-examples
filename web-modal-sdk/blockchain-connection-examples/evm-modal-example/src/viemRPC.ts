@@ -71,7 +71,7 @@ async getChainId(): Promise<any> {
 async getAddresses(): Promise<any> {
     try {
         const walletClient = createWalletClient({
-            chain: mainnet,
+            chain: this.getViewChain(),
             transport: custom(this.provider)
           });
            
@@ -105,7 +105,7 @@ async getAddresses(): Promise<any> {
 
   async getBalance(): Promise<string> {
     const publicClient = createPublicClient({
-        chain: mainnet,
+        chain: this.getViewChain(),
         transport: custom(this.provider)
       })
        
@@ -139,7 +139,7 @@ async getAddresses(): Promise<any> {
       });
     console.log(hash)
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    console.log(receipt.toString(), receipt, "1")
+    
 
     return this.toObject(receipt); 
   }
@@ -212,7 +212,6 @@ async getAddresses(): Promise<any> {
     )
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    console.log(receipt.toString(), receipt, "1")
 
     return this.toObject(receipt); 
   }

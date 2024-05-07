@@ -41,6 +41,7 @@ public class Web3AuthScript : MonoBehaviour
             clientId = clientId,
             redirectUrl = new System.Uri("w3aexample://com.web3auth.unityexample/auth"),
             network = Web3Auth.Network.SAPPHIRE_MAINNET,
+            
         });
         // IMP END - SDK Initialization
         web3Auth.onLogin += onLogin;

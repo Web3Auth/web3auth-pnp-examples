@@ -10,8 +10,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 const chainConfig = {
@@ -25,9 +24,8 @@ const chainConfig = {
   logo: "https://images.toruswallet.io/eth.svg",
 };
 
-
 const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: chainConfig }
+  config: { chainConfig: chainConfig },
 });
 
 const web3auth = new Web3Auth({
@@ -206,6 +204,9 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
+        </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-modal-quick-start&project-name=w3a-evm-modal&repository-name=w3a-evm-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

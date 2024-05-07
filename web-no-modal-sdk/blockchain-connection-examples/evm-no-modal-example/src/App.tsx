@@ -46,9 +46,9 @@ function App() {
               primary: "#768729",
             },
             useLogoLoader: true,
-          }
+          },
         });
-        
+
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
@@ -81,9 +81,9 @@ function App() {
           privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
-        
+
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d",);
+        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d");
         const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           adapterSettings: {
@@ -430,6 +430,9 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
+        </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fblockchain-connection-examples%2Fevm-no-modal-example&project-name=w3a-evm-no-modal&repository-name=w3a-evm-no-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

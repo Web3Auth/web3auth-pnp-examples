@@ -45,10 +45,10 @@ export default class EthereumRpc {
     switch (this.provider.chainId) {
         case "1":
             return mainnet;
-        case "0xaa36a7":
-              return sepolia;
         case "0x13882":
             return polygonAmoy;
+        case "0xaa36a7":
+          return sepolia;
         default:
             return mainnet;
     }
@@ -73,7 +73,7 @@ async getChainId(): Promise<any> {
 async getAddresses(): Promise<any> {
     try {
         const walletClient = createWalletClient({
-            chain: mainnet,
+            chain: this.getViewChain(),
             transport: custom(this.provider)
           });
            
@@ -106,112 +106,132 @@ async getAddresses(): Promise<any> {
   }
 
   async getBalance(): Promise<string> {
-    const publicClient = createPublicClient({
-        chain: mainnet,
-        transport: custom(this.provider)
-      })
-       
-    const address = await this.getAccounts();
-    const balance = await publicClient.getBalance({address: address[0]});
-    console.log(balance)
-    return formatEther(balance);
+    try {
+      const publicClient = createPublicClient({
+          chain: this.getViewChain(),
+          transport: custom(this.provider)
+        })
+        
+      const address = await this.getAccounts();
+      const balance = await publicClient.getBalance({address: address[0]});
+      console.log(balance)
+      return formatEther(balance);
+    } catch (error) {
+      return error as string;
+    }
   }
 
-  async sendTransaction(): Promise<any> {
-    const publicClient = createPublicClient({
-        chain: this.getViewChain(),
-        transport: custom(this.provider)
-      })
+  async signAndSendTransaction(): Promise<any> {
+    try {
+      const publicClient = createPublicClient({
+          chain: this.getViewChain(),
+          transport: custom(this.provider)
+        })
 
-    const walletClient = createWalletClient({
-        chain: this.getViewChain(),
-        transport: custom(this.provider)
-      });
-    
-    // data for the transaction
-    const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
-    const amount = parseEther("0.0001");
-    const address =  await this.getAccounts();
+      const walletClient = createWalletClient({
+          chain: this.getViewChain(),
+          transport: custom(this.provider)
+        });
+      
+      // data for the transaction
+      const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
+      const amount = parseEther("0.0001");
+      const address =  await this.getAccounts();
 
-    // Submit transaction to the blockchain
-    const hash = await walletClient.sendTransaction({
-        account: address[0],
-        to: destination,
-        value: amount,
-      });
-    console.log(hash)
-    const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    
+      // Submit transaction to the blockchain
+      const hash = await walletClient.sendTransaction({
+          account: address[0],
+          to: destination,
+          value: amount,
+        });
+      console.log(hash)
+      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+      
 
-    return this.toObject(receipt); 
+      return this.toObject(receipt); 
+    } catch (error) {
+      return error;
+    }
   }
 
   async signMessage() {
-    const walletClient = createWalletClient({
-        chain: this.getViewChain(),
-        transport: custom(this.provider)
-      });
-    
-    // data for signing
-    const address =  await this.getAccounts();
-    const originalMessage = "YOUR_MESSAGE";
+    try {
+      const walletClient = createWalletClient({
+          chain: this.getViewChain(),
+          transport: custom(this.provider)
+        });
+      
+      // data for signing
+      const address =  await this.getAccounts();
+      const originalMessage = "YOUR_MESSAGE";
 
-    // Sign the message
-    const hash = await walletClient.signMessage({
-        account: address[0],
-        message: originalMessage
-      });
+      // Sign the message
+      const hash = await walletClient.signMessage({
+          account: address[0],
+          message: originalMessage
+        });
 
-    console.log(hash)
+      console.log(hash)
 
-    return hash.toString(); 
+      return hash.toString(); 
+    } catch (error) {
+      return error;
+    }
   }
 
   async readContract() {
-    const publicClient = createPublicClient({
-        chain: this.getViewChain(),
-        transport: custom(this.provider)
-      })
+    try {
+      const publicClient = createPublicClient({
+          chain: this.getViewChain(),
+          transport: custom(this.provider)
+        })
 
-    const number = await publicClient.readContract({ 
-        address: "0x9554a5CC8F600F265A89511e5802945f2e8A5F5D",
-        abi: this.contractABI, 
-        functionName: 'retrieve'
-      }) 
-      
-    return this.toObject(number);
+      const number = await publicClient.readContract({ 
+          address: "0x9554a5CC8F600F265A89511e5802945f2e8A5F5D",
+          abi: this.contractABI, 
+          functionName: 'retrieve'
+        }) 
+        
+      return this.toObject(number);
+    } catch (error) {
+      return error;
+    }
   }
 
   async writeContract() {
-    const publicClient = createPublicClient({
-        chain: this.getViewChain(),
-        transport: custom(this.provider)
-      })
+    try {
+      const publicClient = createPublicClient({
+          chain: this.getViewChain(),
+          transport: custom(this.provider)
+        })
 
-    const walletClient = createWalletClient({
-        chain: this.getViewChain(),
-        transport: custom(this.provider)
-      });
-    
-    // data for writing to the contract
-    const address =  await this.getAccounts();
-    const randomNumber = Math.floor(Math.random() * 9000) + 1000;
+      const walletClient = createWalletClient({
+          chain: this.getViewChain(),
+          transport: custom(this.provider)
+        });
+      
+      // data for writing to the contract
+      const address =  await this.getAccounts();
+      const randomNumber = Math.floor(Math.random() * 9000) + 1000;
 
-    // Submit transaction to the blockchain
-    const hash = await walletClient.writeContract(
-        {
-            account: address[0],
-            address: "0x9554a5CC8F600F265A89511e5802945f2e8A5F5D",
-            abi: this.contractABI,
-            functionName: 'store',
-            args: [randomNumber]
-        }
-    )
+      // Submit transaction to the blockchain
+      const hash = await walletClient.writeContract(
+          {
+              account: address[0],
+              address: "0x9554a5CC8F600F265A89511e5802945f2e8A5F5D",
+              abi: this.contractABI,
+              functionName: 'store',
+              args: [randomNumber]
+          }
+      )
 
-    const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    
+      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+      
 
-    return this.toObject(receipt); 
+      return this.toObject(receipt); 
+    } catch (error) {
+      return error;
+    }
   }
 
   toObject(data: any) {

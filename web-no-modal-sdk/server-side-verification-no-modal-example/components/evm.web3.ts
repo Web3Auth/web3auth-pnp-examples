@@ -25,7 +25,7 @@ export default class EthereumRpc {
       const web3 = new Web3(this.provider as any);
       const accounts = await web3.eth.getAccounts();
       const balance = await web3.eth.getBalance(accounts[0]);
-      return balance;
+      return balance.toString();
     } catch (error) {
       return error as string;
     }
@@ -62,9 +62,9 @@ export default class EthereumRpc {
       const txRes = await web3.eth.sendTransaction({
         from: accounts[0],
         to: accounts[0],
-        value: web3.utils.toWei("0.01"),
+        value: web3.utils.toWei("0.01", "ether"),
       });
-      return txRes.transactionHash;
+      return txRes.transactionHash.toString();
     } catch (error) {
       return error as string;
     }

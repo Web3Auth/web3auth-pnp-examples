@@ -145,11 +145,6 @@ async getAddresses(): Promise<any> {
   }
 
   async signMessage() {
-    const publicClient = createPublicClient({
-        chain: this.getViewChain(),
-        transport: custom(this.provider)
-      })
-
     const walletClient = createWalletClient({
         chain: this.getViewChain(),
         transport: custom(this.provider)

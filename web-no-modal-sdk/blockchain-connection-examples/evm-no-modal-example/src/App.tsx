@@ -6,9 +6,9 @@ import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adap
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import "./App.css";
-//import RPC from "./web3RPC"; // for using web3.js
+import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
-import RPC from "./viemRPC"; // for using viem
+//import RPC from "./viemRPC"; // for using viem
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 

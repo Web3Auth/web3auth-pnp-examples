@@ -38,19 +38,6 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfi
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  uiConfig: {
-    uxMode: "redirect",
-    appName: "W3A Heroes",
-    appUrl: "https://web3auth.io/",
-    theme: {
-      primary: "#7ed6df",
-    },
-    logoLight: "https://web3auth.io/images/web3authlog.png",
-    logoDark: "https://web3auth.io/images/web3authlogodark.png",
-    defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
-    mode: "auto", // whether to enable dark mode. defaultValue: auto
-    useLogoLoader: true,
-  },
   privateKeyProvider: privateKeyProvider,
   sessionTime: 86400, // 1 day
   // useCoreKitKey: true,
@@ -72,12 +59,6 @@ function App() {
           },
           adapterSettings: {
             uxMode: "redirect", // "redirect" | "popup"
-            whiteLabel: {
-              logoLight: "https://web3auth.io/images/web3authlog.png",
-              logoDark: "https://web3auth.io/images/web3authlogodark.png",
-              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
-              mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
-            },
             mfaSettings: {
               deviceShareFactor: {
                 enable: true,
@@ -105,7 +86,14 @@ function App() {
         web3auth.configureAdapter(openloginAdapter);
 
         // Wallet Services Plugin
-        const walletServicesPlugin = new WalletServicesPlugin();
+        const walletServicesPlugin = new WalletServicesPlugin({
+          walletInitOptions: {
+            whiteLabel: {
+              showWidgetButton: true,
+              buttonPosition: "bottom-left",
+            }
+          }
+        });
         setWalletServicesPlugin(walletServicesPlugin);
         web3auth.addPlugin(walletServicesPlugin);
 

@@ -4,8 +4,10 @@ import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, UX_MODE
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
+
+// import RPC from "./web3RPC"; // for using web3.js
 // import RPC from './ethersRPC' // for using ethers.js
-import RPC from "./web3RPC"; // for using web3.js
+import RPC from './viemRPC' // for using viem
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 

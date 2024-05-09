@@ -101,7 +101,7 @@ function App() {
       loginProvider: "jwt",
       extraLoginOptions: {
         domain: "https://web3auth.au.auth0.com",
-        verifierIdField: "sub",
+        verifierIdField: "email",
         // connection: "google-oauth2", // Use this to skip Auth0 Modal for Google login.
       },
     });

@@ -7,5 +7,6 @@ interface EthereumUseCase {
     suspend fun signMessage(message: String, sender: Credentials): String
     suspend fun sendETH(amount: String, recipientAddress: String, sender: Credentials): String
 
-    suspend fun readContract(contractAddress: String): String
+    suspend fun getBalanceOf(contractAddress: String, address: String, credentials: Credentials): String
+    suspend fun approve(contractAddress: String, spenderAddress: String, credentials: Credentials): String
 }

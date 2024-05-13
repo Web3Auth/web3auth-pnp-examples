@@ -1,7 +1,8 @@
 import type {IProvider} from '@web3auth/base'
 import Web3 from 'web3'
+import IRPC from './IRPC'
 
-export default class EthereumRpc {
+export default class EthereumRPC implements IRPC{
   private provider: IProvider
 
   constructor(provider: IProvider) {
@@ -21,7 +22,7 @@ export default class EthereumRpc {
     }
   }
 
-  async getAccounts(): Promise<any> {
+  public async getAccounts(): Promise<any> {
     try {
       const web3 = new Web3(this.provider as any)
 

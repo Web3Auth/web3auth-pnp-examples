@@ -18,7 +18,8 @@ import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.tx.gas.DefaultGasProvider
 import org.web3j.utils.Convert
 import org.web3j.utils.Numeric
-
+import java.math.*;
+import java.text.DecimalFormat
 
 
 class EthereumUseCaseImpl(
@@ -83,19 +84,19 @@ class EthereumUseCaseImpl(
         }
     }
 
-    override suspend fun getBalanceOf(contractAddress: String, address: String, credentials: Credentials): String {
+    override suspend fun getBalanceOf(contractAddress: String, address: String, credentials: Credentials): String = withContext(Dispatchers.IO) {
         val token = Token.load(contractAddress, web3, credentials, DefaultGasProvider())
         val balanceResponse = token.balanceOf(address).sendAsync().get()
-        return BigDecimal.valueOf(balanceResponse.toDouble()).divide(BigDecimal.TEN.pow(18)).toString()
+        BigDecimal.valueOf(balanceResponse.toDouble()).divide(BigDecimal.TEN.pow(18)).toString()
     }
 
     override suspend fun approve(
         contractAddress: String,
         spenderAddress: String,
         credentials: Credentials
-    ): String {
+    ): String = withContext(Dispatchers.IO) {
         val token = Token.load(contractAddress, web3, credentials, DefaultGasProvider())
         val hash = token.approve(spenderAddress, BigInteger.ZERO).sendAsync().get()
-        return hash.transactionHash
+        hash.transactionHash
     }
 }

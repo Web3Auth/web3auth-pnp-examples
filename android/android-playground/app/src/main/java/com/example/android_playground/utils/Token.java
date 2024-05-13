@@ -1,6 +1,7 @@
 package com.example.android_playground.utils;
 
 import java.util.*;
+import java.math.BigInteger;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
@@ -145,9 +146,6 @@ public class Token extends Contract {
         return deployRemoteCall(Token.class, web3j, transactionManager, gasPrice, gasLimit, getDeploymentBinary(), "");
     }
 
-    public static void linkLibraries(List<Contract.LinkReference> references) {
-        librariesLinkedBinary = linkBinaryWithReferences(BINARY, references);
-    }
 
     public static String getDeploymentBinary() {
         if (librariesLinkedBinary != null) {

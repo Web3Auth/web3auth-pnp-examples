@@ -8,6 +8,7 @@ import com.example.android_playground.data.EthereumUseCaseImpl
 import com.example.android_playground.data.Web3AuthHelper
 import com.example.android_playground.domain.EthereumUseCase
 import com.example.android_playground.utils.chainConfigList
+import com.web3auth.core.types.ChainConfig
 import com.web3auth.core.types.ExtraLoginOptions
 import com.web3auth.core.types.LoginParams
 import com.web3auth.core.types.Provider
@@ -18,6 +19,7 @@ import kotlinx.coroutines.future.await
 import kotlinx.coroutines.launch
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
+import org.web3j.protocol.core.methods.response.EthGetBalance
 import org.web3j.protocol.http.HttpService
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -42,7 +44,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
         )
     )
 
-    fun privateKey(): String {
+    private fun privateKey(): String {
         return web3AuthHelper.getPrivateKey()
     }
 
@@ -98,6 +100,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
         viewModelScope.launch {
             _isAccountLoaded.emit(false)
             try {
+                Log.d("Address", credentials.address)
                 _balance.emit(ethereumUseCase.getBalance(credentials.address))
                 _isAccountLoaded.emit(true)
             } catch (e: Exception) {
@@ -143,6 +146,41 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
                 onSign(signature, null)
             } catch (e: Exception) {
                 e.localizedMessage?.let { onSign(null, it) }
+            }
+        }
+    }
+
+    fun changeChainConfig(config: ChainConfig) {
+        ethereumUseCase = EthereumUseCaseImpl(
+            Web3j.build(
+                HttpService(
+                    config.rpcTarget
+                )
+            )
+        )
+        getBalance()
+    }
+
+    fun getTokenBalance(contractAddress: String, onSuccess: (balance: String?, error: String?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val balance = ethereumUseCase.getBalanceOf(contractAddress, credentials.address, credentials)
+                Log.d("Token Balance:",balance)
+                onSuccess(balance, null)
+            } catch (e: Exception) {
+                onSuccess(null, e.localizedMessage)
+            }
+        }
+    }
+
+    fun revokeApproval(contractAddress: String, spenderAddress: String, onRevoke: (hash: String?, error: String?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val hash = ethereumUseCase.approve(contractAddress, spenderAddress, credentials)
+                Log.d("Revoke Hash:", hash)
+                onRevoke(hash, null)
+            } catch (e: Exception) {
+                onRevoke(null, e.localizedMessage)
             }
         }
     }

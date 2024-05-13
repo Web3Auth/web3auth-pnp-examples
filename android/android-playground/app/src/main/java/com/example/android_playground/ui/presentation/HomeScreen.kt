@@ -15,12 +15,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,6 +50,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -56,6 +64,7 @@ import com.example.android_playground.utils.TabView
 import com.example.android_playground.utils.addressAbbreviation
 import com.example.android_playground.utils.chainConfigList
 import com.example.android_playground.viewmodel.MainViewModel
+import com.example.androidsolanaexample.ui.presentation.UserInfoDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,14 +75,14 @@ fun HomeScreen(viewModel: MainViewModel) {
         unselectedIcon = Icons.Outlined.Home
     )
     val alertsTab = TabBarItem(
-        title = "Alerts",
-        selectedIcon = Icons.Filled.Notifications,
-        unselectedIcon = Icons.Outlined.Notifications
+        title = "Sign",
+        selectedIcon = Icons.Filled.Create,
+        unselectedIcon = Icons.Outlined.Create
     )
     val settingsTab = TabBarItem(
-        title = "Settings",
-        selectedIcon = Icons.Filled.Settings,
-        unselectedIcon = Icons.Outlined.Settings
+        title = "Smart Contracts",
+        selectedIcon = Icons.Filled.Receipt,
+        unselectedIcon = Icons.Outlined.Receipt
     )
 
     val tabBarItems = listOf(homeTab, alertsTab, settingsTab)
@@ -127,7 +136,17 @@ fun HomeScreen(viewModel: MainViewModel) {
 fun AccountView(viewModel: MainViewModel) {
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(chainConfigList[0]) }
+    val openUserInfoDialog = remember {
+        mutableStateOf(false)
+    }
     var balance = viewModel.balance.collectAsState().value
+    val clipboardManager: ClipboardManager = LocalClipboardManager.current
+
+    if(openUserInfoDialog.value) {
+        UserInfoDialog(onDismissRequest = {
+            openUserInfoDialog.value = false
+        }, userInfo = viewModel.userInfo.toString())
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -173,6 +192,7 @@ fun AccountView(viewModel: MainViewModel) {
                                 onClick = {
                                     selectedText = item
                                     expanded = false
+                                    viewModel.changeChainConfig(item)
                                 }
                             )
                         }
@@ -198,14 +218,18 @@ fun AccountView(viewModel: MainViewModel) {
                     Box(modifier = Modifier.height(12.dp))
                     Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                         Text(text = viewModel.credentials.address.addressAbbreviation(), style = Typography.titleMedium)
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(Icons.Outlined.Notifications, contentDescription = "Copy")
+                        IconButton(onClick = {
+                            clipboardManager.setText(AnnotatedString(viewModel.credentials.address))
+                        }) {
+                            Icon(Icons.Outlined.ContentCopy, contentDescription = "Copy")
                         }
                     }
                 }
             }
             Box(modifier = Modifier.height(16.dp))
-            Button(onClick = { }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = {
+                openUserInfoDialog.value = true
+            }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
                 Text(text = "View user info")
             }
             Box(modifier = Modifier.height(16.dp))

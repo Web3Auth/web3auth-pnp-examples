@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.android_playground.ui.theme.Typography
+import com.example.android_playground.utils.MinimalDialog
 import com.example.android_playground.utils.Tabs
 import com.example.android_playground.viewmodel.MainViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -65,6 +66,14 @@ fun ContractTabsContent(pagerState: PagerState, viewModel: MainViewModel) {
 @Composable
 fun ReadContractView(viewModel: MainViewModel) {
     var contractAddressText by remember { mutableStateOf("") }
+    val openAlertDialog = remember { mutableStateOf(false) }
+    var dialogText by remember { mutableStateOf("") }
+
+    when {
+        openAlertDialog.value -> MinimalDialog(dialogText) {
+            openAlertDialog.value = false
+        }
+    }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -80,9 +89,16 @@ fun ReadContractView(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
         Button(onClick = {
-//            viewModel.signMessage { signedTransaction, error ->
-//
-//            }
+            viewModel.getTokenBalance(contractAddressText, onSuccess = {
+                balance, error ->
+                if(balance != null) {
+                    dialogText = "Balance:\n$balance"
+                    openAlertDialog.value = true
+                } else {
+                    dialogText = "Error:\n$error"
+                    openAlertDialog.value = true
+                }
+            })
         }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
             Text("Fetch Balance")
         }
@@ -93,6 +109,14 @@ fun ReadContractView(viewModel: MainViewModel) {
 fun WriteContractView(viewModel: MainViewModel) {
     var contractAddressText by remember { mutableStateOf("") }
     var spenderAddressText by remember { mutableStateOf("") }
+    val openAlertDialog = remember { mutableStateOf(false) }
+    var dialogText by remember { mutableStateOf("") }
+
+    when {
+        openAlertDialog.value -> MinimalDialog(dialogText) {
+            openAlertDialog.value = false
+        }
+    }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -117,9 +141,16 @@ fun WriteContractView(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
         Button(onClick = {
-//            viewModel.signMessage { signedTransaction, error ->
-//
-//            }
+            viewModel.revokeApproval(contractAddressText, spenderAddressText, onRevoke = {
+                hash, error ->
+                if(hash != null) {
+                    dialogText = "Hash:\n$hash"
+                    openAlertDialog.value = true
+                } else {
+                    dialogText = "Error:\n$error"
+                    openAlertDialog.value = true
+                }
+            })
         }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
             Text("Revoke Approval")
         }

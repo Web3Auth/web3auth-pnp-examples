@@ -200,11 +200,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchWalletServices() {
-
-       val loginParams = prepareLoginParams()
-
         val completableFuture = web3Auth.launchWalletServices(
-            loginParams, ChainConfig(
+           ChainConfig(
                 chainId = "0x1",
                 rpcTarget = "https://rpc.ankr.com/eth",
                 ticker = "ETH",

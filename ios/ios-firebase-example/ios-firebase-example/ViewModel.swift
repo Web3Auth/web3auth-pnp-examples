@@ -65,7 +65,6 @@ class ViewModel: ObservableObject {
         Task {
             do {
                 try await web3Auth!.launchWalletServices(
-                    loginParams,
                     chainConfig: ChainConfig(
                         chainId: "11155111",
                         rpcTarget: "https://eth-sepolia.public.blastapi.io"
@@ -96,7 +95,7 @@ class ViewModel: ObservableObject {
                 let address = Web3RPC(
                     user: web3Auth!.state!
                 )?.address.toChecksumAddress()
-                params.append("Hello, Web3Auth from Android!")
+                params.append("Hello, Web3Auth from iOS!")
                 params.append(
                   address
                 )

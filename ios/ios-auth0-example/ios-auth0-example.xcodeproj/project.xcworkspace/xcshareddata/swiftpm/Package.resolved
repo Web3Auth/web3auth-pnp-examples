@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/web3auth/web3auth-swift-sdk",
       "state" : {
-        "revision" : "730f80a00854bd22b09d1df5c05817c1c14dd743",
-        "version" : "8.1.1"
+        "revision" : "2792258461ef18bdf131594d68d453f6126c2603",
+        "version" : "8.2.0"
       }
     },
     {

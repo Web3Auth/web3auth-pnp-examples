@@ -65,7 +65,7 @@ fun ContractTabsContent(pagerState: PagerState, viewModel: MainViewModel) {
 
 @Composable
 fun ReadContractView(viewModel: MainViewModel) {
-    var contractAddressText by remember { mutableStateOf("") }
+    var contractAddressText by remember { mutableStateOf("0x10279e6333f9d0EE103F4715b8aaEA75BE61464C") }
     val openAlertDialog = remember { mutableStateOf(false) }
     var dialogText by remember { mutableStateOf("") }
 
@@ -107,7 +107,7 @@ fun ReadContractView(viewModel: MainViewModel) {
 
 @Composable
 fun WriteContractView(viewModel: MainViewModel) {
-    var contractAddressText by remember { mutableStateOf("") }
+    var contractAddressText by remember { mutableStateOf("0x10279e6333f9d0EE103F4715b8aaEA75BE61464C") }
     var spenderAddressText by remember { mutableStateOf("") }
     val openAlertDialog = remember { mutableStateOf(false) }
     var dialogText by remember { mutableStateOf("") }

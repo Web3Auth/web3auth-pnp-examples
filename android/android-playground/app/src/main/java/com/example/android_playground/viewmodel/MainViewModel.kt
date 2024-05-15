@@ -2,6 +2,10 @@ package com.example.android_playground.viewmodel
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android_playground.data.EthereumUseCaseImpl
@@ -33,6 +37,10 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
 
     private val _balance: MutableStateFlow<String> = MutableStateFlow("0.0")
     val balance: StateFlow<String> = _balance
+
+
+    private val _selectedChain: MutableStateFlow<ChainConfig> = MutableStateFlow(chainConfigList[0])
+    val selectedChain: StateFlow<ChainConfig> = _selectedChain
 
     lateinit var credentials: Credentials
     lateinit var userInfo: UserInfo
@@ -151,6 +159,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
     }
 
     fun changeChainConfig(config: ChainConfig) {
+        _selectedChain.value = config
         ethereumUseCase = EthereumUseCaseImpl(
             Web3j.build(
                 HttpService(

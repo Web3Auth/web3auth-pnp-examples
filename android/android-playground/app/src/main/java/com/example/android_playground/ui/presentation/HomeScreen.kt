@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
@@ -27,6 +28,9 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -75,7 +79,7 @@ fun HomeScreen(viewModel: MainViewModel) {
         unselectedIcon = Icons.Outlined.Home
     )
     val alertsTab = TabBarItem(
-        title = "Sign",
+        title = "Sign & Send",
         selectedIcon = Icons.Filled.Create,
         unselectedIcon = Icons.Outlined.Create
     )
@@ -131,16 +135,18 @@ fun HomeScreen(viewModel: MainViewModel) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun AccountView(viewModel: MainViewModel) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(chainConfigList[0]) }
     val openUserInfoDialog = remember {
         mutableStateOf(false)
     }
     var balance = viewModel.balance.collectAsState().value
     val clipboardManager: ClipboardManager = LocalClipboardManager.current
+    val refreshing by viewModel.isAccountLoaded.collectAsState()
+
+    val pullRefreshState = rememberPullRefreshState(!refreshing, { viewModel.getBalance() })
 
     if(openUserInfoDialog.value) {
         UserInfoDialog(onDismissRequest = {
@@ -148,103 +154,119 @@ fun AccountView(viewModel: MainViewModel) {
         }, userInfo = viewModel.userInfo.toString())
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .padding(PaddingValues(horizontal = 16.dp, vertical = 8.dp))
-    ) {
-        item {
-            Box(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Welcome to Android Playground",
-                style = Typography.headlineLarge,
-                textAlign = TextAlign.Center
-            )
-            Box(modifier = Modifier.height(48.dp))
-            Text(text = "Your account details")
-            Box(modifier = Modifier.height(16.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = {
-                        expanded = !expanded
-                    }
-                ) {
-                    OutlinedTextField(
-                        value = selectedText.displayName!!,
-                        onValueChange = {},
-                        readOnly = true,
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth()
-                    )
-
-                    ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        chainConfigList.forEach { item ->
-                            DropdownMenuItem(
-                                text = { Text(text = item.displayName!!) },
-                                onClick = {
-                                    selectedText = item
-                                    expanded = false
-                                    viewModel.changeChainConfig(item)
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-            Box(modifier = Modifier.height(24.dp))
-            Divider()
-            Box(modifier = Modifier.height(24.dp))
-            Row {
+    Box(Modifier.pullRefresh(pullRefreshState)) {
+        LazyColumn(
+            modifier = Modifier
+                .padding(PaddingValues(horizontal = 16.dp, vertical = 8.dp))
+        ) {
+            item {
+                Box(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Welcome to Android Playground",
+                    style = Typography.headlineLarge,
+                    textAlign = TextAlign.Center
+                )
+                Box(modifier = Modifier.height(48.dp))
+                Text(text = "Your account details")
+                Box(modifier = Modifier.height(16.dp))
                 Box(
                     modifier = Modifier
-                        .height(120.dp)
-                        .width(120.dp)
-                        .background(color = MaterialTheme.colorScheme.primary), contentAlignment = Alignment.Center
+                        .fillMaxWidth()
                 ) {
-                    Text(text = "A", style = Typography.headlineLarge.copy(color = Color.White))
-                }
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = {
+                            expanded = !expanded
+                        }
+                    ) {
+                        OutlinedTextField(
+                            value = viewModel.selectedChain.collectAsState().value.displayName!!,
+                            onValueChange = {},
+                            readOnly = true,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            modifier = Modifier
+                                .menuAnchor()
+                                .fillMaxWidth()
+                        )
 
-                Box(modifier = Modifier.width(16.dp))
-                Column {
-                    Text(text = viewModel.userInfo.name, style = Typography.titleLarge)
-                    Box(modifier = Modifier.height(12.dp))
-                    Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = viewModel.credentials.address.addressAbbreviation(), style = Typography.titleMedium)
-                        IconButton(onClick = {
-                            clipboardManager.setText(AnnotatedString(viewModel.credentials.address))
-                        }) {
-                            Icon(Icons.Outlined.ContentCopy, contentDescription = "Copy")
+                        ExposedDropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            chainConfigList.forEach { item ->
+                                DropdownMenuItem(
+                                    text = { Text(text = item.displayName!!) },
+                                    onClick = {
+                                        expanded = false
+                                        viewModel.changeChainConfig(item)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
-            }
-            Box(modifier = Modifier.height(16.dp))
-            Button(onClick = {
-                openUserInfoDialog.value = true
-            }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
-                Text(text = "View user info")
-            }
-            Box(modifier = Modifier.height(16.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Column {
-                    Text(text = "Wallet Balance", style = Typography.titleMedium)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = balance, style = Typography.headlineSmall)
+                Box(modifier = Modifier.height(24.dp))
+                Divider()
+                Box(modifier = Modifier.height(24.dp))
+                Row {
+                    Box(
+                        modifier = Modifier
+                            .height(120.dp)
+                            .width(120.dp)
+                            .background(color = MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = viewModel.userInfo.name.first().uppercase(),
+                            style = Typography.headlineLarge.copy(color = Color.White)
+                        )
+                    }
+
+                    Box(modifier = Modifier.width(16.dp))
+                    Column {
+                        Text(text = viewModel.userInfo.name, style = Typography.titleLarge)
+                        Box(modifier = Modifier.height(12.dp))
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = viewModel.credentials.address.addressAbbreviation(),
+                                style = Typography.titleMedium
+                            )
+                            IconButton(onClick = {
+                                clipboardManager.setText(AnnotatedString(viewModel.credentials.address))
+                            }) {
+                                Icon(Icons.Outlined.ContentCopy, contentDescription = "Copy")
+                            }
+                        }
+                    }
                 }
-                Column(horizontalAlignment = Alignment.End) {
-                    Text(text = "Chain id", style = Typography.titleMedium)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = selectedText.chainId,style = Typography.headlineSmall)
+                Box(modifier = Modifier.height(16.dp))
+                Button(onClick = {
+                    openUserInfoDialog.value = true
+                }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
+                    Text(text = "View user info")
+                }
+                Box(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Text(text = "Wallet Balance", style = Typography.titleMedium)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = balance, style = Typography.headlineSmall)
+                    }
+                    Column(horizontalAlignment = Alignment.End) {
+                        Text(text = "Chain id", style = Typography.titleMedium)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = viewModel.selectedChain.collectAsState().value.chainId, style = Typography.headlineSmall)
+                    }
                 }
             }
         }
+
+        PullRefreshIndicator(!refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
     }
 }

@@ -36,7 +36,7 @@ fun UserInfoDialog( onDismissRequest: () -> Unit,  userInfo: String) {
             FlowRow(
                 modifier = Modifier
                     .verticalScroll(scrollState)
-                    .weight(1f)
+                    .weight(1f).padding(horizontal = 8.dp)
             ) {
                 Text(text = userInfo)
             }

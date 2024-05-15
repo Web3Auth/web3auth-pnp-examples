@@ -84,15 +84,15 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     console.log(...args);
   };
 
-  const { initModal, isConnected, connect, logout, addAndSwitchChain, userInfo, provider, web3auth } = useWeb3Auth();
+  const { initModal, isConnected, connect, logout, addAndSwitchChain, userInfo, provider, web3Auth } = useWeb3Auth();
   // const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
 
   const setNewWalletProvider = useCallback(
-    async (web3authProvider: IProvider | null) => {
+    async (web3authProvider: IProvider) => {
       setWalletProvider(getWalletProvider(web3authProvider, uiConsole));
-      setAddress(await walletProvider.getAddress());
-      setBalance(await walletProvider.getBalance());
-      setChainId(await walletProvider.getChainId());
+      setAddress(await walletProvider?.getAddress());
+      setBalance(await walletProvider?.getBalance());
+      setChainId(await walletProvider?.getChainId());
     },
     [chainId, address, balance]
   );
@@ -101,12 +101,11 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     async function init() {
       try {
         setIsLoading(true);
-        if (web3auth.status === "not_ready") await initModal();
-        if (isConnected) {
-          setNewWalletProvider(provider);
-        } else {
+        if (isConnected) setNewWalletProvider(provider);
+        else {
           try {
-            await connect();
+            await initModal();
+            connect();
           } catch (error) {
             uiConsole(error);
           }
@@ -117,14 +116,14 @@ export const Playground = ({ children }: IPlaygroundProps) => {
         setIsLoading(false);
       }
     }
-    if (web3auth) {
+    if (web3Auth) {
       init();
     }
-  }, [web3auth]);
+  }, [web3Auth, isConnected, provider, connect, initModal]);
 
   const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return;
     }
     try {
@@ -138,8 +137,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return;
     }
     uiConsole(userInfo);
@@ -147,8 +146,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getAddress = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return "";
     }
 
@@ -159,8 +158,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getBalance = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return "";
     }
     const updatedBalance = await walletProvider.getBalance();
@@ -171,8 +170,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getSignature = async (message: string) => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return "";
     }
     const signature = await walletProvider.getSignature(message);
@@ -181,8 +180,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const sendTransaction = async (amount: string, destination: string) => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return "";
     }
     const receipt = await walletProvider.sendTransaction(amount, destination);
@@ -191,8 +190,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getPrivateKey = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return "";
     }
     const privateKey = await walletProvider.getPrivateKey();
@@ -201,8 +200,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getChainId = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return "";
     }
 
@@ -210,8 +209,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const deployContract = async (abi: any, bytecode: string, initValue: string): Promise<any> => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return;
     }
     const receipt = await walletProvider.deployContract(abi, bytecode, initValue);
@@ -311,8 +310,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const switchChain = async (chainConfig: CustomChainConfig) => {
-    if (!web3auth || !provider) {
-      uiConsole("Web3Auth or provider is not initialized yet");
+    if (!web3Auth || !provider) {
+      uiConsole("web3Auth or provider is not initialized yet");
       return;
     }
 

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IProvider } from "@web3auth/base";
 import { ethers } from "ethers";
+import IRPC from "./IRPC";
 
-export default class EthereumRpc {
+export default class EthereumRpc implements IRPC{
   private provider: IProvider;
 
-  constructor(provider: IProvider) {
+  constructor(provider: IProvider, privateKey: string) {
     this.provider = provider;
   }
 

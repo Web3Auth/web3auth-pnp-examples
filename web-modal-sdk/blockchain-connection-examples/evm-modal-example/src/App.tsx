@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, PLUGIN_STATUS } from "@web3auth/base";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
@@ -208,6 +208,12 @@ function App() {
       uiConsole("torus plugin not initialized yet");
       return;
     }
+
+    if (walletServicesPlugin.status !== PLUGIN_STATUS.CONNECTED) {
+      uiConsole("web3auth is not ready yet");
+      return;
+    }
+
     await walletServicesPlugin.showWalletConnectScanner();
     uiConsole();
   };
@@ -217,6 +223,12 @@ function App() {
       uiConsole("torus plugin not initialized yet");
       return;
     }
+
+    if (walletServicesPlugin.status !== PLUGIN_STATUS.CONNECTED) {
+      uiConsole("web3auth is not ready yet");
+      return;
+    }
+
     console.log(web3auth?.connected);
     await walletServicesPlugin.showCheckout();
   };
@@ -226,6 +238,12 @@ function App() {
       uiConsole("torus plugin not initialized yet");
       return;
     }
+
+    if (walletServicesPlugin.status !== PLUGIN_STATUS.CONNECTED) {
+      uiConsole("web3auth is not ready yet");
+      return;
+    }
+
     await walletServicesPlugin.showWalletUi();
   };
 

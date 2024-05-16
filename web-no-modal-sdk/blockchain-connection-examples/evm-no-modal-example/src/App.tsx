@@ -290,6 +290,11 @@ function App() {
   //     uiConsole("provider not initialized yet");
   //     return;
   //   }
+  //
+  //  if (walletServicesPlugin.status !== PLUGIN_STATUS.CONNECTED) {
+  //    uiConsole("web3auth is not ready yet");
+  //    return;
+  //  }
   //   await walletServicesPlugin.showWalletUi();
   // };
 
@@ -298,6 +303,10 @@ function App() {
   //     uiConsole("provider not initialized yet");
   //     return;
   //   }
+  //  if (walletServicesPlugin.status !== PLUGIN_STATUS.CONNECTED) {
+  //    uiConsole("web3auth is not ready yet");
+  //    return;
+  //  }
   //   await walletServicesPlugin.showWalletConnectScanner();
   // };
 
@@ -306,6 +315,11 @@ function App() {
   //     uiConsole("provider not initialized yet");
   //     return;
   //   }
+  //
+  //  if (walletServicesPlugin.status !== PLUGIN_STATUS.CONNECTED) {
+  //    uiConsole("web3auth is not ready yet");
+  //    return;
+  //  }
   //   await walletServicesPlugin.showCheckout();
   // };
 

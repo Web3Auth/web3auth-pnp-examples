@@ -31,24 +31,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
 
   @override
-  void dispose() {
-    super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
-  }
-
-  @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     initPlatformState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) {
-    // This is important to trigger the user cancellation on Android.
-    if (state == AppLifecycleState.resumed) {
-      Web3AuthFlutter.setResultUrl();
-    }
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.

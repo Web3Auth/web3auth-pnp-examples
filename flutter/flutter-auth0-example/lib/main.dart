@@ -25,30 +25,15 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class _MyAppState extends State<MyApp> {
   String _result = '';
   bool logoutVisible = false;
   String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
 
   @override
-  void dispose() {
-    super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
-  }
-
-  @override
   void initState() {
     super.initState();
     initPlatformState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) {
-    // This is important to trigger the user cancellation on Android.
-    if (state == AppLifecycleState.resumed) {
-      Web3AuthFlutter.setResultUrl();
-    }
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -269,7 +254,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         loginProvider: Provider.jwt,
         extraLoginOptions: ExtraLoginOptions(
           domain: 'https://web3auth.au.auth0.com',
-          verifierIdField: 'sub',
+          verifierIdField: 'email',
         ),
       ),
     );

@@ -67,7 +67,7 @@ class ViewModel: ObservableObject {
             do {
                 try await web3Auth!.launchWalletServices(
                     chainConfig: ChainConfig(
-                        chainId: "11155111",
+                        chainId: "0xaa36a7",
                         rpcTarget: "https://eth-sepolia.public.blastapi.io"
                     )
                 )

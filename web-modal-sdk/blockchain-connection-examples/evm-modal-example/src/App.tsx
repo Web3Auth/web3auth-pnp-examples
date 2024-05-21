@@ -68,7 +68,7 @@ function App() {
               backUpShareFactor: {
                 enable: true,
                 priority: 2,
-                mandatory: false,
+                mandatory: true,
               },
               socialBackupFactor: {
                 enable: true,

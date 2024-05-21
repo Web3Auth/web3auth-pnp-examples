@@ -1,4 +1,4 @@
-import { Web3AuthContextConfig } from "@web3auth/modal-react-hooks/dist/types/Web3AuthProvider";
+import { Web3AuthContextConfig } from "@web3auth/modal-react-hooks";
 import { Web3AuthOptions } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
@@ -75,19 +75,22 @@ const web3AuthOptions: Web3AuthOptions = {
         passwordFactor: {
           enable: true,
           priority: 4,
-          mandatory: false,
+          mandatory: true,
         },
       },
     },
   });
 
-  const walletServicesPlugin = new WalletServicesPlugin();
+  const walletServicesPlugin = new WalletServicesPlugin({
+    wsEmbedOpts: {},
+    walletInitOptions: { whiteLabel: { showWidgetButton: true } },
+  });
 
 
-const web3AuthContextConfig: Web3AuthContextConfig = {
+export const web3AuthContextConfig: Web3AuthContextConfig = {
     web3AuthOptions,
     adapters: [openloginAdapter],
     plugins: [walletServicesPlugin],
+    //plugins: [],
 };
 
-export default web3AuthContextConfig;

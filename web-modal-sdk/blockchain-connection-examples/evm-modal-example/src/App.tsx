@@ -1,9 +1,10 @@
-import { useEffect } from "react";
-import { useWeb3Auth, useWalletServicesPlugin } from "@web3auth/modal-react-hooks";
+import { useEffect, useState } from "react";
+import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./ethersRPC"; // for using ethers.js
+import { useWalletServicesPlugin  } from "@web3auth/wallet-services-plugin-react-hooks";
 
 const newChain = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -19,16 +20,36 @@ const newChain = {
 };
 
 function App() {
-  const { initModal, web3auth, isConnected, connect, authenticateUser, logout, addChain, switchChain, userInfo, isMFAEnabled, enableMFA } = useWeb3Auth();
-  const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
+  const {
+    initModal,
+    web3Auth,
+    isConnected,
+    connect,
+    authenticateUser,
+    logout,
+    addChain,
+    switchChain,
+    userInfo,
+    isMFAEnabled,
+    enableMFA,
+    status,
+    addAndSwitchChain,
+  } = useWeb3Auth();
+
+  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
+  const [unloggedInView, setUnloggedInView] = useState<JSX.Element | null>(null);
+  const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(
+    <div>
+      <h2>MFA is disabled</h2>
+    </div>
+  );
 
   useEffect(() => {
-    // console.log("web3auth", web3auth?.status);
-    console.log("provider", web3auth?.provider);
-    console.log("web3auth.provider", web3auth?.provider);
+    console.log("provider", web3Auth?.provider);
+    console.log("web3Auth.provider", web3Auth?.provider);
     const init = async () => {
       try {
-        if (web3auth) {
+        if (web3Auth) {
           await initModal();
         }
       } catch (error) {
@@ -37,74 +58,74 @@ function App() {
     };
 
     init();
-  }, [initModal, web3auth]);
+  }, [initModal, web3Auth]);
 
   const getChainId = async () => {
-    if (!web3auth?.provider) {
+    if (!web3Auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(web3auth?.provider as IProvider);
+    const rpc = new RPC(web3Auth?.provider as IProvider);
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
 
   const getAccounts = async () => {
-    if (!web3auth?.provider) {
+    if (!web3Auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(web3auth?.provider as IProvider);
+    const rpc = new RPC(web3Auth?.provider as IProvider);
     const address = await rpc.getAccounts();
     uiConsole(address);
   };
 
   const getBalance = async () => {
-    if (!web3auth?.provider) {
+    if (!web3Auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(web3auth?.provider as IProvider);
+    const rpc = new RPC(web3Auth?.provider as IProvider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
 
   const sendTransaction = async () => {
-    if (!web3auth?.provider) {
+    if (!web3Auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(web3auth?.provider as IProvider);
+    const rpc = new RPC(web3Auth?.provider as IProvider);
     const receipt = await rpc.sendTransaction();
     uiConsole(receipt);
   };
 
   const signMessage = async () => {
-    if (!web3auth?.provider) {
+    if (!web3Auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(web3auth?.provider as IProvider);
+    const rpc = new RPC(web3Auth?.provider as IProvider);
     const signedMessage = await rpc.signMessage();
     uiConsole(signedMessage);
   };
 
   const readContract = async () => {
-    if (!web3auth?.provider) {
+    if (!web3Auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(web3auth?.provider as IProvider);
+    const rpc = new RPC(web3Auth?.provider as IProvider);
     const message = await rpc.readContract();
     uiConsole(message);
   };
 
   const writeContract = async () => {
-    if (!web3auth?.provider) {
+    if (!web3Auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(web3auth?.provider as IProvider);
+    const rpc = new RPC(web3Auth?.provider as IProvider);
     const receipt = await rpc.writeContract();
     uiConsole(receipt);
     if (receipt) {
@@ -115,11 +136,11 @@ function App() {
   };
 
   const getPrivateKey = async () => {
-    if (!web3auth?.provider) {
+    if (!web3Auth?.provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(web3auth?.provider as IProvider);
+    const rpc = new RPC(web3Auth?.provider as IProvider);
     const privateKey = await rpc.getPrivateKey();
     uiConsole(privateKey);
   };
@@ -159,7 +180,7 @@ function App() {
           <button
             disabled={isMFAEnabled}
             onClick={() => {
-              enableMFA({});
+              enableMFA();
             }}
             className="card"
           >
@@ -167,23 +188,59 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={showWalletUI} className="card">
+          <button
+            onClick={() => {
+              if (isPluginConnected) {
+                showWalletUI();
+              }
+            }}
+            className="card"
+          >
             Show Wallet UI
           </button>
         </div>
         <div>
-          <button onClick={showWalletConnectScanner} className="card">
+          <button
+            onClick={() => {
+              if (isPluginConnected) {
+                showWalletConnectScanner();
+              }
+            }}
+            className="card"
+          >
             Show Wallet Connect
           </button>
         </div>
         <div>
-          <button onClick={showCheckout} className="card">
+          <button
+            onClick={() => {
+              if (isPluginConnected) {
+                showCheckout();
+              }
+            }}
+            className="card"
+          >
             Show Checkout
           </button>
         </div>
         <div>
           <button onClick={getChainId} className="card">
             Get Chain ID
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={async () => {
+              try {
+                await addAndSwitchChain(newChain);
+                uiConsole("New Chain Added and Switched");
+              } catch (error) {
+                uiConsole(error);
+              }
+            }}
+            className="card"
+          >
+            Add and Switch Chain
           </button>
         </div>
         <div>
@@ -237,18 +294,24 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={() => {
-             const message = readContract();
-             uiConsole(message);
-          }} className="card">
+          <button
+            onClick={() => {
+              const message = readContract();
+              uiConsole(message);
+            }}
+            className="card"
+          >
             Read Contract
           </button>
         </div>
         <div>
-          <button onClick={() => {
-            const message = writeContract();
-            uiConsole(message);
-          }} className="card">
+          <button
+            onClick={() => {
+              const message = writeContract();
+              uiConsole(message);
+            }}
+            className="card"
+          >
             Write Contract
           </button>
         </div>
@@ -274,11 +337,27 @@ function App() {
     </>
   );
 
-  const unloggedInView = (
-    <button onClick={connect} className="card">
-      Login
-    </button>
-  );
+  useEffect(() => {
+    setUnloggedInView(
+      <div>
+        <h2>Web3Auth hook status: {status}</h2>
+        <h2>Web3Auth status: {web3Auth?.status}</h2>
+        <button onClick={connect} className="card">
+          Login
+        </button>
+      </div>
+    );
+  }, [connect, status, web3Auth]);
+
+  useEffect(() => {
+    if (isMFAEnabled) {
+      setMFAHeader(
+        <div>
+          <h2>MFA is enabled</h2>
+        </div>
+      );
+    }
+  }, [isMFAEnabled]);
 
   return (
     <div className="container">
@@ -289,7 +368,7 @@ function App() {
         & ReactJS Ethereum Example
       </h1>
       <div className="container" style={{ textAlign: "center" }}>
-        {isConnected && <h2>{`isMFAEnabled: ${isMFAEnabled}`}</h2>}
+        {isConnected && MFAHeader}
       </div>
 
       <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>

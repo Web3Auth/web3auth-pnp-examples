@@ -57,9 +57,9 @@ export default function Web3AuthConnectorInstance(chains: Chain[], email: string
   return Web3AuthConnector({
       web3AuthInstance,
       loginParams: {
-        loginProvider: 'email_passwordless',
+        loginProvider: 'email_passwordless',  // select the type of login in this case email_passwordless
         extraLoginOptions: {
-          login_hint: email // Email to send the OTP to
+          login_hint: email // Email with code to send the OTP to
         }
       }
   });

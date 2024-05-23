@@ -179,7 +179,7 @@ public class Web3Auth : MonoBehaviour
                 <head>
                   <meta charset=""utf-8"">
                   <meta name=""viewport"" content=""width=device-width"">
-                  <title>Web3Auth</title>
+                  <title>Web3Auth Unity Demo</title>
                   <link href=""https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap"" rel=""stylesheet"">
                 </head>
                 <body style=""padding:0;margin:0;font-size:10pt;font-family: 'DM Sans', sans-serif;"">

@@ -5,6 +5,7 @@ import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK
 import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
@@ -27,6 +28,7 @@ function App() {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
+  const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -37,19 +39,19 @@ function App() {
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           privateKeyProvider,
           uiConfig: {
-          //   appName: "W3A Heroes",
-          //   appUrl: "https://web3auth.io",
-          //   logoLight: "https://web3auth.io/images/web3authlog.png",
-          //   logoDark: "https://web3auth.io/images/web3authlogodark.png",
-          //   defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-          //  mode: "light", // whether to enable dark mode. defaultValue: false
+            appName: "W3A Heroes",
+            appUrl: "https://web3auth.io",
+            logoLight: "https://web3auth.io/images/web3authlog.png",
+            logoDark: "https://web3auth.io/images/web3authlogodark.png",
+            defaultLanguage: "pt", // en, de, ja, ko, zh, es, fr, pt, nl
+            mode: "dark", // whether to enable dark mode. defaultValue: false
             theme: {
               primary: "#768729",
             },
             useLogoLoader: true,
-          }
+          },
         });
-        
+
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
@@ -82,9 +84,9 @@ function App() {
           privateKeyProvider,
         });
         web3auth.configureAdapter(openloginAdapter);
-        
+
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d",);
+        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d");
         const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           adapterSettings: {
@@ -93,6 +95,14 @@ function App() {
           },
           loginSettings: { ...defaultWcSettings.loginSettings },
         });
+
+        const walletServicesPluginInstance = new WalletServicesPlugin({
+          wsEmbedOpts: {},
+          walletInitOptions: { whiteLabel: { showWidgetButton: true } },
+        });
+
+        setWalletServicesPlugin(walletServicesPluginInstance);
+        web3auth.addPlugin(walletServicesPluginInstance);
 
         web3auth.configureAdapter(walletConnectV2Adapter);
         setWeb3Auth(web3auth);

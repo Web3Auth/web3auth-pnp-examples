@@ -21,7 +21,8 @@ class ViewModel: ObservableObject {
         })
         web3Auth = await Web3Auth(W3AInitParams(
             clientId: clientId, network: network,
-            buildEnv: .production,
+            buildEnv: .testing,
+            redirectUrl: "web3auth.ios-firebase-example://auth",
             loginConfig: [
                 TypeOfLogin.jwt.rawValue:
                         .init(
@@ -66,7 +67,7 @@ class ViewModel: ObservableObject {
             do {
                 try await web3Auth!.launchWalletServices(
                     chainConfig: ChainConfig(
-                        chainId: "11155111",
+                        chainId: "0xaa36a7",
                         rpcTarget: "https://eth-sepolia.public.blastapi.io"
                     )
                 )
@@ -100,9 +101,12 @@ class ViewModel: ObservableObject {
                   address
                 )
                 params.append("Web3Auth")
-                let loginParams = try await prepareLoginParams()
+    
                 try await self.web3Auth?.request(
-                    loginParams,
+                    chainConfig: ChainConfig(
+                        chainId: "0x89",
+                        rpcTarget: "https://polygon.llamarpc.com"
+                    ),
                     method: "personal_sign",
                     requestParams: params
                 )

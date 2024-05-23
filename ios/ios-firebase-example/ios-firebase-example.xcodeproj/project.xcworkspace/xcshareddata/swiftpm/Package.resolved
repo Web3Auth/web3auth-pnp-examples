@@ -1,4 +1,5 @@
 {
+  "originHash" : "cac94f638978e35ee52bc3ddabb98a0a25347d9f893a077bd4ef10558e668220",
   "pins" : [
     {
       "identity" : "abseil-cpp-swiftpm",
@@ -266,8 +267,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Web3Auth/web3auth-swift-sdk/",
       "state" : {
-        "revision" : "2792258461ef18bdf131594d68d453f6126c2603",
-        "version" : "8.2.0"
+        "revision" : "f146af3cf1e937a54e668d1894795ad26db6663e",
+        "version" : "8.4.0"
       }
     },
     {
@@ -280,5 +281,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

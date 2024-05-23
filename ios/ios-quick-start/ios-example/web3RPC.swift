@@ -23,7 +23,7 @@ class Web3RPC : ObservableObject {
     init?(user: Web3AuthState){
         self.user = user
         do{
-            client = EthereumHttpClient(url: URL(string: RPC_URL)!)
+            client = EthereumHttpClient(url: URL(string: RPC_URL)!, network: .fromString("11155111"))
             account = try EthereumAccount(keyStorage: user as EthereumSingleKeyStorageProtocol )
             address = account.address
         } catch {

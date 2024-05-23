@@ -49,42 +49,48 @@ class AccountDetails extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  userInfo.name!,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayLarge
-                      ?.copyWith(fontSize: 24, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  userInfo.email!,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      account.publicAddress.addressAbbreviation,
-                    ),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      onPressed: () {
-                        copyContentToClipboard(context, account.publicAddress);
-                      },
-                      icon: const Icon(
-                        Icons.copy,
-                        size: 14,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userInfo.name!,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge
+                        ?.copyWith(fontSize: 24, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    userInfo.email!,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          account.publicAddress.addressAbbreviation,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    )
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 16),
+                      IconButton(
+                        onPressed: () {
+                          copyContentToClipboard(
+                              context, account.publicAddress);
+                        },
+                        icon: const Icon(
+                          Icons.copy,
+                          size: 14,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             )
           ],
         ),

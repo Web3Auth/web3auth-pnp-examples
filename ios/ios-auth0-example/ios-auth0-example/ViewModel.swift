@@ -17,6 +17,7 @@ class ViewModel: ObservableObject {
         })
         web3Auth = await Web3Auth(W3AInitParams(
             clientId: clientId, network: network,
+            redirectUrl: "web3auth.ios-auth0-example://auth", 
             loginConfig: [
                 TypeOfLogin.jwt.rawValue:
                         .init(
@@ -36,7 +37,9 @@ class ViewModel: ObservableObject {
                 deviceShareFactor: MfaSetting(enable: true, priority: 1),
                 backUpShareFactor: MfaSetting(enable: true, priority: 2),
                 socialBackupFactor: MfaSetting(enable: true, priority: 3),
-                passwordFactor: MfaSetting(enable: true, priority: 4)
+                passwordFactor: MfaSetting(enable: true, priority: 4),
+                passkeysFactor: MfaSetting(enable: true, priority: 5),
+                authenticatorFactor: MfaSetting(enable: true, priority: 6)
             ),
             // 259200 allows user to stay authenticated for 3 days with Web3Auth.
             // Default is 86400, which is 1 day.
@@ -59,7 +62,7 @@ class ViewModel: ObservableObject {
                     W3ALoginParams(
                         loginProvider: .JWT,
                         dappShare: nil,
-                        extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: "https://web3auth.au.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil, additionalParams: nil),
+                        extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: "https://web3auth.au.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "email", isVerifierIdCaseSensitive: nil, additionalParams: nil),
                         mfaLevel: .NONE,
                         curve: .SECP256K1
                     ))

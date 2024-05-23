@@ -1,6 +1,5 @@
 import SwiftUI
 import Web3Auth
-import web3
 
 struct UserDetailView: View {
     @State private var isPrivateKeySectionVisible = false

@@ -3,11 +3,12 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import "./App.css";
-// import RPC from "./evm.web3";
-import RPC from "./evm.ethers";
 import { initializeApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
+import "./App.css";
+// import RPC from "./evm.ethers";
+// import RPC from "./evm.web3";
+import RPC from "./evm.viem";
 
 const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 

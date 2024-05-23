@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                ),
                mfaSettings = MfaSettings(
                    deviceShareFactor = MfaSetting(true, 1, true),
-                   socialBackupFactor = MfaSetting(true, 2, false),
+                   socialBackupFactor = MfaSetting(true, 2, true),
                    passwordFactor = MfaSetting(true, 3, false),
                    backUpShareFactor = MfaSetting(true, 4, false),
                ),
@@ -200,11 +200,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchWalletServices() {
-
-       val loginParams = prepareLoginParams()
-
         val completableFuture = web3Auth.launchWalletServices(
-            loginParams, ChainConfig(
+           ChainConfig(
                 chainId = "0x1",
                 rpcTarget = "https://rpc.ankr.com/eth",
                 ticker = "ETH",

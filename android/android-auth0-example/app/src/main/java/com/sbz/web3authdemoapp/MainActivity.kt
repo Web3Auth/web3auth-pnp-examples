@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         web3 = Web3j.build(HttpService(rpcUrl))
-        loginParams = LoginParams(Provider.JWT, extraLoginOptions = ExtraLoginOptions(domain = "https://web3auth.au.auth0.com", verifierIdField = "sub"))
+        loginParams = LoginParams(Provider.JWT, extraLoginOptions = ExtraLoginOptions(domain = "https://web3auth.au.auth0.com", verifierIdField = "email"))
 
         web3Auth = Web3Auth(
            Web3AuthOptions(
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                ),
                mfaSettings = MfaSettings(
                    deviceShareFactor = MfaSetting(true, 1, true),
-                   socialBackupFactor = MfaSetting(true, 2, false),
+                   socialBackupFactor = MfaSetting(true, 2, true),
                    passwordFactor = MfaSetting(true, 3, false),
                    backUpShareFactor = MfaSetting(true, 4, false),
                ),
@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun launchWalletServices() {
         val completableFuture = web3Auth.launchWalletServices(
-            loginParams, ChainConfig(
+            ChainConfig(
                 chainId = "0x1",
                 rpcTarget = "https://rpc.ankr.com/eth",
                 ticker = "ETH",

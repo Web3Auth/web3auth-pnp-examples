@@ -35,14 +35,14 @@ export const chain: {
     tickerName: "Matic",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  "Polygon Mumbai Testnet": {
+  "Polygon Amoy Testnet": {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x13881", // hex of 80001, polygon testnet
-    rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+    chainId: "0x13882", // hex of 80002, polygon testnet
+    rpcTarget: "https://rpc.ankr.com/polygon_amoy",
     // Avoid using public rpcTarget in production.
     // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mumbai Testnet",
-    blockExplorerUrl: "https://mumbai.polygonscan.com/",
+    displayName: "Polygon Amoy Testnet",
+    blockExplorerUrl: "https://amoy.polygonscan.com",
     ticker: "MATIC",
     tickerName: "Matic",
     logo: "https://web3auth.io/images/web3authlog.png",

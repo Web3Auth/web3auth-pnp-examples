@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                ),
                mfaSettings = MfaSettings(
                    deviceShareFactor = MfaSetting(true, 1, true),
-                   socialBackupFactor = MfaSetting(true, 2, false),
+                   socialBackupFactor = MfaSetting(true, 2, true),
                    passwordFactor = MfaSetting(true, 3, false),
                    backUpShareFactor = MfaSetting(true, 4, false),
                ),
@@ -217,25 +217,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchWalletServices() {
-        auth.currentUser!!.getIdToken(true).addOnSuccessListener { result ->
-            val loginParams = prepareLoginParams(result)
-            val completableFuture = web3Auth.launchWalletServices(
-                loginParams, ChainConfig(
-                    chainId = "0x1",
-                    rpcTarget = "https://rpc.ankr.com/eth",
-                    ticker = "ETH",
-                    chainNamespace = ChainNamespace.EIP155
-                )
+        val completableFuture = web3Auth.launchWalletServices(
+            ChainConfig(
+                chainId = "0x1",
+                rpcTarget = "https://rpc.ankr.com/eth",
+                ticker = "ETH",
+                chainNamespace = ChainNamespace.EIP155
             )
+        )
 
-            completableFuture.whenComplete{_, error ->
-                if(error == null) {
-                    // Add your logic
-                    Log.d("MainActivity_Web3Auth", "Wallet services launched successfully")
-                } else {
-                    // Add your logic for error
-                    Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
-                }
+        completableFuture.whenComplete{_, error ->
+            if(error == null) {
+                // Add your logic
+                Log.d("MainActivity_Web3Auth", "Wallet services launched successfully")
+            } else {
+                // Add your logic for error
+                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
             }
         }
     }

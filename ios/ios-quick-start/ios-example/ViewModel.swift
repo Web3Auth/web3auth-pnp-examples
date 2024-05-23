@@ -24,7 +24,9 @@ class ViewModel: ObservableObject {
         
         // IMP START - Initialize Web3Auth
         web3Auth = await Web3Auth(W3AInitParams(
-            clientId: clientId, network: network
+            clientId: clientId,
+            network: network,
+            redirectUrl: "web3auth.ios-example://auth"
         ))
         // IMP END - Initialize Web3Auth
         await MainActor.run(body: {

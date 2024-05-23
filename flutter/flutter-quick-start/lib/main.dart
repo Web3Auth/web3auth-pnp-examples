@@ -26,7 +26,7 @@ class MyApp extends StatefulWidget {
 }
 
 // IMP START - Quick Start
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class _MyAppState extends State<MyApp> {
 // IMP END - Quick Start
   String _result = '';
   bool logoutVisible = false;
@@ -35,31 +35,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final TextEditingController emailController = TextEditingController();
 
   @override
-  void dispose() {
-    super.dispose();
-    // IMP START - Quick Start
-    WidgetsBinding.instance.removeObserver(this);
-    // IMP END - Quick Start
-  }
-
-  @override
   void initState() {
     super.initState();
-    // IMP START - Quick Start
-    WidgetsBinding.instance.addObserver(this);
-    // IMP END - Quick Start
     initPlatformState();
   }
-  
-  // IMP START - Quick Start
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) {
-    // This is important to trigger the user cancellation on Android.
-    if (state == AppLifecycleState.resumed) {
-      Web3AuthFlutter.setResultUrl();
-    }
-  }
-  // IMP END - Quick Start
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {

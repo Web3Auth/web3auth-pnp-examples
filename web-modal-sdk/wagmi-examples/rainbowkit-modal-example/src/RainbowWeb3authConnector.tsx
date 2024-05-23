@@ -35,6 +35,7 @@ const web3AuthInstance = new Web3Auth({
       primary: "#768729",
     },
     uxMode: UX_MODE.REDIRECT,
+    modalZIndex: "2147483647"
   }
 });
 

@@ -170,6 +170,19 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
         getBalance()
     }
 
+    fun addChainConfig(config: ChainConfig) {
+        chainConfigList += config
+        _selectedChain.value = config
+        ethereumUseCase = EthereumUseCaseImpl(
+            Web3j.build(
+                HttpService(
+                    config.rpcTarget
+                )
+            )
+        )
+        getBalance()
+    }
+
     fun getTokenBalance(contractAddress: String, onSuccess: (balance: String?, error: String?) -> Unit) {
         viewModelScope.launch {
             try {

@@ -89,6 +89,8 @@ fun HomeScreen(viewModel: MainViewModel) {
         unselectedIcon = Icons.Outlined.Receipt
     )
 
+    val addCustomChainPath = "Add Custom Chain"
+
     val tabBarItems = listOf(homeTab, alertsTab, settingsTab)
     
     val navController = rememberNavController()
@@ -116,13 +118,21 @@ fun HomeScreen(viewModel: MainViewModel) {
         ) { innerPadding ->
             NavHost(navController = navController, startDestination = "Home", modifier = Modifier.padding(innerPadding)) {
                 composable(homeTab.title) {
-                    AccountView(viewModel = viewModel)
+                    AccountView(viewModel = viewModel, onAddCustomChain = {
+                        navController.navigate(addCustomChainPath)
+                    })
                 }
                 composable(alertsTab.title) {
                     TransactionScreen(viewModel = viewModel)
                 }
                 composable(settingsTab.title) {
                    SmartContractsScreen(viewModel = viewModel)
+                }
+                composable(addCustomChainPath) {
+                    AddCustomChainScreen(viewModel = viewModel) { chainConfig ->
+                        viewModel.addChainConfig(chainConfig)
+                        navController.popBackStack()
+                    }
                 }
             }
         }
@@ -137,7 +147,7 @@ fun HomeScreen(viewModel: MainViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun AccountView(viewModel: MainViewModel) {
+fun AccountView(viewModel: MainViewModel,  onAddCustomChain: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     val openUserInfoDialog = remember {
         mutableStateOf(false)
@@ -147,7 +157,6 @@ fun AccountView(viewModel: MainViewModel) {
     val refreshing by viewModel.isAccountLoaded.collectAsState()
 
     val pullRefreshState = rememberPullRefreshState(!refreshing, { viewModel.getBalance() })
-
     if(openUserInfoDialog.value) {
         UserInfoDialog(onDismissRequest = {
             openUserInfoDialog.value = false
@@ -202,6 +211,13 @@ fun AccountView(viewModel: MainViewModel) {
                                     }
                                 )
                             }
+                            DropdownMenuItem(
+                                text = { Text(text = "Add Custom Chain") },
+                                onClick = {
+                                    expanded = false
+                                    onAddCustomChain()
+                                }
+                            )
                         }
                     }
                 }

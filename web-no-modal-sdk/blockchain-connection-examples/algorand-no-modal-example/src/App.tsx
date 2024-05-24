@@ -1,59 +1,46 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import {
-  CHAIN_NAMESPACES,
-  IProvider,
-  UX_MODE,
-  WALLET_ADAPTERS,
-} from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import RPC from "./algorandRPC";
 import "./App.css";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x1",
+  rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
+  displayName: "Algorand Mainnet",
+  blockExplorerUrl: "",
+  ticker: "ALGO",
+  tickerName: "Algorand",
+  logo: "",
+};
+
+const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
+
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  privateKeyProvider,
+  web3AuthNetwork: "sapphire_mainnet",
+  enableLogging: true,
+});
+
+const openloginAdapter = new OpenloginAdapter();
+web3auth.configureAdapter(openloginAdapter);
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.OTHER,
-          chainId: "0x1",
-          rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
-          displayName: "Algorand Mainnet",
-          blockExplorerUrl: "",
-          ticker: "ALGO",
-          tickerName: "Algorand",
-          logo: "",
-        };
-
-        const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
-
-        const web3auth = new Web3AuthNoModal({
-          clientId,
-          privateKeyProvider,
-          web3AuthNetwork: "sapphire_mainnet",
-        });
-        
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            uxMode: UX_MODE.REDIRECT,
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
-        setWeb3auth(web3auth);
-
-        await web3auth.init();
-        setProvider(web3auth.provider);
-        if (web3auth.connected) {
+        await web3auth!.init();
+        setProvider(web3auth!.provider);
+        if (web3auth!.connected) {
           setLoggedIn(true);
         }
       } catch (error) {
@@ -69,13 +56,13 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     setProvider(web3authProvider);
+    if (web3auth.connected) {
+      setLoggedIn(true);
+    }
   };
 
   const authenticateUser = async () => {
@@ -134,11 +121,7 @@ function App() {
     }
     const rpc = new RPC(provider);
     const balance = await rpc.getBalance();
-    uiConsole(
-      "Balance",
-      balance,
-      "You can get testnet funds from https://bank.testnet.algorand.network/"
-    );
+    uiConsole("Balance", balance, "You can get testnet funds from https://bank.testnet.algorand.network/");
   };
 
   const signMessage = async () => {

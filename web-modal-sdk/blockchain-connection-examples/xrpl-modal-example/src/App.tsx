@@ -23,7 +23,7 @@ function App() {
     ticker: "XRP",
     tickerName: "XRPL",
     displayName: "xrpl mainnet",
-    blockExplorer: "https://livenet.xrpl.org",
+    blockExplorerUrl: "https://livenet.xrpl.org",
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function App() {
       try {
         const xrplProvider = new XrplPrivateKeyProvider({
           config: {
-            chainConfig: chainConfig
+            chainConfig: chainConfig,
           },
         });
 

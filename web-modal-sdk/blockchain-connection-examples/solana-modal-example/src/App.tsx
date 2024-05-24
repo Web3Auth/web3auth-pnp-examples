@@ -10,9 +10,7 @@ import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
-
 function App() {
-
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -25,16 +23,15 @@ function App() {
     ticker: "SOL",
     decimals: 18,
     blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
-    logo: "https://images.toruswallet.io/sol.svg"
+    logo: "https://images.toruswallet.io/sol.svg",
   };
 
   useEffect(() => {
     const init = async () => {
       try {
-
         const solanaPrivateKeyPrvoider = new SolanaPrivateKeyProvider({
-          config: { chainConfig: chainConfig }
-        })
+          config: { chainConfig: chainConfig },
+        });
 
         const web3auth = new Web3Auth({
           clientId,
@@ -52,16 +49,15 @@ function App() {
             uxMode: "redirect",
           },
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-          privateKeyProvider: solanaPrivateKeyPrvoider
+          privateKeyProvider: solanaPrivateKeyPrvoider,
         });
-
 
         // Setup external adapaters
         const adapters = await getDefaultExternalAdapters({
           options: {
             clientId,
             chainConfig,
-          }
+          },
         });
         adapters.forEach((adapter) => {
           web3auth.configureAdapter(adapter);
@@ -111,7 +107,7 @@ function App() {
       decimals: 18,
       rpcTarget: "https://api.testnet.solana.com",
       blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
-      logo: "https://images.toruswallet.io/sol.svg"
+      logo: "https://images.toruswallet.io/sol.svg",
     };
 
     await web3auth?.addChain(chainConfig);
@@ -356,6 +352,9 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
+        </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fblockchain-connection-examples%2Fsolana-modal-example&project-name=w3a-solana-modal&repository-name=w3a-solana-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

@@ -9,6 +9,10 @@ This example demonstrates how to use Web3Auth with Facebook (Custom Authenticati
 
 ## How to Use
 
+### One-Click Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fcustom-authentication%2Fsingle-verifier-examples%2Ffacebook-no-modal-example&project-name=w3a-facebook-no-modal&repository-name=w3a-facebook-no-modal)
+
 ### Download Manually
 
 ```bash

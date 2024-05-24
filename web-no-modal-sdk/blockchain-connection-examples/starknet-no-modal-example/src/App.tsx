@@ -198,6 +198,9 @@ function App() {
         >
           Source code
         </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fblockchain-connection-examples%2Fstarknet-no-modal-example&project-name=w3a-starknet-no-modal&repository-name=w3a-starknet-no-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+        </a>
       </footer>
     </div>
   );

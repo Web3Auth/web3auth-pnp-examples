@@ -1,3 +1,4 @@
+import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import React, { useState } from "react";
 
 import Console from "../components/Console";
@@ -8,7 +9,7 @@ import Sidebar from "../components/Sidebar";
 import SourceCode from "../components/SourceCode";
 import Tabs from "../components/Tabs";
 import ABI from "../config/ABI.json";
-import { useWeb3Auth } from "../services/web3auth";
+import { usePlayground } from "../services/playground";
 
 function Contract() {
   const [abi, setAbi] = useState<string>(JSON.stringify(ABI));
@@ -37,7 +38,8 @@ function Contract() {
     </button>
   );
 
-  const { connected, deployContract, readContract, writeContract } = useWeb3Auth();
+  const { deployContract, readContract, writeContract } = usePlayground();
+  const { isConnected } = useWeb3Auth();
 
   const formDetailsDeploy = [
     {
@@ -108,7 +110,7 @@ function Contract() {
     <main className="flex flex-col h-screen z-0">
       <Header />
       <div className="flex flex-1 overflow-hidden">
-        {connected ? (
+        {isConnected ? (
           <>
             <Sidebar />
             <div className="w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">

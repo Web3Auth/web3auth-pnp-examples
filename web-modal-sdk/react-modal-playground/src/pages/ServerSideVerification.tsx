@@ -1,3 +1,4 @@
+import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import React, { useState } from "react";
 
 import Console from "../components/Console";
@@ -6,12 +7,13 @@ import Header from "../components/Header";
 import NotConnectedPage from "../components/NotConnectedPage";
 import Sidebar from "../components/Sidebar";
 import SourceCode from "../components/SourceCode";
-import { useWeb3Auth } from "../services/web3auth";
+import { usePlayground } from "../services/playground";
 
 function ServerSideVerification() {
   const [loading, setLoading] = useState(false);
-  const { user, connected, verifyServerSide } = useWeb3Auth();
-  const [tokenId, setTokenId] = useState(user?.idToken);
+  const { isConnected, userInfo } = useWeb3Auth();
+  const [tokenId, setTokenId] = useState(userInfo.idToken);
+  const { verifyServerSide } = usePlayground();
 
   const LoaderButton = ({ ...props }) => (
     <button {...props}>
@@ -41,7 +43,7 @@ function ServerSideVerification() {
     <main className="flex flex-col h-screen">
       <Header />
       <div className="flex flex-1 overflow-hidden z-0">
-        {connected ? (
+        {isConnected ? (
           <>
             <Sidebar />
             <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
@@ -52,7 +54,7 @@ function ServerSideVerification() {
                   style={{ backgroundColor: "#0364ff" }}
                   onClick={async () => {
                     setLoading(true);
-                    await verifyServerSide(tokenId);
+                    verifyServerSide(tokenId);
                     setLoading(false);
                   }}
                 >

@@ -3,17 +3,7 @@ import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
 export const chain: {
   [key: string]: CustomChainConfig;
 } = {
-  "Sepolia Testnet": {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0xaa36a7",
-    displayName: "Ethereum Sepolia",
-    tickerName: "Ethereum",
-    ticker: "ETH",
-    rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-    blockExplorerUrl: "https://sepolia.etherscan.io",
-    logo: "https://web3auth.io/images/web3authlog.png",
-  },
-  Ethereum: {
+  ethereum: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
     displayName: "Ethereum Mainnet",
@@ -23,7 +13,17 @@ export const chain: {
     tickerName: "Ethereum",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Polygon: {
+  sepolia: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0xaa36a7",
+    displayName: "Ethereum Sepolia",
+    tickerName: "Ethereum",
+    ticker: "ETH",
+    rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+    blockExplorerUrl: "https://sepolia.etherscan.io",
+    logo: "https://web3auth.io/images/web3authlog.png",
+  },
+  polygon: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x89", // hex of 137, polygon mainnet
     rpcTarget: "https://rpc.ankr.com/polygon",
@@ -35,7 +35,7 @@ export const chain: {
     tickerName: "Matic",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  "Polygon Amoy Testnet": {
+  polygonTest: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x13882", // hex of 80002, polygon testnet
     rpcTarget: "https://rpc.ankr.com/polygon_amoy",
@@ -47,7 +47,7 @@ export const chain: {
     tickerName: "Matic",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  "Base Chain (Coinbase)": {
+  base: {
     // https://docs.base.org/using-base/
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x14A34", // hex of 84532
@@ -60,7 +60,7 @@ export const chain: {
     tickerName: "ETH",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  "BNB Chain": {
+  bnb: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x38", // hex of 56
     rpcTarget: "https://rpc.ankr.com/bsc",
@@ -72,7 +72,7 @@ export const chain: {
     tickerName: "BNB",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Avalanche: {
+  avalanche: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xA86A", // hex of 43114
     rpcTarget: "https://rpc.ankr.com/avalanche-c",
@@ -84,7 +84,7 @@ export const chain: {
     tickerName: "AVAX",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Arbitrum: {
+  arbitrum: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xA4B1", // hex of 42161
     rpcTarget: "https://rpc.ankr.com/arbitrum",
@@ -96,7 +96,7 @@ export const chain: {
     tickerName: "AETH",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Optimism: {
+  optimism: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xA", // hex of 10
     rpcTarget: "https://rpc.ankr.com/optimism",
@@ -108,7 +108,7 @@ export const chain: {
     tickerName: "OP",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Cronos: {
+  cronos: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x19", // hex of 25, cronos mainnet
     rpcTarget: "https://rpc.cronos.org",
@@ -120,7 +120,7 @@ export const chain: {
     tickerName: "CRO",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Harmony: {
+  harmony: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x63564c40", // hex of 1666600000, Harmony mainnet
     rpcTarget: "https://rpc.ankr.com/harmony",
@@ -132,7 +132,7 @@ export const chain: {
     tickerName: "ONE",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Celo: {
+  celo: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xa4ec", // hex of 42220, Celo mainnet
     rpcTarget: "https://rpc.ankr.com/celo",
@@ -144,7 +144,7 @@ export const chain: {
     tickerName: "CELO",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Moonbeam: {
+  moonbeam: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x504", // hex of 1284, moonbeam mainnet
     rpcTarget: "https://rpc.ankr.com/moonbeam",
@@ -156,7 +156,7 @@ export const chain: {
     tickerName: "GLMR",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Moonriver: {
+  moonriver: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x505", // hex of 1285, moonriver mainnet
     rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
@@ -168,7 +168,7 @@ export const chain: {
     tickerName: "MOVR",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Klaytn: {
+  klaytn: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x2019", // hex of 8217, Klaytn mainnet
     rpcTarget: "https://public-node-api.klaytnapi.com/v1/cypress",
@@ -180,7 +180,7 @@ export const chain: {
     tickerName: "KLAY",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Flare: {
+  flare: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xE", // hex of 14
     rpcTarget: "https://flare-api.flare.network/ext/C/rpc",
@@ -192,7 +192,7 @@ export const chain: {
     tickerName: "FLR",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  Songbird: {
+  songbird: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x13", // hex of 19
     rpcTarget: "https://songbird-api.flare.network/ext/C/rpc",
@@ -204,7 +204,7 @@ export const chain: {
     tickerName: "SGB",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
-  zKatana: {
+  zkatana: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x133E40", // hex of 1261120
     rpcTarget: "https://rpc.zkatana.gelato.digital",

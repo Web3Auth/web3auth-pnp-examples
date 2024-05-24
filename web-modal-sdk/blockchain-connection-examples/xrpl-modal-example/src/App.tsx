@@ -23,7 +23,7 @@ function App() {
     ticker: "XRP",
     tickerName: "XRPL",
     displayName: "xrpl mainnet",
-    blockExplorer: "https://livenet.xrpl.org",
+    blockExplorerUrl: "https://livenet.xrpl.org",
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function App() {
       try {
         const xrplProvider = new XrplPrivateKeyProvider({
           config: {
-            chainConfig: chainConfig
+            chainConfig: chainConfig,
           },
         });
 
@@ -267,6 +267,9 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
+        </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fblockchain-connection-examples%2Fxrpl-modal-example&project-name=w3a-xrpl-modal&repository-name=w3a-xrpl-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

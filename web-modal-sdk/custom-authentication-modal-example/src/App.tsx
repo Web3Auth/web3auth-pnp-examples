@@ -34,7 +34,6 @@ function App() {
           logo: "https://images.toruswallet.io/eth.svg",
         };
 
-
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig: chainConfig } });
 
         const web3auth = new Web3Auth({
@@ -279,7 +278,7 @@ function App() {
       decimals: 18,
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
       blockExplorerUrl: "https://sepolia.etherscan.io",
-      logo: "https://images.toruswallet.io/eth.svg"
+      logo: "https://images.toruswallet.io/eth.svg",
     };
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
@@ -460,6 +459,9 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
+        </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fcustom-authentication-modal-example&project-name=w3a-custom-auth-modal&repository-name=w3a-custom-auth-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

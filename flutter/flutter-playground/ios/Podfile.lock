@@ -1,28 +1,19 @@
 PODS:
-  - BigInt (5.0.0)
-  - CryptoSwift (1.8.1)
+  - BigInt (5.2.0)
+  - curvelib.swift (1.0.1)
   - Flutter (1.0.0)
-  - GenericJSON (2.0.2)
   - KeychainSwift (20.0.0)
-  - Logging (1.0.0)
-  - secp256k1.swift (0.1.4)
-  - TorusSessionManager (3.0.1):
-    - CryptoSwift (~> 1.8.0)
+  - TorusSessionManager (4.0.2):
+    - curvelib.swift (~> 1.0.1)
     - KeychainSwift (~> 20.0.0)
-    - web3.swift (~> 1.6.0)
-  - web3.swift (1.6.0):
-    - BigInt (~> 5.0.0)
-    - GenericJSON (~> 2.0)
-    - Logging (~> 1.0.0)
-    - secp256k1.swift (~> 0.1)
-  - Web3Auth (7.5.1):
-    - CryptoSwift (~> 1.8.0)
+  - Web3Auth (8.3.0):
+    - BigInt (~> 5.2.0)
+    - curvelib.swift (~> 1.0.1)
     - KeychainSwift (~> 20.0.0)
-    - TorusSessionManager (~> 3.0.1)
-    - web3.swift (~> 1.6.0)
+    - TorusSessionManager (~> 4.0.2)
   - web3auth_flutter (2.0.1):
     - Flutter
-    - Web3Auth (~> 7.5.1)
+    - Web3Auth (~> 8.3.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -31,13 +22,9 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - BigInt
-    - CryptoSwift
-    - GenericJSON
+    - curvelib.swift
     - KeychainSwift
-    - Logging
-    - secp256k1.swift
     - TorusSessionManager
-    - web3.swift
     - Web3Auth
 
 EXTERNAL SOURCES:
@@ -47,17 +34,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/web3auth_flutter/ios"
 
 SPEC CHECKSUMS:
-  BigInt: 74b4d88367b0e819d9f77393549226d36faeb0d8
-  CryptoSwift: b9c701d6f5011df23794dbf7f2e480a77835d83d
+  BigInt: f668a80089607f521586bbe29513d708491ef2f7
+  curvelib.swift: d0746ae82bee34016c06da3567a97e493b3c979f
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  GenericJSON: 79a840eeb77030962e8cf02a62d36bd413b67626
   KeychainSwift: 0ce6a4d13f7228054d1a71bb1b500448fb2ab837
-  Logging: 9ef4ecb546ad3169398d5a723bc9bea1c46bef26
-  secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
-  TorusSessionManager: 829495789427b7ad7e29f2b535092a44f3900b42
-  web3.swift: 2263d1e12e121b2c42ffb63a5a7beb1acaf33959
-  Web3Auth: 92765f42b9b1443a359475c39d2ae163a212eac5
-  web3auth_flutter: 86975c81b0271df0955b22dc34a532351eab6358
+  TorusSessionManager: 05a1a8f3265d0949a1a342c4ba2c52882445b614
+  Web3Auth: 98ec9787e52e813c7ee83f73fa10ba5f52187907
+  web3auth_flutter: 96419124086e0083994e390b0c7cc86e441c3006
 
 PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
 

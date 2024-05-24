@@ -68,7 +68,7 @@ function App() {
               backUpShareFactor: {
                 enable: true,
                 priority: 2,
-                mandatory: false,
+                mandatory: true,
               },
               socialBackupFactor: {
                 enable: true,
@@ -485,6 +485,9 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
+        </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fblockchain-connection-examples%2Fevm-modal-example&project-name=w3a-evm-modal&repository-name=w3a-evm-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

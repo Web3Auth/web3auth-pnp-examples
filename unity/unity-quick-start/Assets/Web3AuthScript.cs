@@ -46,7 +46,7 @@ public class Web3AuthScript : MonoBehaviour
         // IMP END - SDK Initialization
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
-        web3 = new Web3(rpcURL);
+
         updateConsole("Ready to Login!");
     }
 
@@ -88,6 +88,9 @@ public class Web3AuthScript : MonoBehaviour
         privateKey = response.privKey;
         var newAccount = new Account(privateKey);
         account = newAccount;
+
+        var rpc = new Nethereum.JsonRpc.Client.RpcClient(new Uri(rpcURL));
+        web3 = new Web3(account, rpc);
         // IMP END - Blockchain Calls
 
         Debug.Log(JsonConvert.SerializeObject(response, Formatting.Indented));

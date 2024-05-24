@@ -1,9 +1,9 @@
 import React from "react";
 
-import { useWeb3Auth } from "../services/web3auth";
+import { usePlayground } from "../services/playground";
 
 const Console = () => {
-  const { playgroundConsole } = useWeb3Auth();
+  const { playgroundConsole } = usePlayground();
 
   return (
     <div className="py-16 w-11/12 px-4 py-16 sm:px-6 lg:px-8 flex-col">

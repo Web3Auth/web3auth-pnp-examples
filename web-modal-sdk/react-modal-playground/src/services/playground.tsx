@@ -17,8 +17,6 @@ export interface IPlaygroundContext {
   chainId: string;
   playgroundConsole: string;
   connectedChain: CustomChainConfig;
-  login: () => Promise<void>;
-  logout: () => Promise<void>;
   getUserInfo: () => Promise<any>;
   getAddress: () => Promise<string>;
   getBalance: () => Promise<string>;
@@ -44,8 +42,6 @@ export const PlaygroundContext = createContext<IPlaygroundContext>({
   chainList: chain,
   chainListOptionSelected: "sepolia",
   connectedChain: chain.sepolia,
-  login: async () => {},
-  logout: async () => {},
   getUserInfo: async () => null,
   getAddress: async () => "",
   getBalance: async () => "",
@@ -84,7 +80,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     console.log(...args);
   };
 
-  const { initModal, isConnected, connect, logout, addAndSwitchChain, userInfo, provider, web3Auth } = useWeb3Auth();
+  const { initModal, isConnected, connect, addAndSwitchChain, userInfo, provider, web3Auth } = useWeb3Auth();
   // const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
 
   const setNewWalletProvider = useCallback(
@@ -119,22 +115,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     if (web3Auth) {
       init();
     }
-  }, [web3Auth, isConnected, provider, connect, initModal]);
-
-  const login = async () => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return;
-    }
-    try {
-      await connect();
-      if (isConnected) {
-        setNewWalletProvider(provider);
-      }
-    } catch (error) {
-      uiConsole(error);
-    }
-  };
+  }, [web3Auth, isConnected, provider, connect, initModal, setNewWalletProvider]);
 
   const getUserInfo = async () => {
     if (!web3Auth) {
@@ -326,6 +307,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
       uiConsole("Chain switched successfully");
     } catch (error) {
       uiConsole("Failed to switch chain", error);
+      setIsLoading(false);
     }
   };
 
@@ -339,8 +321,6 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     connectedChain,
     chainList,
     chainListOptionSelected,
-    login,
-    logout,
     getUserInfo,
     getAddress,
     getBalance,

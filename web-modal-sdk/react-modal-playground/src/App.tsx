@@ -1,6 +1,7 @@
 import "./App.css";
 
-import { Web3AuthProvider } from "@web3auth/modal-react-hooks";
+import { Web3AuthInnerContext, Web3AuthProvider } from "@web3auth/modal-react-hooks";
+import { WalletServicesProvider } from "@web3auth/wallet-services-plugin-react-hooks";
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -17,18 +18,20 @@ function App() {
   return (
     <div>
       <Web3AuthProvider config={web3AuthContextConfig}>
-        <Playground>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/">
-                <Route index element={<HomePage />} />
-                <Route path="contract" element={<Contract />} />
-                <Route path="transaction" element={<Transaction />} />
-                <Route path="server-side-verification" element={<ServerSideVerification />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </Playground>
+        <WalletServicesProvider context={Web3AuthInnerContext}>
+          <Playground>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<HomePage />} />
+                  <Route path="contract" element={<Contract />} />
+                  <Route path="transaction" element={<Transaction />} />
+                  <Route path="server-side-verification" element={<ServerSideVerification />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </Playground>
+        </WalletServicesProvider>
       </Web3AuthProvider>
     </div>
   );

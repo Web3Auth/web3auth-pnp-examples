@@ -52,7 +52,10 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 
-const walletServicesPlugin = new WalletServicesPlugin();
+const walletServicesPlugin = new WalletServicesPlugin({
+  wsEmbedOpts: {},
+  walletInitOptions: { whiteLabel: { showWidgetButton: true, buttonPosition: "bottom-right" } },
+});
 
 const web3AuthContextConfig = {
   web3AuthOptions,

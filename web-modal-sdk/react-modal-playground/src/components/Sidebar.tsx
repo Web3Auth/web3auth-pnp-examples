@@ -1,3 +1,4 @@
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -6,6 +7,7 @@ import { usePlayground } from "../services/playground";
 
 const Sidebar = () => {
   const { connectedChain } = usePlayground();
+  const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
 
   const navigate = useNavigate();
   function goToHome() {
@@ -66,9 +68,12 @@ const Sidebar = () => {
           {location.pathname === "/server-side-verification"
             ? activePage("Server Side Verification", 4)
             : linktoGo("Server Side Verification", goToServerSideVerification, 4)}
-          {linktoGo("Explorer Link", goToExplorer, 5)}
           {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet, 6) : null}
-          {linktoGo("Source Code", goToSounceCode, 6)}
+          {linktoGo("Fiat On Ramp", showCheckout, 6)}
+          {linktoGo("WalletConnect Scanner", showWalletConnectScanner, 7)}
+          {linktoGo("Wallet UI", showWalletUI, 8)}
+          {linktoGo("Explorer Link", goToExplorer, 5)}
+          {linktoGo("Source Code", goToSounceCode, 9)}
         </nav>
       </div>
       <UserProfile />

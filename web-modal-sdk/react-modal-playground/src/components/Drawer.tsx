@@ -1,4 +1,5 @@
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -11,6 +12,8 @@ interface DrawerProps {
 }
 const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   const { connectedChain } = usePlayground();
+  const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
+
   const { logout } = useWeb3Auth();
 
   const navigate = useNavigate();
@@ -32,7 +35,7 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   function goToFaucet() {
     if (connectedChain.chainId === "0xaa36a7") {
       window.open("https://www.infura.io/faucet/sepolia");
-    } else if (connectedChain.chainId === "0x13881") {
+    } else if (connectedChain.chainId === "0x13882") {
       window.open("https://faucet.polygon.technology/");
     }
   }
@@ -74,9 +77,13 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
               {location.pathname === "/server-side-verification"
                 ? activePage("Server Side Verification", 4)
                 : linktoGo("Server Side Verification", goToServerSideVerification, 4)}
-              {linktoGo("Explorer Link", goToExplorer, 5)}
-              {connectedChain.chainId === "0x5" || connectedChain.chainId === "0x13881" ? linktoGo("Faucet Link", goToFaucet, 6) : null}
-              {linktoGo("Source Code", goToSounceCode, 6)}
+              {linktoGo("WalletConnect Scanner", showWalletConnectScanner, 6)}
+              {linktoGo("Wallet UI", showWalletUI, 7)}
+              {connectedChain.chainId === "0xaa36a7" || connectedChain.chainId === "0x13882"
+                ? linktoGo("Faucet Link", goToFaucet, 8)
+                : linktoGo("Fiat On Ramp", showCheckout, 8)}
+              {linktoGo("Explorer Link", goToExplorer, 9)}
+              {linktoGo("Source Code", goToSounceCode, 10)}
               <div
                 onClick={() => {
                   setOpen(false);

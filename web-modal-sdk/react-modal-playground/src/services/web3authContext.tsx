@@ -11,7 +11,7 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
-    chainConfig: chain.sepolia,
+    chainConfig: chain.ethereum,
   },
 });
 

@@ -13,7 +13,7 @@ provider specific to the user and application.
 
 - [Website](https://web3auth.io)
 - [Docs](https://web3auth.io/docs)
-- [Guides](https://web3auth.io/docs/content-hub?type=guides)
+- [Guides](https://web3auth.io/docs/guides)
 - [SDK / API References](https://web3auth.io/docs/sdk)
 - [Pricing](https://web3auth.io/pricing.html)
 - [Github Discussion Board](https://github.com/orgs/Web3Auth/discussions)

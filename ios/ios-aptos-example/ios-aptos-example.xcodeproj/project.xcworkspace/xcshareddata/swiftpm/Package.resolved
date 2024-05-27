@@ -1,0 +1,96 @@
+{
+  "originHash" : "56e4b68b4b34569f7a5c6566a78e27fca121685fb609936dd72c1614fb1c7c81",
+  "pins" : [
+    {
+      "identity" : "aptoskit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/OpenDive/AptosKit",
+      "state" : {
+        "revision" : "307c6b3e71dfbac72818964c45b21a52aa67b13a",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "bigint",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/BigInt.git",
+      "state" : {
+        "revision" : "0ed110f7555c34ff468e72e1686e59721f2b0da6",
+        "version" : "5.3.0"
+      }
+    },
+    {
+      "identity" : "cryptoswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
+      "state" : {
+        "revision" : "c9c3df6ab812de32bae61fc0cd1bf6d45170ebf0",
+        "version" : "1.8.2"
+      }
+    },
+    {
+      "identity" : "curvelib.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tkey/curvelib.swift",
+      "state" : {
+        "revision" : "9f88bd5e56d1df443a908f7a7e81ae4f4d9170ea",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "ed25519swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pebble8888/ed25519swift.git",
+      "state" : {
+        "revision" : "1e821f5516049f5b83aca8cb3b982910cf8c028c",
+        "version" : "1.2.8"
+      }
+    },
+    {
+      "identity" : "keychain-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/evgenyneu/keychain-swift.git",
+      "state" : {
+        "revision" : "d108a1fa6189e661f91560548ef48651ed8d93b9",
+        "version" : "20.0.0"
+      }
+    },
+    {
+      "identity" : "session-manager-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Web3Auth/session-manager-swift.git",
+      "state" : {
+        "revision" : "20cc7bff065d7fe53164d17e7714a3f17d4cea2a",
+        "version" : "4.0.2"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON.git",
+      "state" : {
+        "revision" : "2b6054efa051565954e1d2b9da831680026cd768",
+        "version" : "4.3.0"
+      }
+    },
+    {
+      "identity" : "uint256",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hyugit/UInt256.git",
+      "state" : {
+        "revision" : "1a499a1bf08afd10b9fcd0fd6d90b6dd9196be50",
+        "version" : "0.2.2"
+      }
+    },
+    {
+      "identity" : "web3auth-swift-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Web3Auth/web3auth-swift-sdk/",
+      "state" : {
+        "revision" : "f146af3cf1e937a54e668d1894795ad26db6663e",
+        "version" : "8.4.0"
+      }
+    }
+  ],
+  "version" : 3
+}

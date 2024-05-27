@@ -1,7 +1,7 @@
 import { createWalletClient, createPublicClient, custom, formatEther, parseEther, http, encodeFunctionData, parseAbiItem } from "viem";
 import { mainnet, polygonMumbai, sepolia } from "viem/chains";
-import { ENTRYPOINT_ADDRESS_V06, ENTRYPOINT_ADDRESS_V07, createSmartAccountClient, providerToSmartAccountSigner } from "permissionless";
-import { signerToSimpleSmartAccount, signerToSafeSmartAccount } from "permissionless/accounts";
+import { ENTRYPOINT_ADDRESS_V07, createSmartAccountClient, providerToSmartAccountSigner } from "permissionless";
+import { signerToSafeSmartAccount } from "permissionless/accounts";
 import type { EIP1193Provider } from "viem";
 import { createPimlicoBundlerClient, createPimlicoPaymasterClient } from "permissionless/clients/pimlico";
 
@@ -22,8 +22,6 @@ export default class EthereumRpc {
   private paymasterClient: any;
   private bundlerClient: any;
   private smartAccountClient: any;
-  // testing erc20 paymaster
-  private sAccount: any;
 
   private contractABI = [
     {
@@ -81,13 +79,13 @@ export default class EthereumRpc {
         chain: sepolia,
       });
 
-      this.smartAccount = await signerToSimpleSmartAccount(this.publicClient, {
-        signer: this.smartAccountSigner,
-        factoryAddress: "0x9406Cc6185a346906296840746125a0E44976454",
-        entryPoint: ENTRYPOINT_ADDRESS_V06, // "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789", // Replace with actual entry point address
-      });
+      // this.smartAccount = await signerToSimpleSmartAccount(this.publicClient, {
+      //   signer: this.smartAccountSigner,
+      //   factoryAddress: "0x9406Cc6185a346906296840746125a0E44976454",
+      //   entryPoint: ENTRYPOINT_ADDRESS_V06, // "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789", // Replace with actual entry point address
+      // });
 
-      console.log("Smart account initialized:", this.smartAccount);
+      // console.log("Smart account initialized:", this.smartAccount);
 
       this.paymasterClient = createPimlicoPaymasterClient({
         transport: http(paymasterUrl),
@@ -100,6 +98,23 @@ export default class EthereumRpc {
         entryPoint: ENTRYPOINT_ADDRESS_V07,
       });
       console.log("Bundler client initialized:", this.bundlerClient);
+
+      this.smartAccount = await signerToSafeSmartAccount(this.publicClient, {
+        signer: this.smartAccountSigner,
+        entryPoint: ENTRYPOINT_ADDRESS_V07, // global entrypoint
+        safeVersion: "1.4.1",
+        setupTransactions: [
+          {
+            to: usdcAddress,
+            value: 0n,
+            data: encodeFunctionData({
+              abi: [parseAbiItem("function approve(address spender, uint256 amount)")],
+              args: [erc20PaymasterAddress, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn],
+            }),
+          },
+        ],
+      });
+      console.log("Safe smart account initialized:", this.smartAccount);
 
       this.smartAccountClient = createSmartAccountClient({
         account: this.smartAccount,
@@ -115,22 +130,6 @@ export default class EthereumRpc {
       });
       console.log("Smart account client initialized:", this.smartAccountClient);
 
-      this.sAccount = await signerToSafeSmartAccount(this.publicClient, {
-        signer: this.smartAccountSigner,
-        entryPoint: ENTRYPOINT_ADDRESS_V07, // global entrypoint
-        safeVersion: "1.4.1",
-        setupTransactions: [
-          {
-            to: usdcAddress,
-            value: 0n,
-            data: encodeFunctionData({
-              abi: [parseAbiItem("function approve(address spender, uint256 amount)")],
-              args: [erc20PaymasterAddress, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn],
-            }),
-          },
-        ],
-      });
-      console.log("Safe smart account initialized:", this.sAccount);
       await this.getSmartAccountBalance();
     } catch (error) {
       console.error("Failed to initialize smart account:", error);
@@ -142,12 +141,12 @@ export default class EthereumRpc {
       abi: [parseAbiItem("function balanceOf(address account) returns (uint256)")],
       address: usdcAddress,
       functionName: "balanceOf",
-      args: [this.sAccount.address],
+      args: [this.smartAccount.address],
     });
 
     if (senderUsdcBalance < 1_000_000n) {
       throw new Error(
-        `insufficient USDC balance for counterfactual wallet address ${this.sAccount.address}: ${
+        `insufficient USDC balance for counterfactual wallet address ${this.smartAccount.address}: ${
           Number(senderUsdcBalance) / 1000000
         } USDC, required at least 1 USDC. Load up balance at https://faucet.circle.com/`
       );

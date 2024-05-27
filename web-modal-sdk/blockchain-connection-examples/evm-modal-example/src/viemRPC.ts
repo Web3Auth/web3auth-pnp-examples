@@ -153,13 +153,18 @@ export default class EthereumRpc {
   async sendSmartAccountTransaction() {
     try {
       const destination = "0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8";
-      const amount = 0n;
-      const hash = await this.smartAccountClient.sendTransaction({
-        to: destination,
-        value: amount,
-      });
-      console.log("Smart account transaction hash:", hash);
-      return hash;
+      const amount = parseEther("0.000");
+      if (this.smartAccountClient !== undefined) {
+        console.log("Sending smart account transaction...");
+        const hash = await this.smartAccountClient.sendTransaction({
+          to: destination,
+          value: amount,
+        });
+        console.log("Smart account transaction hash:", hash);
+        return hash;
+      } else {
+        throw new Error("Smart account client is not initialized");
+      }
     } catch (error) {
       console.error("Failed to send smart account transaction:", error);
       throw error;

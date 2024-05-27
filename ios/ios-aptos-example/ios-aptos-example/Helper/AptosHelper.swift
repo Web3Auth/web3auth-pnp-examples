@@ -38,6 +38,11 @@ class AptosHelper {
         return (Double(balance) / Double(100_000_000)).description
     }
     
+    func airdropFaucet() async throws {
+        let faucetClient = FaucetClient(baseUrl: "https://faucet.testnet.aptoslabs.com", restClient: aptosClient)
+        try await faucetClient.fundAccount(account.accountAddress.description, 100_000_000)
+    }
+    
     func selfTransfer() async throws -> String {
         let payload: [String: Any] = [
             "type": "entry_function_payload",

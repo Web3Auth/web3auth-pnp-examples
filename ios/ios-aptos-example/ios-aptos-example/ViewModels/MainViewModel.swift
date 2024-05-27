@@ -78,10 +78,26 @@ class MainViewModel: ObservableObject {
             do {
                 let hash = try await aptosHelper.selfTransfer()
                 showAlert(content: "Hash: \(hash)")
-                let balance = try await aptosHelper.getBalance()
-                DispatchQueue.main.async {
-                    self.balance = balance
-                }
+                try await loadBalance()
+            } catch let error {
+                showAlert(content: error.localizedDescription)
+            }
+        }
+    }
+    
+    private func loadBalance() async throws {
+        let balance = try await aptosHelper.getBalance()
+        DispatchQueue.main.async {
+            self.balance = balance
+        }
+    }
+    
+    func airdropFacuet() {
+        Task {
+            do {
+                try await aptosHelper.airdropFaucet()
+                showAlert(content: "Airdropped 1 Aptos, wait for few seconds to reflect!")
+                try await loadBalance()
             } catch let error {
                 showAlert(content: error.localizedDescription)
             }

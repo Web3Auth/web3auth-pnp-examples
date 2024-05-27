@@ -52,9 +52,6 @@ function App() {
           },
         });
         web3auth.configureAdapter(openloginAdapter);
-
-        const sfaAdapter = new SFAAdapter();
-        web3auth.configureAdapter(sfaAdapter);
         setWeb3auth(web3auth);
 
         await web3auth.init();
@@ -77,14 +74,6 @@ function App() {
       const idToken = await loginRes.user.getIdToken(true);
       console.log("idToken", idToken);
 
-      // check if mfa is enabled
-      const check = web3auth.checkMfa(verifier, verifierIdValue); // works like lookup API and checks if isMfaEnabled is true or false/ basically if the nonce exists or not
-      // login using sfa adapter if mfa not setup
-      if (check === false) {
-        web3auth?.connectTo(WALLET_ADAPTERS.SFA, {
-          verifier, verifierIdValue, idToken});
-      } else {
-      // login using openlogin adapter if mfa is enabled
       await web3auth?.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
         loginProvider: "jwt",
         extraLoginOptions: {
@@ -93,7 +82,6 @@ function App() {
           domain: "http://localhost:3000",
         },
       });
-    }
     } catch (err) {
       console.error(err);
       throw err;

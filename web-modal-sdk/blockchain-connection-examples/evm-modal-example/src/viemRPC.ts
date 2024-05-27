@@ -2,17 +2,32 @@ import { createWalletClient, createPublicClient, custom, formatEther, parseEther
 import { mainnet, polygonMumbai, sepolia } from "viem/chains";
 import { ENTRYPOINT_ADDRESS_V07, createSmartAccountClient, providerToSmartAccountSigner } from "permissionless";
 import { signerToSafeSmartAccount } from "permissionless/accounts";
-import type { EIP1193Provider } from "viem";
 import { createPimlicoBundlerClient, createPimlicoPaymasterClient } from "permissionless/clients/pimlico";
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { EIP1193Provider } from "viem";
 import type { IProvider } from "@web3auth/base";
 
-const erc20PaymasterAddress = "0x000000000041F3aFe8892B48D88b6862efe0ec8d";
-const usdcAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
-const apiKey = "bff8c9e7-b1ad-4489-ab73-a61e30343138";
-const paymasterUrl = `https://api.pimlico.io/v2/${sepolia}/rpc?apikey=${apiKey}`;
-const bundlerUrl = `https://api.pimlico.io/v2/${sepolia}/rpc?apikey=${apiKey}`;
+const ERC20_PAYMASTER_ADDRESS = "0x000000000041F3aFe8892B48D88b6862efe0ec8d";
+const USDC_ADDRESS = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
+const API_KEY = "bff8c9e7-b1ad-4489-ab73-a61e30343138";
+const PAYMASTER_URL = `https://api.pimlico.io/v2/${sepolia}/rpc?apikey=${API_KEY}`;
+const BUNDLER_URL = `https://api.pimlico.io/v2/${sepolia}/rpc?apikey=${API_KEY}`;
+
+const CONTRACT_ABI = [
+  {
+    inputs: [],
+    name: "retrieve",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "num", type: "uint256" }],
+    name: "store",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
 
 export default class EthereumRpc {
   private provider: IProvider;
@@ -23,40 +38,11 @@ export default class EthereumRpc {
   private bundlerClient: any;
   private smartAccountClient: any;
 
-  private contractABI = [
-    {
-      inputs: [],
-      name: "retrieve",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "num",
-          type: "uint256",
-        },
-      ],
-      name: "store",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ];
-
   constructor(provider: IProvider) {
     this.provider = provider;
   }
 
-  getViewChain() {
+  private getViewChain() {
     const chainId = this.provider.chainId;
     switch (chainId) {
       case "1":
@@ -79,37 +65,29 @@ export default class EthereumRpc {
         chain: sepolia,
       });
 
-      // this.smartAccount = await signerToSimpleSmartAccount(this.publicClient, {
-      //   signer: this.smartAccountSigner,
-      //   factoryAddress: "0x9406Cc6185a346906296840746125a0E44976454",
-      //   entryPoint: ENTRYPOINT_ADDRESS_V06, // "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789", // Replace with actual entry point address
-      // });
-
-      // console.log("Smart account initialized:", this.smartAccount);
-
       this.paymasterClient = createPimlicoPaymasterClient({
-        transport: http(paymasterUrl),
+        transport: http(PAYMASTER_URL),
         entryPoint: ENTRYPOINT_ADDRESS_V07,
       });
       console.log("Paymaster client initialized:", this.paymasterClient);
 
       this.bundlerClient = createPimlicoBundlerClient({
-        transport: http(bundlerUrl),
+        transport: http(BUNDLER_URL),
         entryPoint: ENTRYPOINT_ADDRESS_V07,
       });
       console.log("Bundler client initialized:", this.bundlerClient);
 
       this.smartAccount = await signerToSafeSmartAccount(this.publicClient, {
         signer: this.smartAccountSigner,
-        entryPoint: ENTRYPOINT_ADDRESS_V07, // global entrypoint
+        entryPoint: ENTRYPOINT_ADDRESS_V07,
         safeVersion: "1.4.1",
         setupTransactions: [
           {
-            to: usdcAddress,
+            to: USDC_ADDRESS,
             value: 0n,
             data: encodeFunctionData({
               abi: [parseAbiItem("function approve(address spender, uint256 amount)")],
-              args: [erc20PaymasterAddress, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn],
+              args: [ERC20_PAYMASTER_ADDRESS, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn],
             }),
           },
         ],
@@ -120,40 +98,72 @@ export default class EthereumRpc {
         account: this.smartAccount,
         entryPoint: ENTRYPOINT_ADDRESS_V07,
         chain: sepolia,
-        bundlerTransport: http(bundlerUrl),
+        bundlerTransport: http(BUNDLER_URL),
         middleware: {
-          gasPrice: async () => {
-            return (await this.bundlerClient.getUserOperationGasPrice()).fast;
+          gasPrice: async () => (await this.bundlerClient.getUserOperationGasPrice()).fast,
+          sponsorUserOperation: async (args) => {
+            const gasEstimates = await this.bundlerClient.estimateUserOperationGas({
+              userOperation: {
+                ...args.userOperation,
+                paymaster: ERC20_PAYMASTER_ADDRESS,
+              },
+            });
+
+            return {
+              ...gasEstimates,
+              paymaster: ERC20_PAYMASTER_ADDRESS,
+            };
           },
-          sponsorUserOperation: this.bundlerClient.sponsorUserOperation,
         },
       });
       console.log("Smart account client initialized:", this.smartAccountClient);
 
       await this.getSmartAccountBalance();
+      await this.sendSmartAccountTransaction();
     } catch (error) {
       console.error("Failed to initialize smart account:", error);
     }
   }
 
   async getSmartAccountBalance() {
-    const senderUsdcBalance = await this.publicClient.readContract({
-      abi: [parseAbiItem("function balanceOf(address account) returns (uint256)")],
-      address: usdcAddress,
-      functionName: "balanceOf",
-      args: [this.smartAccount.address],
-    });
+    try {
+      const senderUsdcBalance = await this.publicClient.readContract({
+        abi: [parseAbiItem("function balanceOf(address account) returns (uint256)")],
+        address: USDC_ADDRESS,
+        functionName: "balanceOf",
+        args: [this.smartAccount.address],
+      });
 
-    if (senderUsdcBalance < 1_000_000n) {
-      throw new Error(
-        `insufficient USDC balance for counterfactual wallet address ${this.smartAccount.address}: ${
-          Number(senderUsdcBalance) / 1000000
-        } USDC, required at least 1 USDC. Load up balance at https://faucet.circle.com/`
-      );
+      if (senderUsdcBalance < 1_000_000n) {
+        throw new Error(
+          `Insufficient USDC balance for counterfactual wallet address ${this.smartAccount.address}: ${
+            Number(senderUsdcBalance) / 1000000
+          } USDC, required at least 1 USDC. Load up balance at https://faucet.circle.com/`
+        );
+      }
+
+      console.log(`Smart account USDC balance: ${Number(senderUsdcBalance) / 1000000} USDC`);
+      return Number(senderUsdcBalance) / 1000000;
+    } catch (error) {
+      console.error("Failed to get smart account balance:", error);
+      throw error;
     }
+  }
 
-    console.log(`Smart account USDC balance: ${Number(senderUsdcBalance) / 1000000} USDC`);
-    return Number(senderUsdcBalance) / 1000000;
+  async sendSmartAccountTransaction() {
+    try {
+      const destination = "0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8";
+      const amount = 0n;
+      const hash = await this.smartAccountClient.sendTransaction({
+        to: destination,
+        value: amount,
+      });
+      console.log("Smart account transaction hash:", hash);
+      return hash;
+    } catch (error) {
+      console.error("Failed to send smart account transaction:", error);
+      throw error;
+    }
   }
 
   async getChainId(): Promise<string | Error> {
@@ -181,7 +191,7 @@ export default class EthereumRpc {
   }
 
   async getAccounts(): Promise<string[] | Error> {
-    return await this.getAddresses();
+    return this.getAddresses();
   }
 
   async getPrivateKey(): Promise<string | Error> {
@@ -201,9 +211,9 @@ export default class EthereumRpc {
         chain: this.getViewChain(),
         transport: custom(this.provider),
       });
-      const address = await this.getAccounts();
-      if (Array.isArray(address)) {
-        const balance = await publicClient.getBalance({ address: address[0] as any });
+      const addresses = await this.getAccounts();
+      if (Array.isArray(addresses)) {
+        const balance = await publicClient.getBalance({ address: addresses[0] as any });
         return formatEther(balance);
       } else {
         return "Unable to retrieve address";
@@ -226,11 +236,11 @@ export default class EthereumRpc {
 
       const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
       const amount = parseEther("0.0001");
-      const address = await this.getAccounts();
+      const addresses = await this.getAccounts();
 
-      if (Array.isArray(address)) {
+      if (Array.isArray(addresses)) {
         const hash = await walletClient.sendTransaction({
-          account: address[0] as any,
+          account: addresses[0] as any,
           to: destination,
           value: amount,
         });
@@ -251,11 +261,11 @@ export default class EthereumRpc {
         transport: custom(this.provider),
       });
 
-      const address = await this.getAccounts();
-      if (Array.isArray(address)) {
+      const addresses = await this.getAccounts();
+      if (Array.isArray(addresses)) {
         const originalMessage = "YOUR_MESSAGE";
         const hash = await walletClient.signMessage({
-          account: address[0] as any,
+          account: addresses[0] as any,
           message: originalMessage,
         });
         return hash.toString();
@@ -274,13 +284,13 @@ export default class EthereumRpc {
         transport: custom(this.provider),
       });
 
-      const number = await publicClient.readContract({
+      const result = await publicClient.readContract({
         address: "0x9554a5CC8F600F265A89511e5802945f2e8A5F5D",
-        abi: this.contractABI,
+        abi: CONTRACT_ABI,
         functionName: "retrieve",
       });
 
-      return this.toObject(number);
+      return this.toObject(result);
     } catch (error) {
       return error as Error;
     }
@@ -292,19 +302,18 @@ export default class EthereumRpc {
         chain: this.getViewChain(),
         transport: custom(this.provider),
       });
-
       const walletClient = createWalletClient({
         chain: this.getViewChain(),
         transport: custom(this.provider),
       });
 
-      const address = await this.getAccounts();
-      if (Array.isArray(address)) {
+      const addresses = await this.getAccounts();
+      if (Array.isArray(addresses)) {
         const randomNumber = Math.floor(Math.random() * 9000) + 1000;
         const hash = await walletClient.writeContract({
-          account: address[0] as any,
+          account: addresses[0] as any,
           address: "0x9554a5CC8F600F265A89511e5802945f2e8A5F5D",
-          abi: this.contractABI,
+          abi: CONTRACT_ABI,
           functionName: "store",
           args: [randomNumber],
         });
@@ -318,7 +327,7 @@ export default class EthereumRpc {
     }
   }
 
-  toObject(data: any): any {
+  private toObject(data: any): any {
     return JSON.parse(JSON.stringify(data, (key, value) => (typeof value === "bigint" ? value.toString() : value)));
   }
 }

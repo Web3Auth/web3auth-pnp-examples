@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
 import "./App.css";
 // import RPC from "./web3RPC";  // for using web3.js
- import RPC from "./viemRPC"; // for using viem
+import RPC from "./viemRPC"; // for using viem
 // import RPC from "./ethersRPC"; // for using ethers.js
 
 // Providers
@@ -89,10 +90,10 @@ function App() {
         const walletServicesPlugin = new WalletServicesPlugin({
           walletInitOptions: {
             whiteLabel: {
-              showWidgetButton: true,
+              showWidgetButton: false,
               buttonPosition: "bottom-left",
-            }
-          }
+            },
+          },
         });
         setWalletServicesPlugin(walletServicesPlugin);
         web3auth.addPlugin(walletServicesPlugin);
@@ -159,6 +160,8 @@ function App() {
         // });
         if (web3auth.connected) {
           setLoggedIn(true);
+          const rpc = new RPC(web3auth.provider as IProvider);
+          await rpc.initializeSmartAccount();
         }
       } catch (error) {
         console.error(error);
@@ -290,6 +293,16 @@ function App() {
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
+
+  // const getSmartAccountBalance = async () => {
+  //   if (!web3auth?.provider) {
+  //     uiConsole("provider not initialized yet");
+  //     return;
+  //   }
+  //   const rpc = new RPC(web3auth.provider as IProvider);
+  //   const balance = await rpc.getSmartAccountBalance();
+  //   uiConsole(`Smart account USDC balance: ${balance} USDC`);
+  // };
 
   const sendTransaction = async () => {
     if (!web3auth?.provider) {
@@ -431,6 +444,11 @@ function App() {
             Get Private Key
           </button>
         </div>
+        {/* <div>
+          <button onClick={getSmartAccountBalance} className="card">
+            Get Smart Account Balance
+          </button>
+        </div> */}
         <div>
           <button onClick={logout} className="card">
             Log Out

@@ -9,6 +9,11 @@ This example demonstrates how to use Web3Auth with EVM in React.
 
 ## How to Use
 
+### One-Click Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fcustom-authentication-modal-example&project-name=w3a-custom-auth-modal&repository-name=w3a-custom-auth-modal)
+
+
 ### Download Manually
 
 ```bash
@@ -31,7 +36,7 @@ yarn start
 
 - [Website](https://web3auth.io)
 - [Docs](https://web3auth.io/docs)
-- [Guides](https://web3auth.io/docs/content-hub?type=guides)
+- [Guides](https://web3auth.io/docs/guides)
 - [SDK / API References](https://web3auth.io/docs/sdk)
 - [Pricing](https://web3auth.io/pricing.html)
 - [Community Portal](https://community.web3auth.io)

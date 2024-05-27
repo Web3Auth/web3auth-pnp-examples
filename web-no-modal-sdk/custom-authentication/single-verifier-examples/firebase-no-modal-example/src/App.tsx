@@ -52,6 +52,9 @@ function App() {
           },
         });
         web3auth.configureAdapter(openloginAdapter);
+
+        const sfaAdapter = new SFAAdapter();
+        web3auth.configureAdapter(sfaAdapter);
         setWeb3auth(web3auth);
 
         await web3auth.init();
@@ -74,6 +77,14 @@ function App() {
       const idToken = await loginRes.user.getIdToken(true);
       console.log("idToken", idToken);
 
+      // check if mfa is enabled
+      const check = web3auth.checkMfa(verifier, verifierIdValue); // works like lookup API and checks if isMfaEnabled is true or false/ basically if the nonce exists or not
+      // login using sfa adapter if mfa not setup
+      if (check === false) {
+        web3auth?.connectTo(WALLET_ADAPTERS.SFA, {
+          verifier, verifierIdValue, idToken});
+      } else {
+      // login using openlogin adapter if mfa is enabled
       await web3auth?.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
         loginProvider: "jwt",
         extraLoginOptions: {
@@ -82,6 +93,7 @@ function App() {
           domain: "http://localhost:3000",
         },
       });
+    }
     } catch (err) {
       console.error(err);
       throw err;
@@ -284,6 +296,9 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
+        </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fcustom-authentication%2Fsingle-verifier-examples%2Ffirebase-no-modal-example&project-name=w3a-firebase-no-modal&repository-name=w3a-firebase-no-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

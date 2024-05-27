@@ -17,6 +17,7 @@ class ViewModel: ObservableObject {
         })
         web3Auth = await Web3Auth(W3AInitParams(
             clientId: clientId, network: network,
+            redirectUrl: "web3auth.ios-auth0-example://auth", 
             loginConfig: [
                 TypeOfLogin.jwt.rawValue:
                         .init(

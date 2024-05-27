@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
 // IMP START - Quick Start
+import { useEffect, useState } from "react";
+// IMP END - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-// IMP END - Quick Start
 import Web3 from "web3";
 
 import "./App.css";
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 const chainConfig = {
@@ -23,28 +22,18 @@ const chainConfig = {
   blockExplorerUrl: "https://etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const web3auth = new Web3AuthNoModal({
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-  uiConfig: {
-    mode: "dark",
-    useLogoLoader: true,
-    logoLight: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    logoDark: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    defaultLanguage: "en",
-    theme: {
-      primary: "#768729",
-    },
-  }
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
-const openloginAdapter = new OpenloginAdapter();
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider: privateKeyProvider,
+});
 web3auth.configureAdapter(openloginAdapter);
 // IMP END - SDK Initialization
 
@@ -73,12 +62,9 @@ function App() {
 
   const login = async () => {
     // IMP START - Login
-    const web3authProvider = await web3auth.connectTo(
-      WALLET_ADAPTERS.OPENLOGIN,
-      {
-        loginProvider: "google",
-      }
-    );
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider: "google",
+    });
     // IMP END - Login
     setProvider(web3authProvider);
     if (web3auth.connected) {
@@ -222,6 +208,9 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
+        </a>
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Freact-evm-modal-quick-start&project-name=w3a-react-no-modal&repository-name=w3a-react-no-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

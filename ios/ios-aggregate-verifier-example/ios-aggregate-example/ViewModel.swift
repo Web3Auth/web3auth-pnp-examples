@@ -18,6 +18,7 @@ class ViewModel: ObservableObject {
         })
         web3Auth = await Web3Auth(W3AInitParams(
             clientId: clientId, network: network,
+            redirectUrl: "web3auth.ios-aggregate-example://auth",
             loginConfig: [
                 TypeOfLogin.google.rawValue:
                     .init(

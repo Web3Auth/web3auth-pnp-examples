@@ -14,7 +14,7 @@ let web3auth = null;
     chainId: "0x1", // Please use 0x1 for Mainnet
     rpcTarget: "https://rpc.ankr.com/eth",
     displayName: "Ethereum Mainnet",
-    blockExplorer: "https://etherscan.io/",
+    blockExplorerUrl: "https://etherscan.io/",
     ticker: "ETH",
     tickerName: "Ethereum",
   };

@@ -4,7 +4,7 @@ import com.web3auth.core.types.ChainConfig
 import com.web3auth.core.types.ChainNamespace
 
 
-val chainConfigList = arrayOf(
+var chainConfigList = arrayOf(
     ChainConfig(
         chainNamespace = ChainNamespace.EIP155,
         decimals = 18,

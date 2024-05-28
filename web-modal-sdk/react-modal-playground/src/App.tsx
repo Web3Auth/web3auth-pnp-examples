@@ -5,7 +5,6 @@ import { WalletServicesProvider } from "@web3auth/wallet-services-plugin-react-h
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { chain } from "./config/chainConfig";
 import Contract from "./pages/Contract";
 import HomePage from "./pages/HomePage";
 // import NFT from "./pages/NFT";

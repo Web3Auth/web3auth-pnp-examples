@@ -45,6 +45,18 @@
 	width: 100%;
 }
 
+.smart-account{
+	background-color: #0070f3;
+	color: white;
+}
+
+.smart-account:hover,
+.smart-account:focus,
+.smart-account:active {
+	cursor: pointer;
+	background-color: #0053b3 !important;
+}
+
 .card:hover,
 .card:focus,
 .card:active {

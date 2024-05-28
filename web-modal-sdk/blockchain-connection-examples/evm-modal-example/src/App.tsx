@@ -160,8 +160,8 @@ function App() {
         // });
         if (web3auth.connected) {
           setLoggedIn(true);
-          const rpc = new RPC(web3auth.provider as IProvider);
-          await rpc.initializeSmartAccount();
+          // const rpc = new RPC(web3auth.provider as IProvider);
+          // await rpc.initializeSmartAccount();
         }
       } catch (error) {
         console.error(error);
@@ -294,15 +294,35 @@ function App() {
     uiConsole(balance);
   };
 
-  // const getSmartAccountBalance = async () => {
-  //   if (!web3auth?.provider) {
-  //     uiConsole("provider not initialized yet");
-  //     return;
-  //   }
-  //   const rpc = new RPC(web3auth.provider as IProvider);
-  //   const balance = await rpc.getSmartAccountBalance();
-  //   uiConsole(`Smart account USDC balance: ${balance} USDC`);
-  // };
+  const getSmartAccountAddress = async () => {
+    if (!web3auth?.provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(web3auth.provider as IProvider);
+    const address = await rpc.getSmartAccountAddress();
+    uiConsole(`Smart account address: ${address}`);
+  };
+
+  const getSmartAccountBalance = async () => {
+    if (!web3auth?.provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(web3auth.provider as IProvider);
+    const balance = await rpc.getSmartAccountBalance();
+    uiConsole(balance);
+  };
+
+  const sendSmartAccountTransaction = async () => {
+    if (!web3auth?.provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(web3auth.provider as IProvider);
+    const receipt = await rpc.sendSmartAccountTransaction();
+    uiConsole(receipt);
+  };
 
   const sendTransaction = async () => {
     if (!web3auth?.provider) {
@@ -322,31 +342,6 @@ function App() {
     const rpc = new RPC(web3auth.provider as IProvider);
     const signedMessage = await rpc.signMessage();
     uiConsole(signedMessage);
-  };
-
-  const readContract = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider as IProvider);
-    const message = await rpc.readContract();
-    uiConsole(message);
-  };
-
-  const writeContract = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider as IProvider);
-    const receipt = await rpc.writeContract();
-    uiConsole(receipt);
-    if (receipt) {
-      setTimeout(async () => {
-        await readContract();
-      }, 2000);
-    }
   };
 
   const getPrivateKey = async () => {
@@ -430,25 +425,26 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={readContract} className="card">
-            Read Contract
-          </button>
-        </div>
-        <div>
-          <button onClick={writeContract} className="card">
-            Write Contract
-          </button>
-        </div>
-        <div>
           <button onClick={getPrivateKey} className="card">
             Get Private Key
           </button>
         </div>
-        {/* <div>
-          <button onClick={getSmartAccountBalance} className="card">
+
+        <div>
+          <button onClick={getSmartAccountAddress} className="card smart-account">
+            Get Smart Account Address
+          </button>
+        </div>
+        <div>
+          <button onClick={getSmartAccountBalance} className="card smart-account">
             Get Smart Account Balance
           </button>
-        </div> */}
+        </div>
+        <div>
+          <button onClick={sendSmartAccountTransaction} className="card smart-account">
+            Send Smart Account Transaction
+          </button>
+        </div>
         <div>
           <button onClick={logout} className="card">
             Log Out

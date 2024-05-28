@@ -21,6 +21,8 @@ import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 // import { TorusWalletAdapter, TorusWalletOptions } from "@web3auth/torus-evm-adapter";
 // import { CoinbaseAdapter, CoinbaseAdapterOptions } from "@web3auth/coinbase-adapter";
 
+import Loading from "./Loading";
+
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
@@ -48,6 +50,7 @@ function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -184,6 +187,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
+    uiConsole();
     const idToken = await web3auth.authenticateUser();
     uiConsole(idToken);
   };
@@ -193,6 +197,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
+    uiConsole();
     const user = await web3auth.getUserInfo();
     uiConsole(user);
   };
@@ -202,6 +207,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
+    uiConsole();
     await web3auth.logout();
     setLoggedIn(false);
   };
@@ -211,8 +217,8 @@ function App() {
       uiConsole("torus plugin not initialized yet");
       return;
     }
-    await walletServicesPlugin.showWalletConnectScanner();
     uiConsole();
+    await walletServicesPlugin.showWalletConnectScanner();
   };
 
   const showCheckout = async () => {
@@ -237,6 +243,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
     const rpc = new RPC(web3auth.provider as IProvider);
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
@@ -247,7 +254,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-
+    uiConsole();
     const newChain = {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
       chainId: "0x89", // hex of 137, polygon mainnet
@@ -270,6 +277,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
     await web3auth?.switchChain({ chainId: "0x89" });
     uiConsole("Chain Switched");
   };
@@ -279,6 +287,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
     const rpc = new RPC(web3auth.provider as IProvider);
     const address = await rpc.getAccounts();
     uiConsole(address);
@@ -289,6 +298,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
     const rpc = new RPC(web3auth.provider as IProvider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
@@ -299,9 +309,12 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
+    setLoader(true);
     const rpc = new RPC(web3auth.provider as IProvider);
     const address = await rpc.getSmartAccountAddress();
     uiConsole(`Smart account address: ${address}`);
+    setLoader(false);
   };
 
   const getSmartAccountBalance = async () => {
@@ -309,9 +322,12 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
+    setLoader(true);
     const rpc = new RPC(web3auth.provider as IProvider);
     const balance = await rpc.getSmartAccountBalance();
     uiConsole(balance);
+    setLoader(false);
   };
 
   const sendSmartAccountTransaction = async () => {
@@ -319,9 +335,12 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
+    setLoader(true);
     const rpc = new RPC(web3auth.provider as IProvider);
     const receipt = await rpc.sendSmartAccountTransaction();
     uiConsole(receipt);
+    setLoader(false);
   };
 
   const sendTransaction = async () => {
@@ -329,9 +348,12 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
+    setLoader(true);
     const rpc = new RPC(web3auth.provider as IProvider);
     const receipt = await rpc.sendTransaction();
     uiConsole(receipt);
+    setLoader(false);
   };
 
   const signMessage = async () => {
@@ -339,9 +361,12 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
+    setLoader(true);
     const rpc = new RPC(web3auth.provider as IProvider);
     const signedMessage = await rpc.signMessage();
     uiConsole(signedMessage);
+    setLoader(false);
   };
 
   const getPrivateKey = async () => {
@@ -349,9 +374,12 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole();
+    setLoader(true);
     const rpc = new RPC(web3auth.provider as IProvider);
     const privateKey = await rpc.getPrivateKey();
     uiConsole(privateKey);
+    setLoader(false);
   };
 
   function uiConsole(...args: any[]): void {
@@ -451,6 +479,7 @@ function App() {
           </button>
         </div>
       </div>
+      {loader && <Loading />}
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>

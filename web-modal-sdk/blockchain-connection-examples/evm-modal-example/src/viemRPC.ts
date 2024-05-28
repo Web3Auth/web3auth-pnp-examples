@@ -59,6 +59,7 @@ export default class EthereumRpc {
   async initializeSmartAccount() {
     try {
       this.smartAccountSigner = await providerToSmartAccountSigner(this.provider as EIP1193Provider);
+      console.log("Smart account signer:", this.smartAccountSigner);
 
       this.publicClient = createPublicClient({
         transport: http("https://rpc.ankr.com/eth_sepolia"),
@@ -159,6 +160,7 @@ export default class EthereumRpc {
         const hash = await this.smartAccountClient.sendTransaction({
           to: destination,
           value: amount,
+          data: "0x1234",
         });
         console.log("Smart account transaction hash:", hash);
         return hash;

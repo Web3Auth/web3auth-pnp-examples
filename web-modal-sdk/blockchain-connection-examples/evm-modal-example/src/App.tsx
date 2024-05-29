@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import { CHAIN_NAMESPACES, PLUGIN_STATUS, IProvider } from "@web3auth/base";
 import "./App.css";
-import RPC from "./viemRPC"; // for using web3.js
+import RPC from "./web3RPC"; // for using web3.js
+// import RPC from "./viemRPC"; // for using viem
 // import RPC from "./ethersRPC"; // for using ethers.js
 import { useWalletServicesPlugin  } from "@web3auth/wallet-services-plugin-react-hooks";
 

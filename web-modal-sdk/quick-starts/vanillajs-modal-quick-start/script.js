@@ -105,7 +105,7 @@ $("#get-balance").click(async function (event) {
 $("#show-wallet").click(async function (event) {
   // print status in console
   uiConsole(walletServicesPlugin.status);
-  if (walletServicesPlugin.status == "connected") { // "always not connected"
+  if (walletServicesPlugin.status == "connected") { // check if wallet is connected
     await walletServicesPlugin.showWalletUi();
   }
 });

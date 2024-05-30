@@ -27,6 +27,11 @@ let web3auth = null;
     web3AuthNetwork: "sapphire_mainnet",
   });
 
+  // Add wallet service plugin
+  walletServicesPlugin = new window.WalletServicesPlugin.WalletServicesPlugin();
+  web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
+
+
   await web3auth.initModal();
   // IMP END - SDK Initialization
 
@@ -94,6 +99,14 @@ $("#get-balance").click(async function (event) {
     uiConsole(balance);
   } catch (error) {
     console.error(error.message);
+  }
+});
+
+$("#show-wallet").click(async function (event) {
+  // print status in console
+  uiConsole(walletServicesPlugin.status);
+  if (walletServicesPlugin.status == "connected") { // "always not connected"
+    await walletServicesPlugin.showWalletUi();
   }
 });
 

@@ -18,6 +18,7 @@ module.exports = {
   },
   rules: {
     "@typescript-eslint/no-explicit-any": 0,
+    "import/no-extraneous-dependencies": 0,
     "no-console": 0,
     "import/extensions": [
       "error",

@@ -6,7 +6,7 @@
     "@metaplex-foundation/js": "^0.20.0",
     "@solana/web3.js": "^1.72.0",
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.18",

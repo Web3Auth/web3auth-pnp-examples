@@ -17,10 +17,10 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "@web3auth/base": "^8.6.1",
-    "@web3auth/ethereum-provider": "^8.6.1",
-    "@web3auth/no-modal": "^8.6.1",
-    "@web3auth/openlogin-adapter": "^8.6.1",
+    "@web3auth/base": "^8.6.2",
+    "@web3auth/ethereum-provider": "^8.6.2",
+    "@web3auth/no-modal": "^8.6.2",
+    "@web3auth/openlogin-adapter": "^8.6.2",
     "web3": "^4.4.0"
   },
   "//IMP END": "IMP END- Web3Auth Installation"

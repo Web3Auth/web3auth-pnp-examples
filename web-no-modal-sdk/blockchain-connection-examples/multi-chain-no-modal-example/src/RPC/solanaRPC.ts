@@ -34,6 +34,7 @@ export default class SolanaRPC implements IRPC{
     async getAccounts(): Promise<any> {
         const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
         const ed25519key = getED25519Key(this.privateKey).sk.toString("hex");
+        console.log(this.privateKey);
         console.log(ed25519key);
         // Get user's Solana's public address
         await this.provider.setupProvider(ed25519key);

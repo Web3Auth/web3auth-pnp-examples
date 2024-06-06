@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface web3authrnbareauth0exampleTests : XCTestCase
+@interface web3authrnbareaggregateexampleTests : XCTestCase
 
 @end
 
-@implementation web3authrnbareauth0exampleTests
+@implementation web3authrnbareaggregateexampleTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

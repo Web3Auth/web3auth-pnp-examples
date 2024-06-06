@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "web3authrnbareauth0example.app"
-               BlueprintName = "web3authrnbareauth0example"
-               ReferencedContainer = "container:web3authrnbareauth0example.xcodeproj">
+               BuildableName = "web3authrnbareaggregateexample.app"
+               BlueprintName = "web3authrnbareaggregateexample"
+               ReferencedContainer = "container:web3authrnbareaggregateexample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "web3authrnbareauth0exampleTests.xctest"
-               BlueprintName = "web3authrnbareauth0exampleTests"
-               ReferencedContainer = "container:web3authrnbareauth0example.xcodeproj">
+               BuildableName = "web3authrnbareaggregateexampleTests.xctest"
+               BlueprintName = "web3authrnbareaggregateexampleTests"
+               ReferencedContainer = "container:web3authrnbareaggregateexample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "web3authrnbareauth0example.app"
-            BlueprintName = "web3authrnbareauth0example"
-            ReferencedContainer = "container:web3authrnbareauth0example.xcodeproj">
+            BuildableName = "web3authrnbareaggregateexample.app"
+            BlueprintName = "web3authrnbareaggregateexample"
+            ReferencedContainer = "container:web3authrnbareaggregateexample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "web3authrnbareauth0example.app"
-            BlueprintName = "web3authrnbareauth0example"
-            ReferencedContainer = "container:web3authrnbareauth0example.xcodeproj">
+            BuildableName = "web3authrnbareaggregateexample.app"
+            BlueprintName = "web3authrnbareaggregateexample"
+            ReferencedContainer = "container:web3authrnbareaggregateexample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

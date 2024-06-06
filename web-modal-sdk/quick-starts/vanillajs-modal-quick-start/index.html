@@ -19,6 +19,8 @@
       <button id="get-accounts" class="btn">Get Accounts</button>
       <button id="get-balance" class="btn">Get Balance</button>
       <button id="sign-message" class="btn">Sign Message</button>
+      <button id="show-wallet" class="btn">Show Wallet</button>
+      
       <button id="logout" class="btn">Logout</button>
       <div class="console" id="console">
         <p id="code" class="code"></p>
@@ -40,14 +42,18 @@
     </footer>
   </div>
 
+  
   <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
+  <script src="https://unpkg.com/base64-js@1.5.1/base64js.min.js"></script>
+  
   <!--IMP START - Quick Start-->
   <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@web3auth/wallet-services-plugin"></script>
   <script src="https://cdn.jsdelivr.net/npm/@web3auth/ethereum-provider"></script>
   <!--IMP END - Quick Start-->
   <script src="https://cdn.jsdelivr.net/npm/web3@4.1.1/dist/web3.min.js"></script>
-  <script src="script.js"></script>
+  
+  <script src="script.js?as"></script>
 </body>
 
 </html>

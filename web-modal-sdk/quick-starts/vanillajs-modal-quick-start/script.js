@@ -1,4 +1,5 @@
 let web3auth = null;
+let walletServicesPlugin = null;
 
 (async function init() {
   $(".btn-logged-in").hide();
@@ -30,7 +31,6 @@ let web3auth = null;
   // Add wallet service plugin
   walletServicesPlugin = new window.WalletServicesPlugin.WalletServicesPlugin();
   web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
-
 
   await web3auth.initModal();
   // IMP END - SDK Initialization
@@ -105,7 +105,8 @@ $("#get-balance").click(async function (event) {
 $("#show-wallet").click(async function (event) {
   // print status in console
   uiConsole(walletServicesPlugin.status);
-  if (walletServicesPlugin.status == "connected") { // check if wallet is connected
+  if (walletServicesPlugin.status == "connected") {
+    // check if wallet is connected
     await walletServicesPlugin.showWalletUi();
   }
 });

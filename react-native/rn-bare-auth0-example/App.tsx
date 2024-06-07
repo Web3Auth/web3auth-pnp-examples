@@ -17,7 +17,6 @@ import Web3Auth, {
 import {EthereumPrivateKeyProvider} from '@web3auth/ethereum-provider';
 
 // import RPC from './web3RPC'; // for using web3.js
-// import RPC from "./viemRPC"; // for using viem
 import RPC from './ethersRPC'; // for using ethers.js
 
 const scheme = 'web3authrnbareauth0example'; // Or your desired app redirection scheme

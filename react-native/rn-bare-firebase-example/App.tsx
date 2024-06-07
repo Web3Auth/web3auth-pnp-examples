@@ -12,19 +12,44 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import Web3Auth, {
   LOGIN_PROVIDER,
   OPENLOGIN_NETWORK,
-  OpenloginUserInfo,
+  ChainNamespace,
 } from '@web3auth/react-native-sdk';
-import RPC from './ethersRPC'; // for using ethers.js
+import {EthereumPrivateKeyProvider} from '@web3auth/ethereum-provider';
 import firebaseAuth from '@react-native-firebase/auth';
 
+// import RPC from './web3RPC'; // for using web3.js
+import RPC from './ethersRPC'; // for using ethers.js
+
 const scheme = 'web3authrnbarefirebase'; // Or your desired app redirection scheme
-const resolvedRedirectUrl = `${scheme}://openlogin`;
+const redirectUrl = `${scheme}://openlogin`;
 const clientId =
   'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ';
+
+const chainConfig = {
+  chainNamespace: ChainNamespace.EIP155,
+  chainId: '0xaa36a7',
+  rpcTarget: 'https://rpc.ankr.com/eth_sepolia',
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: 'Ethereum Sepolia Testnet',
+  blockExplorerUrl: 'https://sepolia.etherscan.io',
+  ticker: 'ETH',
+  tickerName: 'Ethereum',
+  decimals: 18,
+  logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
+};
+
+const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
-  useCoreKitKey: false,
+  redirectUrl,
+  useCoreKitKey: true,
   loginConfig: {
     jwt: {
       name: 'Web3Auth-Auth0-JWT',
@@ -37,10 +62,7 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
 
 async function signInWithEmailPassword() {
   try {
-    const res = await firebaseAuth().signInWithEmailAndPassword(
-      'custom+id_token@firebase.login',
-      'Welcome@W3A',
-    );
+    const res = await firebaseAuth().signInAnonymously();
     return res;
   } catch (error) {
     console.error(error);
@@ -48,17 +70,27 @@ async function signInWithEmailPassword() {
 }
 
 export default function App() {
-  const [userInfo, setUserInfo] = useState<OpenloginUserInfo | undefined>();
-  const [key, setKey] = useState<string | undefined>('');
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [provider, setProvider] = useState<any>(null);
   const [console, setConsole] = useState<string>('');
+
+  useEffect(() => {
+    const init = async () => {
+      // IMP START - SDK Initialization
+      await web3auth.init();
+
+      if (web3auth.privKey) {
+        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+        // IMP END - SDK Initialization
+        setProvider(ethereumPrivateKeyProvider);
+        setLoggedIn(true);
+      }
+    };
+    init();
+  }, []);
 
   const login = async () => {
     try {
-      if (!web3auth) {
-        setConsole('Web3auth not initialized');
-        return;
-      }
-
       setConsole('Logging in');
       const loginRes = await signInWithEmailPassword();
       uiConsole('Login success', loginRes);
@@ -66,8 +98,7 @@ export default function App() {
       uiConsole('idToken', idToken);
       await web3auth.login({
         loginProvider: LOGIN_PROVIDER.JWT,
-        redirectUrl: resolvedRedirectUrl,
-        mfaLevel: 'default',
+        mfaLevel: 'none',
         curve: 'secp256k1',
         extraLoginOptions: {
           id_token: idToken,
@@ -75,14 +106,17 @@ export default function App() {
           domain: 'http://localhost:3000',
         },
       });
-      setConsole(`Logged in ${web3auth.privKey}`);
+
+      uiConsole('Logged In');
       if (web3auth.privKey) {
-        setUserInfo(web3auth.userInfo());
-        setKey(web3auth.privKey);
+        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+        // IMP END - Login
+        setProvider(ethereumPrivateKeyProvider);
         uiConsole('Logged In');
+        setLoggedIn(true);
       }
-    } catch (e: any) {
-      setConsole(e.message);
+    } catch (e) {
+      uiConsole('error:', e);
     }
   };
 
@@ -96,66 +130,179 @@ export default function App() {
     await web3auth.logout();
 
     if (!web3auth.privKey) {
-      setUserInfo(undefined);
-      setKey('');
+      setProvider(null);
       uiConsole('Logged out');
+      setLoggedIn(false);
     }
   };
 
-  useEffect(() => {
-    const init = async () => {
-      await web3auth.init();
-      if (web3auth?.privKey) {
-        uiConsole('Re logged in');
-        setUserInfo(web3auth.userInfo());
-        setKey(web3auth.privKey);
-        uiConsole(web3auth.privKey);
-      }
-    };
-    init();
-  }, []);
-
   const getChainId = async () => {
+    if (!provider) {
+      uiConsole('provider not initialized yet');
+      return;
+    }
+
+    const rpc = new RPC(provider);
     setConsole('Getting chain id');
-    const networkDetails = await RPC.getChainId();
+    const networkDetails = await rpc.getChainId();
     uiConsole(networkDetails);
   };
 
   const getAccounts = async () => {
-    if (!key) {
-      setConsole('User not logged in');
+    if (!provider) {
+      uiConsole('provider not initialized yet');
       return;
     }
+
+    const rpc = new RPC(provider);
     setConsole('Getting account');
-    const address = await RPC.getAccounts(key);
+    const address = await rpc.getAccounts();
     uiConsole(address);
   };
+
   const getBalance = async () => {
-    if (!key) {
-      setConsole('User not logged in');
+    if (!provider) {
+      uiConsole('provider not initialized yet');
       return;
     }
+
+    const rpc = new RPC(provider);
     setConsole('Fetching balance');
-    const balance = await RPC.getBalance(key);
+    const balance = await rpc.getBalance();
     uiConsole(balance);
   };
+
   const sendTransaction = async () => {
-    if (!key) {
-      setConsole('User not logged in');
+    if (!provider) {
+      uiConsole('provider not initialized yet');
       return;
     }
+
+    const rpc = new RPC(provider);
     setConsole('Sending transaction');
-    const tx = await RPC.sendTransaction(key);
+    const tx = await rpc.sendTransaction();
     uiConsole(tx);
   };
+
   const signMessage = async () => {
-    if (!key) {
-      setConsole('User not logged in');
+    if (!provider) {
+      uiConsole('provider not initialized yet');
       return;
     }
+
+    const rpc = new RPC(provider);
     setConsole('Signing message');
-    const message = await RPC.signMessage(key);
+    const message = await rpc.signMessage();
     uiConsole(message);
+  };
+
+  const launchWalletServices = async () => {
+    if (!web3auth) {
+      setConsole('Web3auth not initialized');
+      return;
+    }
+
+    setConsole('Launch Wallet Services');
+    await web3auth.launchWalletServices(chainConfig);
+  };
+
+  const requestSignature = async () => {
+    if (!web3auth) {
+      setConsole('Web3auth not initialized');
+      return;
+    }
+    if (!provider) {
+      uiConsole('provider not initialized yet');
+      return;
+    }
+
+    const rpc = new RPC(provider);
+
+    const address = await rpc.getAccounts();
+
+    // const params = [
+    //   {
+    //     challenge: 'Hello World',
+    //     address,
+    //   },
+    //   null,
+    // ];
+    const params = ['Hello World', address];
+    // const params = [{ }];
+    // params.push('Hello World');
+    // params.push(address);
+
+    // const params = [
+    //   address,
+    //   {
+    //     types: {
+    //       EIP712Domain: [
+    //         {
+    //           name: 'name',
+    //           type: 'string',
+    //         },
+    //         {
+    //           name: 'version',
+    //           type: 'string',
+    //         },
+    //         {
+    //           name: 'chainId',
+    //           type: 'uint256',
+    //         },
+    //         {
+    //           name: 'verifyingContract',
+    //           type: 'address',
+    //         },
+    //       ],
+    //       Person: [
+    //         {
+    //           name: 'name',
+    //           type: 'string',
+    //         },
+    //         {
+    //           name: 'wallet',
+    //           type: 'address',
+    //         },
+    //       ],
+    //       Mail: [
+    //         {
+    //           name: 'from',
+    //           type: 'Person',
+    //         },
+    //         {
+    //           name: 'to',
+    //           type: 'Person',
+    //         },
+    //         {
+    //           name: 'contents',
+    //           type: 'string',
+    //         },
+    //       ],
+    //     },
+    //     primaryType: 'Mail',
+    //     domain: {
+    //       name: 'Ether Mail',
+    //       version: '1',
+    //       chainId: chainConfig.chainId,
+    //       verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+    //     },
+    //     message: {
+    //       from: {
+    //         name: 'Cow',
+    //         wallet: address,
+    //       },
+    //       to: {
+    //         name: 'Bob',
+    //         wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
+    //       },
+    //       contents: 'Hello, Bob!',
+    //     },
+    //   },
+    // ];
+
+    setConsole('Request Signature');
+    const res = await web3auth.request(chainConfig, 'personal_sign', params);
+    uiConsole(res);
   };
 
   const uiConsole = (...args: unknown[]) => {
@@ -164,26 +311,33 @@ export default function App() {
 
   const loggedInView = (
     <View style={styles.buttonArea}>
-      <Button title="Get User Info" onPress={() => uiConsole(userInfo)} />
+      <Button
+        title="Get User Info"
+        onPress={() => uiConsole(web3auth.userInfo())}
+      />
       <Button title="Get Chain ID" onPress={() => getChainId()} />
       <Button title="Get Accounts" onPress={() => getAccounts()} />
       <Button title="Get Balance" onPress={() => getBalance()} />
       <Button title="Send Transaction" onPress={() => sendTransaction()} />
       <Button title="Sign Message" onPress={() => signMessage()} />
-      <Button title="Get Private Key" onPress={() => uiConsole(key)} />
-      <Button title="Log Out" onPress={logout} />
+      <Button title="Show Wallet UI" onPress={() => launchWalletServices()} />
+      <Button
+        title="Request Signature from Wallet Services"
+        onPress={() => requestSignature()}
+      />
+      <Button title="Log Out" onPress={() => logout()} />
     </View>
   );
 
   const unloggedInView = (
     <View style={styles.buttonArea}>
-      <Button title="Login with Web3Auth" onPress={login} />
+      <Button title="Login with Web3Auth" onPress={() => login()} />
     </View>
   );
 
   return (
     <View style={styles.container}>
-      {key ? loggedInView : unloggedInView}
+      {loggedIn ? loggedInView : unloggedInView}
       <View style={styles.consoleArea}>
         <Text style={styles.consoleText}>Console:</Text>
         <ScrollView style={styles.console}>

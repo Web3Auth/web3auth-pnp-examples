@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "461819774167",
+    "firebase_url": "https://web3auth-oauth-logins-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "web3auth-oauth-logins",
     "storage_bucket": "web3auth-oauth-logins.appspot.com"
   },
@@ -31,10 +32,118 @@
               "client_type": 3
             },
             {
-              "client_id": "461819774167-3ebuiqr1ef4kjbvchpckvl1buqt2mr4c.apps.googleusercontent.com",
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.w3arnfirebase"
+                "bundle_id": "com.example.sfaFlutterQuickStart"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461819774167:android:3965e33a39b19ccc5b9c92",
+        "android_client_info": {
+          "package_name": "com.example.sfa_flutter_quick_start"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL2uSXiGvQcfZ00IJ1g2uwC-7IcGZGVfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sfaFlutterQuickStart"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461819774167:android:9faa4e4d327eabde5b9c92",
+        "android_client_info": {
+          "package_name": "com.example.sfa_flutter_solana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL2uSXiGvQcfZ00IJ1g2uwC-7IcGZGVfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sfaFlutterQuickStart"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461819774167:android:df1f7ea1f763036e5b9c92",
+        "android_client_info": {
+          "package_name": "com.example.tkey_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL2uSXiGvQcfZ00IJ1g2uwC-7IcGZGVfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sfaFlutterQuickStart"
               }
             }
           ]
@@ -67,10 +176,46 @@
               "client_type": 3
             },
             {
-              "client_id": "461819774167-3ebuiqr1ef4kjbvchpckvl1buqt2mr4c.apps.googleusercontent.com",
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.w3arnfirebase"
+                "bundle_id": "com.example.sfaFlutterQuickStart"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461819774167:android:08a1d672963eeb875b9c92",
+        "android_client_info": {
+          "package_name": "com.mpccorekitrnquickstart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL2uSXiGvQcfZ00IJ1g2uwC-7IcGZGVfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sfaFlutterQuickStart"
               }
             }
           ]
@@ -103,10 +248,10 @@
               "client_type": 3
             },
             {
-              "client_id": "461819774167-3ebuiqr1ef4kjbvchpckvl1buqt2mr4c.apps.googleusercontent.com",
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.w3arnfirebase"
+                "bundle_id": "com.example.sfaFlutterQuickStart"
               }
             }
           ]
@@ -139,10 +284,10 @@
               "client_type": 3
             },
             {
-              "client_id": "461819774167-3ebuiqr1ef4kjbvchpckvl1buqt2mr4c.apps.googleusercontent.com",
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.w3arnfirebase"
+                "bundle_id": "com.example.sfaFlutterQuickStart"
               }
             }
           ]
@@ -175,10 +320,46 @@
               "client_type": 3
             },
             {
-              "client_id": "461819774167-3ebuiqr1ef4kjbvchpckvl1buqt2mr4c.apps.googleusercontent.com",
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.w3arnfirebase"
+                "bundle_id": "com.example.sfaFlutterQuickStart"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461819774167:android:2691fc0225e6543a5b9c92",
+        "android_client_info": {
+          "package_name": "com.tkeyfirebaseexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL2uSXiGvQcfZ00IJ1g2uwC-7IcGZGVfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sfaFlutterQuickStart"
               }
             }
           ]
@@ -211,10 +392,10 @@
               "client_type": 3
             },
             {
-              "client_id": "461819774167-3ebuiqr1ef4kjbvchpckvl1buqt2mr4c.apps.googleusercontent.com",
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.w3arnfirebase"
+                "bundle_id": "com.example.sfaFlutterQuickStart"
               }
             }
           ]
@@ -247,10 +428,10 @@
               "client_type": 3
             },
             {
-              "client_id": "461819774167-3ebuiqr1ef4kjbvchpckvl1buqt2mr4c.apps.googleusercontent.com",
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.w3arnfirebase"
+                "bundle_id": "com.example.sfaFlutterQuickStart"
               }
             }
           ]
@@ -259,9 +440,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:461819774167:android:aac2a2911fd308555b9c92",
+        "mobilesdk_app_id": "1:461819774167:android:3308fe04b56010945b9c92",
         "android_client_info": {
-          "package_name": "org.torusresearch.customauthexample"
+          "package_name": "com.web3authsfafirebase"
         }
       },
       "oauth_client": [
@@ -283,10 +464,10 @@
               "client_type": 3
             },
             {
-              "client_id": "461819774167-3ebuiqr1ef4kjbvchpckvl1buqt2mr4c.apps.googleusercontent.com",
+              "client_id": "461819774167-2pvcbhf57nqu3u45gakhaff781re18rd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.w3arnfirebase"
+                "bundle_id": "com.example.sfaFlutterQuickStart"
               }
             }
           ]

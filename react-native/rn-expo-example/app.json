@@ -2,6 +2,7 @@
   "expo": {
     "name": "web3authexpoexample",
     "slug": "web3authexpoexample",
+    "scheme": "web3authexpoexample",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +12,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.web3authexpoexample"

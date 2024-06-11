@@ -22,7 +22,9 @@ public class Web3AuthScript : MonoBehaviour
     private string userInfo;
     private Account account;
     Web3 web3;
-    const string rpcURL = "https://rpc.ankr.com/eth";
+    const string rpcURL = "https://rpc.ankr.com/eth_sepolia";
+    const string chainId = "0xaa36a7";
+    const string tickerName = "ETH";
 
     // Start is called before the first frame update
     void Start()
@@ -89,7 +91,7 @@ public class Web3AuthScript : MonoBehaviour
         var newAccount = new Account(privateKey);
         account = newAccount;
 
-        var rpc = new Nethereum.JsonRpc.Client.RpcClient(new Uri(rpcURL));
+        var rpc = new Nethereum.JsonRpc.Client.RpcClient(new System.Uri(rpcURL));
         web3 = new Web3(account, rpc);
         // IMP END - Blockchain Calls
 
@@ -168,7 +170,20 @@ public class Web3AuthScript : MonoBehaviour
         Debug.Log(signature);
         updateConsole(signature.ToString());
     }
+
     // IMP END - Blockchain Calls
+
+    public void launchWalletServices()
+    {
+        var chainConfig = new ChainConfig()
+        {
+            chainId = chainId,
+            rpcTarget = rpcURL,
+            ticker = tickerName,
+            chainNamespace = Web3Auth.ChainNamespace.EIP155
+        };
+        web3Auth.launchWalletServices(chainConfig);
+    }
 
     public void updateConsole(string message)
     {

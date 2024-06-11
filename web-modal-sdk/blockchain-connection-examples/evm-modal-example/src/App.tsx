@@ -5,7 +5,10 @@ import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./viemRPC"; // for using viem
 // import RPC from "./ethersRPC"; // for using ethers.js
-import { useWalletServicesPlugin  } from "@web3auth/wallet-services-plugin-react-hooks";
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+
+const nftCheckoutHost = "https://develop-nft-checkout.web3auth.io"
+const nftCheckoutApiKey = "pk_test_4ca499b1f017c2a96bac63493dca4ac2eb08d1e91de0a796d87137dc7278e0af"
 
 const newChain = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -37,14 +40,16 @@ function App() {
     status,
     addAndSwitchChain,
   } = useWeb3Auth();
-
-  const { showCheckout, showWalletConnectScanner, showWalletUI, plugin, isPluginConnected } = useWalletServicesPlugin();
+  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
+  const [showNftModal, setShowNftModal] = useState<boolean>(false);
+  const [nftIFrameURL, setNFTIFrameURL] = useState<string>('');
   const [unloggedInView, setUnloggedInView] = useState<JSX.Element | null>(null);
   const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(
     <div>
       <h2>MFA is disabled</h2>
     </div>
   );
+
 
   useEffect(() => {
     const init = async () => {
@@ -59,6 +64,21 @@ function App() {
 
     init();
   }, [initModal, web3Auth]);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin === nftCheckoutHost && event.data === 'close-nft-checkout') {
+        setShowNftModal(false);
+      }
+      console.log('event', event);
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [setShowNftModal]);
 
   const getChainId = async () => {
     if (!provider) {
@@ -78,6 +98,7 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const address = await rpc.getAccounts();
     uiConsole(address);
+    return address;
   };
 
   const getBalance = async () => {
@@ -88,6 +109,7 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
+    return balance;
   };
 
   const sendTransaction = async () => {
@@ -143,6 +165,28 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const privateKey = await rpc.getPrivateKey();
     uiConsole(privateKey);
+  };
+
+  const nftMinting = async () => {
+    const FREE_MINT_CONTRACT_ID = 'b5b4de3f-0212-11ef-a08f-0242ac190003'
+
+    const receiverAddress = await getAccounts();
+
+    const demoNftMintingUrl = `${nftCheckoutHost}/?contract_id=${FREE_MINT_CONTRACT_ID}&receiver_address=${receiverAddress}&api_key=${nftCheckoutApiKey}`
+
+    setNFTIFrameURL(demoNftMintingUrl);
+    setShowNftModal(true);
+  };
+
+  const nftCheckout = async () => {
+    const PAID_MINT_CONTRACT_ID = 'd1145a8b-98ae-44e0-ab63-2c9c8371caff'
+
+    const receiverAddress = await getAccounts();
+
+    const demoNftPurchaseUrl = `${nftCheckoutHost}/?contract_id=${PAID_MINT_CONTRACT_ID}&receiver_address=${receiverAddress}&api_key=${nftCheckoutApiKey}`
+
+    setNFTIFrameURL(demoNftPurchaseUrl);
+    setShowNftModal(true);
   };
 
   function uiConsole(...args: any[]): void {
@@ -330,6 +374,28 @@ function App() {
             Log Out
           </button>
         </div>
+
+        <div>
+          <button
+            onClick={() => {
+              nftCheckout();
+            }}
+            className="card"
+          >
+            NFT Checkout
+          </button>
+        </div>
+
+        <div>
+          <button
+            onClick={() => {
+              nftMinting();
+            }}
+            className="card"
+          >
+            NFT Minting
+          </button>
+        </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
@@ -385,6 +451,18 @@ function App() {
           <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
+      {(showNftModal) && (
+          <iframe
+            src={nftIFrameURL}
+            height="100%"
+            width="100%"
+            title="NFT Checkout"
+            loading="eager"
+            seamless={true}
+            allow="clipboard-write"
+            className="iframeContainer"
+          />
+      )}
     </div>
   );
 }

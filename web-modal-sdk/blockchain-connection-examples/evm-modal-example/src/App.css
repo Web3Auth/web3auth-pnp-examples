@@ -85,12 +85,23 @@
 	flex-flow: row wrap;
 }
 
-.flex-container > div {
+.flex-container>div {
 	width: 100px;
 	margin: 10px;
 	text-align: center;
 	line-height: 75px;
 	font-size: 30px;
+}
+
+.iframeContainer {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 1000;
 }
 
 #console {

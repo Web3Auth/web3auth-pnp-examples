@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import '@ethersproject/shims';
-import { ethers } from 'ethers';
+import {ethers} from 'ethers';
 
 // IMP START - Quick Start
 import * as WebBrowser from '@toruslabs/react-native-web-browser';
@@ -17,14 +17,14 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import Web3Auth, {
   LOGIN_PROVIDER,
   OPENLOGIN_NETWORK,
+  ChainNamespace,
 } from '@web3auth/react-native-sdk';
-import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
-import { IProvider } from '@web3auth/base';
+import {EthereumPrivateKeyProvider} from '@web3auth/ethereum-provider';
 // IMP END - Quick Start
 
 const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
 // IMP START - Whitelist bundle ID
-const resolvedRedirectUrl = `${scheme}://openlogin`;
+const redirectUrl = `${scheme}://openlogin`;
 // IMP END - Whitelist bundle ID
 
 // IMP START - Dashboard Registration
@@ -34,12 +34,17 @@ const clientId =
 
 // IMP START - SDK Initialization
 const chainConfig = {
-  chainId: '0x1',
-  rpcTarget: 'https://rpc.ankr.com/eth',
-  displayName: 'mainnet',
-  blockExplorer: 'https://etherscan.io/',
+  chainNamespace: ChainNamespace.EIP155,
+  chainId: '0xaa36a7',
+  rpcTarget: 'https://rpc.ankr.com/eth_sepolia',
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: 'Ethereum Sepolia Testnet',
+  blockExplorerUrl: 'https://sepolia.etherscan.io',
   ticker: 'ETH',
   tickerName: 'Ethereum',
+  decimals: 18,
+  logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
 };
 
 const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
@@ -50,15 +55,18 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
+  // IMP START - Whitelist bundle ID
+  redirectUrl,
+  // IMP END - Whitelist bundle ID
   network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
 });
 // IMP END - SDK Initialization
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [provider, setProvider] = useState<IProvider | null>(null);
+  const [provider, setProvider] = useState<any>(null);
   const [console, setConsole] = useState<string>('');
-  const [email, setEmail] = useState<string>(null);
+  const [email, setEmail] = useState<string>('');
 
   useEffect(() => {
     const init = async () => {
@@ -69,7 +77,6 @@ export default function App() {
         await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
         // IMP END - SDK Initialization
         setProvider(ethereumPrivateKeyProvider);
-        uiConsole('Logged In');
         setLoggedIn(true);
       }
     };
@@ -91,9 +98,6 @@ export default function App() {
       // IMP START - Login
       await web3auth.login({
         loginProvider: LOGIN_PROVIDER.EMAIL_PASSWORDLESS,
-        // IMP START - Whitelist bundle ID
-        redirectUrl: resolvedRedirectUrl,
-        // IMP END - Whitelist bundle ID
         extraLoginOptions: {
           login_hint: email,
         },
@@ -198,23 +202,41 @@ export default function App() {
   };
   // IMP END - Blockchain Calls
 
+  const launchWalletServices = async () => {
+    if (!web3auth) {
+      setConsole('Web3auth not initialized');
+      return;
+    }
+
+    setConsole('Launch Wallet Services');
+    await web3auth.launchWalletServices(chainConfig);
+  };
+
   const uiConsole = (...args: unknown[]) => {
     setConsole(JSON.stringify(args || {}, null, 2) + '\n\n\n\n' + console);
   };
 
   const loggedInView = (
     <View style={styles.buttonArea}>
-      <Button title="Get User Info" onPress={() => uiConsole(web3auth.userInfo())} />
+      <Button
+        title="Get User Info"
+        onPress={() => uiConsole(web3auth.userInfo())}
+      />
       <Button title="Get Accounts" onPress={() => getAccounts()} />
       <Button title="Get Balance" onPress={() => getBalance()} />
       <Button title="Sign Message" onPress={() => signMessage()} />
+      <Button title="Show Wallet UI" onPress={() => launchWalletServices()} />
       <Button title="Log Out" onPress={logout} />
     </View>
   );
 
   const unloggedInView = (
     <View style={styles.buttonAreaLogin}>
-      <TextInput style={styles.inputEmail} placeholder="Enter email" onChangeText={setEmail} />
+      <TextInput
+        style={styles.inputEmail}
+        placeholder="Enter email"
+        onChangeText={setEmail}
+      />
       <Button title="Login with Web3Auth" onPress={login} />
     </View>
   );
@@ -277,5 +299,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,
-  }
+  },
 });

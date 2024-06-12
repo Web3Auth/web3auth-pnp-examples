@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import "./App.css";
 //import RPC from "./web3RPC"; // for using web3.js
@@ -49,8 +49,9 @@ function App() {
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+            loginMethodsOrder: ["google", "github",  "twitter",  "farcaster", "discord", "twitch", "facebook", ],
           },
-          web3AuthNetwork: "sapphire_mainnet",
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           privateKeyProvider: privateKeyProvider,
         });
 
@@ -75,12 +76,12 @@ function App() {
               backUpShareFactor: {
                 enable: true,
                 priority: 2,
-                mandatory: false,
+                mandatory: true,
               },
               socialBackupFactor: {
                 enable: true,
                 priority: 3,
-                mandatory: false,
+                mandatory: true,
               },
               passwordFactor: {
                 enable: true,
@@ -103,6 +104,34 @@ function App() {
                 verifier: "w3a-twitch-demo",
                 typeOfLogin: "twitch",
                 clientId: "3k7e70gowvxjaxg71hjnc8h8ih3bpf", //use your app client id you got from twitch
+              },
+              twitter: {
+                verifier: "w3a-auth0-demo",
+                typeOfLogin: "twitter",
+                clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O", //use your app client id from Auth0, since twitter login is not supported directly
+                jwtParameters: {
+                  domain: "https://web3auth.au.auth0.com",
+                  verifierIdField: "sub",
+                  isVerifierIdCaseSensitive: true,
+                }
+              },
+              google: {
+                verifier: "aggregate-sapphire",
+                verifierSubIdentifier: "w3a-google",
+                typeOfLogin: "google",
+                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
+              },
+              github: {
+                verifier: "aggregate-sapphire",
+                verifierSubIdentifier: "w3a-a0-github",
+                typeOfLogin: "github",
+                clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu",
+                jwtParameters: {
+                  domain: "https://web3auth.au.auth0.com",
+                  verifierIdField: "email",
+                  isVerifierIdCaseSensitive: false,
+                  connection: "github",
+                }
               },
             },
           },
@@ -132,9 +161,9 @@ function App() {
             [WALLET_ADAPTERS.OPENLOGIN]: {
               label: "openlogin",
               loginMethods: {
-                // Disable facebook and reddit
+                // Disable the following login methods
                 apple: {
-                  name: "facebook",
+                  name: "apple",
                   showOnModal: false,
                 },
                 reddit: {
@@ -145,16 +174,8 @@ function App() {
                   name: "line",
                   showOnModal: false,
                 },
-                github: {
-                  name: "github",
-                  showOnModal: false,
-                },
                 wechat: {
                   name: "wechat",
-                  showOnModal: false,
-                },
-                twitter: {
-                  name: "twitter",
                   showOnModal: false,
                 },
                 kakao: {

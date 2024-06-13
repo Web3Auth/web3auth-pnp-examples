@@ -156,12 +156,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
               backUpShareFactor: {
                 enable: true,
                 priority: 2,
-                mandatory: false,
+                mandatory: true,
               },
               socialBackupFactor: {
                 enable: true,
                 priority: 3,
-                mandatory: false,
+                mandatory: true,
               },
               passwordFactor: {
                 enable: true,

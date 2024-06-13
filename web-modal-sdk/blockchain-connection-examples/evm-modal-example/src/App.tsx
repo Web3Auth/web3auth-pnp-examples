@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
-import { CHAIN_NAMESPACES, PLUGIN_STATUS, IProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./viemRPC"; // for using viem
 // import RPC from "./ethersRPC"; // for using ethers.js
-import { useWalletServicesPlugin  } from "@web3auth/wallet-services-plugin-react-hooks";
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+import { Clusters, isNameValid } from "@clustersxyz/sdk";
+import { createWalletClient, createPublicClient, formatUnits, custom } from "viem";
+import { sepolia } from "viem/chains";
+import { RegistrationTransactionData_evm } from "@clustersxyz/sdk/types";
 
 const newChain = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -38,13 +42,14 @@ function App() {
     addAndSwitchChain,
   } = useWeb3Auth();
 
-  const { showCheckout, showWalletConnectScanner, showWalletUI, plugin, isPluginConnected } = useWalletServicesPlugin();
+  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
   const [unloggedInView, setUnloggedInView] = useState<JSX.Element | null>(null);
   const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(
     <div>
       <h2>MFA is disabled</h2>
     </div>
   );
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const init = async () => {
@@ -143,6 +148,67 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const privateKey = await rpc.getPrivateKey();
     uiConsole(privateKey);
+  };
+
+  const handleRegister = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+
+    try {
+      const clusters = new Clusters({ apiKey: process.env.REACT_APP_CLUSTERS_API_KEY || "" });
+      if (isNameValid(name)) {
+        const nameAvailability = await clusters.getNameAvailability(name);
+        console.log(nameAvailability.isAvailable);
+        if (!nameAvailability.isAvailable) {
+          uiConsole("Name already taken!");
+          return;
+        }
+        const names = [{ name }];
+        const signerAddress = await getAccounts();
+        const chainId = "11155111";
+        const data = await clusters.getRegistrationTransaction(names, signerAddress!, chainId);
+        console.log(data);
+        if (!data) {
+          return;
+        }
+        const registrationFee = formatUnits(BigInt(data.registrationFee), data.gasToken.decimals as number);
+        const bridgeFee = formatUnits(BigInt(data.bridgeFee), data.gasToken.decimals as number);
+
+        // Total Registration fee: 0.01 ETH
+        console.log(`Total Registration fee: ${registrationFee} ${data.gasToken.symbol}`);
+
+        // Bridge fee: 0 ETH
+        console.log(`Bridge fee: ${bridgeFee} ${data.gasToken.symbol}`);
+
+        const publicClient = createPublicClient({
+          chain: sepolia,
+          transport: custom(provider),
+        });
+
+        const walletClient = createWalletClient({
+          chain: sepolia,
+          transport: custom(provider),
+        });
+
+        const hash = await walletClient.sendTransaction({
+          data: (data.transactionData as RegistrationTransactionData_evm).data,
+          account: signerAddress!,
+          to: (data.transactionData as RegistrationTransactionData_evm).to,
+          value: BigInt((data.transactionData as RegistrationTransactionData_evm).value),
+        });
+        const receipt = await publicClient.waitForTransactionReceipt({ hash });
+        console.log(receipt);
+
+        const getStatus = await clusters.getTransactionStatus(hash);
+        console.log(getStatus.status);
+        uiConsole(`${name} registered successfully!`);
+      }
+    } catch (error) {
+      console.error("Error registering name:", error);
+      uiConsole("Failed to register name.");
+    }
   };
 
   function uiConsole(...args: any[]): void {
@@ -331,6 +397,13 @@ function App() {
           </button>
         </div>
       </div>
+      <div className="input-container">
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Choose your cluster name" className="input-box" />
+      </div>
+      <button onClick={handleRegister} className="card">
+        Register
+      </button>
+
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>

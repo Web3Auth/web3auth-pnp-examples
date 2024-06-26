@@ -86,7 +86,7 @@ function App() {
               passwordFactor: {
                 enable: true,
                 priority: 4,
-                mandatory: false,
+                mandatory: true,
               },
             },
             loginConfig: {

@@ -166,7 +166,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
               passwordFactor: {
                 enable: true,
                 priority: 4,
-                mandatory: false,
+                mandatory: true,
               },
             },
           },

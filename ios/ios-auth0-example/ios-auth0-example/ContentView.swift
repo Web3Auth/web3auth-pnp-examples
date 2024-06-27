@@ -25,7 +25,7 @@ struct ContentView: View {
         }
         .onAppear {
             Task {
-                await vm.setup()
+                try await vm.setup()
             }
         }
     }

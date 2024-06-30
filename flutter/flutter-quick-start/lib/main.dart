@@ -26,7 +26,7 @@ class MyApp extends StatefulWidget {
 }
 
 // IMP START - Quick Start
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 // IMP END - Quick Start
   String _result = '';
   bool logoutVisible = false;
@@ -37,7 +37,22 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     initPlatformState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setCustomTabsClosed();
+    }
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -45,7 +60,7 @@ class _MyAppState extends State<MyApp> {
     Uri redirectUrl;
     // IMP START - Get your Web3Auth Client ID from Dashboard
     String clientId =
-        'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ';
+        'BFuUqebV5I8Pz5F7a5A2ihW7YVmbv_OHXnHYDv6OltAD5NGr6e-ViNvde3U4BHdn6HvwfkgobhVu4VwC-OSJkik';
     if (Platform.isAndroid) {
       redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
     } else if (Platform.isIOS) {
@@ -58,9 +73,15 @@ class _MyAppState extends State<MyApp> {
     // IMP START - Initialize Web3Auth
     await Web3AuthFlutter.init(Web3AuthOptions(
       clientId: clientId,
-      network: Network.sapphire_mainnet,
+      network: Network.sapphire_devnet,
       redirectUrl: redirectUrl,
       buildEnv: BuildEnv.production,
+      whiteLabel: WhiteLabelData(
+        mode: ThemeModes.dark,
+        defaultLanguage: Language.tr,
+        appName: "Meow",
+        useLogoLoader: false,
+      ),
       // 259200 allows user to stay authenticated for 3 days with Web3Auth.
       // Default is 86400, which is 1 day.
       sessionTime: 259200,
@@ -246,7 +267,7 @@ class _MyAppState extends State<MyApp> {
       log(userEmail);
       // IMP START - Login
       return await Web3AuthFlutter.login(LoginParams(
-        loginProvider: Provider.email_passwordless,
+        loginProvider: Provider.google,
         extraLoginOptions: ExtraLoginOptions(login_hint: userEmail),
       ));
       // IMP END - Login

@@ -38,7 +38,24 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     initPlatformState();
+      WidgetsBinding.instance.addObserver(this);
   }
+
+   @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setCustomTabsClosed();
+    }
+  }
+
+  
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {

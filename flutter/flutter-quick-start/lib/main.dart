@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     Uri redirectUrl;
     // IMP START - Get your Web3Auth Client ID from Dashboard
     String clientId =
-        'BFuUqebV5I8Pz5F7a5A2ihW7YVmbv_OHXnHYDv6OltAD5NGr6e-ViNvde3U4BHdn6HvwfkgobhVu4VwC-OSJkik';
+        'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ';
     if (Platform.isAndroid) {
       redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
     } else if (Platform.isIOS) {
@@ -73,15 +73,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // IMP START - Initialize Web3Auth
     await Web3AuthFlutter.init(Web3AuthOptions(
       clientId: clientId,
-      network: Network.sapphire_devnet,
+      network: Network.sapphire_mainnet,
       redirectUrl: redirectUrl,
       buildEnv: BuildEnv.production,
-      whiteLabel: WhiteLabelData(
-        mode: ThemeModes.dark,
-        defaultLanguage: Language.tr,
-        appName: "Meow",
-        useLogoLoader: false,
-      ),
       // 259200 allows user to stay authenticated for 3 days with Web3Auth.
       // Default is 86400, which is 1 day.
       sessionTime: 259200,
@@ -267,7 +261,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       log(userEmail);
       // IMP START - Login
       return await Web3AuthFlutter.login(LoginParams(
-        loginProvider: Provider.google,
+        loginProvider: Provider.email_passwordless,
         extraLoginOptions: ExtraLoginOptions(login_hint: userEmail),
       ));
       // IMP END - Login

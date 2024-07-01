@@ -10,13 +10,13 @@ class ViewModel: ObservableObject {
     private var clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"
     private var network: Network = .sapphire_mainnet
     
-    func setup() async {
+    func setup() async throws {
         guard web3Auth == nil else { return }
         await MainActor.run(body: {
             isLoading = true
             navigationTitle = "Loading"
         })
-        web3Auth = await Web3Auth(W3AInitParams(
+        web3Auth = try await Web3Auth(W3AInitParams(
             clientId: clientId, network: network,
             redirectUrl: "web3auth.ios-aggregate-example://auth",
             loginConfig: [

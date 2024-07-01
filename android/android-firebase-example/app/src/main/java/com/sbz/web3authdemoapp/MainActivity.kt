@@ -147,6 +147,15 @@ class MainActivity : AppCompatActivity() {
         web3Auth.setResultUrl(intent?.data)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (Web3Auth.getCustomTabsClosed()) {
+            Toast.makeText(this, "User closed the browser.", Toast.LENGTH_SHORT).show()
+            web3Auth.setResultUrl(null)
+            Web3Auth.setCustomTabsClosed(false)
+        }
+    }
+
     private fun signIn() {
         auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
             .addOnCompleteListener(this) { task ->

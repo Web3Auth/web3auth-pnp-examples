@@ -19,7 +19,8 @@ class ViewModel: ObservableObject {
             isLoading = true
             navigationTitle = "Loading"
         })
-        web3Auth = await Web3Auth(W3AInitParams(
+        
+        web3Auth = try await Web3Auth(W3AInitParams(
             clientId: clientId, network: network,
             buildEnv: .testing,
             redirectUrl: "web3auth.ios-firebase-example://auth",
@@ -33,11 +34,11 @@ class ViewModel: ObservableObject {
             ],
             whiteLabel: W3AWhiteLabelData(
                 appName: "Web3Auth Stub",
-                logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
-                logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+                logoLight: "https://images.toruswallet.io/sol.svg",
+                logoDark: "https://images.toruswallet.io/sol.svg",
                 defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
-                mode: .dark,
-                theme: ["primary": "#d53f8c"]),
+                theme: ["primary": "#d53f8c"]
+            ),
             mfaSettings: MfaSettings(
                 deviceShareFactor: MfaSetting(enable: true, priority: 1),
                 backUpShareFactor: MfaSetting(enable: true, priority: 2),

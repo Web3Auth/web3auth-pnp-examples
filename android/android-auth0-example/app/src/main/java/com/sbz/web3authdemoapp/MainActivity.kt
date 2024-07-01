@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.web3auth.core.Web3Auth
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         web3 = Web3j.build(HttpService(rpcUrl))
-        loginParams = LoginParams(Provider.JWT, extraLoginOptions = ExtraLoginOptions(domain = "https://web3auth.au.auth0.com", verifierIdField = "email"))
+        loginParams = LoginParams(Provider.JWT, extraLoginOptions = ExtraLoginOptions(domain = "https://web3auth.au.auth0.com", verifierIdField = "sub"))
 
         web3Auth = Web3Auth(
            Web3AuthOptions(
@@ -138,6 +139,15 @@ class MainActivity : AppCompatActivity() {
 
         // Handle user signing in when app is active
         web3Auth.setResultUrl(intent?.data)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Web3Auth.getCustomTabsClosed()) {
+            Toast.makeText(this, "User closed the browser.", Toast.LENGTH_SHORT).show()
+            web3Auth.setResultUrl(null)
+            Web3Auth.setCustomTabsClosed(false)
+        }
     }
 
     private fun signIn() {

@@ -13,7 +13,7 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
   late final TextEditingController textEditingController;
   late final GlobalKey<FormState> formKey;
 
@@ -24,6 +24,21 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     textEditingController = TextEditingController();
     formKey = GlobalKey<FormState>();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setCustomTabsClosed();
+    }
   }
 
   @override

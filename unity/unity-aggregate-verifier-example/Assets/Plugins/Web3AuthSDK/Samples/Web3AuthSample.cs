@@ -11,7 +11,7 @@ public class Web3AuthSample : MonoBehaviour
     List<LoginVerifier> verifierList = new List<LoginVerifier> {
         new LoginVerifier("Google", Provider.GOOGLE),
         new LoginVerifier("Facebook", Provider.FACEBOOK),
-        new LoginVerifier("CUSTOM_VERIFIER", Provider.CUSTOM_VERIFIER),
+        // new LoginVerifier("CUSTOM_VERIFIER", Provider.CUSTOM_VERIFIER),
         new LoginVerifier("Twitch", Provider.TWITCH),
         new LoginVerifier("Discord", Provider.DISCORD),
         new LoginVerifier("Reddit", Provider.REDDIT),
@@ -20,7 +20,9 @@ public class Web3AuthSample : MonoBehaviour
         new LoginVerifier("LinkedIn", Provider.LINKEDIN),
         new LoginVerifier("Twitter", Provider.TWITTER),
         new LoginVerifier("Line", Provider.LINE),
-        new LoginVerifier("Hosted Email Passwordless", Provider.EMAIL_PASSWORDLESS),
+        new LoginVerifier("Email Passwordless", Provider.EMAIL_PASSWORDLESS),
+        new LoginVerifier("SMS Passwordless", Provider.SMS_PASSWORDLESS),
+        new LoginVerifier("Farcaster", Provider.FARCASTER),
     };
 
     Web3Auth web3Auth;
@@ -39,6 +41,12 @@ public class Web3AuthSample : MonoBehaviour
 
     [SerializeField]
     Button logoutButton;
+
+    [SerializeField]
+    Button mfaSetupButton;
+
+    [SerializeField]
+    Button launchWalletServicesButton;
 
     void Start()
     {
@@ -61,7 +69,7 @@ public class Web3AuthSample : MonoBehaviour
                 mode = ThemeModes.dark,
                 theme = new Dictionary<string, string>
                 {
-                    { "primary", "#123456" }
+                    { "primary", "#FFBF00" }
                 }
             },
             // If using your own custom verifier, uncomment this code. 
@@ -73,19 +81,24 @@ public class Web3AuthSample : MonoBehaviour
             }
             */
             clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
-            buildEnv = BuildEnv.TESTING,
+            buildEnv = BuildEnv.PRODUCTION,
             redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
             network = Web3Auth.Network.SAPPHIRE_MAINNET,
             sessionTime = 86400
         });
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
+        web3Auth.onMFASetup += onMFASetup;
 
         emailAddressField.gameObject.SetActive(false);
         logoutButton.gameObject.SetActive(false);
+        mfaSetupButton.gameObject.SetActive(false);
+        launchWalletServicesButton.gameObject.SetActive(false);
 
         loginButton.onClick.AddListener(login);
         logoutButton.onClick.AddListener(logout);
+        mfaSetupButton.onClick.AddListener(enableMFA);
+        launchWalletServicesButton.onClick.AddListener(launchWalletServices);
 
         verifierDropdown.AddOptions(verifierList.Select(x => x.name).ToList());
         verifierDropdown.onValueChanged.AddListener(onVerifierDropDownChange);
@@ -101,6 +114,8 @@ public class Web3AuthSample : MonoBehaviour
         verifierDropdown.gameObject.SetActive(false);
         emailAddressField.gameObject.SetActive(false);
         logoutButton.gameObject.SetActive(true);
+        mfaSetupButton.gameObject.SetActive(true);
+        launchWalletServicesButton.gameObject.SetActive(true);
     }
 
     private void onLogout()
@@ -108,8 +123,14 @@ public class Web3AuthSample : MonoBehaviour
         loginButton.gameObject.SetActive(true);
         verifierDropdown.gameObject.SetActive(true);
         logoutButton.gameObject.SetActive(false);
+        mfaSetupButton.gameObject.SetActive(false);
+        launchWalletServicesButton.gameObject.SetActive(false);
 
         loginResponseText.text = "";
+    }
+
+    private void onMFASetup(bool response) {
+        Debug.Log("MFA Setup: " + response);
     }
 
 
@@ -137,6 +158,13 @@ public class Web3AuthSample : MonoBehaviour
                 login_hint = emailAddressField.text
             };
         }
+        if (selectedProvider == Provider.SMS_PASSWORDLESS)
+        {
+            options.extraLoginOptions = new ExtraLoginOptions()
+            {
+                login_hint = "+XX-XXXXXXXXXX"
+            };
+        }
 
         web3Auth.login(options);
     }
@@ -144,5 +172,38 @@ public class Web3AuthSample : MonoBehaviour
     private void logout()
     {
         web3Auth.logout();
+    }
+
+    private void enableMFA()
+    {
+        var selectedProvider = verifierList[verifierDropdown.value].loginProvider;
+
+        var options = new LoginParams()
+        {
+            loginProvider = selectedProvider,
+            mfaLevel = MFALevel.MANDATORY
+        };
+
+        if (selectedProvider == Provider.EMAIL_PASSWORDLESS)
+        {
+            options.extraLoginOptions = new ExtraLoginOptions()
+            {
+                login_hint = emailAddressField.text
+            };
+        }
+        web3Auth.enableMFA(options);
+    }
+
+    private void launchWalletServices() {
+        var selectedProvider = verifierList[verifierDropdown.value].loginProvider;
+
+        var chainConfig = new ChainConfig()
+        {
+            chainId = "0x1",
+            rpcTarget = "https://mainnet.infura.io/v3/daeee53504be4cd3a997d4f2718d33e0",
+            ticker = "ETH",
+            chainNamespace = Web3Auth.ChainNamespace.EIP155
+        };
+        web3Auth.launchWalletServices(chainConfig);
     }
 }

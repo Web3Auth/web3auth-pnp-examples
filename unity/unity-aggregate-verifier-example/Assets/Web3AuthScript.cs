@@ -61,7 +61,8 @@ public class Web3AuthScript : MonoBehaviour
         });
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
-        
+        web3Auth.onMFASetup += onMFASetup;
+
         updateConsole("Ready to Login!");
     }
 
@@ -245,6 +246,42 @@ public class Web3AuthScript : MonoBehaviour
         }
         
     }
+
+    public void enableMFA()
+    {
+        var selectedProvider = Provider.JWT;
+
+        var options = new LoginParams()
+        {
+            loginProvider = selectedProvider,
+            extraLoginOptions = new ExtraLoginOptions()
+            {
+                domain = "https://web3auth.au.auth0.com",
+                verifierIdField = "sub",
+                prompt = Prompt.LOGIN,
+            }
+        };
+
+        web3Auth.enableMFA(options);
+    }
+
+    private void onMFASetup(bool response)
+    {
+        Debug.Log("MFA Setup: " + response);
+    }
+
+    public void launchWalletServices()
+    {
+        var chainConfig = new ChainConfig()
+        {
+            chainId = "0x1",
+            rpcTarget = rpcURL,
+            ticker = "ETH",
+            chainNamespace = Web3Auth.ChainNamespace.EIP155
+        };
+        web3Auth.launchWalletServices(chainConfig);
+    }
+
 
 
     public void updateConsole(string message){

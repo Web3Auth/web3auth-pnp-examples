@@ -28,7 +28,11 @@ class MainViewModel: ObservableObject {
     func initilize() {
         Task {
             web3AuthHelper = Web3AuthHelper()
-            await web3AuthHelper.initialize()
+            do {
+                try await web3AuthHelper.initialize()
+            } catch let error {
+                showAlert(message: error.localizedDescription)
+            }
             if(self.web3AuthHelper.isUserAuthenticated()) {
                 loadAccount(showLoader: true)
             }

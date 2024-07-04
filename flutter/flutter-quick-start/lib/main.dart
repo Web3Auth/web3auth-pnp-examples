@@ -26,7 +26,7 @@ class MyApp extends StatefulWidget {
 }
 
 // IMP START - Quick Start
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 // IMP END - Quick Start
   String _result = '';
   bool logoutVisible = false;
@@ -37,7 +37,22 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     initPlatformState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setCustomTabsClosed();
+    }
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.

@@ -19,7 +19,7 @@ class ViewModel: ObservableObject {
     func initilize() {
         Task {
             web3AuthHelper = Web3AuthHelper()
-            await web3AuthHelper.initialize()
+            try await web3AuthHelper.initialize()
             DispatchQueue.main.async {
                 self.isUserAuthenticated = self.web3AuthHelper.isUserAuthenticated()
             }

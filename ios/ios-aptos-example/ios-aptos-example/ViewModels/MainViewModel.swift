@@ -25,7 +25,7 @@ class MainViewModel: ObservableObject {
         Task {
             web3AuthHelper = Web3AuthHelper()
             aptosHelper = AptosHelper()
-            await web3AuthHelper.initialize()
+            try await web3AuthHelper.initialize()
             try await aptosHelper.initialize()
             DispatchQueue.main.async {
                 self.isUserAuthenticated = self.web3AuthHelper.isUserAuthenticated()

@@ -28,7 +28,7 @@ export default class EthereumRpc {
       // Get user's Ethereum public address
       const address = await web3.eth.getAccounts();
 
-      return address;
+      return address[0];
     } catch (error) {
       return error;
     }

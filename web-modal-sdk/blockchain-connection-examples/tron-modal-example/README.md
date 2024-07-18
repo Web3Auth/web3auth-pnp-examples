@@ -1,4 +1,4 @@
-# Web3Auth (`@web3auth/modal`) x EVM x React
+# Web3Auth (`@web3auth/modal`) x Tron x React
 
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/pnp/web/modal)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
@@ -11,12 +11,12 @@ This example demonstrates how to use Web3Auth with EVM in React.
 
 ### One-Click Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fblockchain-connection-examples%2Fevm-modal-example&project-name=w3a-evm-modal&repository-name=w3a-evm-modal)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fblockchain-connection-examples%2Ftron-modal-example&project-name=w3a-tron-modal&repository-name=w3a-tron-modal)
 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/blockchain-connection-examples/evm-modal-example w3a-example
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/blockchain-connection-examples/tron-modal-example w3a-example
 ```
 
 Install & Run:

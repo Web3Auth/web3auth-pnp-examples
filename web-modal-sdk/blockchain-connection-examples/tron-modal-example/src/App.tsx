@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
-import { CHAIN_NAMESPACES, PLUGIN_STATUS, IProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 // import RPC from "./viemRPC"; // for using viem
@@ -38,7 +38,7 @@ function App() {
     addAndSwitchChain,
   } = useWeb3Auth();
 
-  const { showCheckout, showWalletConnectScanner, showWalletUI, plugin, isPluginConnected } = useWalletServicesPlugin();
+  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
   const [unloggedInView, setUnloggedInView] = useState<JSX.Element | null>(null);
   const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(
     <div>

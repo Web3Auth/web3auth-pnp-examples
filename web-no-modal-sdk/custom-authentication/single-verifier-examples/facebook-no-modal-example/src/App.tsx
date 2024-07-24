@@ -44,7 +44,7 @@ function App() {
               facebook: {
                 verifier: "w3a-facebook-demo",
                 typeOfLogin: "facebook",
-                clientId: "215892741216994", //use your app client id you got from facebook
+                clientId: "342380202252650", //use your app client id you got from facebook
               },
             },
           },

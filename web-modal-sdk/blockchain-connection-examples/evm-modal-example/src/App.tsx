@@ -53,6 +53,7 @@ function App() {
     const init = async () => {
       try {
         if (web3Auth) {
+          // Adding default evm adapters
           const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
           adapters.forEach((adapter) => {
             web3Auth.configureAdapter(adapter);

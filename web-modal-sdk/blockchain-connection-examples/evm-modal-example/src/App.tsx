@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
-import { CHAIN_NAMESPACES, PLUGIN_STATUS, IProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
-// import RPC from "./viemRPC"; // for using viem
+// import RPC from "./web3RPC"; // for using web3.js
+import RPC from "./viemRPC"; // for using viem
 // import RPC from "./ethersRPC"; // for using ethers.js
-import { useWalletServicesPlugin  } from "@web3auth/wallet-services-plugin-react-hooks";
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
 
 const newChain = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -38,7 +38,7 @@ function App() {
     addAndSwitchChain,
   } = useWeb3Auth();
 
-  const { showCheckout, showWalletConnectScanner, showWalletUI, plugin, isPluginConnected } = useWalletServicesPlugin();
+  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
   const [unloggedInView, setUnloggedInView] = useState<JSX.Element | null>(null);
   const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(
     <div>
@@ -110,6 +110,26 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  const signTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const signature = await rpc.signTransaction();
+    uiConsole(signature);
+  };
+
+  const deployContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const message = await rpc.deployContract();
+    uiConsole(message);
+  };
+
   const readContract = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -131,7 +151,7 @@ function App() {
     if (receipt) {
       setTimeout(async () => {
         await readContract();
-      }, 2000);
+      }, 10000);
     }
   };
 
@@ -289,8 +309,24 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={signTransaction} className="card">
+            Sign Transaction
+          </button>
+        </div>
+        <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              const receipt = deployContract();
+              uiConsole(receipt);
+            }}
+            className="card"
+          >
+            Deploy Contract
           </button>
         </div>
         <div>

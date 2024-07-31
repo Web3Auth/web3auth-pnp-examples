@@ -21,7 +21,10 @@ export default async function handler(
     const jwtDecoded = await jose.jwtVerify(idToken, jwks, {
       algorithms: ["ES256"],
     });
-    if ((jwtDecoded.payload as any).wallets[0].public_key.toLowerCase() === app_pub_key.toLowerCase()) {
+    if (
+      (jwtDecoded.payload as any).wallets.find((x: { type: string }) => x.type === "web3auth_app_key").public_key.toLowerCase() ===
+      app_pub_key.toLowerCase()
+    ) {
       // Verified
       res.status(200).json({ name: "Validation Success" });
     } else {

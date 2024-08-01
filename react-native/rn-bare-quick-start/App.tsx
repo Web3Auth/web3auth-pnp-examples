@@ -1,50 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  ScrollView,
-  Dimensions,
-  TextInput,
-} from 'react-native';
-import '@ethersproject/shims';
-import {ethers} from 'ethers';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, Button, ScrollView, Dimensions, TextInput } from "react-native";
+import "@ethersproject/shims";
+import { ethers } from "ethers";
 
 // IMP START - Quick Start
-import * as WebBrowser from '@toruslabs/react-native-web-browser';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import Web3Auth, {
-  LOGIN_PROVIDER,
-  OPENLOGIN_NETWORK,
-  ChainNamespace,
-} from '@web3auth/react-native-sdk';
-import {EthereumPrivateKeyProvider} from '@web3auth/ethereum-provider';
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import EncryptedStorage from "react-native-encrypted-storage";
+import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK, ChainNamespace } from "@web3auth/react-native-sdk";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 // IMP END - Quick Start
 
-const scheme = 'web3authrnexample'; // Or your desired app redirection scheme
+const scheme = "web3authrnexample"; // Or your desired app redirection scheme
 // IMP START - Whitelist bundle ID
 const redirectUrl = `${scheme}://openlogin`;
 // IMP END - Whitelist bundle ID
 
 // IMP START - Dashboard Registration
-const clientId =
-  'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ'; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 // IMP START - SDK Initialization
 const chainConfig = {
   chainNamespace: ChainNamespace.EIP155,
-  chainId: '0xaa36a7',
-  rpcTarget: 'https://rpc.ankr.com/eth_sepolia',
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
   // Avoid using public rpcTarget in production.
   // Use services like Infura, Quicknode etc
-  displayName: 'Ethereum Sepolia Testnet',
-  blockExplorerUrl: 'https://sepolia.etherscan.io',
-  ticker: 'ETH',
-  tickerName: 'Ethereum',
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
   decimals: 18,
-  logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
 const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
@@ -65,8 +52,8 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [provider, setProvider] = useState<any>(null);
-  const [console, setConsole] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const [console, setConsole] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
     const init = async () => {
@@ -86,15 +73,15 @@ export default function App() {
   const login = async () => {
     try {
       if (!web3auth.ready) {
-        setConsole('Web3auth not initialized');
+        setConsole("Web3auth not initialized");
         return;
       }
       if (!email) {
-        setConsole('Enter email first');
+        setConsole("Enter email first");
         return;
       }
 
-      setConsole('Logging in');
+      setConsole("Logging in");
       // IMP START - Login
       await web3auth.login({
         loginProvider: LOGIN_PROVIDER.EMAIL_PASSWORDLESS,
@@ -107,7 +94,7 @@ export default function App() {
         await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
         // IMP END - Login
         setProvider(ethereumPrivateKeyProvider);
-        uiConsole('Logged In');
+        uiConsole("Logged In");
         setLoggedIn(true);
       }
     } catch (e: any) {
@@ -117,18 +104,18 @@ export default function App() {
 
   const logout = async () => {
     if (!web3auth.ready) {
-      setConsole('Web3auth not initialized');
+      setConsole("Web3auth not initialized");
       return;
     }
 
-    setConsole('Logging out');
+    setConsole("Logging out");
     // IMP START - Logout
     await web3auth.logout();
     // IMP END - Logout
 
     if (!web3auth.privKey) {
       setProvider(null);
-      uiConsole('Logged out');
+      uiConsole("Logged out");
       setLoggedIn(false);
     }
   };
@@ -136,10 +123,10 @@ export default function App() {
   // IMP START - Blockchain Calls
   const getAccounts = async () => {
     if (!provider) {
-      uiConsole('provider not set');
+      uiConsole("provider not set");
       return;
     }
-    setConsole('Getting account');
+    setConsole("Getting account");
     // For ethers v5
     // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
     const ethersProvider = new ethers.BrowserProvider(provider!);
@@ -155,10 +142,10 @@ export default function App() {
 
   const getBalance = async () => {
     if (!provider) {
-      uiConsole('provider not set');
+      uiConsole("provider not set");
       return;
     }
-    setConsole('Fetching balance');
+    setConsole("Fetching balance");
     // For ethers v5
     // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
     const ethersProvider = new ethers.BrowserProvider(provider!);
@@ -176,17 +163,17 @@ export default function App() {
     // await ethersProvider.getBalance(address) // Balance is in wei
     // );
     const balance = ethers.formatEther(
-      await ethersProvider.getBalance(address), // Balance is in wei
+      await ethersProvider.getBalance(address) // Balance is in wei
     );
     uiConsole(balance);
   };
 
   const signMessage = async () => {
     if (!provider) {
-      uiConsole('provider not set');
+      uiConsole("provider not set");
       return;
     }
-    setConsole('Signing message');
+    setConsole("Signing message");
     // For ethers v5
     // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
     const ethersProvider = new ethers.BrowserProvider(provider!);
@@ -194,7 +181,7 @@ export default function App() {
     // For ethers v5
     // const signer = ethersProvider.getSigner();
     const signer = await ethersProvider.getSigner();
-    const originalMessage = 'YOUR_MESSAGE';
+    const originalMessage = "YOUR_MESSAGE";
 
     // Sign the message
     const signedMessage = await signer.signMessage(originalMessage);
@@ -204,24 +191,21 @@ export default function App() {
 
   const launchWalletServices = async () => {
     if (!web3auth) {
-      setConsole('Web3auth not initialized');
+      setConsole("Web3auth not initialized");
       return;
     }
 
-    setConsole('Launch Wallet Services');
+    setConsole("Launch Wallet Services");
     await web3auth.launchWalletServices(chainConfig);
   };
 
   const uiConsole = (...args: unknown[]) => {
-    setConsole(JSON.stringify(args || {}, null, 2) + '\n\n\n\n' + console);
+    setConsole(JSON.stringify(args || {}, null, 2) + "\n\n\n\n" + console);
   };
 
   const loggedInView = (
     <View style={styles.buttonArea}>
-      <Button
-        title="Get User Info"
-        onPress={() => uiConsole(web3auth.userInfo())}
-      />
+      <Button title="Get User Info" onPress={() => uiConsole(web3auth.userInfo())} />
       <Button title="Get Accounts" onPress={() => getAccounts()} />
       <Button title="Get Balance" onPress={() => getBalance()} />
       <Button title="Sign Message" onPress={() => signMessage()} />
@@ -232,11 +216,7 @@ export default function App() {
 
   const unloggedInView = (
     <View style={styles.buttonAreaLogin}>
-      <TextInput
-        style={styles.inputEmail}
-        placeholder="Enter email"
-        onChangeText={setEmail}
-      />
+      <TextInput style={styles.inputEmail} placeholder="Enter email" onChangeText={setEmail} />
       <Button title="Login with Web3Auth" onPress={login} />
     </View>
   );
@@ -257,44 +237,44 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 50,
     paddingBottom: 30,
   },
   consoleArea: {
     margin: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
   },
   console: {
     flex: 1,
-    backgroundColor: '#CCCCCC',
-    color: '#ffffff',
+    backgroundColor: "#CCCCCC",
+    color: "#ffffff",
     padding: 10,
-    width: Dimensions.get('window').width - 60,
+    width: Dimensions.get("window").width - 60,
   },
   consoleText: {
     padding: 10,
   },
   buttonArea: {
     flex: 2,
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    alignItems: "center",
+    justifyContent: "space-around",
     paddingBottom: 30,
   },
   buttonAreaLogin: {
     flex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingBottom: 30,
   },
   inputEmail: {
     height: 40,
     width: 300,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,

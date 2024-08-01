@@ -16,7 +16,6 @@
 		"@web3auth/openlogin-adapter": "^8.8.0",
 		"axios": "^1.7.2",
 		"cors": "^2.8.5",
-		"dotenv": "^16.0.3",
 		"ethers": "^6.6.2",
 		"express": "^4.18.2",
 		"jsonwebtoken": "^9.0.0",
@@ -55,6 +54,7 @@
 	"devDependencies": {
 		"@types/jsonwebtoken": "^9.0.0",
 		"buffer": "^6.0.3",
+		"dotenv": "^16.4.5",
 		"fs": "^0.0.1-security",
 		"husky": "^8.0.2",
 		"lint-staged": "^13.1.0",

@@ -71,16 +71,11 @@ function App() {
   }, []);
 
   const login = async () => {
-    window.location.href = "https://bf6b-2405-201-a41e-18d1-adf9-f23e-fd18-74bb.ngrok-free.app/telegram/login";
+    const URL = process.env.REACT_APP_SERVER_HOST_URL || "https://bf6b-2405-201-a41e-18d1-adf9-f23e-fd18-74bb.ngrok-free.app";
+    window.location.href = `${URL}/telegram/login`;
   };
 
   const loginWithWeb3Auth = async (token: string) => {
-    // if (!web3auth) {
-    //   uiConsole("web3auth not initialized yet");
-    //   console.log("web3auth not initialized yet");
-    //   return;
-    // }
-
     await web3auth?.init();
 
     const web3authProvider = await web3auth?.connectTo(WALLET_ADAPTERS.OPENLOGIN, {

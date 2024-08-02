@@ -1,41 +1,35 @@
 // WAGMI Libraries
-import { WagmiProvider, createConfig, http, useAccount, useConnect, useDisconnect } from "wagmi";
-import { coinbaseWallet, walletConnect } from "wagmi/connectors";
-import { sepolia, mainnet, polygon } from "wagmi/chains";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query' 
+import { useWalletClient, useAccount, useConnect, useDisconnect } from "wagmi";
+import { useEffect } from 'react';
 
 import { SendTransaction } from "./sendTransaction";
 import { SwitchChain } from "./switchNetwork";
 import { Balance } from "./balance";
 import { WriteContract } from "./writeContract";
 
-import Web3AuthConnectorInstance from "./Web3AuthConnectorInstance";
+// context to get the userInfo with web3auth.getUserInfo()
+import { ContextProvider, useWeb3Auth } from "./ContextProvider";
+
 import "./App.css";
-
-const queryClient = new QueryClient() 
-
-// Set up client
-const config = createConfig({
-  chains: [mainnet, sepolia, polygon],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-    [polygon.id]: http(),
-  },
-  connectors: [
-    walletConnect({
-      projectId: "3314f39613059cb687432d249f1658d2",
-      showQrModal: true,
-    }),
-    coinbaseWallet({ appName: 'wagmi' }),
-    Web3AuthConnectorInstance([mainnet, sepolia, polygon]),
-  ],
-});
 
 function Profile() {
   const { address, connector, isConnected } = useAccount();
   const { connect, connectors, error } = useConnect();
   const { disconnect } = useDisconnect();
+  const { data: walletClient } = useWalletClient();
+  let web3Auth = useWeb3Auth();
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        var userInfo = await web3Auth?.getUserInfo();
+      } catch (e) {
+        console.log("Cannot get userInfo.");
+      }
+      console.log("/app, userInfo", userInfo);
+    };
+    getUserInfo();
+  }, [walletClient]);
 
   if (isConnected) {
     return (
@@ -70,13 +64,11 @@ function Profile() {
 // Pass client to React Context Provider
 function App() {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
+    <ContextProvider>
       <div className="container">
         <Profile />
       </div>
-      </QueryClientProvider>
-    </WagmiProvider>
+    </ContextProvider>
   );
 }
 

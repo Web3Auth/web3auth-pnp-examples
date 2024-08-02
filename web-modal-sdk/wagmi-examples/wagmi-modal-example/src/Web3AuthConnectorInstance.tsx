@@ -6,20 +6,43 @@ import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, WALLET_ADAPTERS } from "@web3auth/b
 import { Chain } from "wagmi/chains";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
-export default function Web3AuthConnectorInstance(chains: Chain[]) {
-  // Create Web3Auth Instance
-  const name = "My App Name";
-  const chainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x" + chains[0].id.toString(16),
-    rpcTarget: chains[0].rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
-    displayName: chains[0].name,
-    tickerName: chains[0].nativeCurrency?.name,
-    ticker: chains[0].nativeCurrency?.symbol,
-    blockExplorerUrl: chains[0].blockExplorers?.default.url[0] as string,
-  };
+// Create Web3AuthConnector Instance
+export function Web3AuthConnectorInstance(web3AuthInstance: Web3Auth) {
+  const modalConfig = {
+    [WALLET_ADAPTERS.OPENLOGIN]: {
+      label: "openlogin",
+      loginMethods: {
+        facebook: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "facebook login",
+          showOnModal: false,
+        },
+      },
+      // setting it to false will hide all social login methods from modal.
+      showOnModal: true,
+    },
+  }
 
-  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+  return Web3AuthConnector({
+    web3AuthInstance,
+    modalConfig,
+});
+}
+
+export function Web3AuthInstance(chains: Chain[], appName: string) {
+   // Create Web3Auth Instance
+   const name = appName;
+   const chainConfig = {
+     chainNamespace: CHAIN_NAMESPACES.EIP155,
+     chainId: "0x" + chains[0].id.toString(16),
+     rpcTarget: chains[0].rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
+     displayName: chains[0].name,
+     tickerName: chains[0].nativeCurrency?.name,
+     ticker: chains[0].nativeCurrency?.symbol,
+     blockExplorerUrl: chains[0].blockExplorers?.default.url[0] as string,
+   };
+
+   const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
   const web3AuthInstance = new Web3Auth({
     clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
@@ -39,32 +62,14 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     enableLogging: true,
   });
 
-  const walletServicesPlugin = new WalletServicesPlugin({
+/*   const walletServicesPlugin = new WalletServicesPlugin({
     walletInitOptions: {
       whiteLabel: {
         showWidgetButton: true,
       }
     }
   });
-  web3AuthInstance.addPlugin(walletServicesPlugin);
+  web3AuthInstance.addPlugin(walletServicesPlugin); */
 
-  const modalConfig = {
-    [WALLET_ADAPTERS.OPENLOGIN]: {
-      label: "openlogin",
-      loginMethods: {
-        facebook: {
-          // it will hide the facebook option from the Web3Auth modal.
-          name: "facebook login",
-          showOnModal: false,
-        },
-      },
-      // setting it to false will hide all social login methods from modal.
-      showOnModal: true,
-    },
-  }
-
-  return Web3AuthConnector({
-      web3AuthInstance,
-      modalConfig,
-  });
+  return web3AuthInstance;
 }

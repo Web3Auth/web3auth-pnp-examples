@@ -1,17 +1,13 @@
-import { useEffect, useState } from "react";
-// IMP START - Quick Start
-import { Web3Auth } from "@web3auth/modal";
+/* eslint-disable no-console */
+import "./App.css";
+
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
-// IMP END - Quick Start
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3Auth } from "@web3auth/modal";
+import { useEffect, useState } from "react";
 import Web3 from "web3";
 
-import "./App.css";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-
-// IMP START - SDK Initialization
-// IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-// IMP END - Dashboard Registration
 
 const chainConfig = {
   chainId: "0x1", // Please use 0x1 for Mainnet
@@ -25,15 +21,14 @@ const chainConfig = {
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: chainConfig },
+  config: { chainConfig },
 });
 
 const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider: privateKeyProvider,
+  privateKeyProvider,
 });
-// IMP END - SDK Initialization
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -42,9 +37,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // IMP START - SDK Initialization
         await web3auth.initModal();
-        // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 
         if (web3auth.connected) {
@@ -59,32 +52,29 @@ function App() {
   }, []);
 
   const login = async () => {
-    // IMP START - Login
     const web3authProvider = await web3auth.connect();
-    // IMP END - Login
     setProvider(web3authProvider);
     if (web3auth.connected) {
       setLoggedIn(true);
     }
   };
 
+  const uiConsole = (message: string) => {
+    console.log(message);
+  };
+
   const getUserInfo = async () => {
-    // IMP START - Get User Information
     const user = await web3auth.getUserInfo();
-    // IMP END - Get User Information
-    uiConsole(user);
+    uiConsole(user.toString());
   };
 
   const logout = async () => {
-    // IMP START - Logout
     await web3auth.logout();
-    // IMP END - Logout
     setProvider(null);
     setLoggedIn(false);
     uiConsole("logged out");
   };
 
-  // IMP START - Blockchain Calls
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -94,7 +84,7 @@ function App() {
 
     // Get user's Ethereum public address
     const address = await web3.eth.getAccounts();
-    uiConsole(address);
+    uiConsole(address.toString());
   };
 
   const getBalance = async () => {
@@ -135,15 +125,6 @@ function App() {
     );
     uiConsole(signedMessage);
   };
-  // IMP END - Blockchain Calls
-
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-    console.log(...args);
-  }
 
   const loggedInView = (
     <>
@@ -189,7 +170,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS (Webpack) Quick Start
+        & ReactJS (Vite) Quick Start
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
@@ -199,13 +180,13 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-modal-quick-start"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-vite-modal-quick-start"
           target="_blank"
           rel="noopener noreferrer"
         >
           Source code
         </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-modal-quick-start&project-name=w3a-evm-modal&repository-name=w3a-evm-modal">
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-vite-evm-modal-quick-start&project-name=w3a-react-vite-modal&repository-name=w3a-react-vite-modal">
           <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>

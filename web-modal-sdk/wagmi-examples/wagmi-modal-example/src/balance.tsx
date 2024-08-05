@@ -17,7 +17,7 @@ export function Balance() {
       <br />
       <button
         onClick={() => {
-          const data = signTypedData({
+          signTypedData({
             types: {
               Person: [
                 { name: "name", type: "string" },
@@ -42,7 +42,6 @@ export function Balance() {
               contents: "Hello, Bob!",
             },
           });
-          console.log(data);
         }}
       >
         Sign message using useSignTypedData

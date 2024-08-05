@@ -1,92 +1,91 @@
-import type {IProvider} from "@web3auth/base";
-import {SigningStargateClient, StargateClient} from "@cosmjs/stargate";
-import {DirectSecp256k1Wallet, OfflineDirectSigner} from "@cosmjs/proto-signing";
+import type { IProvider } from "@web3auth/base";
+import { 
+    TonClient, 
+    WalletContractV4, 
+    internal,
+    Address,
+    toNano,
+    fromNano,
+    beginCell,
+    SendMode
+} from "@ton/ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
 
-const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
-export default class CosmosRPC {
+const endpoint = "https://toncenter.com/api/v2/jsonRPC"; // Replace with appropriate TON endpoint
+
+export default class TonRPC {
     private provider: IProvider;
+    private client: TonClient;
 
     constructor(provider: IProvider) {
         this.provider = provider;
+        this.client = new TonClient({ endpoint });
     }
 
-    async getChainId(): Promise<string> {
+    async getAddress(): Promise<string> {
         try {
-            const client = await StargateClient.connect(rpc);
-
-            // Get the connected Chain's ID
-            const chainId = await client.getChainId();
-
-            return chainId.toString();
+            const mnemonic = await this.getMnemonic();
+            const keyPair = await mnemonicToWalletKey(mnemonic.split(" "));
+            const wallet = WalletContractV4.create({ publicKey: keyPair.publicKey, workchain: 0 });
+            return wallet.address.toString({ urlSafe: true, bounceable: true });
         } catch (error) {
             return error as string;
         }
     }
 
-    async getAccounts(): Promise<any> {
+    async getBalance(): Promise<string> {
         try {
-            const privateKey = Buffer.from(await this.getPrivateKey(), 'hex');
-            const walletPromise = await DirectSecp256k1Wallet.fromKey(privateKey, "cosmos");
-            return (await walletPromise.getAccounts())[0].address;
-        } catch (error) {
-            return error;
-        }
-    }
-
-    async getBalance(): Promise<any> {
-        try {
-            const client = await StargateClient.connect(rpc);
-
-            const privateKey = Buffer.from(await this.getPrivateKey(), 'hex');
-            const walletPromise = await DirectSecp256k1Wallet.fromKey(privateKey, "cosmos");
-            const address = (await walletPromise.getAccounts())[0].address;
-            // Get user's balance in uAtom
-            return await client.getAllBalances(address);
+            const address = await this.getAddress();
+            const balance = await this.client.getBalance(Address.parse(address));
+            return fromNano(balance);
         } catch (error) {
             return error as string;
         }
     }
 
-    async sendTransaction(): Promise<any> {
+    async sendTransaction(toAddress: string, amount: string): Promise<any> {
         try {
-            await StargateClient.connect(rpc);
-            const privateKey = Buffer.from(await this.getPrivateKey(), 'hex');
-            const walletPromise = await DirectSecp256k1Wallet.fromKey(privateKey, "cosmos");
-            const fromAddress = (await walletPromise.getAccounts())[0].address;
+            const mnemonic = await this.getMnemonic();
+            const keyPair = await mnemonicToWalletKey(mnemonic.split(" "));
+            const wallet = WalletContractV4.create({ publicKey: keyPair.publicKey, workchain: 0 });
+            
+            const walletContract = this.client.open(wallet);
+            const seqno = await walletContract.getSeqno();
+            
+            const transfer = wallet.createTransfer({
+                secretKey: keyPair.secretKey,
+                seqno: seqno,
+                messages: [
+                    internal({
+                        to: Address.parse(toAddress),
+                        value: toNano(amount),
+                        bounce: false,
+                        body: beginCell().endCell(),
+                    })
+                ],
+                sendMode: SendMode.PAY_GAS_SEPARATELY + SendMode.IGNORE_ERRORS,
+            });
 
-            const destination = "cosmos15aptdqmm7ddgtcrjvc5hs988rlrkze40l4q0he";
-
-            const getSignerFromKey = async (): Promise<OfflineDirectSigner> => {
-                return DirectSecp256k1Wallet.fromKey(privateKey, "cosmos");
-            }
-            const signer: OfflineDirectSigner = await getSignerFromKey();
-
-            const signingClient = await SigningStargateClient.connectWithSigner(rpc, signer);
-
-            const result = await signingClient.sendTokens(
-                fromAddress,
-                destination,
-                [{denom: "uatom", amount: "250"}],
-                {
-                    amount: [{denom: "uatom", amount: "250"}],
-                    gas: "100000",
-                },
-            )
-            const transactionHash = result.transactionHash;
-            const height = result.height;
-            return {transactionHash, height};
+            const result = await this.client.sendExternalMessage(wallet, transfer);
+            return result;
         } catch (error) {
             return error as string;
         }
     }
 
-    async getPrivateKey(): Promise<any> {
+    async getMnemonic(): Promise<string> {
         try {
             return await this.provider.request({
                 method: "private_key",
-            });
+            }) as string;
         } catch (error) {
             return error as string;
         }
+    }
+
+    async getChainId(): Promise<string> {
+        // TON doesn't have a chain ID in the same way as other blockchains
+        // You might want to return a network identifier instead
+        return "mainnet"; // or "testnet" depending on your configuration
     }
 }

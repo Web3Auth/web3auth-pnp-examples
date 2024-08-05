@@ -7,14 +7,15 @@
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
-    "@web3auth/base": "^8.8.0",
-    "@web3auth/no-modal": "^8.10.2",
-    "@web3auth/ethereum-provider": "^8.10.2",
-    "@web3auth/openlogin-adapter": "^8.8.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@web3auth/base": "^8.12.0",
+    "@web3auth/ethereum-provider": "^8.12.0",
+    "@web3auth/no-modal": "^8.12.0",
+    "@web3auth/openlogin-adapter": "^8.12.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "typescript": "^4.9.4",
+    "vite": "^5.3.5",
     "web-vitals": "^3.1.0",
     "web3": "^4.1.1"
   },
@@ -43,7 +44,6 @@
     "buffer": "^6.0.3",
     "eslint-config-react-app": "^7.0.1",
     "process": "^0.11.10",
-    "react-app-rewired": "^2.2.1",
     "source-map-loader": "^4.0.1"
   },
   "scripts": {

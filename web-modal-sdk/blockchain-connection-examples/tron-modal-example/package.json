@@ -72,11 +72,9 @@
   "name": "tron-modal-example",
   "private": true,
   "scripts": {
-    "build": "react-app-rewired build",
-    "eject": "react-scripts eject",
-    "lint": "react-scripts lint",
-    "start": "react-app-rewired start",
-    "test": "react-app-rewired test"
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
   },
   "version": "0.1.0"
 }

@@ -47,10 +47,8 @@
     "source-map-loader": "^4.0.1"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "lint": "react-scripts lint"
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
   }
 }

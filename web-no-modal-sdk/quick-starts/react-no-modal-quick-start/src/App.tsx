@@ -1,16 +1,22 @@
 /* eslint-disable no-console */
 import "./App.css";
 
+// IMP START - Quick Start
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
+// IMP END - Quick Start
 // import RPC from "./ethersRPC";
 import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
 
+
+// IMP START - SDK Initialization
+// IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+// IMP END - Dashboard Registration
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -35,6 +41,7 @@ const web3auth = new Web3AuthNoModal({
 
 const openloginAdapter = new OpenloginAdapter();
 web3auth.configureAdapter(openloginAdapter);
+// IMP END - SDK Initialization
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -43,7 +50,9 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        // IMP START - SDK Initialization
         await web3auth.init();
+        // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 
         if (web3auth.connected) {
@@ -58,9 +67,11 @@ function App() {
   }, []);
 
   const login = async () => {
+    // IMP START - Login
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
       loginProvider: "google",
     });
+    // IMP END - Login
     setProvider(web3authProvider);
     if (web3auth.connected) {
       setLoggedIn(true);
@@ -76,17 +87,23 @@ function App() {
   }
 
   const getUserInfo = async () => {
+    // IMP START - Get User Information
     const user = await web3auth.getUserInfo();
+    // IMP END - Get User Information
     uiConsole(user);
   };
 
   const logout = async () => {
+    // IMP START - Logout
     await web3auth.logout();
+    // IMP END - Logout
     setProvider(null);
     setLoggedIn(false);
     uiConsole("logged out");
   };
 
+  // IMP START - Blockchain Calls
+  // Check the RPC file for the implementation
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -123,6 +140,7 @@ function App() {
     const transactionReceipt = await RPC.sendTransaction(provider);
     uiConsole(transactionReceipt);
   };
+  // IMP END - Blockchain Calls
 
   const loggedInView = (
     <>

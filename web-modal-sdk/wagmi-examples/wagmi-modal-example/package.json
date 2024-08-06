@@ -17,7 +17,6 @@
     "@web3auth/openlogin-adapter": "^8.12.0",
     "@web3auth/wallet-services-plugin": "^8.12.1",
     "@web3auth/web3auth-wagmi-connector": "^6.0.0",
-    "empty-module": "^0.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
@@ -31,6 +30,7 @@
   },
   "devDependencies": {
     "buffer": "^6.0.3",
+    "empty-module": "^0.0.2",
     "process": "^0.11.10"
   },
   "scripts": {

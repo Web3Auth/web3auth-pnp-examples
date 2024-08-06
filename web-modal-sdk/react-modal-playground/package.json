@@ -49,6 +49,7 @@
     "@typescript-eslint/parser": "^6.13.2",
     "autoprefixer": "^10.4.19",
     "buffer": "^6.0.3",
+    "empty-module": "^0.0.2",
     "eslint": "^8.55.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",

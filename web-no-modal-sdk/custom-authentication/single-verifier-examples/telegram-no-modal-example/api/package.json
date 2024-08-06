@@ -11,6 +11,7 @@
 	},
 	"description": "",
 	"devDependencies": {
+		"empty-module": "^0.0.2",
 		"zlib-browserify": "^0.0.3"
 	},
 	"keywords": [],

@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "buffer": "^6.0.3",
+    "empty-module": "^0.0.2",
     "process": "^0.11.10"
   },
   "scripts": {

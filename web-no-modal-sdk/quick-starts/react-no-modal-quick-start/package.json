@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "buffer": "^6.0.3",
+    "empty-module": "^0.0.2",
     "eslint-config-react-app": "^7.0.1",
     "process": "^0.11.10",
     "source-map-loader": "^4.0.1"

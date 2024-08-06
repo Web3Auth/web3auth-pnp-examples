@@ -9,10 +9,10 @@
   },
   "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
-    "@web3auth/base": "^8.8.0",
-    "@web3auth/ethereum-provider": "^8.10.2",
-    "@web3auth/no-modal": "^8.10.2",
-    "@web3auth/openlogin-adapter": "^8.8.0",
+    "@web3auth/base": "^8.12.0",
+    "@web3auth/ethereum-provider": "^8.12.0",
+    "@web3auth/no-modal": "^8.12.0",
+    "@web3auth/openlogin-adapter": "^8.12.0",
     "core-js": "^3.26.1",
     "vue": "^3.3.4",
     "web3": "^4.1.1"
@@ -26,6 +26,7 @@
     "@vue/cli-plugin-typescript": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-typescript": "^11.0.2",
+    "empty-module": "^0.0.2",
     "eslint": "^8.29.0",
     "eslint-plugin-vue": "^9.8.0",
     "typescript": "~4.9.4",

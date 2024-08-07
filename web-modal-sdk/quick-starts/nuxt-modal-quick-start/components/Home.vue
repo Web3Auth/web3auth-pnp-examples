@@ -38,7 +38,8 @@
         target="_blank" rel="noopener noreferrer">
         Source code
       </a>
-      <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fnuxt-modal-quick-start&project-name=w3a-nuxt-modal&repository-name=w3a-nuxt-modal">
+      <a
+        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fnuxt-modal-quick-start&project-name=w3a-nuxt-modal&repository-name=w3a-nuxt-modal">
         <img src="https://vercel.com/button" alt="Deploy with Vercel" />
       </a>
     </footer>
@@ -69,14 +70,16 @@ export default {
     // IMP END - Dashboard Registration
 
     const chainConfig = {
-      chainId: "0x1", // Please use 0x1 for Mainnet
-      rpcTarget: "https://rpc.ankr.com/eth",
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      displayName: "Ethereum Mainnet",
-      blockExplorerUrl: "https://etherscan.io/",
+      chainId: "0xaa36a7",
+      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "Ethereum Sepolia Testnet",
+      blockExplorerUrl: "https://sepolia.etherscan.io",
       ticker: "ETH",
       tickerName: "Ethereum",
-      logo: "https://images.toruswallet.io/eth.svg",
+      logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
     };
 
     const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -139,42 +142,42 @@ export default {
 
     // IMP START - Blockchain Calls
     const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const address = await RPC.getAccounts(provider);
-    uiConsole(address);
-  };
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      const address = await RPC.getAccounts(provider);
+      uiConsole(address);
+    };
 
-  const getBalance = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const balance = await RPC.getBalance(provider);
-    uiConsole(balance);
-  };
+    const getBalance = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      const balance = await RPC.getBalance(provider);
+      uiConsole(balance);
+    };
 
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const signedMessage = await RPC.signMessage(provider);
-    uiConsole(signedMessage);
-  };
+    const signMessage = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      const signedMessage = await RPC.signMessage(provider);
+      uiConsole(signedMessage);
+    };
 
 
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    uiConsole("Sending Transaction...");
-    const transactionReceipt = await RPC.sendTransaction(provider);
-    uiConsole(transactionReceipt);
-  };
+    const sendTransaction = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      uiConsole("Sending Transaction...");
+      const transactionReceipt = await RPC.sendTransaction(provider);
+      uiConsole(transactionReceipt);
+    };
     // IMP END - Blockchain Calls
 
     function uiConsole(...args: any[]): void {

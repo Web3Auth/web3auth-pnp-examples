@@ -19,14 +19,16 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 // IMP END - Dashboard Registration
 
 const chainConfig = {
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({

@@ -133,7 +133,7 @@ function App() {
       return;
     }
     const rpc = new CosmosRPC(provider);
-    const { transactionHash, height } = await rpc.sendTransaction(
+    const { transactionHash, height } = await rpc.sendTransaction();
     const blockExplorerURL = "https://explorer.theta-testnet.polypore.xyz/transactions/" + transactionHash;
     const txString = "Follow this transaction at " + blockExplorerURL;
     uiConsole("TxHash: " + transactionHash, "Block Height: " + height, txString);

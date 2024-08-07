@@ -291,7 +291,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Solana Example
+        & React Solana Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

@@ -59,10 +59,6 @@ function App() {
     }
   };
 
-  const uiConsole = (message: string) => {
-    console.log(message);
-  };
-
   const getUserInfo = async () => {
     const user = await web3auth.getUserInfo();
     uiConsole(user.toString());
@@ -126,6 +122,14 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
+    }
+  }
+
   const loggedInView = (
     <>
       <div className="flex-container">
@@ -170,7 +174,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS (Vite) Quick Start
+        & React Quick Start
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
@@ -186,7 +190,7 @@ function App() {
         >
           Source code
         </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-vite-evm-modal-quick-start&project-name=w3a-react-vite-modal&repository-name=w3a-react-vite-modal">
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-vite-evm-modal-quick-start&project-name=w3a-react-vite-no-modal&repository-name=w3a-react-vite-no-modal">
           <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>

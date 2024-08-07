@@ -9,8 +9,8 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 // IMP END - Quick Start
 // import RPC from "./ethersRPC";
-import RPC from "./viemRPC";
-// import RPC from "./web3RPC";
+// import RPC from "./viemRPC";
+import RPC from "./web3RPC";
 
 
 // IMP START - SDK Initialization

@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 // IMP START - Bundler Issues
@@ -8,19 +9,7 @@ import { defineConfig } from "vite";
   plugins: [react()],
   resolve: {
     alias: {
-      crypto: "empty-module",
-      assert: "empty-module",
-      http: "empty-module",
-      https: "empty-module",
-      os: "empty-module",
-      url: "empty-module",
-      zlib: "empty-module",
-      stream: "empty-module",
-      _stream_duplex: "empty-module",
-      _stream_passthrough: "empty-module",
-      _stream_readable: "empty-module",
-      _stream_writable: "empty-module",
-      _stream_transform: "empty-module",
+      // "@web3auth/ethereum-provider": resolve("./node_modules/@web3auth/ethereum-provider/dist/ethereumProvider.cjs.js"),
     },
   },
   define: {

@@ -35,6 +35,11 @@
           </button>
         </div>
         <div>
+          <button class="card" @click="sendTransaction" style="cursor: pointer">
+            Send Transaction
+          </button>
+        </div>
+        <div>
           <button class="card" @click="logout" style="cursor: pointer">
             Logout
           </button>
@@ -50,7 +55,8 @@
         target="_blank" rel="noopener noreferrer">
         Source code
       </a>
-      <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvue-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal">
+      <a
+        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvue-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal">
         <img src="https://vercel.com/button" alt="Deploy with Vercel" />
       </a>
     </footer>
@@ -64,7 +70,9 @@ import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 // IMP END - Quick Start
-import Web3 from "web3";
+import RPC from "./ethersRPC";
+// import RPC from "./viemRPC";
+// import RPC from "./web3RPC";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -156,10 +164,7 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const web3 = new Web3(provider as any);
-
-      // Get user's Ethereum public address
-      const address = await web3.eth.getAccounts();
+      const address = await RPC.getAccounts(provider);
       uiConsole(address);
     };
 
@@ -168,16 +173,7 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const web3 = new Web3(provider as any);
-
-      // Get user's Ethereum public address
-      const address = (await web3.eth.getAccounts())[0];
-
-      // Get user's balance in ether
-      const balance = web3.utils.fromWei(
-        await web3.eth.getBalance(address), // Balance is in wei
-        "ether"
-      );
+      const balance = await RPC.getBalance(provider);
       uiConsole(balance);
     };
 
@@ -186,20 +182,19 @@ export default {
         uiConsole("provider not initialized yet");
         return;
       }
-      const web3 = new Web3(provider as any);
-
-      // Get user's Ethereum public address
-      const fromAddress = (await web3.eth.getAccounts())[0];
-
-      const originalMessage = "YOUR_MESSAGE";
-
-      // Sign the message
-      const signedMessage = await web3.eth.personal.sign(
-        originalMessage,
-        fromAddress,
-        "test password!" // configure your own password here.
-      );
+      const signedMessage = await RPC.signMessage(provider);
       uiConsole(signedMessage);
+    };
+
+
+    const sendTransaction = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      uiConsole("Sending Transaction...");
+      const transactionReceipt = await RPC.sendTransaction(provider);
+      uiConsole(transactionReceipt);
     };
     // IMP END - Blockchain Calls
 
@@ -221,6 +216,7 @@ export default {
       getAccounts,
       getBalance,
       signMessage,
+      sendTransaction,
     };
   },
 };

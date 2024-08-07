@@ -186,7 +186,7 @@ export default {
     const transactionReceipt = await RPC.sendTransaction(provider);
     uiConsole(transactionReceipt);
   };
-    // IMP END - Blockchain Calls
+  // IMP END - Blockchain Calls
 
     function uiConsole(...args: any[]): void {
       const el = document.querySelector("#console>p");

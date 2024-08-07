@@ -1,11 +1,13 @@
 import { useAccount, useBalance, useSignTypedData } from "wagmi";
 
 export function Balance() {
-  const { address } = useAccount()
-  const { signTypedData } = useSignTypedData()
+  const { address } = useAccount();
+  const { signTypedData, data, error, isError } = useSignTypedData();
 
-  const { data: default_ } = useBalance({ address })
-  const { data: account_ } = useBalance({ address })
+  console.log({ data, error, isError });
+
+  const { data: default_ } = useBalance({ address });
+  const { data: account_ } = useBalance({ address });
 
   return (
     <div>
@@ -47,5 +49,5 @@ export function Balance() {
         Sign message using useSignTypedData
       </button>
     </div>
-  )
+  );
 }

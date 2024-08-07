@@ -23,6 +23,9 @@
           <button class="card" @click="signMessage" style="cursor: pointer">Sign Message</button>
         </div>
         <div>
+          <button class="card" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
+        </div>
+        <div>
           <button class="card" @click="logout" style="cursor: pointer">Logout</button>
         </div>
       </div>
@@ -54,7 +57,9 @@ import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
-import Web3 from "web3";
+// import RPC from "./ethersRPC";
+// import RPC from "./viemRPC";
+import RPC from "./web3RPC";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -143,55 +148,42 @@ export default {
 
     // IMP START - Blockchain Calls
     const getAccounts = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const address = await RPC.getAccounts(provider);
+    uiConsole(address);
+  };
 
-      // Get user's Ethereum public address
-      const address = await web3.eth.getAccounts();
-      uiConsole(address);
-    };
+  const getBalance = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const balance = await RPC.getBalance(provider);
+    uiConsole(balance);
+  };
 
-    const getBalance = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
+  const signMessage = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const signedMessage = await RPC.signMessage(provider);
+    uiConsole(signedMessage);
+  };
 
-      // Get user's Ethereum public address
-      const address = (await web3.eth.getAccounts())[0];
 
-      // Get user's balance in ether
-      const balance = web3.utils.fromWei(
-        await web3.eth.getBalance(address), // Balance is in wei
-        "ether"
-      );
-      uiConsole(balance);
-    };
-
-    const signMessage = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
-
-      // Get user's Ethereum public address
-      const fromAddress = (await web3.eth.getAccounts())[0];
-
-      const originalMessage = "YOUR_MESSAGE";
-
-      // Sign the message
-      const signedMessage = await web3.eth.personal.sign(
-        originalMessage,
-        fromAddress,
-        "test password!" // configure your own password here.
-      );
-      uiConsole(signedMessage);
-    };
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    uiConsole("Sending Transaction...");
+    const transactionReceipt = await RPC.sendTransaction(provider);
+    uiConsole(transactionReceipt);
+  };
     // IMP END - Blockchain Calls
 
     function uiConsole(...args: any[]): void {
@@ -212,6 +204,7 @@ export default {
       getAccounts,
       getBalance,
       signMessage,
+      sendTransaction,
     };
   },
 };

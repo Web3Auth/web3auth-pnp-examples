@@ -140,6 +140,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
+    this.uiConsole("Sending Transaction...");
     const transactionReceipt = await RPC.sendTransaction(this.provider);
     this.uiConsole(transactionReceipt);
   };

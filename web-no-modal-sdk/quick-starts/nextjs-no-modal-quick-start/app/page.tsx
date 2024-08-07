@@ -128,6 +128,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole("Sending Transaction...");
     const transactionReceipt = await RPC.sendTransaction(provider);
     uiConsole(transactionReceipt);
   };

@@ -4,8 +4,9 @@ import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 // IMP END - Quick Start
-import Web3 from "web3";
-
+import RPC from "./ethersRPC";
+// import RPC from "./viemRPC";
+// import RPC from "./web3RPC";
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration
@@ -95,16 +96,15 @@ export class AppComponent {
     this.uiConsole("logged out");
   };
 
+
   // IMP START - Blockchain Calls
+  // Check the RPC file for the implementation
   getAccounts = async () => {
     if (!this.provider) {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(this.provider as any);
-
-    // Get user's Ethereum public address
-    const address = await web3.eth.getAccounts();
+    const address = await RPC.getAccounts(this.provider);
     this.uiConsole(address);
   };
 
@@ -113,16 +113,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(this.provider as any);
-
-    // Get user's Ethereum public address
-    const address = (await web3.eth.getAccounts())[0];
-
-    // Get user's balance in ether
-    const balance = web3.utils.fromWei(
-      await web3.eth.getBalance(address), // Balance is in wei
-      "ether"
-    );
+    const balance = await RPC.getBalance(this.provider);
     this.uiConsole(balance);
   };
 
@@ -131,20 +122,19 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(this.provider as any);
-
-    // Get user's Ethereum public address
-    const fromAddress = (await web3.eth.getAccounts())[0];
-
-    const originalMessage = "YOUR_MESSAGE";
-
-    // Sign the message
-    const signedMessage = await web3.eth.personal.sign(
-      originalMessage,
-      fromAddress,
-      "test password!" // configure your own password here.
-    );
+    const signedMessage = await RPC.signMessage(this.provider);
     this.uiConsole(signedMessage);
+  };
+
+
+  sendTransaction = async () => {
+    if (!this.provider) {
+      this.uiConsole("provider not initialized yet");
+      return;
+    }
+    this.uiConsole("Sending Transaction...");
+    const transactionReceipt = await RPC.sendTransaction(this.provider);
+    this.uiConsole(transactionReceipt);
   };
   // IMP END - Blockchain Calls
 

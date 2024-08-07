@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-ref-as-operand -->
 <template>
   <div id="app">
     <h2>
@@ -20,6 +21,9 @@
         </div>
         <div>
           <button class="card" @click="signMessage" style="cursor: pointer">Sign Message</button>
+        </div>
+        <div>
+          <button class="card" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
         </div>
         <div>
           <button class="card" @click="logout" style="cursor: pointer">Logout</button>
@@ -49,18 +53,24 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import type { IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
-import Web3 from "web3";
+import RPC from "./ethersRPC";
+// import RPC from "./viemRPC";
+// import RPC from "./web3RPC";
 
-export default defineComponent({
+export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
+  props: {
+    msg: String,
+  },
   setup() {
     const loggedIn = ref<boolean>(false);
-    let provider = <IProvider | null>null;
+    let provider: IProvider | null = null;
 
     // IMP START - SDK Initialization
     // IMP START - Dashboard Registration
@@ -69,7 +79,7 @@ export default defineComponent({
 
     const chainConfig = {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0xaa36a7", // Please use 0x1 for Mainnet, hex of 11155111 (0xaa36a7) for Sepolia Testnet
+      chainId: "0xaa36a7", // Please use 0x1 for Mainnet, 11155111(0xaa36a7) for Sepolia Testnet
       rpcTarget: "https://rpc.ankr.com/eth_sepolia",
       displayName: "Sepolia Testnet",
       blockExplorerUrl: "https://sepolia.etherscan.io/",
@@ -82,7 +92,6 @@ export default defineComponent({
 
     const web3auth = new Web3AuthNoModal({
       clientId,
-      chainConfig,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
       privateKeyProvider,
     });
@@ -140,55 +149,42 @@ export default defineComponent({
 
     // IMP START - Blockchain Calls
     const getAccounts = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const address = await RPC.getAccounts(provider);
+    uiConsole(address);
+  };
 
-      // Get user's Ethereum public address
-      const address = await web3.eth.getAccounts();
-      uiConsole(address);
-    };
+  const getBalance = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const balance = await RPC.getBalance(provider);
+    uiConsole(balance);
+  };
 
-    const getBalance = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
+  const signMessage = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const signedMessage = await RPC.signMessage(provider);
+    uiConsole(signedMessage);
+  };
 
-      // Get user's Ethereum public address
-      const address = (await web3.eth.getAccounts())[0];
 
-      // Get user's balance in ether
-      const balance = web3.utils.fromWei(
-        await web3.eth.getBalance(address), // Balance is in wei
-        "ether"
-      );
-      uiConsole(balance);
-    };
-
-    const signMessage = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
-
-      // Get user's Ethereum public address
-      const fromAddress = (await web3.eth.getAccounts())[0];
-
-      const originalMessage = "YOUR_MESSAGE";
-
-      // Sign the message
-      const signedMessage = await web3.eth.personal.sign(
-        originalMessage,
-        fromAddress,
-        "test password!" // configure your own password here.
-      );
-      uiConsole(signedMessage);
-    };
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    uiConsole("Sending Transaction...");
+    const transactionReceipt = await RPC.sendTransaction(provider);
+    uiConsole(transactionReceipt);
+  };
     // IMP END - Blockchain Calls
 
     function uiConsole(...args: any[]): void {
@@ -209,9 +205,10 @@ export default defineComponent({
       getAccounts,
       getBalance,
       signMessage,
+      sendTransaction,
     };
   },
-});
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

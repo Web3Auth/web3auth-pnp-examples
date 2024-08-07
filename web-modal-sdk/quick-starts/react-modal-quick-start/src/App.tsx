@@ -1,23 +1,33 @@
 /* eslint-disable no-console */
 import "./App.css";
 
+// IMP START - Quick Start
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
 import { useEffect, useState } from "react";
 import Web3 from "web3";
+// IMP END - Quick Start
+import RPC from "./ethersRPC";
+// import RPC from "./viemRPC";
+// import RPC from "./web3RPC";
 
+// IMP START - SDK Initialization
+// IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+// IMP END - Dashboard Registration
 
 const chainConfig = {
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -29,6 +39,7 @@ const web3auth = new Web3Auth({
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
 });
+// IMP END - SDK Initialization
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -37,7 +48,9 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        // IMP START - SDK Initialization
         await web3auth.initModal();
+        // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 
         if (web3auth.connected) {
@@ -52,7 +65,9 @@ function App() {
   }, []);
 
   const login = async () => {
+    // IMP START - Login
     const web3authProvider = await web3auth.connect();
+    // IMP END - Login
     setProvider(web3authProvider);
     if (web3auth.connected) {
       setLoggedIn(true);
@@ -60,27 +75,30 @@ function App() {
   };
 
   const getUserInfo = async () => {
+    // IMP START - Get User Information
     const user = await web3auth.getUserInfo();
+    // IMP END - Get User Information
     uiConsole(user.toString());
   };
 
   const logout = async () => {
+    // IMP START - Logout
     await web3auth.logout();
+    // IMP END - Logout
     setProvider(null);
     setLoggedIn(false);
     uiConsole("logged out");
   };
 
+  // IMP START - Blockchain Calls
+  // Check the RPC file for the implementation
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(provider as any);
-
-    // Get user's Ethereum public address
-    const address = await web3.eth.getAccounts();
-    uiConsole(address.toString());
+    const address = await RPC.getAccounts(provider);
+    uiConsole(address);
   };
 
   const getBalance = async () => {
@@ -88,16 +106,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(provider as any);
-
-    // Get user's Ethereum public address
-    const address = (await web3.eth.getAccounts())[0];
-
-    // Get user's balance in ether
-    const balance = web3.utils.fromWei(
-      await web3.eth.getBalance(address), // Balance is in wei
-      "ether"
-    );
+    const balance = await RPC.getBalance(provider);
     uiConsole(balance);
   };
 
@@ -106,21 +115,21 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(provider as any);
-
-    // Get user's Ethereum public address
-    const fromAddress = (await web3.eth.getAccounts())[0];
-
-    const originalMessage = "YOUR_MESSAGE";
-
-    // Sign the message
-    const signedMessage = await web3.eth.personal.sign(
-      originalMessage,
-      fromAddress,
-      "test password!" // configure your own password here.
-    );
+    const signedMessage = await RPC.signMessage(provider);
     uiConsole(signedMessage);
   };
+
+
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    uiConsole("Sending Transaction...");
+    const transactionReceipt = await RPC.sendTransaction(provider);
+    uiConsole(transactionReceipt);
+  };
+  // IMP END - Blockchain Calls
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -151,6 +160,11 @@ function App() {
         <div>
           <button onClick={signMessage} className="card">
             Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={sendTransaction} className="card">
+            Send Transaction
           </button>
         </div>
         <div>

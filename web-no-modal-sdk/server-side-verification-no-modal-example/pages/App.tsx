@@ -53,7 +53,7 @@ function App() {
       return;
     }
     const { idToken } = await web3auth.authenticateUser();
-    console.log(idToken);
+    // console.log(idToken);
 
     const privKey: any = await web3auth.provider?.request({
       method: "eth_private_key",

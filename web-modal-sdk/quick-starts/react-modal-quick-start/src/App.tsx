@@ -8,9 +8,12 @@ import { Web3Auth } from "@web3auth/modal";
 import { useEffect, useState } from "react";
 import Web3 from "web3";
 // IMP END - Quick Start
+
+// IMP START - Choosing Blockchain
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
+// IMP END - Choosing Blockchain
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration

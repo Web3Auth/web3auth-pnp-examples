@@ -3,16 +3,19 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
 // IMP START - Quick Start
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
-import { useEffect, useState } from "react";
+
+// IMP START - Choosing Blockchain
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
+// IMP END - Choosing Blockchain
 
 
 // IMP START - SDK Initialization

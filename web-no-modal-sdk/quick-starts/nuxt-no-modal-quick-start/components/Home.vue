@@ -58,9 +58,12 @@ import type { IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
+
+// IMP START - Choosing Blockchain
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
+// IMP END - Choosing Blockchain
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names

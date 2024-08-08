@@ -4,9 +4,12 @@ import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 // IMP END - Quick Start
+
+// IMP START - Choosing Blockchain
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
+// IMP END - Choosing Blockchain
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration

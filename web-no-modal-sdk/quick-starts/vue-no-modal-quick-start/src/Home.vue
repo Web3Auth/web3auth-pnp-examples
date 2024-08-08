@@ -57,9 +57,12 @@ import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
-// import RPC from "./ethersRPC";
+
+// IMP START - Choosing Blockchain
+import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
-import RPC from "./web3RPC";
+// import RPC from "./web3RPC";
+// IMP END - Choosing Blockchain
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names

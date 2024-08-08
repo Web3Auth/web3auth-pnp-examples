@@ -6,9 +6,12 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
+
+// IMP START - Choosing Blockchain
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
+// IMP END - Choosing Blockchain
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration

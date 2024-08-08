@@ -8,9 +8,12 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 // IMP END - Quick Start
-// import RPC from "./ethersRPC";
+
+// IMP START - Choosing Blockchain
+import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
-import RPC from "./web3RPC";
+// import RPC from "./web3RPC";
+// IMP END - Choosing Blockchain
 
 
 // IMP START - SDK Initialization

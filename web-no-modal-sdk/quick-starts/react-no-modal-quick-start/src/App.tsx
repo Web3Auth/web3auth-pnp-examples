@@ -1,13 +1,17 @@
+/* eslint-disable no-console */
+import "./App.css";
+
 // IMP START - Quick Start
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 // IMP END - Quick Start
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import Web3 from "web3";
+// import RPC from "./ethersRPC";
+// import RPC from "./viemRPC";
+import RPC from "./web3RPC";
 
-import "./App.css";
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration
@@ -16,24 +20,26 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const web3auth = new Web3AuthNoModal({
   clientId,
-  chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
 });
 
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider: privateKeyProvider,
-});
+const openloginAdapter = new OpenloginAdapter();
 web3auth.configureAdapter(openloginAdapter);
 // IMP END - SDK Initialization
 
@@ -89,15 +95,13 @@ function App() {
   };
 
   // IMP START - Blockchain Calls
+  // Check the RPC file for the implementation
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(provider as any);
-
-    // Get user's Ethereum public address
-    const address = await web3.eth.getAccounts();
+    const address = await RPC.getAccounts(provider);
     uiConsole(address);
   };
 
@@ -106,16 +110,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(provider as any);
-
-    // Get user's Ethereum public address
-    const address = (await web3.eth.getAccounts())[0];
-
-    // Get user's balance in ether
-    const balance = web3.utils.fromWei(
-      await web3.eth.getBalance(address), // Balance is in wei
-      "ether"
-    );
+    const balance = await RPC.getBalance(provider);
     uiConsole(balance);
   };
 
@@ -124,20 +119,19 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(provider as any);
-
-    // Get user's Ethereum public address
-    const fromAddress = (await web3.eth.getAccounts())[0];
-
-    const originalMessage = "YOUR_MESSAGE";
-
-    // Sign the message
-    const signedMessage = await web3.eth.personal.sign(
-      originalMessage,
-      fromAddress,
-      "test password!" // configure your own password here.
-    );
+    const signedMessage = await RPC.signMessage(provider);
     uiConsole(signedMessage);
+  };
+
+
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    uiConsole("Sending Transaction...");
+    const transactionReceipt = await RPC.sendTransaction(provider);
+    uiConsole(transactionReceipt);
   };
   // IMP END - Blockchain Calls
 
@@ -145,8 +139,8 @@ function App() {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
     }
-    console.log(...args);
   }
 
   const loggedInView = (
@@ -173,6 +167,11 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={sendTransaction} className="card">
+            Send Transaction
+          </button>
+        </div>
+        <div>
           <button onClick={logout} className="card">
             Log Out
           </button>
@@ -193,7 +192,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS (Webpack) Quick Start
+        & React Quick Start
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
@@ -209,9 +208,9 @@ function App() {
         >
           Source code
         </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Freact-evm-modal-quick-start&project-name=w3a-react-no-modal&repository-name=w3a-react-no-modal">
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-modal-quick-start&project-name=w3a-evm-modal&repository-name=w3a-evm-modal">
           <img src="https://vercel.com/button" alt="Deploy with Vercel" />
-        </a>
+        </a>      
       </footer>
     </div>
   );

@@ -4,8 +4,11 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   // IMP START - Bundler Issues
   ssr: false,
+
+  // IMP END - Bundler Issues
   vite: {
     plugins: [
       nodePolyfills({
@@ -16,5 +19,6 @@ export default defineNuxtConfig({
       }),
     ],
   },
-  // IMP END - Bundler Issues
+
+  compatibilityDate: "2024-08-08"
 });

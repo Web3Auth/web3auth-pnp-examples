@@ -13,12 +13,15 @@
     "@web3auth/ethereum-provider": "^8.12.0",
     "@web3auth/no-modal": "^8.12.0",
     "@web3auth/openlogin-adapter": "^8.12.0",
-    "core-js": "^3.26.1",
-    "vue": "^3.3.4",
-    "web3": "^4.1.1"
+    "core-js": "^3.38.0",
+    "ethers": "^6.13.2",
+    "viem": "^2.19.1",
+    "vue": "^3.4.36",
+    "web3": "^4.11.1"
   },
   "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {
+    "@babel/plugin-transform-private-methods": "^7.24.7",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "@vue/cli-plugin-babel": "~5.0.8",
@@ -26,10 +29,9 @@
     "@vue/cli-plugin-typescript": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-typescript": "^11.0.2",
-    "empty-module": "^0.0.2",
     "eslint": "^8.29.0",
     "eslint-plugin-vue": "^9.8.0",
-    "typescript": "~4.9.4",
-    "url": "^0.11.3"
+    "typescript": "~5.5.4",
+    "url": "^0.11.4"
   }
 }

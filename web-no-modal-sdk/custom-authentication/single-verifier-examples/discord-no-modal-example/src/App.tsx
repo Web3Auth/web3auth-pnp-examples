@@ -275,7 +275,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>{" "}
-        Core & ReactJS Example for Discord Login
+        Core & React Example for Discord Login
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

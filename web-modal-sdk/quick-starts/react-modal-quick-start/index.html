@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Include these lines for polyfills -->
     <script type="module">
       import { Buffer } from "buffer";
       import process from "process";
       window.Buffer = Buffer;
-      window.process = process;
-    </script>
+      window.process = process; 
+    </script>  
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
-    <!-- Optionally, you can rename index.tsx to main.tsx to be consistent with Vite folder structure. -->
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

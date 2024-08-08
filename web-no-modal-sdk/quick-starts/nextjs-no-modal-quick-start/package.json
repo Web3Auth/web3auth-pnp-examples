@@ -15,10 +15,12 @@
     "@web3auth/no-modal": "^8.12.0",
     "@web3auth/openlogin-adapter": "^8.12.0",
     "bufferutil": "^4.0.8",
+    "ethers": "^6.13.2",
     "next": "13.4.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "utf-8-validate": "^6.0.3",
+    "viem": "^2.18.8",
     "web3": "^4.1.1"
   },
   "//IMP END": "IMP END - Web3Auth Installation",

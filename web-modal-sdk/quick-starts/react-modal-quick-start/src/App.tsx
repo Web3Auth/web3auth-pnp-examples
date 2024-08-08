@@ -9,17 +9,18 @@ import { useEffect, useState } from "react";
 import Web3 from "web3";
 // IMP END - Quick Start
 
-// IMP START - Choosing Blockchain
+// IMP START - Blockchain Calls
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
-// IMP END - Choosing Blockchain
+// IMP END - Blockchain Calls
 
 // IMP START - SDK Initialization
 // IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
+// IMP START - Chain Config
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0xaa36a7",
@@ -32,6 +33,7 @@ const chainConfig = {
   tickerName: "Ethereum",
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
+// IMP END - Chain Config
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },

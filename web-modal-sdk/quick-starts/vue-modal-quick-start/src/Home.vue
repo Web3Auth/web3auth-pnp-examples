@@ -71,11 +71,11 @@ import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 // IMP END - Quick Start
 
-// IMP START - Choosing Blockchain
+// IMP START - Blockchain Calls
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
-// IMP END - Choosing Blockchain
+// IMP END - Blockchain Calls
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -92,7 +92,8 @@ export default {
     const clientId =
       "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
     // IMP END - Dashboard Registration
-
+    
+    // IMP START - Chain Config
     const chainConfig = {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
       chainId: "0xaa36a7",
@@ -105,6 +106,7 @@ export default {
       tickerName: "Ethereum",
       logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
     };
+    // IMP END - Chain Config
 
     const privateKeyProvider = new EthereumPrivateKeyProvider({
       config: { chainConfig: chainConfig }

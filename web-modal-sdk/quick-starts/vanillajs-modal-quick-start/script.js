@@ -4,9 +4,8 @@ let walletServicesPlugin = null;
 (async function init() {
   $(".btn-logged-in").hide();
   $("#sign-tx").hide();
-  // IMP START - SDK Initialization
-  // IMP START - Dashboard Registration
 
+  // IMP START - Dashboard Registration
   const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get your clientId from https://dashboard.web3auth.io
   // IMP END - Dashboard Registration
 
@@ -25,6 +24,7 @@ let walletServicesPlugin = null;
   };
   // IMP END - Chain Config
 
+  // IMP START - SDK Initialization
   const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvider({ config: { chainConfig } });
 
   web3auth = new window.Modal.Web3Auth({

@@ -87,7 +87,6 @@ export default {
     const loggedIn = ref<boolean>(false);
     let provider = <IProvider | null>(null);
 
-    // IMP START - SDK Initialization
     // IMP START - Dashboard Registration
     const clientId =
       "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -107,7 +106,8 @@ export default {
       logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
     };
     // IMP END - Chain Config
-
+    
+    // IMP START - SDK Initialization
     const privateKeyProvider = new EthereumPrivateKeyProvider({
       config: { chainConfig: chainConfig }
     });

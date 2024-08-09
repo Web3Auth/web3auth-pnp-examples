@@ -3,6 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { IDKitWidget, VerificationLevel } from "@worldcoin/idkit";
 import "./App.css";
 
 //import RPC from "./web3RPC"; // for using web3.js
@@ -91,6 +92,31 @@ function App() {
 
     init();
   }, []);
+
+  // TODO: Calls your implemented server route
+  const verifyProof = async (proof: any) => {
+    console.log("proof", proof);
+    const response = await fetch("https://worldcoin-verify-proof-server.vercel.app/api/verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(proof),
+    });
+    if (response.ok) {
+      const { verified } = await response.json();
+      return verified;
+    } else {
+      const { code, detail } = await response.json();
+      throw new Error(`Error Code ${code}: ${detail}`);
+    }
+  };
+
+  // TODO: Functionality after verifying
+  const onSuccess = async () => {
+    console.log("Success");
+    await getUserInfo();
+  };
 
   const login = async () => {
     if (!web3auth) {
@@ -234,6 +260,21 @@ function App() {
           <button onClick={logout} className="card">
             Log Out
           </button>
+        </div>
+        <div>
+          <IDKitWidget
+            app_id="app_staging_f3a97c0c7a87ffad90737c4cd149a763"
+            action="verify-for-bigger-transaction"
+            verification_level={VerificationLevel.Device}
+            handleVerify={verifyProof}
+            onSuccess={onSuccess}
+          >
+            {({ open }) => (
+              <button onClick={open} className="card">
+                Verify with World ID
+              </button>
+            )}
+          </IDKitWidget>
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>

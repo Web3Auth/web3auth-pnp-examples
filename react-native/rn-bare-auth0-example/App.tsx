@@ -86,7 +86,7 @@ export default function App() {
         mfaLevel: 'none',
         extraLoginOptions: {
           domain: 'https://web3auth.au.auth0.com',
-          verifierIdField: 'email',
+          verifierIdField: 'sub',
         },
       });
 

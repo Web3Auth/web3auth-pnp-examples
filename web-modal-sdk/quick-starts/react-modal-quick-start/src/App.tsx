@@ -5,9 +5,8 @@ import "./App.css";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
-import { useEffect, useState } from "react";
-import Web3 from "web3";
 // IMP END - Quick Start
+import { useEffect, useState } from "react";
 
 // IMP START - Blockchain Calls
 import RPC from "./ethersRPC";

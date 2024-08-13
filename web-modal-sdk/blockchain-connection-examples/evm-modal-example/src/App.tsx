@@ -86,6 +86,7 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const address = await rpc.getAccounts();
     uiConsole(address);
+    printUrl(address, "address");
   };
 
   const getBalance = async () => {
@@ -106,6 +107,7 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const receipt = await rpc.sendTransaction();
     uiConsole(receipt);
+    printUrl(receipt.transactionHash, "transaction");
   };
 
   const signMessage = async () => {
@@ -183,12 +185,22 @@ function App() {
     uiConsole(privateKey);
   };
 
-  function uiConsole(...args: any[]): void {
+  const uiConsole = (...args: any[]): void => {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
-  }
+  };
+
+  const printUrl = (hash: string, type: "transaction" | "address" = "address") => {
+    const explorerLink = `https://sepolia.etherscan.io/${type === "transaction" ? "tx" : "address"}/${hash}`;
+    const anchor = `<a href="${explorerLink}" target="_blank" rel="noopener noreferrer">${hash}</a>`;
+
+    const consoleElement = document.querySelector("#console>p");
+    if (consoleElement) {
+      consoleElement.innerHTML = anchor;
+    }
+  };
 
   const loggedInView = (
     <>

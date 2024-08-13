@@ -118,6 +118,16 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  const signTypedDataMessage = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const signedMessage = await rpc.signTypedDataMessage();
+    uiConsole(signedMessage);
+  };
+
   const signTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -313,7 +323,12 @@ function App() {
         </div>
         <div>
           <button onClick={signMessage} className="card">
-            Sign Message
+            Personal Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={signTypedDataMessage} className="card">
+            signTypedData Message
           </button>
         </div>
         <div>

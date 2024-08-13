@@ -11,7 +11,7 @@ let walletServicesPlugin = null;
 
   // IMP START - Chain Config
   const chainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainNamespace: "eip155",
     chainId: "0xaa36a7",
     rpcTarget: "https://rpc.ankr.com/eth_sepolia",
     // Avoid using public rpcTarget in production.

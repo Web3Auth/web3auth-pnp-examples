@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-console */
 import "./App.css";
 
@@ -82,7 +83,7 @@ function App() {
     // IMP START - Get User Information
     const user = await web3auth.getUserInfo();
     // IMP END - Get User Information
-    uiConsole(user.toString());
+    uiConsole(user);
   };
 
   const logout = async () => {
@@ -122,7 +123,6 @@ function App() {
     const signedMessage = await RPC.signMessage(provider);
     uiConsole(signedMessage);
   };
-
 
   const sendTransaction = async () => {
     if (!provider) {

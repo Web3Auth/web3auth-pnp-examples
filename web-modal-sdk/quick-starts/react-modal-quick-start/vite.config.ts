@@ -6,8 +6,13 @@ import { defineConfig } from "vite";
 // IMP START - Bundler Issues
 export default defineConfig({
   plugins: [react()],
-  define: {
-    "global": "globalThis",
+  resolve: {
+    alias: {
+      crypto: "empty-module",
+    },
   },
-// IMP END - Bundler Issues
+  define: {
+    global: "globalThis",
+  },
+  // IMP END - Bundler Issues
 });

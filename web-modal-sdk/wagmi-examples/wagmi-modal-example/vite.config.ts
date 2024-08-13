@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      crypto: "empty-module",
       url: "url",
     },
   },

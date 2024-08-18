@@ -32,7 +32,7 @@ const openloginAdapter = new OpenloginAdapter({
     uxMode: UX_MODE.REDIRECT,
     loginConfig: {
       jwt: {
-        verifier: "w3a-telegram-oauth-demo",
+        verifier: import.meta.env.VITE_W3A_VERIFIER_NAME || "w3a-telegram-oauth-demo",
         typeOfLogin: "jwt",
         clientId,
       },
@@ -42,7 +42,6 @@ const openloginAdapter = new OpenloginAdapter({
 web3auth.configureAdapter(openloginAdapter);
 
 function App() {
-  // const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
@@ -71,8 +70,8 @@ function App() {
   }, []);
 
   const login = async () => {
-    const URL = process.env.REACT_APP_SERVER_HOST_URL || "https://bf6b-2405-201-a41e-18d1-adf9-f23e-fd18-74bb.ngrok-free.app";
-    window.location.href = `${URL}/telegram/login`;
+    const URL = import.meta.env.VITE_SERVER_URL || "https://w3a-telegram-server.vercel.app";
+    window.location.href = `${URL}/login`;
   };
 
   const loginWithWeb3Auth = async (token: string) => {
@@ -229,9 +228,6 @@ function App() {
       <button onClick={login} className="card">
         Login with Telegram
       </button>
-      {/* <button onClick={loginWithWeb3Auth} className="card">
-        Login with Web3Auth
-      </button> */}
     </>
   );
 
@@ -241,20 +237,20 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>{" "}
-        & ReactJS-Express JWT Telegram Login
+        & Telegram Login Demo
       </h1>
 
       <div className="grid">{loggedIn ? loginView : logoutView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/custom-jwt-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/telegram-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
           Source code
         </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fcustom-authentication%2Fsingle-verifier-examples%2Fauth0-no-modal-example&project-name=w3a-custom-jwt-no-modal&repository-name=w3a-custom-jwt-no-modal">
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fcustom-authentication%2Fsingle-verifier-examples%2Ftelegram-no-modal-example&project-name=w3a-telegram-no-modal&repository-name=w3a-telegram-no-modal">
           <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>

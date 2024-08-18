@@ -13,9 +13,6 @@ const app = express();
 const { TELEGRAM_BOT_NAME, TELEGRAM_BOT_TOKEN, SERVER_URL, CLIENT_URL, JWT_KEY_ID } = process.env;
 const TELEGRAM_BOT_CALLBACK = `${SERVER_URL}/callback`;
 const privateKey = fs.readFileSync(path.resolve(__dirname, "privateKey.pem"), "utf8");
-console.log("TELEGRAM_BOT_NAME", TELEGRAM_BOT_NAME);
-console.log("TELEGRAM_BOT_TOKEN", TELEGRAM_BOT_TOKEN);
-
 
 // A helper function to generate JWT token using the Telegram user data
 const generateJwtToken = (userData) => {

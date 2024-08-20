@@ -76,8 +76,6 @@ function App() {
     if (web3auth.connected) {
       setLoggedIn(true);
     }
-    localStorage.setItem("walletConnected", JSON.stringify(true)); // Save connection status in local storage
-    localStorage.setItem("signerAddress", JSON.stringify(address)); // Save signer address in local storage
   };
 
   const getWallet = async (): Promise<JsonRpcSigner | null> => {
@@ -86,10 +84,10 @@ function App() {
       return null;
     }
     const ethersProvider = new ethers.BrowserProvider(provider);
-  
+
     return ethersProvider.getSigner();
   }
-  
+
   const getAccounts = async (): Promise<any> => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -98,10 +96,10 @@ function App() {
     try {
       const ethersProvider = new ethers.BrowserProvider(provider);
       const signer = await ethersProvider.getSigner();
-  
+
       // Get user's Ethereum public address
       const address = signer.getAddress();
-  
+
       return await address;
     } catch (error) {
       return error;
@@ -109,11 +107,9 @@ function App() {
   }
 
   const logout = async () => {
-    localStorage.removeItem("walletConnected");
-    localStorage.removeItem("signerAddress");
-    setWallet(null);
     await web3auth.logout();
     setProvider(null);
+    setWallet(null);
     setLoggedIn(false);
     uiConsole("logged out");
   };
@@ -178,10 +174,11 @@ function App() {
 
   return (
     <div style={styles.HomePageWrapperStyle}>
+      <h1>Web3Auth XMTP Quickstart </h1>
       <button
         className="home-button"
         style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }}
-        onClick={() =>  login()}
+        onClick={() => login()}
       >
         {loggedIn ? "Connected" : "Login with Google"}
       </button>
@@ -194,27 +191,28 @@ function App() {
           Logout
         </button>
       )}
-      <h1>Web3Auth XMTP Quickstart </h1>
       <h3>{address}</h3>
-
-      <section className="App-section">
-        <button
-          className="home-button"
-          style={styles.ButtonStyledStyle}
-          onClick={() => window.FloatingInbox.open()}
-        >
-          Open
-        </button>
-        <button
-          className="home-button"
-          style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }}
-          onClick={() => window.FloatingInbox.close()}
-        >
-          Close
-        </button>
-      </section>
-
-      <FloatingInbox env={process.env.REACT_APP_XMTP_ENV} wallet={wallet} />
+      {loggedIn && (
+        <section className="App-section">
+          <button
+            className="home-button"
+            style={styles.ButtonStyledStyle}
+            onClick={() => window.FloatingInbox.open()}
+          >
+            Open
+          </button>
+          <button
+            className="home-button"
+            style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }}
+            onClick={() => window.FloatingInbox.close()}
+          >
+            Close
+          </button>
+        </section>
+      )}
+      {loggedIn && (
+        <FloatingInbox env={process.env.REACT_APP_XMTP_ENV} wallet={wallet} />
+      )}
     </div>
   );
 }

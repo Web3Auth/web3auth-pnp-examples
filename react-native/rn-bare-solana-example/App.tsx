@@ -1,53 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, ScrollView, Dimensions, TextInput } from "react-native";
-import "@ethersproject/shims";
-import { ethers } from "ethers";
 
-// IMP START - Quick Start
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK, ChainNamespace } from "@web3auth/react-native-sdk";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-// IMP END - Quick Start
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import RPC from "./solanaRPC";
 
-const scheme = "web3authrnexample"; // Or your desired app redirection scheme
-// IMP START - Whitelist bundle ID
+const scheme = "solanarnexample"; // Or your desired app redirection scheme
 const redirectUrl = `${scheme}://openlogin`;
-// IMP END - Whitelist bundle ID
 
-// IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-// IMP END - Dashboard Registration
 
-// IMP START - SDK Initialization
 const chainConfig = {
-  chainNamespace: ChainNamespace.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  decimals: 18,
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+  chainNamespace: ChainNamespace.SOLANA,
+  chainId: "0x2", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://api.testnet.solana.com",
+  displayName: "Solana Testnet",
+  blockExplorerUrl: "https://explorer.solana.com",
+  ticker: "SOL",
+  tickerName: "Solana",
+  logo: "https://images.toruswallet.io/solana.svg",
 };
 
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-  config: {
-    chainConfig,
-  },
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: { chainConfig },
 });
 
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
-  // IMP START - Whitelist bundle ID
   redirectUrl,
-  // IMP END - Whitelist bundle ID
   network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
 });
-// IMP END - SDK Initialization
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -57,13 +41,12 @@ export default function App() {
 
   useEffect(() => {
     const init = async () => {
-      // IMP START - SDK Initialization
       await web3auth.init();
 
-      if (web3auth.privKey) {
-        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
-        // IMP END - SDK Initialization
-        setProvider(ethereumPrivateKeyProvider);
+      if (web3auth.ed25519Key) {
+        await privateKeyProvider.setupProvider(web3auth.ed25519Key);
+
+        setProvider(privateKeyProvider);
         setLoggedIn(true);
       }
     };
@@ -82,7 +65,7 @@ export default function App() {
       }
 
       setConsole("Logging in");
-      // IMP START - Login
+
       await web3auth.login({
         loginProvider: LOGIN_PROVIDER.EMAIL_PASSWORDLESS,
         extraLoginOptions: {
@@ -90,10 +73,10 @@ export default function App() {
         },
       });
 
-      if (web3auth.privKey) {
-        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
-        // IMP END - Login
-        setProvider(ethereumPrivateKeyProvider);
+      if (web3auth.ed25519Key) {
+        await privateKeyProvider.setupProvider(web3auth.ed25519Key);
+
+        setProvider(privateKeyProvider);
         uiConsole("Logged In");
         setLoggedIn(true);
       }
@@ -109,9 +92,8 @@ export default function App() {
     }
 
     setConsole("Logging out");
-    // IMP START - Logout
+
     await web3auth.logout();
-    // IMP END - Logout
 
     if (!web3auth.privKey) {
       setProvider(null);
@@ -120,83 +102,44 @@ export default function App() {
     }
   };
 
-  // IMP START - Blockchain Calls
   const getAccounts = async () => {
     if (!provider) {
-      uiConsole("provider not set");
+      uiConsole("provider not initialized yet");
       return;
     }
-    setConsole("Getting account");
-    // For ethers v5
-    // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-    const ethersProvider = new ethers.BrowserProvider(provider!);
-
-    // For ethers v5
-    // const signer = ethersProvider.getSigner();
-    const signer = await ethersProvider.getSigner();
-
-    // Get user's Ethereum public address
-    const address = signer.getAddress();
+    const rpc = new RPC(provider);
+    const address = await rpc.getAccounts();
     uiConsole(address);
   };
 
   const getBalance = async () => {
     if (!provider) {
-      uiConsole("provider not set");
+      uiConsole("provider not initialized yet");
       return;
     }
-    setConsole("Fetching balance");
-    // For ethers v5
-    // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-    const ethersProvider = new ethers.BrowserProvider(provider!);
-
-    // For ethers v5
-    // const signer = ethersProvider.getSigner();
-    const signer = await ethersProvider.getSigner();
-
-    // Get user's Ethereum public address
-    const address = signer.getAddress();
-
-    // Get user's balance in ether
-    // For ethers v5
-    // const balance = ethers.utils.formatEther(
-    // await ethersProvider.getBalance(address) // Balance is in wei
-    // );
-    const balance = ethers.formatEther(
-      await ethersProvider.getBalance(address) // Balance is in wei
-    );
+    const rpc = new RPC(provider);
+    const balance = await rpc.getBalance();
     uiConsole(balance);
   };
 
   const signMessage = async () => {
     if (!provider) {
-      uiConsole("provider not set");
+      uiConsole("provider not initialized yet");
       return;
     }
-    setConsole("Signing message");
-    // For ethers v5
-    // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-    const ethersProvider = new ethers.BrowserProvider(provider!);
-
-    // For ethers v5
-    // const signer = ethersProvider.getSigner();
-    const signer = await ethersProvider.getSigner();
-    const originalMessage = "YOUR_MESSAGE";
-
-    // Sign the message
-    const signedMessage = await signer.signMessage(originalMessage);
+    const rpc = new RPC(provider);
+    const signedMessage = await rpc.signMessage();
     uiConsole(signedMessage);
   };
-  // IMP END - Blockchain Calls
 
-  const launchWalletServices = async () => {
-    if (!web3auth) {
-      setConsole("Web3auth not initialized");
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
       return;
     }
-
-    setConsole("Launch Wallet Services");
-    await web3auth.launchWalletServices(chainConfig);
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendTransaction();
+    uiConsole(receipt);
   };
 
   const uiConsole = (...args: unknown[]) => {
@@ -209,7 +152,7 @@ export default function App() {
       <Button title="Get Accounts" onPress={() => getAccounts()} />
       <Button title="Get Balance" onPress={() => getBalance()} />
       <Button title="Sign Message" onPress={() => signMessage()} />
-      <Button title="Show Wallet UI" onPress={() => launchWalletServices()} />
+      <Button title="Send Transaction" onPress={() => sendTransaction()} />
       <Button title="Log Out" onPress={logout} />
     </View>
   );

@@ -22,7 +22,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
     getChainId,
     chainListOptionSelected,
   } = usePlayground();
-  const { userInfo } = useWeb3Auth();
+  const { userInfo, web3Auth, isConnected } = useWeb3Auth();
   const [addressToShow, setAddressToShow] = useState<string>(address || "");
   const [selectedChain, setSelectedChain] = useState<string>(Object.keys(chainList)[0]);
   const [chainDetails, setChainDetails] = useState<CustomChainConfig>(chainList[selectedChain]);
@@ -66,8 +66,17 @@ function AccountDetails({ children }: AccountDetailsProps) {
               {userInfo?.name.charAt(0).toUpperCase()}
             </span>
           )}
+          {!(userInfo?.profileImage && userInfo?.name) && (
+            <span className="flex justify-center items-center bg-purple-100 font-bold w-24 h-24 rounded-lg text-[80px] text-purple-800">
+              {web3Auth.connectedAdapterName.charAt(0).toUpperCase()}
+            </span>
+          )}
           <div className="space-y-2 md:space-y-0 md:pl-8 flex flex-col justify-between">
-            <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{userInfo?.name}</span>
+            {isConnected && web3Auth.connectedAdapterName === "OPENLOGIN" ? (
+              <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{userInfo?.name}</span>
+            ) : (
+              <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{`Connected to ${web3Auth.connectedAdapterName[0].toUpperCase()}${web3Auth.connectedAdapterName.slice(1).replace(/-/g, " ")}`}</span>
+            )}
             <div
               className="w-fit text-[8px] sm:text-sm bg-gray-100 text-gray-600 p-1 pl-3 pr-3 rounded-full z-0 flex flex-row justify-between space-x-4 items-center cursor-pointer"
               onClick={() => {
@@ -90,9 +99,11 @@ function AccountDetails({ children }: AccountDetailsProps) {
             </div>
           </div>
         </div>
-        <button className="w-full p-4 text-sm border-gray-200 rounded-lg shadow-sm" onClick={getUserInfo}>
-          View User Info in Console
-        </button>
+        {isConnected && web3Auth.connectedAdapterName === "OPENLOGIN" && (
+          <button className="w-full p-4 text-sm border-gray-200 rounded-lg shadow-sm" onClick={getUserInfo}>
+            View User Info in Console
+          </button>
+        )}
       </div>
       <div className="p-8 mt-6 mb-0 rounded-lg bg-white flex flex-row justify-between flex-wrap">
         <div className="p-2 flex flex-col space-y-4">

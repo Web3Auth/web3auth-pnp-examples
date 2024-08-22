@@ -81,13 +81,17 @@ function Transaction() {
             <Tabs tabData={TabData} />
             {tab === "signMessage" ? (
               <Form formDetails={formDetailsSignMessage}>
-                <button
+                <LoaderButton
                   className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                   style={{ backgroundColor: "#0364ff" }}
-                  onClick={() => getSignature(message)}
+                  onClick={async () => {
+                    setLoading(true);
+                    await getSignature(message);
+                    setLoading(false);
+                  }}
                 >
                   Sign Message
-                </button>
+                </LoaderButton>
               </Form>
             ) : (
               <Form formDetails={formDetailsDestinationAddress}>

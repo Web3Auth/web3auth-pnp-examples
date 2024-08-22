@@ -15,7 +15,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
   },
 });
 
-const web3AuthOptions: Web3AuthOptions = {
+export const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
@@ -27,28 +27,6 @@ const openloginAdapter = new OpenloginAdapter({
   },
   adapterSettings: {
     uxMode: UX_MODE.REDIRECT, // "redirect" | "popup"
-    // mfaSettings: {
-    //   deviceShareFactor: {
-    //     enable: true,
-    //     priority: 1,
-    //     mandatory: true,
-    //   },
-    //   backUpShareFactor: {
-    //     enable: true,
-    //     priority: 2,
-    //     mandatory: false,
-    //   },
-    //   socialBackupFactor: {
-    //     enable: true,
-    //     priority: 3,
-    //     mandatory: false,
-    //   },
-    //   passwordFactor: {
-    //     enable: true,
-    //     priority: 4,
-    //     mandatory: false,
-    //   },
-    // },
   },
 });
 

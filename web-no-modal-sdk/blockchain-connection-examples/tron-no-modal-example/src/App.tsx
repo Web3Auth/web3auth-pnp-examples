@@ -58,7 +58,11 @@ function App() {
       privateKeyProvider,
     });
 
-    const openloginAdapter = new OpenloginAdapter();
+    const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        uxMode: "redirect",
+      }
+    });
     web3auth.configureAdapter(openloginAdapter);
 
     const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x2b6653dc", "0x94a9059e"], projectId);

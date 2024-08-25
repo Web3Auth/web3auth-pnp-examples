@@ -101,3 +101,16 @@
 	font-size: 16px;
 	font-family: monospace;
 }
+
+.faucet-message {
+	margin-top: 20px;
+	padding: 15px;
+	background-color: #f0f8ff;
+	border-radius: 5px;
+	text-align: left;
+	font-size: 14px;
+  }
+  
+  .faucet-message p {
+	margin: 5px 0;
+  }

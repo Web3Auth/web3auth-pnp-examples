@@ -3,9 +3,15 @@ import { Web3AuthNoModal as Web3Auth } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { getHttpEndpoint } from "@orbs-network/ton-access";
 
 import "./App.css";
 import TonRPC from "./tonRpc";
+
+const testnetRpc = await getHttpEndpoint({
+  network: "testnet",
+  protocol: "json-rpc",
+}); 
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -19,10 +25,10 @@ function App() {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.OTHER,
-          chainId: "mainnet", // Replace with actual TON chain ID
-          rpcTarget: "https://toncenter.com/api/v2/jsonRPC", // Replace with actual TON RPC endpoint
-          displayName: "TON Mainnet",
-          blockExplorerUrl: "https://tonscan.org",
+          chainId: "testnet", // Replace with actual TON chain ID
+          rpcTarget: testnetRpc,
+          displayName: "TON Testnet",
+          blockExplorerUrl: "https://testnet.tonscan.org",
           ticker: "TON",
           tickerName: "Toncoin",
         };
@@ -124,7 +130,17 @@ function App() {
     }
     const rpc = new TonRPC(provider);
     const result = await rpc.sendTransaction();
-    uiConsole("Transaction Hash:", result.transactionHash);
+    uiConsole(result);
+  };
+
+  const signMessage = async () => {
+    if (!provider) {
+      uiConsole("No provider found");
+      return;
+    }
+    const rpc = new TonRPC(provider);
+    const result = await rpc.signMessage("Hello, TON!");
+    uiConsole(`Message signed. Signature: ${result}`);
   };
 
   function uiConsole(...args: any[]): void {
@@ -168,6 +184,11 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={signMessage} className="card">
+            Sign Message
+          </button>
+        </div>
+        <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
           </button>
@@ -185,6 +206,12 @@ function App() {
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
+      </div>
+      <div className="faucet-message">
+        <p>Need test TON? Click <a href="https://faucet.tonxapi.com/" target="_blank" rel="noopener noreferrer">
+            here
+          </a> to visit the faucet and receive free testnet tokens.</p>
+        <p>Remember to use your TON testnet address when requesting tokens from the faucet.</p>
       </div>
     </>
   );

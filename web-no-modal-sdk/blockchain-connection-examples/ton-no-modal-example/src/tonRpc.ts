@@ -2,7 +2,10 @@ import type { IProvider } from "@web3auth/base";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import TonWeb from "tonweb";
 
-const rpc = await getHttpEndpoint(); 
+const rpc = await getHttpEndpoint({
+    network: "testnet",
+    protocol: "json-rpc",
+}); 
 
 export default class TonRPC {
     private provider: IProvider;
@@ -29,6 +32,10 @@ export default class TonRPC {
         }
     }
 
+     getChainId(): string {
+        return "testnet"; 
+    }
+
     async getBalance(): Promise<string> {
         try {
             const address = await this.getAccounts();
@@ -44,63 +51,53 @@ export default class TonRPC {
         try {
             const privateKey = await this.getPrivateKey();
             const keyPair = this.getKeyPairFromPrivateKey(privateKey);
-            const WalletClass = this.tonweb.wallet.all['v3R2'];
-            const wallet = new WalletClass(this.tonweb.provider, {
-                publicKey: keyPair.publicKey
-            });
-
+            
+            const WalletClass = this.tonweb.wallet.all["v3R2"];
+            const wallet = new WalletClass(this.tonweb.provider, { publicKey: keyPair.publicKey });
+    
             const address = await wallet.getAddress();
             console.log("Wallet address:", address.toString(true, true, true));
-
-            // Check if the wallet is deployed by checking its balance
+    
             const balance = await this.tonweb.getBalance(address);
-            console.log("Wallet balance:", TonWeb.utils.fromNano(balance));
-
-            const isDeployed = balance !== '0';
-            console.log("Is wallet deployed:", isDeployed);
-
-            if (!isDeployed) {
-                console.log("Wallet not deployed or has zero balance. Please deploy the wallet and fund it before sending transactions.");
-                return { error: "Wallet not deployed or has zero balance" };
-            }
-
-            // Get the current seqno with retry
-            let seqno;
-            for (let i = 0; i < 3; i++) {
-                try {
-                    seqno = await wallet.methods.seqno().call();
-                    console.log("Current seqno:", seqno);
-                    if (seqno !== null) break;
-                } catch (seqnoError) {
-                    console.error(`Error getting seqno (attempt ${i + 1}):`, seqnoError);
-                }
-                await new Promise(resolve => setTimeout(resolve, 2000));
-            }
-
-            if (seqno === null) {
-                throw new Error("Failed to retrieve seqno after multiple attempts");
-            }
-
+            console.log("Wallet balance:", TonWeb.utils.fromNano(balance.toString()));
+    
+            let seqno = await wallet.methods.seqno().call() ?? 0;
+            console.log("Using seqno:", seqno);
+    
             const transfer = wallet.methods.transfer({
                 secretKey: keyPair.secretKey,
-                toAddress: 'EQD4FPq-PRDieyQKkizFTRtSDyucUIqrj0v_zXJmqaDp6_0t', // Replace with actual recipient address
-                amount: TonWeb.utils.toNano('0.01'), // Amount in TON
+                toAddress: '0QCeWpE40bPUiuj-8ZfZd2VzMOxCMUuQFa_VKmdD8ssy5ukA',
+                amount: TonWeb.utils.toNano('0.004'),
                 seqno: seqno,
-                payload: 'Hello, TON!', // Optional message
+                payload: 'Hello, TON!',
                 sendMode: 3,
             });
-
-            console.log("Prepared transfer:", transfer);
-
+    
+            console.log("Sending transaction...");
             const result = await transfer.send();
-            console.log("Transaction result:", result);
-
-            return {
-                transactionHash: result.hash,
-            };
+            
+            console.log(result);
+            // Return the full result for display in uiConsole
+            return result;
         } catch (error) {
             console.error("Error sending transaction:", error);
-            return { error: error.message };
+            return { error: error instanceof Error ? error.message : String(error) };
+        }
+    }
+
+    async signMessage(message: string): Promise<string> {
+        try {
+            const privateKey = await this.getPrivateKey();
+            const keyPair = this.getKeyPairFromPrivateKey(privateKey);
+            
+            const messageBytes = new TextEncoder().encode(message);
+            
+            const signature = TonWeb.utils.nacl.sign.detached(messageBytes, keyPair.secretKey);
+            
+            return Buffer.from(signature).toString('hex');
+        } catch (error) {
+            console.error("Error signing message:", error);
+            throw error;
         }
     }
 

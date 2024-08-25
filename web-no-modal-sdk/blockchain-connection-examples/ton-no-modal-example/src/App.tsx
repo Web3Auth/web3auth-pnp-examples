@@ -133,6 +133,16 @@ function App() {
     uiConsole(result);
   };
 
+  const signMessage = async () => {
+    if (!provider) {
+      uiConsole("No provider found");
+      return;
+    }
+    const rpc = new TonRPC(provider);
+    const result = await rpc.signMessage("Hello, TON!");
+    uiConsole(`Message signed. Signature: ${result}`);
+  };
+
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -171,6 +181,11 @@ function App() {
         <div>
           <button onClick={getBalance} className="card">
             Get Balance
+          </button>
+        </div>
+        <div>
+          <button onClick={signMessage} className="card">
+            Sign Message
           </button>
         </div>
         <div>

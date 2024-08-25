@@ -85,6 +85,22 @@ export default class TonRPC {
         }
     }
 
+    async signMessage(message: string): Promise<string> {
+        try {
+            const privateKey = await this.getPrivateKey();
+            const keyPair = this.getKeyPairFromPrivateKey(privateKey);
+            
+            const messageBytes = new TextEncoder().encode(message);
+            
+            const signature = TonWeb.utils.nacl.sign.detached(messageBytes, keyPair.secretKey);
+            
+            return Buffer.from(signature).toString('hex');
+        } catch (error) {
+            console.error("Error signing message:", error);
+            throw error;
+        }
+    }
+
     public getKeyPairFromPrivateKey(privateKey: string): { publicKey: Uint8Array; secretKey: Uint8Array } {
         // Convert the hex string to a Uint8Array
         const privateKeyBytes = new Uint8Array(privateKey.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));

@@ -1,32 +1,32 @@
-# Web3Auth (`@web3auth/no-modal`) x Cosmos
+# Web3Auth (`@web3auth/no-modal`) x TON Testnet
 
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/pnp/web/no-modal)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 
-This example demonstrates how to use Web3Auth with Cosmos.
+This example demonstrates how to use Web3Auth with the TON testnet.
 
 ## How to Use
 
 ### One-Click Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fblockchain-connection-examples%2Fcosmos-no-modal-example&project-name=w3a-cosmos-no-modal&repository-name=w3a-cosmos-no-modal)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fblockchain-connection-examples%2Fton-no-modal-example&project-name=w3a-ton-no-modal&repository-name=w3a-ton-no-modal)
 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/blockchain-connection-examples/cosmos-no-modal-example w3a-example
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/blockchain-connection-examples/ton-no-modal-example w3a-ton-example
 ```
 
 Install & Run:
 
 ```bash
-cd w3a-example
+cd w3a-ton-example
 npm install
 npm run start
 # or
-cd w3a-example
+cd w3a-ton-example
 yarn
 yarn start
 ```

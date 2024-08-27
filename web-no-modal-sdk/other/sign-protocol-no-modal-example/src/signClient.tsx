@@ -1,5 +1,4 @@
 import { AttestationResult, EvmChains, SignProtocolClient, SpMode } from "@ethsign/sp-sdk";
-import { privateKeyToAccount } from "viem/accounts";
 import axios from "axios";
 import { WalletClient } from "viem";
 

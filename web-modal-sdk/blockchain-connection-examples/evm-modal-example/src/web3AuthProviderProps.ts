@@ -4,6 +4,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 
 const chainConfig = {
   chainId: "0xaa36a7", // for wallet connect make sure to pass in this chain in the loginSettings of the adapter.
@@ -22,7 +23,8 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
   },
 });
 
-export const web3AuthOptions: Web3AuthOptions = {
+const web3AuthOptions: Web3AuthOptions = {
+  chainConfig,
   clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   uiConfig: {
@@ -85,9 +87,10 @@ const walletServicesPlugin = new WalletServicesPlugin({
   walletInitOptions: { whiteLabel: { showWidgetButton: true } },
 });
 
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+
 export const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions,
-  adapters: [openloginAdapter],
+  adapters: [openloginAdapter, ...adapters],
   plugins: [walletServicesPlugin],
-  //plugins: [],
 };

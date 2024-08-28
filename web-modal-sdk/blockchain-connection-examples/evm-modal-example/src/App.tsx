@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-import { web3AuthOptions } from "./web3AuthProviderProps";
 
 import "./App.css";
 // import RPC from "./web3RPC"; // for using web3.js
@@ -53,11 +51,6 @@ function App() {
     const init = async () => {
       try {
         if (web3Auth) {
-          // Adding default evm adapters
-          const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-          adapters.forEach((adapter) => {
-            web3Auth.configureAdapter(adapter);
-          });
           await initModal();
         }
       } catch (error) {

@@ -1,5 +1,6 @@
 import { UX_MODE } from "@toruslabs/openlogin-utils";
 import { WEB3AUTH_NETWORK } from "@web3auth/base";
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -15,7 +16,8 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
   },
 });
 
-export const web3AuthOptions: Web3AuthOptions = {
+const web3AuthOptions: Web3AuthOptions = {
+  chainConfig: chain.ethereum,
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
@@ -35,9 +37,11 @@ const walletServicesPlugin = new WalletServicesPlugin({
   walletInitOptions: { whiteLabel: { showWidgetButton: true, buttonPosition: "bottom-right" } },
 });
 
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+
 const web3AuthContextConfig = {
   web3AuthOptions,
-  adapters: [openloginAdapter],
+  adapters: [openloginAdapter, ...adapters],
   plugins: [walletServicesPlugin],
 };
 

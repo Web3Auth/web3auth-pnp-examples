@@ -1,13 +1,11 @@
 import { getPublicCompressed } from "@toruslabs/eccrypto";
-import { CustomChainConfig, IAdapter, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import * as jose from "jose";
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 import { chain } from "../config/chainConfig";
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
-import { web3AuthOptions } from "./web3authContext";
 
 export interface IPlaygroundContext {
   walletProvider: IWalletProvider | null;
@@ -104,10 +102,6 @@ export const Playground = ({ children }: IPlaygroundProps) => {
         if (isConnected) setNewWalletProvider(provider);
         else {
           try {
-            const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-            adapters.forEach((adapter: IAdapter<unknown>) => {
-              web3Auth.configureAdapter(adapter);
-            });
             await initModal();
             connect();
           } catch (error) {

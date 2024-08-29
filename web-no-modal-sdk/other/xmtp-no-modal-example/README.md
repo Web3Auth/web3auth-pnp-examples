@@ -16,7 +16,7 @@ This example demonstrates how to use Web3Auth with XMTP (Extensible Message Tran
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/quick-starts/react-xmtp-no-modal-example w3a-xmtp-example
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/other/xmtp-no-modal-example w3a-xmtp-example
 ```
 
 Install & Run:

@@ -6,6 +6,7 @@ import "./App.css";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
+import {OpenloginAdapter} from "@web3auth/openlogin-adapter";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -44,6 +45,29 @@ const web3auth = new Web3Auth({
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
   privateKeyProvider,
 });
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    loginConfig: {
+      // Google login
+      "email_passwordless": {
+                verifier: "email-passwordless-dev-grandma",
+                typeOfLogin: "jwt",
+                clientId,
+                jwtParameters: {
+                  domain: "https://passwordless.web3auth.io/v6",
+                  verifierIdField: "email",
+                  connection: "email",
+                  isVerifierIdCaseSensitive: false,
+                  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+                  flow_type: "code",
+                }
+              }
+    },
+  },
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
 // IMP END - SDK Initialization
 
 function App() {

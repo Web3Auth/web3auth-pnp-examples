@@ -10,4 +10,5 @@ public class LoginParams
     public MFALevel mfaLevel { get; set; }
 
     public Curve curve { get; set; } = Curve.SECP256K1;
+    public string dappUrl { get; set; }
 }

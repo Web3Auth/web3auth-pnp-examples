@@ -12,6 +12,7 @@ using Nethereum.ABI.Encoders;
 using Nethereum.Hex.HexTypes;
 using Nethereum.Web3.Accounts;
 using Nethereum.Web3.Accounts.Managed;
+using Newtonsoft.Json.Linq;
 
 public class Web3AuthScript : MonoBehaviour
 {
@@ -44,8 +45,18 @@ public class Web3AuthScript : MonoBehaviour
             
         });
         // IMP END - SDK Initialization
+        // IMP START - Login
         web3Auth.onLogin += onLogin;
+        // IMP END - Login
+        // IMP START - Logout
         web3Auth.onLogout += onLogout;
+        // IMP END - Logout
+        // IMP START - Enable MFA
+        web3Auth.onMFASetup += onMFASetup;
+        // IMP END - Enable MFA
+        // IMP START - Sign Message Popup
+        web3Auth.onSignResponse += onSignResponse;
+        // IMP END - Sign Message Popup
 
         updateConsole("Ready to Login!");
     }
@@ -55,6 +66,7 @@ public class Web3AuthScript : MonoBehaviour
         userEmail = input;
     }
 
+    // IMP START - Login
     public void login()
     {
         if (userEmail == "")
@@ -63,7 +75,6 @@ public class Web3AuthScript : MonoBehaviour
             updateConsole("Please enter your email.");
             return;
         }
-        // IMP START - Login
         var selectedProvider = Provider.EMAIL_PASSWORDLESS;
 
         var options = new LoginParams()
@@ -76,7 +87,6 @@ public class Web3AuthScript : MonoBehaviour
         };
 
         web3Auth.login(options);
-        // IMP END - Login
     }
 
     private void onLogin(Web3AuthResponse response)
@@ -89,13 +99,15 @@ public class Web3AuthScript : MonoBehaviour
         var newAccount = new Account(privateKey);
         account = newAccount;
 
-        var rpc = new Nethereum.JsonRpc.Client.RpcClient(new Uri(rpcURL));
+        var rpc = new Nethereum.JsonRpc.Client.RpcClient(new System.Uri(rpcURL));
         web3 = new Web3(account, rpc);
         // IMP END - Blockchain Calls
 
         Debug.Log(JsonConvert.SerializeObject(response, Formatting.Indented));
         updateConsole(JsonConvert.SerializeObject(response, Formatting.Indented));
     }
+    // IMP END - Login
+
 
     public void getUserInfo()
     {
@@ -109,11 +121,10 @@ public class Web3AuthScript : MonoBehaviour
         updateConsole(userInfo);
     }
 
+    // IMP START - Logout
     public void logout()
     {
-        // IMP START - Logout
         web3Auth.logout();
-        // IMP END - Logout
     }
 
     private void onLogout()
@@ -125,6 +136,79 @@ public class Web3AuthScript : MonoBehaviour
         Debug.Log("Logged out!");
         updateConsole("Logged out!");
     }
+    // IMP END - Logout
+
+    // IMP START - Enable MFA
+    public void enableMFA()
+    {
+        var selectedProvider = Provider.EMAIL_PASSWORDLESS;
+
+        var options = new LoginParams()
+        {
+            loginProvider = selectedProvider,
+            extraLoginOptions = new ExtraLoginOptions()
+            {
+                login_hint = userEmail
+            }
+        };
+
+        web3Auth.enableMFA(options);
+    }
+
+    private void onMFASetup(bool response)
+    {
+        Debug.Log("MFA Setup: " + response);
+    }
+    // IMP END - Enable MFA
+
+
+    // IMP START - Wallet UI
+
+    public void showWalletUI()
+    {
+        var chainConfig = new ChainConfig()
+        {
+            chainId = "0xaa36a7",
+            rpcTarget = "https://rpc.ankr.com/eth_sepolia",
+            ticker = "ETH",
+            chainNamespace = Web3Auth.ChainNamespace.EIP155
+        };
+
+        web3Auth.launchWalletServices(chainConfig);
+    }
+    // IMP END - Wallet UI
+
+
+    // IMP START - Sign Message Popup
+
+    public void PopupSignMessageUI() {
+        var chainConfig = new ChainConfig()
+        {
+            chainId = "0xaa36a7",
+            rpcTarget = "https://rpc.ankr.com/eth_sepolia",
+            ticker = "ETH",
+            chainNamespace = Web3Auth.ChainNamespace.EIP155
+        };
+
+        JArray paramsArray = new JArray
+        {
+             "Hello World",
+             account.Address,
+             "Android"
+        };
+
+        web3Auth.request(chainConfig, "personal_sign", paramsArray);
+    }
+
+
+    private void onSignResponse(SignResponse signResponse)
+
+    {
+        Debug.Log("Retrieved SignResponse: " + signResponse);
+        updateConsole("Retrieved SignResponse: " + signResponse);
+    }
+
+    // IMP END - Sign Message Popup
 
     // IMP START - Blockchain Calls
     public void getAccount()

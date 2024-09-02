@@ -10,11 +10,11 @@ import { web3AuthConfig, openloginAdapterConfig } from "./config/web3auth";
 import Web3 from "web3";
 
 import StartkNetRPC from "./RPC/startkNetRPC"; // for using starkex
-import EthereumRPC from "./RPC/ethRPC-web3"; // for using web3.js 
+import EthereumRPC from "./RPC/ethRPC-web3"; // for using web3.js
 import SolanaRPC from "./RPC/solanaRPC"; // for using solana
 import TezosRPC from "./RPC/tezosRPC"; // for using tezos
 import PolkadotRPC from "./RPC/polkadotRPC"; // for using polkadot
-
+import NearRPC from "./RPC/nearRPC";
 
 //@ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -56,7 +56,7 @@ function App() {
     // EVM chains
     const polygon_address = await getPolygonAddress();
     const bnb_address = await getBnbAddress();
-    
+
     const rpcETH = new EthereumRPC(provider!);
     const privateKey = await rpcETH.getPrivateKey();
 
@@ -64,22 +64,24 @@ function App() {
     const solanaRPC = new SolanaRPC(privateKey);
     const polkadotRPC = new PolkadotRPC(privateKey);
     const starkNetRPC = new StartkNetRPC(privateKey);
+    const nearRPC = new NearRPC(provider!);
 
-    let solana_address = await solanaRPC.getAccounts();
+    const solana_address = await solanaRPC.getAccounts();
     const tezos_address = await tezosRPC.getAccounts();
     const starknet_address = await starkNetRPC.getAccounts();
-    const polkadot_address = await polkadotRPC.getAccounts()    
+    const polkadot_address = await polkadotRPC.getAccounts();
+    const near_address = await nearRPC.getAccounts();
 
     uiConsole(
       "Polygon Address: " + polygon_address,
       "BNB Address: " + bnb_address,
       "Solana Address: " + solana_address,
+      "Near Address: " + near_address?.["Account ID"],
       "Tezos Address: " + tezos_address,
       "StarkNet Address: " + starknet_address,
       "Polkadot Address: " + polkadot_address
     );
   };
-
 
   const getAllBalances = async () => {
     if (!provider) {
@@ -97,7 +99,7 @@ function App() {
     const eth_balance = await ethRPC.getBalance();
     const solana_balance = await solanaRPC.getBalance();
     const tezos_balance = await tezosRPC.getBalance();
-    const polkadot_balance = await polkadotRPC.getBalance()    
+    const polkadot_balance = await polkadotRPC.getBalance();
 
     uiConsole(
       "Ethereum Balance: " + eth_balance,
@@ -163,10 +165,10 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-  
+
     const rpc = new EthereumRPC(provider);
     const balance = await rpc.getBalance();
-    const finalString = "ETH Balance: " + balance ;
+    const finalString = "ETH Balance: " + balance;
     uiConsole(finalString);
   };
 

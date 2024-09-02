@@ -5,63 +5,60 @@ import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } f
 
 import IRPC from "./IRPC";
 
-export default class SolanaRPC implements IRPC{
-    private provider: SolanaPrivateKeyProvider;
-    private privateKey: string;
+export default class SolanaRPC implements IRPC {
+  private provider: SolanaPrivateKeyProvider;
+  private privateKey: string;
 
-    constructor(privateKey: string) {
-       this.provider = new SolanaPrivateKeyProvider({
-            config: {
-                chainConfig: {
-                chainNamespace: CHAIN_NAMESPACES.SOLANA,
-                chainId: "0x3",
-                rpcTarget: "https://api.devnet.solana.com",
-                displayName: "Solana Mainnet",
-                blockExplorerUrl: "https://explorer.solana.com/",
-                ticker: "SOL",
-                tickerName: "Solana",
-                logo: "",
-                },
-            },
-            });
-      this.privateKey = privateKey;
-    }
+  constructor(privateKey: string) {
+    this.provider = new SolanaPrivateKeyProvider({
+      config: {
+        chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.SOLANA,
+          chainId: "0x3",
+          rpcTarget: "https://api.devnet.solana.com",
+          displayName: "Solana Mainnet",
+          blockExplorerUrl: "https://explorer.solana.com/",
+          ticker: "SOL",
+          tickerName: "Solana",
+          logo: "",
+        },
+      },
+    });
+    this.privateKey = privateKey;
+  }
 
-    getChainId(): Promise<any> {
-        throw new Error("Method not implemented.");
-    }
+  getChainId(): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
 
-    async getAccounts(): Promise<any> {
-        const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
-        const ed25519key = getED25519Key(this.privateKey).sk.toString("hex");
-        console.log(this.privateKey);
-        console.log(ed25519key);
-        // Get user's Solana's public address
-        await this.provider.setupProvider(ed25519key);
-        const solanaWallet = new SolanaWallet(this.provider as SolanaPrivateKeyProvider);
-        const solana_address = await solanaWallet.requestAccounts();
-        return solana_address[0];
-    }
+  async getAccounts(): Promise<any> {
+    const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
+    const ed25519key = getED25519Key(this.privateKey).sk.toString("hex");
+    // Get user's Solana's public address
+    await this.provider.setupProvider(ed25519key);
+    const solanaWallet = new SolanaWallet(this.provider as SolanaPrivateKeyProvider);
+    const solana_address = await solanaWallet.requestAccounts();
+    return solana_address[0];
+  }
 
-    async getBalance(): Promise<string> {
-        const address = await this.getAccounts();
+  async getBalance(): Promise<string> {
+    const address = await this.getAccounts();
 
-        const connection = new Connection(this.provider.config.chainConfig.rpcTarget);
+    const connection = new Connection(this.provider.config.chainConfig.rpcTarget);
 
-        // Fetch the balance for the specified public key
-        const balance = await connection.getBalance(new PublicKey(address));
+    // Fetch the balance for the specified public key
+    const balance = await connection.getBalance(new PublicKey(address));
 
-        return balance.toString();
-    }
-    
-    sendTransaction(): Promise<any> {
-        throw new Error("Method not implemented.");
-    }
-    signMessage(): Promise<any> {
-        throw new Error("Method not implemented.");
-    }
-    getPrivateKey(): Promise<any> {
-        throw new Error("Method not implemented.");
-    }
+    return balance.toString();
+  }
 
+  sendTransaction(): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  signMessage(): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  getPrivateKey(): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
 }

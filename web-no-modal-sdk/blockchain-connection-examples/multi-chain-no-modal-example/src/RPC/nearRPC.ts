@@ -61,8 +61,6 @@ export default class NearRPC {
       const keyPair = await this.getNearKeyPair();
       const pk58 = keyPair?.getPublicKey().data || [];
       const accountId = Buffer.from(pk58 || []).toString("hex");
-      console.log("Public Key", pk58);
-      console.log("Account ID", accountId);
       return { "Public Key": pk58, "Account ID": accountId };
     } catch (error) {
       console.error("Error", error);

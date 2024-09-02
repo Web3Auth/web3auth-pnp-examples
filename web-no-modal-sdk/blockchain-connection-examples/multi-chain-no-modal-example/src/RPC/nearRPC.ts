@@ -9,10 +9,10 @@ export default class NearRPC {
 
   createNamedAccount = async () => {
     const keyPair = await this.getNearKeyPair();
-    const pk58 = keyPair?.getPublicKey().toString();
-    const accountId = utils.serialize.base_decode(pk58.split(":")[1]).toString("hex");
+    const pk58 = keyPair?.getPublicKey().data || [];
+    const accountId = Buffer.from(pk58 || []).toString("hex");
     const myKeyStore = new keyStores.InMemoryKeyStore();
-    await myKeyStore.setKey("testnet", accountId, keyPair);
+    await myKeyStore.setKey("testnet", accountId, keyPair!);
     const connectionConfig = {
       networkId: "testnet",
       keyStore: myKeyStore,
@@ -37,7 +37,7 @@ export default class NearRPC {
     return result;
   };
 
-  getNearKeyPair = async (): Promise<any> => {
+  getNearKeyPair = async () => {
     try {
       const privateKey = (await this.provider.request({
         method: "private_key", // private_key
@@ -48,7 +48,7 @@ export default class NearRPC {
 
       const privateKeyEd25519Buffer = Buffer.from(privateKeyEd25519, "hex");
       const bs58encode = utils.serialize.base_encode(privateKeyEd25519Buffer);
-      const keyPair = KeyPair.fromString(bs58encode);
+      const keyPair = KeyPair.fromString(`ed25519:${bs58encode}`);
       return keyPair;
     } catch (error) {
       console.error(error);
@@ -59,9 +59,10 @@ export default class NearRPC {
   getAccounts = async () => {
     try {
       const keyPair = await this.getNearKeyPair();
-      const pk58 = keyPair?.getPublicKey().toString();
-      const accountId = utils.serialize.base_decode(pk58.split(":")[1]).toString("hex");
-      console.log("Near AccountId", accountId);
+      const pk58 = keyPair?.getPublicKey().data || [];
+      const accountId = Buffer.from(pk58 || []).toString("hex");
+      console.log("Public Key", pk58);
+      console.log("Account ID", accountId);
       return { "Public Key": pk58, "Account ID": accountId };
     } catch (error) {
       console.error("Error", error);
@@ -71,10 +72,10 @@ export default class NearRPC {
   getBalance = async () => {
     try {
       const keyPair = await this.getNearKeyPair();
-      const pk58 = keyPair?.getPublicKey().toString();
-      const accountId = utils.serialize.base_decode(pk58.split(":")[1]).toString("hex");
+      const pk58 = keyPair?.getPublicKey().data || [];
+      const accountId = Buffer.from(pk58 || []).toString("hex");
       const myKeyStore = new keyStores.InMemoryKeyStore();
-      await myKeyStore.setKey("testnet", accountId, keyPair);
+      await myKeyStore.setKey("testnet", accountId, keyPair!);
       const connectionConfig = {
         networkId: "testnet",
         keyStore: myKeyStore,
@@ -96,12 +97,12 @@ export default class NearRPC {
   sendTransaction = async () => {
     try {
       const keyPair = await this.getNearKeyPair();
-      const pk58 = keyPair?.getPublicKey().toString();
-      const accountId = utils.serialize.base_decode(pk58.split(":")[1]).toString("hex");
+      const pk58 = keyPair?.getPublicKey().data || [];
+      const accountId = Buffer.from(pk58 || []).toString("hex");
       const receiver = "shahbaz17.testnet";
       const amount = "2";
       const myKeyStore = new keyStores.InMemoryKeyStore();
-      await myKeyStore.setKey("testnet", accountId, keyPair);
+      await myKeyStore.setKey("testnet", accountId, keyPair!);
       const connectionConfig = {
         networkId: "testnet",
         keyStore: myKeyStore,

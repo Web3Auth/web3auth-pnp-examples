@@ -11,8 +11,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
-      "ES2015"
+      "esnext"
     ],
     "module": "esnext",
     "moduleResolution": "node",
@@ -21,7 +20,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,
-    "target": "ESNext",
+    "target": "esnext",
     "types": [
       "vite/client"
     ]

@@ -112,7 +112,7 @@ function App() {
       return;
     }
     const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
+    const balance = await rpc.getBalance(await rpc.getAccounts());
     uiConsole(balance);
   };
 
@@ -122,7 +122,7 @@ function App() {
       return;
     }
     const rpc = new RPC(provider);
-    const airdrop = await rpc.getAirdrop();
+    const airdrop = await rpc.getAirdrop(await rpc.getAccounts(), 1000000000000000);
     uiConsole("Airdropped some tokens TxID: " + airdrop);
   };
 

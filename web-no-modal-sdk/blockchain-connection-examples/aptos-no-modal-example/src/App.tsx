@@ -123,7 +123,7 @@ function App() {
     }
     const rpc = new RPC(provider);
     const airdrop = await rpc.getAirdrop(await rpc.getAccounts(), 1000000000000000);
-    uiConsole("Airdropped some tokens TxID: " + airdrop);
+    uiConsole("Airdropped some tokens TxID: " + airdrop.hash);
   };
 
   const sendTransaction = async () => {

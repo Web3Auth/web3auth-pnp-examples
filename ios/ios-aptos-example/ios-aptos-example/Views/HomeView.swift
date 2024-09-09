@@ -46,10 +46,10 @@ struct HomeView: View {
                             Text("Self transfer 0.0001 Aptos")
                         })
                         
-                        Text("The sample uses Aptos testnet, you can choose any Aptos network. Self transfer 0.0001 Atpos will perform self transfer of Aptos. You'll need to have testnet faucet to perform transaction.").font(.caption)
+                        Text("The sample uses Aptos testnet, you can choose any Aptos network. Self transfer 0.0001 Aptos will perform self transfer of Aptos. You'll need to have testnet faucet to perform transaction.").font(.caption)
                         
                         Button(action: {
-                            viewModel.airdropFacuet()
+                            viewModel.airdropFaucet()
                             
                         }, label: {
                             Text("Request Testnet Faucet")

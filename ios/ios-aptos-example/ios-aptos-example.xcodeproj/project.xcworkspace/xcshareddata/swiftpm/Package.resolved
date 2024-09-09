@@ -1,13 +1,13 @@
 {
-  "originHash" : "03da4cfa3c7e05349f3b3541f73bf56847f6351d236935a7aa254ffccbcde798",
+  "originHash" : "c5d16b0968e4fbe28d85effde140f5fd8b458629cafc7911d79915d17535e9c2",
   "pins" : [
     {
-      "identity" : "aptoskit",
+      "identity" : "aptos-swift-sdk",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/OpenDive/AptosKit",
+      "location" : "https://github.com/ALCOVE-LAB/aptos-swift-sdk.git",
       "state" : {
-        "revision" : "307c6b3e71dfbac72818964c45b21a52aa67b13a",
-        "version" : "1.2.0"
+        "branch" : "main",
+        "revision" : "bf2aa0681ebb24f59ade2f6cf1f5fc6978eb86e8"
       }
     },
     {
@@ -38,21 +38,30 @@
       }
     },
     {
-      "identity" : "ed25519swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pebble8888/ed25519swift.git",
-      "state" : {
-        "revision" : "1e821f5516049f5b83aca8cb3b982910cf8c028c",
-        "version" : "1.2.8"
-      }
-    },
-    {
       "identity" : "keychain-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/evgenyneu/keychain-swift.git",
       "state" : {
         "revision" : "d108a1fa6189e661f91560548ef48651ed8d93b9",
         "version" : "20.0.0"
+      }
+    },
+    {
+      "identity" : "mnemonicswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Electric-Coin-Company/MnemonicSwift.git",
+      "state" : {
+        "revision" : "716a2c32ac2bbd8a1499ac834077df42b75edc85",
+        "version" : "2.2.4"
+      }
+    },
+    {
+      "identity" : "secp256k1.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GigaBitcoin/secp256k1.swift.git",
+      "state" : {
+        "revision" : "9683e8e311c76d8114cd308b697dad2f9fc58fed",
+        "version" : "0.17.0"
       }
     },
     {
@@ -65,21 +74,48 @@
       }
     },
     {
-      "identity" : "swiftyjson",
+      "identity" : "swift-collections",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SwiftyJSON/SwiftyJSON.git",
+      "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "2b6054efa051565954e1d2b9da831680026cd768",
-        "version" : "4.3.0"
+        "revision" : "9bf03ff58ce34478e66aaee630e491823326fd06",
+        "version" : "1.1.3"
       }
     },
     {
-      "identity" : "uint256",
+      "identity" : "swift-crypto",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hyugit/UInt256.git",
+      "location" : "https://github.com/apple/swift-crypto.git",
       "state" : {
-        "revision" : "1a499a1bf08afd10b9fcd0fd6d90b6dd9196be50",
-        "version" : "0.2.2"
+        "revision" : "60f13f60c4d093691934dc6cfdf5f508ada1f894",
+        "version" : "2.6.0"
+      }
+    },
+    {
+      "identity" : "swift-http-types",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-http-types.git",
+      "state" : {
+        "revision" : "ae67c8178eb46944fd85e4dc6dd970e1f3ed6ccd",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swift-openapi-runtime",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-openapi-runtime",
+      "state" : {
+        "revision" : "26e8ae3515d1ff3607e924ac96fc0094775f55e8",
+        "version" : "1.5.0"
+      }
+    },
+    {
+      "identity" : "swift-openapi-urlsession",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-openapi-urlsession.git",
+      "state" : {
+        "revision" : "9bf4c712ad7989d6a91dbe68748b8829a50837e4",
+        "version" : "1.0.2"
       }
     },
     {

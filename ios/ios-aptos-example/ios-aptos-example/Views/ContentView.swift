@@ -20,7 +20,7 @@ struct ContentView: View {
                   LoginView(viewModel: viewModel)
               }
           }.onAppear{
-              viewModel.initilize()
+              viewModel.initialize()
           }
       }
 }

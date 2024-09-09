@@ -20,8 +20,9 @@
 		280AFE1D2C00B3530007AA03 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280AFE1C2C00B3530007AA03 /* LoginView.swift */; };
 		280AFE1F2C00B35E0007AA03 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280AFE1E2C00B35E0007AA03 /* HomeView.swift */; };
 		280AFE232C00B47C0007AA03 /* AptosHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280AFE222C00B47C0007AA03 /* AptosHelper.swift */; };
-		280AFE262C00B4C20007AA03 /* AptosKit in Frameworks */ = {isa = PBXBuildFile; productRef = 280AFE252C00B4C20007AA03 /* AptosKit */; };
 		280AFE282C019E810007AA03 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280AFE272C019E810007AA03 /* Extension.swift */; };
+		A4DCEE712C8B36670048A663 /* Aptos in Frameworks */ = {isa = PBXBuildFile; productRef = A4DCEE702C8B36670048A663 /* Aptos */; };
+		A4DCEE732C8B36670048A663 /* BIP32 in Frameworks */ = {isa = PBXBuildFile; productRef = A4DCEE722C8B36670048A663 /* BIP32 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,8 +66,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4DCEE732C8B36670048A663 /* BIP32 in Frameworks */,
+				A4DCEE712C8B36670048A663 /* Aptos in Frameworks */,
 				280AFE142C00AF2C0007AA03 /* Web3Auth in Frameworks */,
-				280AFE262C00B4C20007AA03 /* AptosKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +96,7 @@
 				280AFDF82C00AEFE0007AA03 /* ios-aptos-exampleTests */,
 				280AFE022C00AEFE0007AA03 /* ios-aptos-exampleUITests */,
 				280AFDE62C00AEFC0007AA03 /* Products */,
+				A45EB4E82C8AEB21008CDCF8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -173,6 +176,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		A45EB4E82C8AEB21008CDCF8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -191,7 +201,8 @@
 			name = "ios-aptos-example";
 			packageProductDependencies = (
 				280AFE132C00AF2C0007AA03 /* Web3Auth */,
-				280AFE252C00B4C20007AA03 /* AptosKit */,
+				A4DCEE702C8B36670048A663 /* Aptos */,
+				A4DCEE722C8B36670048A663 /* BIP32 */,
 			);
 			productName = "ios-aptos-example";
 			productReference = 280AFDE52C00AEFC0007AA03 /* ios-aptos-example.app */;
@@ -267,7 +278,7 @@
 			mainGroup = 280AFDDC2C00AEFC0007AA03;
 			packageReferences = (
 				280AFE122C00AF2C0007AA03 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */,
-				280AFE242C00B4C20007AA03 /* XCRemoteSwiftPackageReference "AptosKit" */,
+				A4DCEE6F2C8B36670048A663 /* XCRemoteSwiftPackageReference "aptos-swift-sdk" */,
 			);
 			productRefGroup = 280AFDE62C00AEFC0007AA03 /* Products */;
 			projectDirPath = "";
@@ -658,12 +669,12 @@
 				minimumVersion = 9.0.0;
 			};
 		};
-		280AFE242C00B4C20007AA03 /* XCRemoteSwiftPackageReference "AptosKit" */ = {
+		A4DCEE6F2C8B36670048A663 /* XCRemoteSwiftPackageReference "aptos-swift-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/OpenDive/AptosKit";
+			repositoryURL = "https://github.com/ALCOVE-LAB/aptos-swift-sdk.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -674,10 +685,15 @@
 			package = 280AFE122C00AF2C0007AA03 /* XCRemoteSwiftPackageReference "web3auth-swift-sdk" */;
 			productName = Web3Auth;
 		};
-		280AFE252C00B4C20007AA03 /* AptosKit */ = {
+		A4DCEE702C8B36670048A663 /* Aptos */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 280AFE242C00B4C20007AA03 /* XCRemoteSwiftPackageReference "AptosKit" */;
-			productName = AptosKit;
+			package = A4DCEE6F2C8B36670048A663 /* XCRemoteSwiftPackageReference "aptos-swift-sdk" */;
+			productName = Aptos;
+		};
+		A4DCEE722C8B36670048A663 /* BIP32 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A4DCEE6F2C8B36670048A663 /* XCRemoteSwiftPackageReference "aptos-swift-sdk" */;
+			productName = BIP32;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

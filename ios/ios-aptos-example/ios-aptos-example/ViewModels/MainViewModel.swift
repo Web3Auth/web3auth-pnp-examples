@@ -36,21 +36,16 @@ class MainViewModel: ObservableObject {
                 // Step 1: Initialize Web3Auth
                 try await web3AuthHelper.initialize()
                 print("Web3Auth initialized successfully")
-            } catch let error {
-                print("Error initializing Web3Auth:", error.localizedDescription)
-                showAlert(content: "Error initializing Web3Auth: \(error.localizedDescription)")
-                return  // Exit early on failure
-            }
-            
-            print("Now, trying to initialize AptosHelper")
-            do {
+                
                 // Step 2: Retrieve Aptos private key and initialize AptosHelper
                 let privateKey = try web3AuthHelper.getAptosPrivateKey()
                 try await aptosHelper.initialize(privateKey: privateKey)
                 print("AptosHelper initialized successfully")
+                
             } catch let error {
-                print("Error initializing AptosHelper:", error.localizedDescription)
-                showAlert(content: "Error initializing AptosHelper: \(error.localizedDescription)")
+                // Handle errors from both Web3Auth and AptosHelper initialization
+                print("Error during initialization:", error.localizedDescription)
+                showAlert(content: "Error during initialization: \(error.localizedDescription)")
                 return  // Exit early on failure
             }
             

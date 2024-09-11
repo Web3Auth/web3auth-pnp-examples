@@ -1,3 +1,4 @@
+import { getPublicCompressed } from "@toruslabs/eccrypto";
 import type { IProvider } from "@web3auth/base";
 import { ContractFactory, ethers } from "ethers";
 
@@ -5,6 +6,20 @@ import { ContractFactory, ethers } from "ethers";
 import { IWalletProvider } from "./walletProvider";
 
 const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
+  const getPublicKey = async (): Promise<string> => {
+    try {
+      const privKey: string = await provider?.request({
+        method: "eth_private_key",
+      });
+      const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString("hex");
+
+      return pubkey;
+    } catch (error: any) {
+      uiConsole(error);
+      return error.toString();
+    }
+  };
+
   const getAddress = async (): Promise<string> => {
     try {
       const ethersProvider = new ethers.BrowserProvider(provider as any);
@@ -171,6 +186,7 @@ const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unk
     deployContract,
     readContract,
     writeContract,
+    getPublicKey,
   };
 };
 

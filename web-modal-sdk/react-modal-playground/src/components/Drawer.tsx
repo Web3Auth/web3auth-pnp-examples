@@ -77,7 +77,7 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
               {location.pathname === "/server-side-verification"
                 ? activePage("Server Side Verification", 4)
                 : linktoGo("Server Side Verification", goToServerSideVerification, 4)}
-              {isConnected && web3Auth.connectedAdapterName === WALLET_ADAPTERS.OPENLOGIN ? (
+              {isConnected && web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH ? (
                 <>
                   {linktoGo("WalletConnect Scanner", showWalletConnectScanner, 6)}
                   {linktoGo("Wallet UI", showWalletUI, 7)}

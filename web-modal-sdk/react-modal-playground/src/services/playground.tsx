@@ -1,5 +1,4 @@
-import { getPublicCompressed } from "@toruslabs/eccrypto";
-import { CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { ADAPTER_STATUS, CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import * as jose from "jose";
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
@@ -18,6 +17,7 @@ export interface IPlaygroundContext {
   playgroundConsole: string;
   connectedChain: CustomChainConfig;
   getUserInfo: () => Promise<any>;
+  getPublicKey: () => Promise<string>;
   getAddress: () => Promise<string>;
   getBalance: () => Promise<string>;
   getSignature: (message: string) => Promise<string>;
@@ -44,6 +44,7 @@ export const PlaygroundContext = createContext<IPlaygroundContext>({
   chainListOptionSelected: "ethereum",
   connectedChain: chain.ethereum,
   getUserInfo: async () => null,
+  getPublicKey: async () => "",
   getAddress: async () => "",
   getBalance: async () => "",
   getSignature: async () => "",
@@ -82,7 +83,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     console.log(...args);
   };
 
-  const { initModal, isConnected, connect, addAndSwitchChain, userInfo, provider, web3Auth, authenticateUser } = useWeb3Auth();
+  const { status, connect, addAndSwitchChain, userInfo, provider, web3Auth, authenticateUser } = useWeb3Auth();
   // const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
 
   const setNewWalletProvider = useCallback(
@@ -96,28 +97,12 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   );
 
   useEffect(() => {
-    async function init() {
-      try {
-        setIsLoading(true);
-        if (isConnected) setNewWalletProvider(provider);
-        else {
-          try {
-            await initModal();
-            connect();
-          } catch (error) {
-            uiConsole(error);
-          }
-        }
-      } catch (error) {
-        uiConsole(error);
-      } finally {
-        setIsLoading(false);
-      }
+    if (status === ADAPTER_STATUS.READY) {
+      connect();
+    } else if (status === ADAPTER_STATUS.CONNECTED) {
+      setNewWalletProvider(provider);
     }
-    if (web3Auth) {
-      init();
-    }
-  }, [web3Auth, isConnected, provider, connect, initModal, setNewWalletProvider]);
+  }, [web3Auth, status, provider, connect, setNewWalletProvider]);
 
   const getUserInfo = async () => {
     if (!web3Auth) {
@@ -126,6 +111,17 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     }
     uiConsole(userInfo);
     return userInfo;
+  };
+
+  const getPublicKey = async () => {
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
+      return "";
+    }
+
+    const publicKey = await walletProvider.getPublicKey();
+    uiConsole(publicKey);
+    return publicKey;
   };
 
   const getAddress = async () => {
@@ -248,12 +244,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
         return;
       }
       // ideally this should be done on the server side
-      if (web3Auth.connectedAdapterName === WALLET_ADAPTERS.OPENLOGIN) {
-        const privKey: string = await provider?.request({
-          method: "eth_private_key",
-        });
-        const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString("hex");
-
+      if (web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH) {
+        const pubkey = await getPublicKey();
         const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks"));
         const jwtDecoded = await jose.jwtVerify(idTokenInFrontend, jwks, {
           algorithms: ["ES256"],
@@ -350,6 +342,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     chainList,
     chainListOptionSelected,
     getUserInfo,
+    getPublicKey,
     getAddress,
     getBalance,
     getSignature,

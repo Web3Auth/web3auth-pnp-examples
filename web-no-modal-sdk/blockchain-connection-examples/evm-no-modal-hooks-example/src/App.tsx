@@ -1,0 +1,204 @@
+import { useEffect, useState } from "react";
+import { useWeb3Auth } from "@web3auth/no-modal-react-hooks";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import "./App.css";
+import RPC from "./web3RPC"; // for using web3.js
+import { AuthAdapter } from "@web3auth/auth-adapter";
+// import RPC from "./ethersRPC"; // for using ethers.js
+// import RPC from "./viemRPC"; // for using viem
+
+const newChain = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x89", // Polygon Mainnet
+  rpcTarget: "https://rpc.ankr.com/polygon",
+  displayName: "Polygon Mainnet",
+  blockExplorerUrl: "https://polygonscan.com",
+  ticker: "MATIC",
+  tickerName: "MATIC",
+  logo: "https://images.toruswallet.io/polygon.svg",
+};
+
+function App() {
+  const { connectTo, authenticateUser, enableMFA, logout, userInfo, isConnected, provider, isMFAEnabled, web3Auth } = useWeb3Auth();
+
+  const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(null);
+
+  useEffect(() => {
+    if (isMFAEnabled) {
+      setMFAHeader(
+        <div>
+          <h2>MFA is enabled</h2>
+        </div>
+      );
+    } else {
+      setMFAHeader(
+        <div>
+          <h2>MFA is disabled</h2>
+        </div>
+      );
+    }
+  }, [isMFAEnabled]);
+
+  const getChainId = async () => {
+    if (!provider) {
+      uiConsole("Provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const chainId = await rpc.getChainId();
+    uiConsole(chainId);
+  };
+
+  const getAccounts = async () => {
+    if (!provider) {
+      uiConsole("Provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const accounts = await rpc.getAccounts();
+    uiConsole(accounts);
+  };
+
+  const getBalance = async () => {
+    if (!provider) {
+      uiConsole("Provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const balance = await rpc.getBalance();
+    uiConsole(balance);
+  };
+
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("Provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const receipt = await rpc.sendTransaction();
+    uiConsole(receipt);
+  };
+
+  const signMessage = async () => {
+    if (!provider) {
+      uiConsole("Provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const signedMessage = await rpc.signMessage();
+    uiConsole(signedMessage);
+  };
+
+  const uiConsole = (...args: any[]): void => {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  };
+
+  const loggedInView = (
+    <>
+      <div className="flex-container">
+        <div>
+          <button onClick={() => uiConsole(userInfo)} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={async () => {
+              const { idToken } = await authenticateUser();
+              uiConsole(idToken);
+            }}
+            className="card"
+          >
+            Get ID Token
+          </button>
+        </div>
+        <div>
+          <button
+            disabled={isMFAEnabled}
+            onClick={() => {
+              enableMFA();
+            }}
+            className="card"
+          >
+            Enable MFA
+          </button>
+        </div>
+        <div>
+          <button onClick={getChainId} className="card">
+            Get Chain ID
+          </button>
+        </div>
+        <div>
+          <button onClick={getAccounts} className="card">
+            Get Accounts
+          </button>
+        </div>
+        <div>
+          <button onClick={getBalance} className="card">
+            Get Balance
+          </button>
+        </div>
+        <div>
+          <button onClick={signMessage} className="card">
+            Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={sendTransaction} className="card">
+            Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={() => logout()} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
+      <div id="console">
+        <p></p>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="container">
+      <h1 className="title">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
+          Web3Auth & React No-Modal Example
+        </a>
+      </h1>
+
+      <div className="container" style={{ textAlign: "center" }}>
+        {isConnected && MFAHeader}
+      </div>
+
+      <div className="grid">
+        {isConnected ? (
+          loggedInView
+        ) : (
+          <button
+            className="card"
+            onClick={() => {
+              connectTo(WALLET_ADAPTERS.AUTH, {
+                loginProvider: "google",
+              });
+            }}
+          >
+            Login
+          </button>
+        )}
+      </div>
+
+      <footer className="footer">
+        <a href="https://github.com/Web3Auth" target="_blank" rel="noopener noreferrer">
+          Source code
+        </a>
+      </footer>
+    </div>
+  );
+}
+
+export default App;

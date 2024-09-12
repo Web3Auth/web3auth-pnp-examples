@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
+import { AuthAdapter, AuthLoginParams } from "@web3auth/auth-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
@@ -29,6 +29,8 @@ function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
   const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
     const init = async () => {
@@ -43,7 +45,7 @@ function App() {
             appUrl: "https://web3auth.io",
             logoLight: "https://web3auth.io/images/web3authlog.png",
             logoDark: "https://web3auth.io/images/web3authlogodark.png",
-            defaultLanguage: "pt", // en, de, ja, ko, zh, es, fr, pt, nl
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             mode: "dark", // whether to enable dark mode. defaultValue: false
             theme: {
               primary: "#768729",
@@ -52,7 +54,7 @@ function App() {
           },
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
             mfaSettings: {
@@ -77,13 +79,30 @@ function App() {
                 mandatory: true,
               },
             },
+            loginConfig: {
+              google: {
+                verifier: "w3a-google-demo",
+                typeOfLogin: "google",
+                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
+              },
+              email_passwordless: {
+                verifier: "w3a-email_passwordless-demo",
+                typeOfLogin: "email_passwordless",
+                clientId,
+              },
+              sms_passwordless: {
+                verifier: "w3a-sms_passwordless-demo",
+                typeOfLogin: "sms_passwordless",
+                clientId,
+              },
+            },
           },
           loginSettings: {
             mfaLevel: "optional",
           },
           privateKeyProvider,
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
 
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d");
@@ -124,7 +143,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
@@ -135,35 +154,55 @@ function App() {
 
   const loginWithSMS = async () => {
     if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+      uiConsole("Web3Auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(WALLET_ADAPTERS.OPENLOGIN, {
-      loginProvider: "sms_passwordless",
-      extraLoginOptions: {
-        login_hint: "+65-XXXXXXX",
-      },
-    });
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
+
+    if (!phoneNumber.trim()) {
+      uiConsole("Please enter a valid phone number");
+      return;
+    }
+
+    try {
+      const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
+        loginProvider: "sms_passwordless",
+        extraLoginOptions: {
+          login_hint: phoneNumber.trim(),
+        },
+      });
+
+      setProvider(web3authProvider);
+      setLoggedIn(web3auth.connected);
+    } catch (error) {
+      console.error("SMS login failed:", error);
+      uiConsole("SMS login failed. Please try again.");
     }
   };
 
   const loginWithEmail = async () => {
     if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+      uiConsole("Web3Auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-      loginProvider: "email_passwordless",
-      extraLoginOptions: {
-        login_hint: "hello@web3auth.io",
-      },
-    });
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
+
+    if (!email.trim()) {
+      uiConsole("Please enter a valid email address");
+      return;
+    }
+
+    try {
+      const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
+        loginProvider: "email_passwordless",
+        extraLoginOptions: {
+          login_hint: email.trim(),
+        },
+      });
+
+      setProvider(web3authProvider);
+      setLoggedIn(web3auth.connected);
+    } catch (error) {
+      console.error("Email login failed:", error);
+      uiConsole("Email login failed. Please try again.");
     }
   };
 
@@ -172,7 +211,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
+    const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.WALLET_CONNECT_V2);
     setProvider(web3authProvider);
     if (web3auth.connected) {
       setLoggedIn(true);
@@ -407,20 +446,26 @@ function App() {
   );
 
   const unloggedInView = (
-    <>
+    <div className="login-container">
       <button onClick={login} className="card">
-        Login
+        Login with Google
       </button>
-      <button onClick={loginWithSMS} className="card">
-        SMS Login (e.g +cc-number)
-      </button>
-      <button onClick={loginWithEmail} className="card">
-        Email Login (e.g hello@web3auth.io)
-      </button>
+      <div className="input-button-group">
+        <input type="text" placeholder="+65-XXXXXXX" required onChange={(e) => setPhoneNumber(e.target.value)} />
+        <button onClick={loginWithSMS} className="card login-button">
+          SMS Login
+        </button>
+      </div>
+      <div className="input-button-group">
+        <input type="email" placeholder="username@email.io" required onChange={(e) => setEmail(e.target.value)} />
+        <button onClick={loginWithEmail} className="card login-button">
+          Email Login
+        </button>
+      </div>
       <button onClick={loginWCModal} className="card">
         Login with Wallet Connect v2
       </button>
-    </>
+    </div>
   );
 
   return (
@@ -429,7 +474,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>{" "}
-        & React Ethereum Example
+        No-Modal React Vite Ethereum Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import "./App.css";
 //import RPC from "./web3RPC"; // for using web3.js
 //import RPC from "./ethersRPC"; // for using ethers.js
@@ -49,13 +49,13 @@ function App() {
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
-            loginMethodsOrder: ["google", "github",  "twitter",  "farcaster", "discord", "twitch", "facebook", ],
+            loginMethodsOrder: ["google", "github", "twitter", "farcaster", "discord", "twitch", "facebook",],
           },
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           privateKeyProvider: privateKeyProvider,
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const openloginAdapter = new AuthAdapter({
           loginSettings: {
             mfaLevel: "optional",
           },
@@ -155,11 +155,11 @@ function App() {
         setWeb3auth(web3auth);
 
         // await web3auth.initModal();
-
+        
         await web3auth.initModal({
           modalConfig: {
-            [WALLET_ADAPTERS.OPENLOGIN]: {
-              label: "openlogin",
+            [WALLET_ADAPTERS.AUTH]: {
+              label: "Auth Adapter",
               loginMethods: {
                 // Disable the following login methods
                 apple: {

@@ -79,25 +79,6 @@ function App() {
                 mandatory: true,
               },
             },
-            loginConfig: {
-              google: {
-                verifier: "w3a-google-email-passwordless-demo",
-                verifierSubIdentifier: "w3a-google",
-                typeOfLogin: "google",
-                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
-              },
-              email_passwordless: {
-                verifier: "w3a-google-email-passwordless-demo",
-                verifierSubIdentifier: "w3a-email-passwordless",
-                typeOfLogin: "email_passwordless",
-                clientId,
-              },
-              sms_passwordless: {
-                verifier: "w3a-sms-passwordless-demo",
-                typeOfLogin: "sms_passwordless",
-                clientId,
-              },
-            },
           },
           loginSettings: {
             mfaLevel: "optional",

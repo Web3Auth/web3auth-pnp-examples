@@ -3,9 +3,6 @@ import { useWeb3Auth } from "@web3auth/no-modal-react-hooks";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
-import { AuthAdapter } from "@web3auth/auth-adapter";
-// import RPC from "./ethersRPC"; // for using ethers.js
-// import RPC from "./viemRPC"; // for using viem
 
 const newChain = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -19,23 +16,15 @@ const newChain = {
 };
 
 function App() {
-  const { connectTo, authenticateUser, enableMFA, logout, userInfo, isConnected, provider, isMFAEnabled, web3Auth } = useWeb3Auth();
+  const { connectTo, authenticateUser, enableMFA, logout, userInfo, provider, isMFAEnabled, web3Auth, status, addAndSwitchChain } = useWeb3Auth();
 
   const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(null);
 
   useEffect(() => {
     if (isMFAEnabled) {
-      setMFAHeader(
-        <div>
-          <h2>MFA is enabled</h2>
-        </div>
-      );
+      setMFAHeader(<h2 style={{ color: "green" }}>MFA is enabled</h2>);
     } else {
-      setMFAHeader(
-        <div>
-          <h2>MFA is disabled</h2>
-        </div>
-      );
+      setMFAHeader(<h2 style={{ color: "red" }}>MFA is disabled</h2>);
     }
   }, [isMFAEnabled]);
 
@@ -132,6 +121,16 @@ function App() {
           </button>
         </div>
         <div>
+          <button
+            onClick={() => {
+              addAndSwitchChain(newChain);
+            }}
+            className="card"
+          >
+            Add & Switch Chain
+          </button>
+        </div>
+        <div>
           <button onClick={getAccounts} className="card">
             Get Accounts
           </button>
@@ -172,11 +171,12 @@ function App() {
       </h1>
 
       <div className="container" style={{ textAlign: "center" }}>
-        {isConnected && MFAHeader}
+        {MFAHeader}
+        <h2>Web3Auth Status: {status}</h2> {/* Added the status header */}
       </div>
 
       <div className="grid">
-        {isConnected ? (
+        {status === "connected" ? (
           loggedInView
         ) : (
           <button

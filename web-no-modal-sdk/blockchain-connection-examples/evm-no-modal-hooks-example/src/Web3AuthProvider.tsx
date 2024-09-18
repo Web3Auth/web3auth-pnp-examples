@@ -56,13 +56,13 @@ const authAdapter = new AuthAdapter({
 
 const walletServicesPlugin = new WalletServicesPlugin({
   wsEmbedOpts: {},
-  walletInitOptions: { whiteLabel: { showWidgetButton: true } },
+  walletInitOptions: { whiteLabel: { showWidgetButton: true }, confirmationStrategy: "modal" },
 });
 
 const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
 export const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions,
-  adapters: [authAdapter],
+  adapters: [authAdapter, ...adapters],
   plugins: [walletServicesPlugin],
 };

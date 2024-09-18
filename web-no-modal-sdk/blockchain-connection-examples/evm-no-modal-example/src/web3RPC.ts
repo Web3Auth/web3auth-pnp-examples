@@ -26,7 +26,7 @@ export default class EthereumRpc {
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
-      const address = (await web3.eth.getAccounts());
+      const address = await web3.eth.getAccounts();
 
       return address;
     } catch (error) {
@@ -68,10 +68,10 @@ export default class EthereumRpc {
         to: destination,
         data: "0x",
         value: amount,
-      }
+      };
 
       // calculate gas transaction before sending
-      transaction = { ...transaction, gas: await web3.eth.estimateGas(transaction)} as any;
+      transaction = { ...transaction, gas: await web3.eth.estimateGas(transaction) } as any;
 
       // Submit transaction to the blockchain and wait for it to be mined
       const receipt = await web3.eth.sendTransaction(transaction);
@@ -112,17 +112,17 @@ export default class EthereumRpc {
 
       return privateKey;
     } catch (error) {
-      return error as string;
+      return (error as any).message;
     }
   }
 
-
   toStringJson(data: any) {
     // can't serialize a BigInt, so this hack
-    return JSON.parse(JSON.stringify(data, (key, value) =>
-        typeof value === 'bigint'
-            ? value.toString()
-            : value // return everything else unchanged
-    ));
+    return JSON.parse(
+      JSON.stringify(
+        data,
+        (key, value) => (typeof value === "bigint" ? value.toString() : value) // return everything else unchanged
+      )
+    );
   }
 }

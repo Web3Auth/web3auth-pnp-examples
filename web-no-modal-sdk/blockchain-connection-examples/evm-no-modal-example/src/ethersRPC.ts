@@ -131,7 +131,7 @@ export default class EthereumRpc {
 
       return privateKey;
     } catch (error) {
-      return error as string;
+      return (error as any).message;
     }
   }
 

@@ -7,7 +7,7 @@ import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wa
 import { WalletConnectModal } from "@walletconnect/modal";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
+import RPC from "./viemRPC"; // for using viem
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -41,7 +41,7 @@ function App() {
             appUrl: "https://web3auth.io",
             logoLight: "https://web3auth.io/images/web3authlog.png",
             logoDark: "https://web3auth.io/images/web3authlogodark.png",
-            defaultLanguage: "pt", // en, de, ja, ko, zh, es, fr, pt, nl
+            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             mode: "dark", // whether to enable dark mode. defaultValue: false
             theme: {
               primary: "#768729",
@@ -97,7 +97,7 @@ function App() {
 
         const walletServicesPluginInstance = new WalletServicesPlugin({
           wsEmbedOpts: {},
-          walletInitOptions: { whiteLabel: { showWidgetButton: true } },
+          walletInitOptions: { whiteLabel: { showWidgetButton: true }, confirmationStrategy: "modal" },
         });
 
         setWalletServicesPlugin(walletServicesPluginInstance);
@@ -107,6 +107,7 @@ function App() {
         setWeb3Auth(web3auth);
         await web3auth.init();
         setProvider(web3auth.provider);
+
         if (web3auth.connected) {
           setLoggedIn(true);
         }
@@ -118,12 +119,25 @@ function App() {
     init();
   }, []);
 
+  const enableMFA = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    try {
+      await web3auth.enableMFA();
+      uiConsole("MFA enabled");
+    } catch (error) {
+      uiConsole(error);
+    }
+  };
+
   const login = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+    const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
@@ -155,9 +169,14 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    await web3auth.logout();
-    setProvider(null);
-    setLoggedIn(false);
+    try {
+      await web3auth.logout();
+      setProvider(null);
+      setLoggedIn(false);
+      uiConsole("Logged out successfully.");
+    } catch (error) {
+      uiConsole(error);
+    }
   };
 
   const getChainId = async () => {
@@ -238,6 +257,88 @@ function App() {
     uiConsole(signedMessage);
   };
 
+  const signTypedDataMessage = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const signedMessage = await rpc.signTypedDataMessage();
+    uiConsole(signedMessage);
+  };
+
+  const signTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const signature = await rpc.signTransaction();
+    uiConsole(signature);
+  };
+
+  const deployContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const message = await rpc.deployContract();
+    uiConsole(message);
+  };
+
+  const readContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const message = await rpc.readContract();
+    uiConsole(message);
+  };
+
+  const writeContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const receipt = await rpc.writeContract();
+    uiConsole(receipt);
+    if (receipt) {
+      setTimeout(async () => {
+        await readContract();
+      }, 10000);
+    }
+  };
+
+  const showCheckout = async () => {
+    if (!walletServicesPlugin) {
+      uiConsole("walletServicesPlugin not initialized yet");
+      return;
+    }
+    const checkout = await walletServicesPlugin.showCheckout();
+    uiConsole(checkout);
+  };
+
+  const showWalletUI = async () => {
+    if (!walletServicesPlugin) {
+      uiConsole("walletServicesPlugin not initialized yet");
+      return;
+    }
+    const walletUI = await walletServicesPlugin.showWalletUi();
+    uiConsole(walletUI);
+  };
+
+  const showWalletConnectScanner = async () => {
+    if (!walletServicesPlugin) {
+      uiConsole("walletServicesPlugin not initialized yet");
+      return;
+    }
+    const walletConnectScanner = await walletServicesPlugin.showWalletConnectScanner();
+    uiConsole(walletConnectScanner);
+  };
+
   const getPrivateKey = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -269,6 +370,26 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={enableMFA} className="card">
+            Enable MFA
+          </button>
+        </div>
+        <div>
+          <button onClick={showWalletUI} className="card">
+            Show Wallet UI
+          </button>
+        </div>
+        <div>
+          <button onClick={showCheckout} className="card">
+            Show Checkout
+          </button>
+        </div>
+        <div>
+          <button onClick={showWalletConnectScanner} className="card">
+            Show WalletConnect Scanner
+          </button>
+        </div>
+        <div>
           <button onClick={getChainId} className="card">
             Get Chain ID
           </button>
@@ -296,6 +417,31 @@ function App() {
         <div>
           <button onClick={signMessage} className="card">
             Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={signTypedDataMessage} className="card">
+            Sign Typed Data Message
+          </button>
+        </div>
+        <div>
+          <button onClick={signTransaction} className="card">
+            Sign Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={deployContract} className="card">
+            Deploy Contract
+          </button>
+        </div>
+        <div>
+          <button onClick={readContract} className="card">
+            Read Contract
+          </button>
+        </div>
+        <div>
+          <button onClick={writeContract} className="card">
+            Write Contract
           </button>
         </div>
         <div>
@@ -336,6 +482,10 @@ function App() {
         </a>{" "}
         & React Ethereum Example
       </h1>
+
+      <div className="container" style={{ textAlign: "center" }}>
+        <h2 style={{ color: web3auth?.status === "connected" ? "green" : "red" }}>Web3Auth Status: {web3auth?.status ?? "Not initialized"}</h2>
+      </div>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 

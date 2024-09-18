@@ -81,17 +81,19 @@ function App() {
             },
             loginConfig: {
               google: {
-                verifier: "w3a-google-demo",
+                verifier: "w3a-google-email-passwordless-demo",
+                verifierSubIdentifier: "w3a-google",
                 typeOfLogin: "google",
                 clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
               },
               email_passwordless: {
-                verifier: "w3a-email_passwordless-demo",
+                verifier: "w3a-google-email-passwordless-demo",
+                verifierSubIdentifier: "w3a-email-passwordless",
                 typeOfLogin: "email_passwordless",
                 clientId,
               },
               sms_passwordless: {
-                verifier: "w3a-sms_passwordless-demo",
+                verifier: "w3a-sms-passwordless-demo",
                 typeOfLogin: "sms_passwordless",
                 clientId,
               },

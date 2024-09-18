@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@ethsign/sp-sdk": "^0.7.1",
-    "@web3auth/base": "^9.0.0-alpha.6",
-    "@web3auth/ethereum-provider": "^9.0.0-alpha.6",
-    "@web3auth/modal": "^9.0.0-alpha.6",
+    "@web3auth/base": "^9.0.0-alpha.7",
+    "@web3auth/ethereum-provider": "^9.0.0-alpha.7",
+    "@web3auth/modal": "^9.0.0-alpha.7",
     "axios": "^1.7.5",
     "empty-module": "^0.0.2",
     "react": "^18.3.1",

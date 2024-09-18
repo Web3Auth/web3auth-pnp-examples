@@ -9,15 +9,17 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject var viewModel: MainViewModel
+    @State private var email: String = ""
     
     var body: some View {
         VStack(spacing: 16) {
             Spacer()
-            Text("Web3Auth iOS Aptos Sample").font(.title).multilineTextAlignment(.center)
+            Text("Web3Auth iOS Aptos Sample").font(.title).multilineTextAlignment(.center).padding()
+            TextField("Enter your email", text: $email).textFieldStyle(.roundedBorder).padding()
             Button(action: {
-                viewModel.login()
+                viewModel.login(email: email)
             }, label: {
-                Text("Sign in with Google")
+                Text("Sign in with Email Passwordless")
             }).buttonStyle(.bordered)
             Spacer()
         }.padding(.all, 8).alert(isPresented: Binding<Bool>(

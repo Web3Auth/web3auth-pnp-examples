@@ -165,17 +165,32 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={showWalletUI} className="card">
+          <button
+            onClick={() => {
+              showWalletUI();
+            }}
+            className="card"
+          >
             Show Wallet UI
           </button>
         </div>
         <div>
-          <button onClick={showWalletConnectScanner} className="card">
+          <button
+            onClick={() => {
+              showWalletConnectScanner();
+            }}
+            className="card"
+          >
             Show Wallet Connect
           </button>
         </div>
         <div>
-          <button onClick={showCheckout} className="card">
+          <button
+            onClick={() => {
+              showCheckout();
+            }}
+            className="card"
+          >
             Show Checkout
           </button>
         </div>

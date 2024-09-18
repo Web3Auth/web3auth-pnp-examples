@@ -63,6 +63,21 @@ class AptosHelper {
     /// Fetches the balance of AptosCoin for the current account.
     /// - Returns: The account balance as a string.
     func getBalance() async throws -> String {
+        let payload = InputViewFunctionData(
+            function: "0x1::account::exists_at",
+            functionArguments: [
+                account.accountAddress
+            ]
+        )
+        
+        let exists: Bool = try await aptosClient.general.view(payload: payload)[0]
+        
+        // Return 0, if account doesn't exist
+        if !exists {
+            return "0"
+        }
+        
+        
         let aptosCoinResource = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>"
         
         do {
@@ -75,7 +90,7 @@ class AptosHelper {
             let balanceValue = formatBalanceToString(atomicBalanceString: atomicBalance)
             print("Balance for account \(account.accountAddress.toString()): \(balanceValue)")
             return balanceValue
-        } catch {
+        } catch let error {
             throw NSError(domain: "AptosHelper", code: 4, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch balance: \(error.localizedDescription)"])
         }
     }

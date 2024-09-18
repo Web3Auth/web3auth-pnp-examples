@@ -38,9 +38,7 @@ class MainViewModel: ObservableObject {
                 print("Web3Auth initialized successfully")
                 
                 // Step 2: Retrieve Aptos private key and initialize AptosHelper
-                let privateKey = try web3AuthHelper.getAptosPrivateKey()
-                try await aptosHelper.initialize(privateKey: privateKey)
-                print("AptosHelper initialized successfully")
+                try await initializeAptosHelper()
                 
             } catch let error {
                 // Handle errors from both Web3Auth and AptosHelper initialization
@@ -60,6 +58,12 @@ class MainViewModel: ObservableObject {
                 self.loadAccount(showLoader: true)
             }
         }
+    }
+    
+    func initializeAptosHelper() async throws {
+        let privateKey = try web3AuthHelper.getAptosPrivateKey()
+        try await aptosHelper.initialize(privateKey: privateKey)
+        print("AptosHelper initialized successfully")
     }
     
     /// Retrieves the Aptos private key from Web3Auth.
@@ -204,6 +208,7 @@ class MainViewModel: ObservableObject {
             do {
                 print("Attempting login for email:", email)
                 try await web3AuthHelper.login(email: email)
+                try await initializeAptosHelper()
                 DispatchQueue.main.async {
                     self.isUserAuthenticated = true
                     print("Login successful. User authenticated.")

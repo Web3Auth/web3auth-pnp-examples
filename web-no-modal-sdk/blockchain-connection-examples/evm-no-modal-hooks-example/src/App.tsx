@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/no-modal-react-hooks";
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
@@ -18,8 +19,12 @@ const newChain = {
 function App() {
   const { connectTo, authenticateUser, enableMFA, logout, userInfo, provider, isMFAEnabled, web3Auth, status, addAndSwitchChain } = useWeb3Auth();
 
-  const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(null);
+  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
 
+  const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(null);
+  const [pluginStatus, setPluginStatus] = useState<string>("disconnected");
+
+  // Update MFA status header
   useEffect(() => {
     if (isMFAEnabled) {
       setMFAHeader(<h2 style={{ color: "green" }}>MFA is enabled</h2>);
@@ -27,6 +32,15 @@ function App() {
       setMFAHeader(<h2 style={{ color: "red" }}>MFA is disabled</h2>);
     }
   }, [isMFAEnabled]);
+
+  // Update Plugin Status
+  useEffect(() => {
+    if (isPluginConnected) {
+      setPluginStatus("connected");
+    } else {
+      setPluginStatus("disconnected");
+    }
+  }, [isPluginConnected]);
 
   const getChainId = async () => {
     if (!provider) {
@@ -151,6 +165,21 @@ function App() {
           </button>
         </div>
         <div>
+          <button onClick={showWalletUI} className="card">
+            Show Wallet UI
+          </button>
+        </div>
+        <div>
+          <button onClick={showWalletConnectScanner} className="card">
+            Show Wallet Connect
+          </button>
+        </div>
+        <div>
+          <button onClick={showCheckout} className="card">
+            Show Checkout
+          </button>
+        </div>
+        <div>
           <button onClick={() => logout()} className="card">
             Log Out
           </button>
@@ -166,13 +195,14 @@ function App() {
     <div className="container">
       <h1 className="title">
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
-          Web3Auth & React No-Modal Example
+          Web3Auth & React No-Modal Hooks Example
         </a>
       </h1>
 
       <div className="container" style={{ textAlign: "center" }}>
         {MFAHeader}
-        <h2>Web3Auth Status: {status}</h2> {/* Added the status header */}
+        <h2>Web3Auth Status: {status}</h2>
+        <h2>Wallet Services Plugin Status: {pluginStatus}</h2> {/* Plugin status added here */}
       </div>
 
       <div className="grid">

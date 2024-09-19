@@ -262,6 +262,16 @@ export const Playground = ({ children }: IPlaygroundProps) => {
             "Parsed Id Token: ",
             await parseToken(idTokenInFrontend)
           );
+        } else {
+          uiConsole(
+            "Validation Failed!",
+            "Public Key from Provider: ",
+            pubkey,
+            "Public Key from decoded JWT: ",
+            pubKeyFromIdToken,
+            "Parsed Id Token: ",
+            await parseToken(idTokenInFrontend)
+          );
         }
       } else {
         const jwks = jose.createRemoteJWKSet(new URL("https://authjs.web3auth.io/jwks"));

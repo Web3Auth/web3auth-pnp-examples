@@ -1,4 +1,3 @@
-import { getPublicCompressed } from "@toruslabs/eccrypto";
 import type { IProvider } from "@web3auth/base";
 import { ContractFactory, ethers } from "ethers";
 
@@ -8,12 +7,9 @@ import { IWalletProvider } from "./walletProvider";
 const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
   const getPublicKey = async (): Promise<string> => {
     try {
-      const privKey: string = await provider?.request({
-        method: "eth_private_key",
-      });
-      const pubkey = getPublicCompressed(Buffer.from(privKey, "hex")).toString("hex");
-
-      return pubkey;
+      const pubKey: string = await provider.request({ method: "public_key" });
+      // Remove 0x and return the compressed public key
+      return pubKey.slice(2) as string;
     } catch (error: any) {
       uiConsole(error);
       return error.toString();

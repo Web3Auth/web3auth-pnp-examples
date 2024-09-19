@@ -59,7 +59,7 @@ function App() {
           privateKeyProvider: xrplProvider,
         });
 
-        const openloginAdapter = new AuthAdapter({
+        const authAdapter = new AuthAdapter({
           loginSettings: {
             mfaLevel: "optional",
           },
@@ -88,7 +88,7 @@ function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
 
         setWeb3auth(web3auth);
 

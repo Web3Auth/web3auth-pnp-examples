@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
+import { AuthAdapter, OpenloginLoginParams } from "@web3auth/auth-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
@@ -52,7 +52,7 @@ function App() {
           },
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
             mfaSettings: {
@@ -83,7 +83,7 @@ function App() {
           },
           privateKeyProvider,
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
 
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d");
@@ -124,7 +124,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
@@ -138,7 +138,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(WALLET_ADAPTERS.AUTH, {
       loginProvider: "sms_passwordless",
       extraLoginOptions: {
         login_hint: "+65-XXXXXXX",
@@ -155,7 +155,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "email_passwordless",
       extraLoginOptions: {
         login_hint: "hello@web3auth.io",

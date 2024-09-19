@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { initializeApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
@@ -52,7 +52,7 @@ function App() {
           privateKeyProvider,
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
             loginConfig: {
@@ -70,7 +70,7 @@ function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
         setWeb3auth(web3auth);
 
         await web3auth.init();
@@ -92,7 +92,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     console.log("web3authProvider", web3authProvider);
@@ -118,7 +118,7 @@ function App() {
     const idToken = await loginRes.user.getIdToken(true);
     console.log("idToken", idToken);
 
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "firebaseGithub",
       extraLoginOptions: {
         id_token: idToken,

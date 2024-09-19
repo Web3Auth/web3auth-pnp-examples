@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
@@ -45,8 +45,8 @@ const web3auth = new Web3AuthNoModal({
   privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter();
-web3auth.configureAdapter(openloginAdapter);
+const authAdapter = new AuthAdapter();
+web3auth.configureAdapter(authAdapter);
 // IMP END - SDK Initialization
 
 function App() {
@@ -74,7 +74,7 @@ function App() {
 
   const login = async () => {
     // IMP START - Login
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     // IMP END - Login

@@ -45,7 +45,7 @@ const web3AuthOptions: Web3AuthOptions = {
   // useCoreKitKey: true,
 };
 
-const openloginAdapter = new AuthAdapter({
+const authAdapter = new AuthAdapter({
   loginSettings: {
     mfaLevel: "optional",
   },
@@ -89,6 +89,6 @@ const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
 export const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions,
-  adapters: [openloginAdapter, ...adapters],
+  adapters: [authAdapter, ...adapters],
   plugins: [walletServicesPlugin],
 };

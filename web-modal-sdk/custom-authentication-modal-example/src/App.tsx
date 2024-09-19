@@ -55,7 +55,7 @@ function App() {
           privateKeyProvider: privateKeyProvider,
         });
 
-        const openloginAdapter = new AuthAdapter({
+        const authAdapter = new AuthAdapter({
           loginSettings: {
             mfaLevel: "optional",
           },
@@ -136,7 +136,7 @@ function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
 
         // plugins and adapters are optional and can be added as per your requirement
         // read more about plugins here: https://web3auth.io/docs/sdk/web/plugins/

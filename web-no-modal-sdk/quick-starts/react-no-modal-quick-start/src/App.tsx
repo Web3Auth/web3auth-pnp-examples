@@ -5,8 +5,7 @@ import "./App.css";
 import { CHAIN_NAMESPACES, IAdapter, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions,  } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { AuthAdapter, AuthLoginParams } from "@web3auth/auth-adapter";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -49,13 +48,6 @@ const authadapter = new AuthAdapter();
 web3auth.configureAdapter(authadapter);
 // IMP END - SDK Initialization
 
-// IMP START - Configuring External Wallets
-const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-adapters.forEach((adapter: IAdapter<unknown>) => {
-  web3auth.configureAdapter(adapter);
-});
-// IMP END - Configuring External Wallets
-
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -79,17 +71,12 @@ function App() {
     init();
   }, []);
 
-  const login = async (adapter: string, loginProvider?: string) => {
+  const login = async () => {
     var web3authProvider = null;
-
     // IMP START - Login
-    if (loginProvider) {
-      web3authProvider = await web3auth.connectTo(adapter, {
-        loginProvider,
-      });
-    } else {
-      web3authProvider = await web3auth.connectTo(adapter);
-    }
+    web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+      loginProvider: "google",
+    });
     // IMP END - Login
     setProvider(web3authProvider);
     if (web3auth.connected) {
@@ -201,14 +188,9 @@ function App() {
 
   const unloggedInView = (
     <div className="flex-container">
-      <button onClick={() => login(WALLET_ADAPTERS.AUTH, "google")} className="card">
+      <button onClick={login} className="card">
         Login with Google
       </button>
-      {/* // IMP START - Configuring External Wallets */}
-      {adapters.map(adapter => (<button key={adapter.name} onClick={() => login(adapter.name)} className="card">
-        Login with {adapter.name}
-      </button>))}
-      {/* // IMP END - Configuring External Wallets */}
     </div>
   );
 

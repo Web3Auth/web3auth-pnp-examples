@@ -11,7 +11,7 @@ let web3auth = null;
 
   // IMP START - Chain Config
   const chainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainNamespace: "eip155",
     chainId: "0xaa36a7",
     rpcTarget: "https://rpc.ankr.com/eth_sepolia",
     // Avoid using public rpcTarget in production.
@@ -33,8 +33,8 @@ let web3auth = null;
     web3AuthNetwork: "sapphire_mainnet",
   });
 
-  const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter();
-  web3auth.configureAdapter(openloginAdapter);
+  const authAdapter = new window.AuthAdapter.AuthAdapter();
+  web3auth.configureAdapter(authAdapter);
 
   await web3auth.init();
   // IMP END - SDK Initialization
@@ -51,9 +51,10 @@ let web3auth = null;
 $("#login").click(async function (event) {
   try {
     // IMP START - Login
-    await web3auth.connectTo("openlogin", {
+    await web3auth.connectTo("auth", {
       loginProvider: "google",
-    }); // IMP END - Login
+    }); 
+    // IMP END - Login
     $(".btn-logged-out").hide();
     $(".btn-logged-in").show();
     uiConsole("Logged in Successfully!");

@@ -3,7 +3,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { auth } from "./FireBaseConfig";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { GoogleAuthProvider, TwitterAuthProvider, signInWithPopup } from "firebase/auth";
 
 import "./App.css";
@@ -39,7 +39,7 @@ function App() {
           privateKeyProvider,
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
             loginConfig: {
@@ -51,7 +51,7 @@ function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
         setWeb3auth(web3auth);
 
         await web3auth.init();
@@ -74,7 +74,7 @@ function App() {
       const idToken = await loginRes.user.getIdToken(true);
       console.log("idToken", idToken);
 
-      await web3auth?.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      await web3auth?.connectTo(WALLET_ADAPTERS.AUTH, {
         loginProvider: "jwt",
         extraLoginOptions: {
           id_token: idToken,
@@ -100,7 +100,7 @@ function App() {
       const idToken = await loginRes.user.getIdToken(true);
       console.log("idToken", idToken);
 
-      await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
         loginProvider: "jwt",
         extraLoginOptions: {
           id_token: idToken,
@@ -124,7 +124,7 @@ function App() {
   //   const idToken = await loginRes.user.getIdToken(true);
   //   console.log("idToken", idToken);
 
-  //   const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  //   const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   //     loginProvider: "jwt",
   //     extraLoginOptions: {
   //       id_token: idToken,

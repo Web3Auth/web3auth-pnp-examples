@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, CustomChainConfig } from "@web3auth/base";
-import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
+import { AuthAdapter, OpenloginLoginParams } from "@web3auth/auth-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
@@ -58,12 +58,12 @@ function App() {
       privateKeyProvider,
     });
 
-    const openloginAdapter = new OpenloginAdapter({
+    const authAdapter = new AuthAdapter({
       adapterSettings: {
         uxMode: "redirect",
       }
     });
-    web3auth.configureAdapter(openloginAdapter);
+    web3auth.configureAdapter(authAdapter);
 
     const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x2b6653dc", "0x94a9059e"], projectId);
     const walletConnectModal = new WalletConnectModal({ projectId });
@@ -99,7 +99,7 @@ function App() {
       return uiConsole("web3auth not initialized yet");
     }
     try {
-      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
         loginProvider: "google",
       });
       setProvider(web3authProvider);
@@ -118,7 +118,7 @@ function App() {
       return uiConsole("web3auth not initialized yet");
     }
     try {
-      const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(WALLET_ADAPTERS.OPENLOGIN, {
+      const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(WALLET_ADAPTERS.AUTH, {
         loginProvider,
         extraLoginOptions: { login_hint: loginHint },
       });

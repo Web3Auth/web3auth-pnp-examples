@@ -49,7 +49,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   web3AuthInstance.addPlugin(walletServicesPlugin);
 
   const modalConfig = {
-    [WALLET_ADAPTERS.OPENLOGIN]: {
+    [WALLET_ADAPTERS.AUTH]: {
       label: "openlogin",
       loginMethods: {
         facebook: {

@@ -155,7 +155,7 @@ function App() {
         setWeb3auth(web3auth);
 
         // await web3auth.initModal();
-        
+
         await web3auth.initModal({
           modalConfig: {
             [WALLET_ADAPTERS.AUTH]: {

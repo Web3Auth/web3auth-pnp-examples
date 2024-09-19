@@ -248,7 +248,7 @@ function App() {
             onClick={() => {
               if (isPluginConnected) {
                 showCheckout({
-                  
+
                   show: true,
                 });
               }

@@ -52,15 +52,15 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
     const signer = await ethersProvider.getSigner();
 
     const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
-
+    const fees = await ethersProvider.getFeeData()
     const amount = ethers.parseEther("0.001");
 
     // Submit transaction to the blockchain
     const tx = await signer.sendTransaction({
       to: destination,
       value: amount,
-      maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
-      maxFeePerGas: "6000000000000", // Max fee per gas
+      maxPriorityFeePerGas: fees.maxPriorityFeePerGas, // Max priority fee per gas
+      maxFeePerGas: fees.maxFeePerGas, // Max fee per gas
     });
 
     // Wait for transaction to be mined
@@ -92,4 +92,4 @@ const signMessage = async (provider: IProvider): Promise<any> => {
   }
 }
 
-export default {getChainId, getAccounts, getBalance, sendTransaction, signMessage};
+export default { getChainId, getAccounts, getBalance, sendTransaction, signMessage };

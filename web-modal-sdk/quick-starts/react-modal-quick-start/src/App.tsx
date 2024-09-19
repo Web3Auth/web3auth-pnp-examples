@@ -3,10 +3,10 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
-import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-evm-adapter";
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -49,7 +49,7 @@ const web3auth = new Web3Auth(web3AuthOptions);
 // IMP END - SDK Initialization
 
 // IMP START - Configuring External Wallets
-const adapters = await getInjectedAdapters({ options: web3AuthOptions });
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 adapters.forEach((adapter: IAdapter<unknown>) => {
   web3auth.configureAdapter(adapter);
 });

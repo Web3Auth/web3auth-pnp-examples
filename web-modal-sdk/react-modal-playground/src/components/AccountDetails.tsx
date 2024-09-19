@@ -1,4 +1,4 @@
-import { CustomChainConfig } from "@web3auth/base";
+import { CustomChainConfig, WALLET_ADAPTERS } from "@web3auth/base";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import React, { JSX, useEffect, useState } from "react";
 
@@ -66,13 +66,13 @@ function AccountDetails({ children }: AccountDetailsProps) {
               {userInfo?.name.charAt(0).toUpperCase()}
             </span>
           )}
-          {!(userInfo?.profileImage && userInfo?.name) && (
+          {!(userInfo?.profileImage || userInfo?.name) && (
             <span className="flex justify-center items-center bg-purple-100 font-bold w-24 h-24 rounded-lg text-[80px] text-purple-800">
               {web3Auth.connectedAdapterName.charAt(0).toUpperCase()}
             </span>
           )}
           <div className="space-y-2 md:space-y-0 md:pl-8 flex flex-col justify-between">
-            {isConnected && web3Auth.connectedAdapterName === "OPENLOGIN" ? (
+            {isConnected && web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH ? (
               <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{userInfo?.name}</span>
             ) : (
               <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{`Connected to ${web3Auth.connectedAdapterName[0].toUpperCase()}${web3Auth.connectedAdapterName.slice(1).replace(/-/g, " ")}`}</span>
@@ -99,7 +99,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
             </div>
           </div>
         </div>
-        {isConnected && web3Auth.connectedAdapterName === "OPENLOGIN" && (
+        {isConnected && web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH && (
           <button className="w-full p-4 text-sm border-gray-200 rounded-lg shadow-sm" onClick={getUserInfo}>
             View User Info in Console
           </button>

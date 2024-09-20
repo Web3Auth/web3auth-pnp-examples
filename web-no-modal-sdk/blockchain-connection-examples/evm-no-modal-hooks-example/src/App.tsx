@@ -120,7 +120,6 @@ function App() {
         </div>
         <div>
           <button
-            disabled={isMFAEnabled}
             onClick={() => {
               enableMFA();
             }}

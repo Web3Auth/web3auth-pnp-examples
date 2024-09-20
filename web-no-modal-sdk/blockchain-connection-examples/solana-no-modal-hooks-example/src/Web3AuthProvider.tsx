@@ -1,22 +1,19 @@
-import { Web3AuthContextConfig } from "@web3auth/no-modal-react-hooks";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, Web3AuthNoModalOptions, UX_MODE } from "@web3auth/base";
 import { AuthAdapter, AuthAdapterOptions } from "@web3auth/auth-adapter";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter";
 const chainConfig = {
-  chainId: "0xaa36a7", // for wallet connect make sure to pass in this chain in the loginSettings of the adapter.
-  displayName: "Ethereum Sepolia",
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  tickerName: "Ethereum Sepolia",
-  ticker: "ETH",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+  chainNamespace: CHAIN_NAMESPACES.SOLANA,
+  chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://api.devnet.solana.com",
+  displayName: "Solana Devnet",
+  blockExplorerUrl: "https://explorer.solana.com",
+  ticker: "SOL",
+  tickerName: "Solana Token",
+  logo: "",
 };
 
-const privateKeyProvider = new EthereumPrivateKeyProvider({
+const privateKeyProvider = new SolanaPrivateKeyProvider({
   config: {
     chainConfig,
   },
@@ -52,17 +49,12 @@ const authAdapter = new AuthAdapter({
   loginSettings: {
     mfaLevel: "optional",
   },
-});
+} as AuthAdapterOptions);
 
-const walletServicesPlugin = new WalletServicesPlugin({
-  wsEmbedOpts: {},
-  walletInitOptions: { whiteLabel: { showWidgetButton: true }, confirmationStrategy: "modal" },
-});
+export const defaultSolanaAdapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
-const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-
-export const web3AuthContextConfig: Web3AuthContextConfig = {
+export const web3AuthContextConfig = {
   web3AuthOptions,
-  adapters: [authAdapter, ...adapters],
-  plugins: [walletServicesPlugin],
+  adapters: [authAdapter, ...defaultSolanaAdapters],
+  plugins: [],
 };

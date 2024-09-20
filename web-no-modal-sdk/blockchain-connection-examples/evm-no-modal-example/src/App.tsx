@@ -101,7 +101,7 @@ function App() {
         web3auth.configureAdapter(walletConnectV2Adapter);
 
         injectedAdapters = await getInjectedAdapters({ options: web3authNoModalOptions });
-        injectedAdapters.forEach((adapter : IAdapter) => {
+        injectedAdapters.forEach((adapter: IAdapter<unknown>) => {
           web3auth.configureAdapter(adapter);
         });
 
@@ -327,7 +327,7 @@ function App() {
     await walletServicesPlugin.showCheckout();
   };
 
-  const loginWithInjected = async (adapterName : string) => {
+  const loginWithInjected = async (adapterName: string) => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
@@ -337,7 +337,7 @@ function App() {
     if (web3auth.connected) {
       setLoggedIn(true);
     }
-  }
+  };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -441,9 +441,11 @@ function App() {
         Login with Wallet Connect v2
       </button>
 
-      { injectedAdapters.map((adapter : IAdapter<unknown>) => (<button key={adapter.name} onClick={() => loginWithInjected(adapter.name)} className="card">
-        Login with {adapter.name}
-      </button>))}
+      {injectedAdapters?.map((adapter: IAdapter<unknown>) => (
+        <button key={adapter.name.toUpperCase()} onClick={() => loginWithInjected(adapter.name)} className="card">
+          `Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet`
+        </button>
+      ))}
     </>
   );
 

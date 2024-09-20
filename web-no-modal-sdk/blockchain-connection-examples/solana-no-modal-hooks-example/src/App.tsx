@@ -1,146 +1,149 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/no-modal-react-hooks";
-import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
+import RPC from "./solanaRPC";
+import { defaultSolanaAdapters } from "./Web3AuthProvider";
 
-const newChain = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x89", // Polygon Mainnet
-  rpcTarget: "https://rpc.ankr.com/polygon",
-  displayName: "Polygon Mainnet",
-  blockExplorerUrl: "https://polygonscan.com",
-  ticker: "MATIC",
-  tickerName: "MATIC",
-  logo: "https://images.toruswallet.io/polygon.svg",
-};
 
 function App() {
   const { connectTo, authenticateUser, enableMFA, logout, userInfo, provider, isMFAEnabled, web3Auth, status, addAndSwitchChain } = useWeb3Auth();
 
-  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
-
-  const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(null);
-  const [pluginStatus, setPluginStatus] = useState<string>("disconnected");
-
-  // Update MFA status header
-  useEffect(() => {
-    if (isMFAEnabled) {
-      setMFAHeader(<h2 style={{ color: "green" }}>MFA is enabled</h2>);
-    } else {
-      setMFAHeader(<h2 style={{ color: "red" }}>MFA is disabled</h2>);
-    }
-  }, [isMFAEnabled]);
-
-  // Update Plugin Status
-  useEffect(() => {
-    if (isPluginConnected) {
-      setPluginStatus("connected");
-    } else {
-      setPluginStatus("disconnected");
-    }
-  }, [isPluginConnected]);
-
-  const getChainId = async () => {
-    if (!provider) {
-      uiConsole("Provider not initialized yet");
+  const loginWithGoogle = async () => {
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
-    const chainId = await rpc.getChainId();
-    uiConsole(chainId);
+    const web3authProvider = await web3Auth.connectTo(WALLET_ADAPTERS.AUTH, {
+      loginProvider: "google",
+    });
+  };
+
+  const loginWithAdapter = async (adapterName: string) => {
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3Auth.connectTo(adapterName);
+  };
+
+  const getUserInfo = async () => {
+    if (!web3Auth) {
+      uiConsole("web3Auth not initialized yet");
+      return;
+    }
+    const user = await web3Auth.getUserInfo();
+    uiConsole(user);
   };
 
   const getAccounts = async () => {
     if (!provider) {
-      uiConsole("Provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
-    const accounts = await rpc.getAccounts();
-    uiConsole(accounts);
+    const rpc = new RPC(provider);
+    const address = await rpc.getAccounts();
+    uiConsole(address);
   };
 
   const getBalance = async () => {
     if (!provider) {
-      uiConsole("Provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
+    const rpc = new RPC(provider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
 
   const sendTransaction = async () => {
     if (!provider) {
-      uiConsole("Provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
+    const rpc = new RPC(provider);
     const receipt = await rpc.sendTransaction();
+    uiConsole(receipt);
+  };
+
+  const sendVersionTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendVersionTransaction();
+    uiConsole(receipt);
+  };
+
+  const signVersionedTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signVersionedTransaction();
+    uiConsole(receipt);
+  };
+
+  const signAllVersionedTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signAllVersionedTransaction();
+    uiConsole(receipt);
+  };
+
+  const signAllTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.signAllTransaction();
     uiConsole(receipt);
   };
 
   const signMessage = async () => {
     if (!provider) {
-      uiConsole("Provider not initialized yet");
+      uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
+    const rpc = new RPC(provider);
     const signedMessage = await rpc.signMessage();
     uiConsole(signedMessage);
   };
 
-  const uiConsole = (...args: any[]): void => {
+  const getPrivateKey = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const privateKey = await rpc.getPrivateKey();
+    uiConsole(privateKey);
+  };
+
+  function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
-  };
+  }
 
   const loggedInView = (
     <>
       <div className="flex-container">
         <div>
-          <button onClick={() => uiConsole(userInfo)} className="card">
+          <button onClick={getUserInfo} className="card">
             Get User Info
           </button>
         </div>
         <div>
-          <button
-            onClick={async () => {
-              const { idToken } = await authenticateUser();
-              uiConsole(idToken);
-            }}
-            className="card"
-          >
+          <button onClick={authenticateUser} className="card">
             Get ID Token
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={() => {
-              enableMFA();
-            }}
-            className="card"
-          >
-            Enable MFA
-          </button>
-        </div>
-        <div>
-          <button onClick={getChainId} className="card">
-            Get Chain ID
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={() => {
-              addAndSwitchChain(newChain);
-            }}
-            className="card"
-          >
-            Add & Switch Chain
           </button>
         </div>
         <div>
@@ -164,33 +167,33 @@ function App() {
           </button>
         </div>
         <div>
-          <button
-            onClick={() => {
-              showWalletUI();
-            }}
-            className="card"
-          >
-            Show Wallet UI
+          <button onClick={sendVersionTransaction} className="card">
+            Send Version Transaction
           </button>
         </div>
         <div>
-          <button
-            onClick={() => {
-              showWalletConnectScanner();
-            }}
-            className="card"
-          >
-            Show Wallet Connect
+          <button onClick={signVersionedTransaction} className="card">
+            Sign Versioned Transaction
           </button>
         </div>
         <div>
-          <button
-            onClick={() => {
-              showCheckout();
-            }}
-            className="card"
-          >
-            Show Checkout
+          <button onClick={signAllVersionedTransaction} className="card">
+            Sign All Versioned Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={signAllTransaction} className="card">
+            Sign All Transaction
+          </button>
+        </div>
+        {/* <div>
+          <button onClick={mintNFT} className="card">
+            Mint NFT
+          </button>
+        </div> */}
+        <div>
+          <button onClick={getPrivateKey} className="card">
+            Get Private Key
           </button>
         </div>
         <div>
@@ -199,41 +202,37 @@ function App() {
           </button>
         </div>
       </div>
-      <div id="console">
-        <p></p>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
+    </>
+  );
+
+  const unloggedInView = (
+    <>
+      <button onClick={loginWithGoogle} className="card">
+        Login
+      </button>
+      {defaultSolanaAdapters?.map((adapter: IAdapter<unknown>) => (
+        <button key={adapter.name.toUpperCase()} onClick={() => loginWithAdapter(adapter.name)} className="card">
+          Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet
+        </button>
+      ))}
     </>
   );
 
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
-          Web3Auth & React No-Modal Hooks Example
+        <a target="_blank" href="https://web3Auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
+          Web3Auth & React No-Modal Solana Hooks Example
         </a>
       </h1>
-
-      <div className="container" style={{ textAlign: "center" }}>
-        {MFAHeader}
-        <h2>Web3Auth Status: {status}</h2>
-        <h2>Wallet Services Plugin Status: {pluginStatus}</h2> {/* Plugin status added here */}
-      </div>
 
       <div className="grid">
         {status === "connected" ? (
           loggedInView
-        ) : (
-          <button
-            className="card"
-            onClick={() => {
-              connectTo(WALLET_ADAPTERS.AUTH, {
-                loginProvider: "google",
-              });
-            }}
-          >
-            Login
-          </button>
-        )}
+        ) : unloggedInView}
       </div>
 
       <footer className="footer">

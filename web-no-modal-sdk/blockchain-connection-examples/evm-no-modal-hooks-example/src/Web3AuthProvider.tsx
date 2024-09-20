@@ -59,7 +59,7 @@ const walletServicesPlugin = new WalletServicesPlugin({
   walletInitOptions: { whiteLabel: { showWidgetButton: true }, confirmationStrategy: "modal" },
 });
 
-const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+export const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
 export const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions,

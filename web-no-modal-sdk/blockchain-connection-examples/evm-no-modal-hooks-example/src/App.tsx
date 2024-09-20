@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/no-modal-react-hooks";
 import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, IAdapter } from "@web3auth/base";
+import { adapters } from "./Web3AuthProvider";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 
@@ -223,6 +224,7 @@ function App() {
         {status === "connected" ? (
           loggedInView
         ) : (
+          <>
           <button
             className="card"
             onClick={() => {
@@ -231,8 +233,14 @@ function App() {
               });
             }}
           >
-            Login
+            Login With Google
           </button>
+          {adapters?.map((adapter: IAdapter<unknown>) => (
+            <button key={adapter.name.toUpperCase()} onClick={() => connectTo(adapter.name)} className="card">
+              `Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet`
+            </button>
+          ))}
+          </>
         )}
       </div>
 

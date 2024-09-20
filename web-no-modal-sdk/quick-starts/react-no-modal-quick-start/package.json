@@ -12,9 +12,9 @@
   },
   "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
-    "@web3auth/base": "^9.0.0-alpha.1",
-    "@web3auth/ethereum-provider": "^9.0.0-alpha.1",
-    "@web3auth/no-modal": "^9.0.0-alpha.1",
+    "@web3auth/base": "^9.0.2",
+    "@web3auth/ethereum-provider": "^9.0.2",
+    "@web3auth/no-modal": "^9.0.2",
     "@web3auth/openlogin-adapter": "^9.0.0-alpha.0",
     "empty-module": "^0.0.2",
     "ethers": "^6.13.2",

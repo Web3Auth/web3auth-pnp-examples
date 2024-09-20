@@ -18,9 +18,9 @@
     "vue-router": "^4.4.3"
   },
   "dependencies": {
-    "@web3auth/base": "^9.0.0-alpha.1",
-    "@web3auth/ethereum-provider": "^9.0.0-alpha.1",
-    "@web3auth/no-modal": "^9.0.0-alpha.1",
+    "@web3auth/base": "^9.0.2",
+    "@web3auth/ethereum-provider": "^9.0.2",
+    "@web3auth/no-modal": "^9.0.2",
     "@web3auth/openlogin-adapter": "^9.0.0-alpha.0",
     "ethers": "^6.13.2",
     "viem": "^2.20.0",

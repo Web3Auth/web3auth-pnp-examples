@@ -14,5 +14,8 @@ export default defineConfig({
   define: {
     global: "globalThis",
   },
+  build: {
+    target: "esnext",
+  },
   // IMP END - Bundler Issues
 });

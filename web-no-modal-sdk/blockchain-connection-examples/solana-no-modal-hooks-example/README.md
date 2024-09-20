@@ -1,4 +1,4 @@
-# Web3Auth (`@web3auth/no-modal`) x Solana
+# Web3Auth (`@web3auth/no-modal-react-hooks`) x Solana
 
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/pnp/web/no-modal)
 [![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)

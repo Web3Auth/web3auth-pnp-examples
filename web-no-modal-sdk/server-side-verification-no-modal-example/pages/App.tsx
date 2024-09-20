@@ -3,10 +3,10 @@
 import "react-toastify/dist/ReactToastify.css";
 
 import { getPublicCompressed } from "@toruslabs/eccrypto";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { AuthAdapter } from "@web3auth/auth-adapter";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 

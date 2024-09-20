@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/no-modal-react-hooks";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { IAdapter, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
 import RPC from "./solanaRPC";
 import { defaultSolanaAdapters } from "./Web3AuthProvider";
 
 
 function App() {
-  const { connectTo, authenticateUser, enableMFA, logout, userInfo, provider, isMFAEnabled, web3Auth, status, addAndSwitchChain } = useWeb3Auth();
+  const { connectTo, authenticateUser, logout, provider, web3Auth, status } = useWeb3Auth();
 
   const loginWithGoogle = async () => {
     if (!web3Auth) {
       uiConsole("web3Auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3Auth.connectTo(WALLET_ADAPTERS.AUTH, {
+    await connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
   };
@@ -24,7 +24,7 @@ function App() {
       uiConsole("web3Auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3Auth.connectTo(adapterName);
+    const web3authProvider = await connectTo(adapterName);
   };
 
   const getUserInfo = async () => {
@@ -186,11 +186,6 @@ function App() {
             Sign All Transaction
           </button>
         </div>
-        {/* <div>
-          <button onClick={mintNFT} className="card">
-            Mint NFT
-          </button>
-        </div> */}
         <div>
           <button onClick={getPrivateKey} className="card">
             Get Private Key

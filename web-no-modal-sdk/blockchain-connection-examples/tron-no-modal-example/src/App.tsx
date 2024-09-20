@@ -3,14 +3,11 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, CustomChainConfig } from "@web3auth/base";
 import { AuthAdapter, AuthLoginParams } from "@web3auth/auth-adapter";
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
-import { WalletConnectModal } from "@walletconnect/modal";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
 import "./App.css";
 import TronRpc from "./tronRPC";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-const projectId = "04309ed1007e77d1f119b85205bb779d";
 
 const chainConfig: CustomChainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -27,7 +24,6 @@ function App() {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
   const [tronRpc, setTronRpc] = useState<TronRpc | null>(null);
 
   useEffect(() => {
@@ -64,25 +60,6 @@ function App() {
       },
     });
     web3auth.configureAdapter(authAdapter);
-
-    const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x2b6653dc", "0x94a9059e"], projectId);
-    const walletConnectModal = new WalletConnectModal({ projectId });
-    const walletConnectV2Adapter = new WalletConnectV2Adapter({
-      adapterSettings: {
-        qrcodeModal: walletConnectModal,
-        ...defaultWcSettings.adapterSettings,
-      },
-      loginSettings: { ...defaultWcSettings.loginSettings },
-    });
-
-    const walletServicesPluginInstance = new WalletServicesPlugin({
-      wsEmbedOpts: {},
-      walletInitOptions: { whiteLabel: { showWidgetButton: true } },
-    });
-
-    setWalletServicesPlugin(walletServicesPluginInstance);
-    web3auth.addPlugin(walletServicesPluginInstance);
-    web3auth.configureAdapter(walletConnectV2Adapter);
 
     await web3auth.init();
     return web3auth;
@@ -191,39 +168,6 @@ function App() {
     }
   };
 
-  const showWalletUi = async () => {
-    if (!walletServicesPlugin) {
-      return uiConsole("WalletServicesPlugin not initialized yet");
-    }
-    try {
-      await walletServicesPlugin.showWalletUi();
-    } catch (error) {
-      console.error("Failed to show Wallet UI:", error);
-    }
-  };
-
-  const showWalletConnectScanner = async () => {
-    if (!walletServicesPlugin) {
-      return uiConsole("WalletServicesPlugin not initialized yet");
-    }
-    try {
-      await walletServicesPlugin.showWalletConnectScanner();
-    } catch (error) {
-      console.error("Failed to show Wallet Connect Scanner:", error);
-    }
-  };
-
-  const showCheckout = async () => {
-    if (!walletServicesPlugin) {
-      return uiConsole("WalletServicesPlugin not initialized yet");
-    }
-    try {
-      await walletServicesPlugin.showCheckout();
-    } catch (error) {
-      console.error("Failed to show checkout:", error);
-    }
-  };
-
   const uiConsole = (...args: unknown[]): void => {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -245,9 +189,6 @@ function App() {
         {renderButton("Get User Info", getUserInfo)}
         {renderButton("Get ID Token", authenticateUser)}
         {renderButton("Get Chain ID", () => handleTronRpcMethod("getChainId"))}
-        {renderButton("Show Wallet UI", showWalletUi)}
-        {renderButton("Show Wallet Connect Scanner", showWalletConnectScanner)}
-        {renderButton("Fiat to Crypto", showCheckout)}
         {renderButton("Get Accounts", () => handleTronRpcMethod("getAccounts"))}
         {renderButton("Get Balance", () => handleTronRpcMethod("getBalance"))}
         {renderButton("Sign Message", () => handleTronRpcMethod("signMessage"))}
@@ -272,7 +213,6 @@ function App() {
       {renderButton("Login with Google", login)}
       {renderButton("SMS Login (e.g +cc-number)", loginWithSMS)}
       {renderButton("Email Login (e.g hello@web3auth.io)", loginWithEmail)}
-      {renderButton("Login with Wallet Connect v2", loginWCModal)}
     </>
   );
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, CustomChainConfig } from "@web3auth/base";
-import { AuthAdapter, OpenloginLoginParams } from "@web3auth/auth-adapter";
+import { AuthAdapter, AuthLoginParams } from "@web3auth/auth-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
@@ -61,7 +61,7 @@ function App() {
     const authAdapter = new AuthAdapter({
       adapterSettings: {
         uxMode: "redirect",
-      }
+      },
     });
     web3auth.configureAdapter(authAdapter);
 
@@ -118,7 +118,7 @@ function App() {
       return uiConsole("web3auth not initialized yet");
     }
     try {
-      const web3authProvider = await web3auth.connectTo<OpenloginLoginParams>(WALLET_ADAPTERS.AUTH, {
+      const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
         loginProvider,
         extraLoginOptions: { login_hint: loginHint },
       });
@@ -240,38 +240,32 @@ function App() {
   );
 
   const loggedInView = (
-  <>
-    <div className="flex-container">
-      {renderButton("Get User Info", getUserInfo)}
-      {renderButton("Get ID Token", authenticateUser)}
-      {renderButton("Get Chain ID", () => handleTronRpcMethod("getChainId"))}
-      {renderButton("Show Wallet UI", showWalletUi)}
-      {renderButton("Show Wallet Connect Scanner", showWalletConnectScanner)}
-      {renderButton("Fiat to Crypto", showCheckout)}
-      {renderButton("Get Accounts", () => handleTronRpcMethod("getAccounts"))}
-      {renderButton("Get Balance", () => handleTronRpcMethod("getBalance"))}
-      {renderButton("Sign Message", () => handleTronRpcMethod("signMessage"))}
-      {renderButton("Send Transaction", () => handleTronRpcMethod("sendTransaction"))}
-      {renderButton("Get Private Key", () => handleTronRpcMethod("getPrivateKey"))}
-      {renderButton("Log Out", logout)}
-    </div>
-    <div style={{ marginTop: "20px", textAlign: "center" }}>
-      <p>Running low on TRX for testing? No worries!</p>
-      <a
-        href="https://shasta.tronex.io/"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ color: "#007bff", textDecoration: "underline" }}
-      >
-        Get some testnet TRX coins from the Shasta Faucet
-      </a>
-    </div>
-    <div id="console" style={{ whiteSpace: "pre-line" }}>
-      <p>Logged in Successfully!</p>
-    </div>
-  </>
-);
-
+    <>
+      <div className="flex-container">
+        {renderButton("Get User Info", getUserInfo)}
+        {renderButton("Get ID Token", authenticateUser)}
+        {renderButton("Get Chain ID", () => handleTronRpcMethod("getChainId"))}
+        {renderButton("Show Wallet UI", showWalletUi)}
+        {renderButton("Show Wallet Connect Scanner", showWalletConnectScanner)}
+        {renderButton("Fiat to Crypto", showCheckout)}
+        {renderButton("Get Accounts", () => handleTronRpcMethod("getAccounts"))}
+        {renderButton("Get Balance", () => handleTronRpcMethod("getBalance"))}
+        {renderButton("Sign Message", () => handleTronRpcMethod("signMessage"))}
+        {renderButton("Send Transaction", () => handleTronRpcMethod("sendTransaction"))}
+        {renderButton("Get Private Key", () => handleTronRpcMethod("getPrivateKey"))}
+        {renderButton("Log Out", logout)}
+      </div>
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <p>Running low on TRX for testing? No worries!</p>
+        <a href="https://shasta.tronex.io/" target="_blank" rel="noopener noreferrer" style={{ color: "#007bff", textDecoration: "underline" }}>
+          Get some testnet TRX coins from the Shasta Faucet
+        </a>
+      </div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p>Logged in Successfully!</p>
+      </div>
+    </>
+  );
 
   const unloggedInView = (
     <>

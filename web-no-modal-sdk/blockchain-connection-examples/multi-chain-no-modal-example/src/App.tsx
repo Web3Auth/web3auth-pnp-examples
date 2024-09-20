@@ -4,7 +4,7 @@ import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import "./App.css";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { web3AuthConfig, openloginAdapterConfig } from "./config/web3auth";
+import { web3AuthConfig, authAdapterConfig } from "./config/web3auth";
 
 // EVM
 import Web3 from "web3";
@@ -31,7 +31,7 @@ function App() {
         const web3auth = new Web3AuthNoModal(web3AuthConfig);
         setWeb3auth(web3auth);
 
-        const authAdapter = new AuthAdapter(openloginAdapterConfig);
+        const authAdapter = new AuthAdapter(authAdapterConfig);
         web3auth.configureAdapter(authAdapter);
 
         await web3auth.init();

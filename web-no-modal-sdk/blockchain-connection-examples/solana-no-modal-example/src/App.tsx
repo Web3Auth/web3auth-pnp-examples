@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions } from "@web3auth/base";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter";
 import RPC from "./solanaRPC";
 import "./App.css";
 
@@ -29,11 +30,12 @@ function App() {
 
         const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
 
-        const web3auth = new Web3AuthNoModal({
+        const web3authOptions: IWeb3AuthCoreOptions = {
           clientId,
           privateKeyProvider,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-        });
+        }
+        const web3auth = new Web3AuthNoModal({ clientId });
 
         setWeb3auth(web3auth);
 
@@ -44,6 +46,11 @@ function App() {
           },
         });
         web3auth.configureAdapter(authAdapter);
+
+        const defaultSolanaAdapters = await getDefaultExternalAdapters({ options: web3authOptions });
+        defaultSolanaAdapters.forEach((adapter) => {
+          web3auth.configureAdapter(adapter);
+        });
 
         await web3auth.init();
         setProvider(web3auth.provider);

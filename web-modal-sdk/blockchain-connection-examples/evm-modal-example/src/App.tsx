@@ -23,7 +23,6 @@ const newChain = {
 
 function App() {
   const {
-    initModal,
     provider,
     web3Auth,
     isConnected,
@@ -46,20 +45,6 @@ function App() {
       <h2>MFA is disabled</h2>
     </div>
   );
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        if (web3Auth) {
-          await initModal();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, [initModal, web3Auth]);
 
   const getChainId = async () => {
     if (!provider) {
@@ -222,8 +207,12 @@ function App() {
         <div>
           <button
             disabled={isMFAEnabled}
-            onClick={() => {
-              enableMFA();
+            onClick={async () => {
+              try {
+                await enableMFA();
+              } catch (e) {
+                uiConsole(e);
+              }
             }}
             className="card"
           >
@@ -258,7 +247,10 @@ function App() {
           <button
             onClick={() => {
               if (isPluginConnected) {
-                showCheckout();
+                showCheckout({
+
+                  show: true,
+                });
               }
             }}
             className="card"

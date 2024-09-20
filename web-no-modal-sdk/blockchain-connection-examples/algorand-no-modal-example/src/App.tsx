@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import RPC from "./algorandRPC";
 import "./App.css";
@@ -28,8 +28,8 @@ const web3auth = new Web3AuthNoModal({
   enableLogging: true,
 });
 
-const openloginAdapter = new OpenloginAdapter();
-web3auth.configureAdapter(openloginAdapter);
+const authAdapter = new AuthAdapter();
+web3auth.configureAdapter(authAdapter);
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -56,7 +56,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     setProvider(web3authProvider);

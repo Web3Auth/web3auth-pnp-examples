@@ -1,7 +1,7 @@
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, CustomChainConfig } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { useEffect, useState } from "react";
 import "./App.css";
 
@@ -35,10 +35,10 @@ export default function App() {
 
         const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           privateKeyProvider,
         });
-        web3authInstance.configureAdapter(openloginAdapter);
+        web3authInstance.configureAdapter(authAdapter);
 
         await web3authInstance.init();
 
@@ -66,7 +66,7 @@ export default function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     setProvider(web3authProvider);

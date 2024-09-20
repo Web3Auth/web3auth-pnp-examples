@@ -3,6 +3,7 @@ import { IProvider } from "@web3auth/base";
 import evmProvider from "./evmProvider";
 
 export interface IWalletProvider {
+  getPublicKey: () => Promise<string>;
   getAddress: () => Promise<string>;
   getBalance: () => Promise<string>;
   getChainId: () => Promise<string>;

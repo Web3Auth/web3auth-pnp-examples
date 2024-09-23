@@ -16,10 +16,6 @@ import TezosRPC from "./RPC/tezosRPC"; // for using tezos
 import PolkadotRPC from "./RPC/polkadotRPC"; // for using polkadot
 import NearRPC from "./RPC/nearRPC";
 
-//@ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ec as elliptic } from "elliptic";
-
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);

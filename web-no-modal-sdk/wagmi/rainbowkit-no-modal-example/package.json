@@ -11,7 +11,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "@web3auth/base": "^9.0.2",
     "@web3auth/ethereum-provider": "^9.0.2",
-    "@web3auth/no-modal": "^9.0.2",
+    "@web3auth/no-modal": "^9.1.0",
     "@web3auth/openlogin-adapter": "^9.0.0-alpha.0",
     "@web3auth/web3auth-wagmi-connector": "^7.0.0",
     "react": "^18.2.0",

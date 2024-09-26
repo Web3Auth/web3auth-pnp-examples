@@ -1,21 +1,37 @@
 import { Web3AuthContextConfig } from "@web3auth/modal-react-hooks";
 import { Web3AuthOptions } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IBaseProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-evm-adapter";
+import { AccountAbstractionProvider, BiconomySmartAccount, KernelSmartAccount, SafeSmartAccount, TrustSmartAccount } from "@web3auth/account-abstraction-provider";
 
 const chainConfig = {
-  chainId: "0xaa36a7", // for wallet connect make sure to pass in this chain in the loginSettings of the adapter.
-  displayName: "Ethereum Sepolia",
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  tickerName: "Ethereum Sepolia",
+  chainId: "0x14A34", // hex of 84532
+  rpcTarget: "https://base-sepolia-rpc.publicnode.com",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Base Sepolia",
+  blockExplorerUrl: "https://sepolia-explorer.base.org",
   ticker: "ETH",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+  tickerName: "ETH",
+  logo: "https://github.com/base-org/brand-kit/blob/main/logo/symbol/Base_Symbol_Blue.svg",
 };
+
+const aaProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig,
+    bundlerConfig: {
+      url: "https://api.pimlico.io/v2/84532/rpc?apikey=pim_WDBELWbZeo9guUAr7HNFaF"
+    },
+    smartAccountInit: new SafeSmartAccount(),
+    paymasterConfig: {
+      url: "https://api.pimlico.io/v2/84532/rpc?apikey=pim_WDBELWbZeo9guUAr7HNFaF",
+    }
+  },
+});
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
@@ -41,6 +57,8 @@ const web3AuthOptions: Web3AuthOptions = {
     useLogoLoader: true,
   },
   privateKeyProvider: privateKeyProvider,
+  accountAbstractionProvider: aaProvider,
+  // useAAWithExternalWallet: true,
   sessionTime: 86400, // 1 day
   // useCoreKitKey: true,
 };

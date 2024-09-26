@@ -1,5 +1,5 @@
 import { createWalletClient, createPublicClient, custom, formatEther, parseEther } from "viem";
-import { mainnet, polygonAmoy, sepolia } from "viem/chains";
+import { baseSepolia, mainnet, polygonAmoy, sepolia } from "viem/chains";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IProvider } from "@web3auth/base";
@@ -47,7 +47,7 @@ export default class EthereumRpc {
       case "0xaa36a7":
         return sepolia;
       default:
-        return mainnet;
+        return baseSepolia;
     }
   }
 

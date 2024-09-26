@@ -1,7 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ethers } from "ethers";
+import React, { useState, useEffect } from "react";
+import { ethers, Signer } from "ethers";
 import { Client, useClient } from "@xmtp/react-sdk";
 import { ConversationContainer } from "./ConversationContainer";
+
+interface HomeProps {
+  wallet: Signer;
+  env?: string;
+  isPWA?: boolean;
+  onLogout?: () => void;
+  isContained?: boolean;
+  isConsent?: boolean;
+}
 
 export default function Home({
   wallet,
@@ -10,10 +19,10 @@ export default function Home({
   onLogout,
   isContained = false,
   isConsent = false,
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOnNetwork, setIsOnNetwork] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+}: HomeProps): JSX.Element {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOnNetwork, setIsOnNetwork] = useState<boolean>(false);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
     const initialIsOpen =
@@ -24,7 +33,7 @@ export default function Home({
     const initialIsOnNetwork =
       localStorage.getItem("isOnNetwork") === "true" || false;
     const initialIsConnected =
-      (localStorage.getItem("isConnected") && wallet === "true") || false;
+      (localStorage.getItem("isConnected") === "true" && wallet !== null) || false;
 
     setIsOpen(initialIsOpen);
     setIsOnNetwork(initialIsOnNetwork);
@@ -32,12 +41,12 @@ export default function Home({
   }, []);
 
   const { client, error, isLoading, initialize, disconnect } = useClient();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [selectedConversation, setSelectedConversation] = useState(null);
-  const [signer, setSigner] = useState();
+  const [selectedConversation, setSelectedConversation] = useState<any>(null);
+  const [signer, setSigner] = useState<Signer | undefined>();
 
-  const styles = {
+  const styles: { [key: string]: React.CSSProperties } = {
     FloatingLogo: {
       position: "fixed",
       bottom: "20px",
@@ -63,7 +72,7 @@ export default function Home({
       border: isContained ? "0px" : isPWA ? "0px" : "1px solid #ccc",
       backgroundColor: "#f9f9f9",
       borderRadius: isContained ? "0px" : isPWA ? "0px" : "10px",
-      zIndex: "1000",
+      zIndex: 1000,
       overflow: "hidden",
       display: "flex",
       flexDirection: "column",
@@ -76,7 +85,7 @@ export default function Home({
       left: "5px",
       background: "transparent",
       border: "none",
-      fontSize: isPWA == true ? "12px" : "10px",
+      fontSize: isPWA ? "12px" : "10px",
       cursor: "pointer",
     },
     widgetHeader: {
@@ -101,13 +110,13 @@ export default function Home({
     conversationHeaderH4: {
       margin: "0px",
       padding: "4px",
-      fontSize: isPWA == true ? "20px" : "14px", // Increased font size
+      fontSize: isPWA ? "20px" : "14px",
     },
     backButton: {
       border: "0px",
       background: "transparent",
       cursor: "pointer",
-      fontSize: isPWA == true ? "20px" : "14px", // Increased font size
+      fontSize: isPWA ? "20px" : "14px",
     },
     widgetContent: {
       flexGrow: 1,
@@ -128,9 +137,9 @@ export default function Home({
       color: "#000",
       justifyContent: "center",
       border: "1px solid grey",
-      padding: isPWA == true ? "20px" : "10px",
+      padding: isPWA ? "20px" : "10px",
       borderRadius: "5px",
-      fontSize: isPWA == true ? "20px" : "14px",
+      fontSize: isPWA ? "20px" : "14px",
     },
   };
 
@@ -153,12 +162,12 @@ export default function Home({
     }
   }, [wallet, signer, client]);
 
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== undefined) {
+  const connectWallet = async (): Promise<void> => {
+    if (typeof (window as any).ethereum !== 'undefined') {
       try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
+        await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+        const provider = new ethers.BrowserProvider((window as any).ethereum);
+        const signer = await provider.getSigner();
         setSigner(signer);
         setIsConnected(true);
       } catch (error) {
@@ -169,67 +178,69 @@ export default function Home({
     }
   };
 
-  const getAddress = async (signer) => {
+  const getAddress = async (signer: Signer): Promise<string | null> => {
     try {
       if (signer && typeof signer.getAddress === "function") {
         return await signer.getAddress();
       }
-      if (signer && typeof signer.getAddresses === "function") {
+      if (signer && typeof (signer as any).getAddresses === "function") {
         //viem
-        const [address] = await signer.getAddresses();
+        const [address] = await (signer as any).getAddresses();
         return address;
       }
       return null;
     } catch (e) {
       console.log(e);
+      return null;
     }
   };
-  const [isWalletCreated, setIsWalletCreated] = useState(false);
+  const [isWalletCreated, setIsWalletCreated] = useState<boolean>(false);
 
-  const createNewWallet = async () => {
+  const createNewWallet = async (): Promise<void> => {
     const newWallet = ethers.Wallet.createRandom();
     console.log("Your address", newWallet.address);
     setSigner(newWallet);
     setIsConnected(true);
-    setIsWalletCreated(true); // Set isWalletCreated to true when a new wallet is created
+    setIsWalletCreated(true);
   };
-  const initXmtpWithKeys = async () => {
+  const initXmtpWithKeys = async (): Promise<void> => {
     const options = { env: env ? env : getEnv() };
-    const address = await getAddress(signer);
+    const address = await getAddress(signer as Signer);
     if (!address) return;
     let keys = loadKeys(address);
     if (!keys) {
-      keys = await Client.getKeys(signer, {
+      keys = await Client.getKeys(signer as Signer, {
         ...options,
         skipContactPublishing: true,
         persistConversations: false,
+        env: options.env as "local" | "dev" | "production" | undefined,
       });
       storeKeys(address, keys);
     }
     setLoading(true);
-    await initialize({ keys, options, signer });
+    await initialize({ keys, options: { ...options, env: options.env as "local" | "dev" | "production" | undefined }, signer: signer as Signer });
   };
 
-  const openWidget = () => {
+  const openWidget = (): void => {
     setIsOpen(true);
   };
 
-  const closeWidget = () => {
+  const closeWidget = (): void => {
     setIsOpen(false);
   };
 
-  if (typeof window !== undefined) {
-    window.FloatingInbox = {
+  if (typeof window !== 'undefined') {
+    (window as any).FloatingInbox = {
       open: openWidget,
       close: closeWidget,
     };
   }
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     setIsConnected(false);
-    const address = await getAddress(signer);
-    wipeKeys(address);
+    const address = await getAddress(signer as Signer);
+    if (address) wipeKeys(address);
     console.log("wipe", address);
-    setSigner(null);
+    setSigner(undefined);
     setIsOnNetwork(false);
     await disconnect();
     setSelectedConversation(null);
@@ -298,9 +309,9 @@ export default function Home({
                 <button style={styles.btnXmtp} onClick={initXmtpWithKeys}>
                   Connect to XMTP
                 </button>
-                {isWalletCreated && (
+                {isWalletCreated && signer && 'address' in signer && (
                   <button style={styles.label}>
-                    Your addess: {signer.address}
+                    Your address: {signer.address?.toString()}
                   </button>
                 )}
               </div>
@@ -323,28 +334,28 @@ export default function Home({
 
 const ENCODING = "binary";
 
-export const getEnv = () => {
+export const getEnv = (): string => {
   // "dev" | "production" | "local"
-  return typeof process !== undefined && process.env.REACT_APP_XMTP_ENV
+  return typeof process !== 'undefined' && process.env.REACT_APP_XMTP_ENV
     ? process.env.REACT_APP_XMTP_ENV
     : "production";
 };
-export const buildLocalStorageKey = (walletAddress) => {
+export const buildLocalStorageKey = (walletAddress: string): string => {
   return walletAddress ? `xmtp:${getEnv()}:keys:${walletAddress}` : "";
 };
 
-export const loadKeys = (walletAddress) => {
+export const loadKeys = (walletAddress: string): Uint8Array | null => {
   const val = localStorage.getItem(buildLocalStorageKey(walletAddress));
   return val ? Buffer.from(val, ENCODING) : null;
 };
 
-export const storeKeys = (walletAddress, keys) => {
+export const storeKeys = (walletAddress: string, keys: Uint8Array): void => {
   localStorage.setItem(
     buildLocalStorageKey(walletAddress),
     Buffer.from(keys).toString(ENCODING)
   );
 };
 
-export const wipeKeys = (walletAddress) => {
+export const wipeKeys = (walletAddress: string): void => {
   localStorage.removeItem(buildLocalStorageKey(walletAddress));
 };

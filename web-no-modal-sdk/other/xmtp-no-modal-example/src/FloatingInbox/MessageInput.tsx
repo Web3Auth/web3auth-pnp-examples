@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, KeyboardEvent, ChangeEvent } from "react";
 
-export const MessageInput = ({
+interface MessageInputProps {
+  onSendMessage: (message: string) => void;
+  replyingToMessage?: any; // Replace 'any' with the actual type of replyingToMessage if known
+  isPWA?: boolean;
+}
+
+export const MessageInput: React.FC<MessageInputProps> = ({
   onSendMessage,
   replyingToMessage,
   isPWA = false,
 }) => {
-  const [newMessage, setNewMessage] = useState("");
-  const styles = {
+  const [newMessage, setNewMessage] = useState<string>("");
+
+  const styles: { [key: string]: React.CSSProperties } = {
     newMessageContainer: {
       display: "flex",
       alignItems: "center",
@@ -20,8 +27,8 @@ export const MessageInput = ({
       padding: "5px",
       border: "1px solid #ccc",
       borderRadius: "5px",
-      fontSize: isPWA == true ? "1.2em" : ".9em",
-      width: isPWA == true ? "82%" : "",
+      fontSize: isPWA ? "1.2em" : ".9em",
+      width: isPWA ? "82%" : undefined,
       outline: "none",
     },
     sendButton: {
@@ -34,16 +41,17 @@ export const MessageInput = ({
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      fontSize: isPWA == true ? "1.0em" : ".6em",
-      width: isPWA == true ? "12%" : "",
+      fontSize: isPWA ? "1.0em" : ".6em",
+      width: isPWA ? "12%" : undefined,
     },
   };
-  const handleInputChange = (event) => {
-    if (event.key === "Enter") {
+
+  const handleInputChange = (event: KeyboardEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>) => {
+    if ('key' in event && event.key === "Enter") {
       onSendMessage(newMessage);
       setNewMessage("");
-    } else {
-      setNewMessage(event.target.value);
+    } else if ('target' in event) {
+      setNewMessage((event.target as HTMLInputElement).value);
     }
   };
 
@@ -53,8 +61,8 @@ export const MessageInput = ({
         style={styles.messageInputField}
         type="text"
         value={newMessage}
-        onKeyPress={handleInputChange}
-        onChange={handleInputChange}
+        onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => handleInputChange(e)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
         placeholder="Type your message..."
       />
       <button

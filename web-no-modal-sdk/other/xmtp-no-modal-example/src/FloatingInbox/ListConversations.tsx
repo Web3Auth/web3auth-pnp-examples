@@ -3,9 +3,18 @@ import {
   useConversations,
   useStreamConversations,
   useClient,
+  Conversation,
 } from "@xmtp/react-sdk";
 
-export const ListConversations = ({
+interface ListConversationsProps {
+  searchTerm: string;
+  selectConversation: (conversation: Conversation) => void;
+  onConversationFound: (found: boolean) => void;
+  isPWA?: boolean;
+  isConsent?: boolean;
+}
+
+export const ListConversations: React.FC<ListConversationsProps> = ({
   searchTerm,
   selectConversation,
   onConversationFound,
@@ -14,9 +23,9 @@ export const ListConversations = ({
 }) => {
   const { client } = useClient();
   const { conversations } = useConversations();
-  const [streamedConversations, setStreamedConversations] = useState([]);
+  const [streamedConversations, setStreamedConversations] = useState<Conversation[]>([]);
 
-  const styles = {
+  const styles: { [key: string]: React.CSSProperties } = {
     conversationListItem: {
       display: "flex",
       justifyContent: "space-between",
@@ -26,32 +35,30 @@ export const ListConversations = ({
       borderBottom: "1px solid #e0e0e0",
       cursor: "pointer",
       backgroundColor: "#f0f0f0",
-      padding: "10px",
+      padding: isPWA ? "15px" : "10px",
       transition: "background-color 0.3s ease",
-
-      padding: isPWA == true ? "15px" : "10px",
     },
     conversationDetails: {
       display: "flex",
       flexDirection: "column",
       alignItems: "flex-start",
       width: "75%",
-      marginLeft: isPWA == true ? "15px" : "10px",
+      marginLeft: isPWA ? "15px" : "10px",
       overflow: "hidden",
     },
     conversationName: {
-      fontSize: isPWA == true ? "20px" : "16px",
+      fontSize: isPWA ? "20px" : "16px",
       fontWeight: "bold",
     },
     messagePreview: {
-      fontSize: isPWA == true ? "18px" : "14px",
+      fontSize: isPWA ? "18px" : "14px",
       color: "#666",
       whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
     conversationTimestamp: {
-      fontSize: isPWA == true ? "16px" : "12px",
+      fontSize: isPWA ? "16px" : "12px",
       color: "#999",
       width: "25%",
       textAlign: "right",
@@ -67,7 +74,7 @@ export const ListConversations = ({
       conversation?.peerAddress
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) &&
-      conversation?.peerAddress !== client.address
+      conversation?.peerAddress !== client?.address
   );
 
   useEffect(() => {
@@ -76,11 +83,11 @@ export const ListConversations = ({
     }
   }, [filteredConversations, onConversationFound]);
 
-  const onConversation = useCallback((conversation) => {
+  const onConversation = useCallback((conversation: Conversation) => {
     setStreamedConversations((prev) => [...prev, conversation]);
   }, []);
 
-  const { error } = useStreamConversations(onConversation);
+  const { error } = useStreamConversations({ onConversation });
 
   return (
     <>
@@ -89,7 +96,7 @@ export const ListConversations = ({
           key={index}
           style={styles.conversationListItem}
           onClick={() => {
-            selectConversation(conversation);
+            selectConversation(conversation as any);
           }}
         >
           <div style={styles.conversationDetails}>
@@ -111,8 +118,8 @@ export const ListConversations = ({
   );
 };
 
-const getRelativeTimeLabel = (dateString) => {
-  const diff = new Date() - new Date(dateString);
+const getRelativeTimeLabel = (dateString: Date): string => {
+  const diff = new Date().getTime() - dateString.getTime();
   const diffMinutes = Math.floor(diff / 1000 / 60);
   const diffHours = Math.floor(diff / 1000 / 60 / 60);
   const diffDays = Math.floor(diff / 1000 / 60 / 60 / 24);

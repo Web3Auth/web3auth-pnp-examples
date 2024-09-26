@@ -3,7 +3,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { useEffect, useState } from "react";
-import { FloatingInbox } from "./FloatingInbox/index.jsx";
+import { FloatingInbox } from "./FloatingInbox";
 import { ethers, JsonRpcSigner } from "ethers";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -20,6 +20,15 @@ const chainConfig = {
   tickerName: "Ethereum",
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
+
+declare global {
+  interface Window {
+    FloatingInbox: {
+      open: () => void;
+      close: () => void;
+    }
+  }
+}
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
@@ -211,7 +220,7 @@ function App() {
         </section>
       )}
       {loggedIn && (
-        <FloatingInbox env={process.env.REACT_APP_XMTP_ENV} wallet={wallet} />
+        <FloatingInbox wallet={wallet} onLogout={logout} />
       )}
     </div>
   );

@@ -1,10 +1,17 @@
 import React, { useCallback } from "react";
 import { MessageInput } from "./MessageInput";
-import { useStartConversation } from "@xmtp/react-sdk"; // import the required SDK hooks
+import { useStartConversation, CachedConversation } from "@xmtp/react-sdk";
 
-export const NewConversation = ({ selectConversation, peerAddress }) => {
+interface NewConversationProps {
+  selectConversation: (conversation: CachedConversation) => void;
+  peerAddress: string;
+  isPWA?: boolean;
+}
+
+export const NewConversation: React.FC<NewConversationProps> = ({ selectConversation, peerAddress, isPWA = false }) => {
   const { startConversation } = useStartConversation();
-  const styles = {
+
+  const styles: { [key: string]: React.CSSProperties } = {
     messagesContainer: {
       display: "flex",
       flexDirection: "column",
@@ -14,7 +21,7 @@ export const NewConversation = ({ selectConversation, peerAddress }) => {
   };
 
   const handleSendMessage = useCallback(
-    async (message) => {
+    async (message: string) => {
       if (!message.trim()) {
         alert("Empty message");
         return;
@@ -24,14 +31,16 @@ export const NewConversation = ({ selectConversation, peerAddress }) => {
         return;
       }
       const newConversation = await startConversation(peerAddress, message);
-      selectConversation(newConversation?.cachedConversation);
+      if (newConversation?.cachedConversation) {
+        selectConversation(newConversation.cachedConversation);
+      }
     },
     [peerAddress, startConversation, selectConversation]
   );
 
   return (
     <div style={styles.messagesContainer}>
-      <MessageInput onSendMessage={handleSendMessage} />
+      <MessageInput onSendMessage={handleSendMessage} isPWA={isPWA} />
     </div>
   );
 };

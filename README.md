@@ -54,7 +54,6 @@ provider specific to the user and application.
 | `EVM`      | `NEXTJS`       | [NextJS-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nextjs-modal-quick-start)         |
 | `EVM`      | `Vue`          | [Vue-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start)               |
 | `EVM`      | `Angular`      | [Angular-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/angular-modal-quick-start)       |
-| `EVM`      | `Vite + React` | [React-Vite-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-vite-modal-quick-start) |
 | `EVM`      | `Vanilla JS`   | [VanillaJS-Modal-Quick-Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vanillajs-modal-quick-start)   |
 
 ### Web3Auth Wagmi Connector
@@ -168,8 +167,6 @@ Ask us on our
 out to our [Discord](https://discord.gg/web3auth).
 
 ## License
-
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/LICENSE)
 
 ---
 

@@ -85,10 +85,10 @@ const authAdapter = new AuthAdapter({
 const walletServicesPlugin = new WalletServicesPlugin();
 
 // const adapters = await getInjectedAdapters({options: web3AuthOptions});
-const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+// const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
 export const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions,
-  adapters: [authAdapter, ...adapters],
+  adapters: [authAdapter],
   plugins: [walletServicesPlugin],
 };

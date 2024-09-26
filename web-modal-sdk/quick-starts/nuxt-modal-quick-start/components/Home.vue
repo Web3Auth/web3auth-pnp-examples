@@ -50,9 +50,11 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3Auth } from "@web3auth/modal";
+import type { Web3AuthOptions } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
-import type { IProvider } from "@web3auth/base";
+import type { IAdapter, IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
@@ -91,11 +93,12 @@ export default {
       config: { chainConfig: chainConfig }
     });
 
-    const web3auth = new Web3Auth({
+    const web3AuthOptions: Web3AuthOptions = {
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-      privateKeyProvider: privateKeyProvider,
-    });
+      privateKeyProvider,
+    }
+    const web3auth = new Web3Auth(web3AuthOptions);
     // IMP END - SDK Initialization
 
     const loggedIn = ref<boolean>(false);
@@ -104,6 +107,12 @@ export default {
     onMounted(async () => {
       const init = async () => {
         try {
+          // IMP START - Configuring External Wallets
+          const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+          adapters.forEach((adapter: IAdapter<unknown>) => {
+            web3auth.configureAdapter(adapter);
+          });
+          // IMP END - Configuring External Wallets
           // IMP START - SDK Initialization
           await web3auth.initModal();
           // IMP END - SDK Initialization

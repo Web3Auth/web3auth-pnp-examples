@@ -1,16 +1,25 @@
 {
+  "name": "evm-modal-example",
+  "overrides": {
+    "typescript": "^5.0.4"
+  },
+  "private": true,
+  "scripts": {
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "start": "vite"
+  },
+  "version": "0.1.0",
   "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ],
-    "production": [
-      "chrome >= 67",
-      "edge >= 79",
-      "firefox >= 68",
-      "opera >= 54",
-      "safari >= 14"
     ]
   },
   "dependencies": {
@@ -23,27 +32,27 @@
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitejs/plugin-react-swc": "^3.7.0",
-    "@walletconnect/sign-client": "^2.12.2",
-    "@web3auth/base": "^8.12.2",
-    "@web3auth/coinbase-adapter": "^8.12.2",
-    "@web3auth/default-evm-adapter": "^8.12.3",
-    "@web3auth/ethereum-provider": "^8.12.3",
-    "@web3auth/modal": "^8.12.3",
-    "@web3auth/modal-react-hooks": "^8.12.3",
-    "@web3auth/torus-evm-adapter": "^8.12.2",
-    "@web3auth/wallet-connect-v2-adapter": "^8.12.3",
-    "@web3auth/wallet-services-plugin": "^8.12.3",
-    "@web3auth/wallet-services-plugin-react-hooks": "^8.12.3",
-    "ethers": "^6.12.1",
+    "@walletconnect/sign-client": "^2.16.2",
+    "@web3auth/base": "^9.0.2",
+    "@web3auth/coinbase-adapter": "^9.0.2",
+    "@web3auth/default-evm-adapter": "^9.1.0",
+    "@web3auth/ethereum-provider": "^9.0.2",
+    "@web3auth/modal": "^9.1.0",
+    "@web3auth/modal-react-hooks": "^9.1.0",
+    "@web3auth/torus-evm-adapter": "^9.0.2",
+    "@web3auth/wallet-connect-v2-adapter": "^9.1.0",
+    "@web3auth/wallet-services-plugin": "^9.1.0",
+    "@web3auth/wallet-services-plugin-react-hooks": "^9.1.0",
+    "ethers": "^6.13.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.0.4",
     "viem": "^2.9.15",
-    "vite": "^5.3.5",
+    "vite": "^5.4.8",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.3.2",
     "web-vitals": "^3.1.0",
-    "web3": "^4.8.0"
+    "web3": "^4.13.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.4",
@@ -68,16 +77,5 @@
       "react-app",
       "react-app/jest"
     ]
-  },
-  "name": "evm-modal-example",
-  "overrides": {
-    "typescript": "^5.0.4"
-  },
-  "private": true,
-  "scripts": {
-    "build": "tsc && vite build",
-    "serve": "vite preview",
-    "start": "vite"
-  },
-  "version": "0.1.0"
+  }
 }

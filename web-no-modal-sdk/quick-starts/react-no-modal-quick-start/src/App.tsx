@@ -2,12 +2,12 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IAdapter, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions,  } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { useEffect, useState } from "react";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 // IMP END - Quick Start
+import { useEffect, useState } from "react";
 
 // IMP START - Blockchain Calls
 import RPC from "./ethersRPC";
@@ -37,14 +37,15 @@ const chainConfig = {
 // IMP START - SDK Initialization
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
-const web3auth = new Web3AuthNoModal({
+const web3AuthOptions: IWeb3AuthCoreOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
-});
+}
+const web3auth = new Web3AuthNoModal(web3AuthOptions);
 
-const openloginAdapter = new OpenloginAdapter();
-web3auth.configureAdapter(openloginAdapter);
+const authadapter = new AuthAdapter();
+web3auth.configureAdapter(authadapter);
 // IMP END - SDK Initialization
 
 function App() {
@@ -71,8 +72,9 @@ function App() {
   }, []);
 
   const login = async () => {
+    var web3authProvider = null;
     // IMP START - Login
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     // IMP END - Login
@@ -185,9 +187,11 @@ function App() {
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <div className="flex-container">
+      <button onClick={login} className="card">
+        Login with Google
+      </button>
+    </div>
   );
 
   return (
@@ -214,7 +218,7 @@ function App() {
         </a>
         <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-modal-quick-start&project-name=w3a-evm-modal&repository-name=w3a-evm-modal">
           <img src="https://vercel.com/button" alt="Deploy with Vercel" />
-        </a>      
+        </a>
       </footer>
     </div>
   );

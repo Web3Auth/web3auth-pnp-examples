@@ -4,6 +4,7 @@ import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
 import IRPC from "./IRPC";
+import { getED25519Key } from "@web3auth/auth-adapter";
 
 export default class SolanaRPC implements IRPC {
   private provider: SolanaPrivateKeyProvider;
@@ -32,7 +33,6 @@ export default class SolanaRPC implements IRPC {
   }
 
   async getAccounts(): Promise<any> {
-    const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
     const ed25519key = getED25519Key(this.privateKey).sk.toString("hex");
     // Get user's Solana's public address
     await this.provider.setupProvider(ed25519key);

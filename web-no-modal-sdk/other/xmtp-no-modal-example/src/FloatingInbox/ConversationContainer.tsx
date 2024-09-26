@@ -5,7 +5,15 @@ import { ListConversations } from "./ListConversations";
 import { ethers } from "ethers";
 import { NewConversation } from "./NewConversation";
 
-export const ConversationContainer = ({
+interface ConversationContainerProps {
+  selectedConversation: any;
+  setSelectedConversation: (conversation: any) => void;
+  isPWA?: boolean;
+  isConsent?: boolean;
+  isContained?: boolean;
+}
+
+export const ConversationContainer: React.FC<ConversationContainerProps> = ({
   selectedConversation,
   setSelectedConversation,
   isPWA = false,
@@ -13,51 +21,51 @@ export const ConversationContainer = ({
   isContained = false,
 }) => {
   const { client } = useClient();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [peerAddress, setPeerAddress] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [loadingResolve, setLoadingResolve] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [peerAddress, setPeerAddress] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingResolve, setLoadingResolve] = useState<boolean>(false);
   const { canMessage } = useCanMessage();
-  const [createNew, setCreateNew] = useState(false);
-  const [conversationFound, setConversationFound] = useState(false);
+  const [createNew, setCreateNew] = useState<boolean>(false);
+  const [conversationFound, setConversationFound] = useState<boolean>(false);
 
-  const styles = {
+  const styles: { [key: string]: React.CSSProperties } = {
     conversations: {
       height: "100%",
-      fontSize: isPWA == true ? "1.2em" : ".9em", // Increased font size
+      fontSize: isPWA ? "1.2em" : ".9em",
     },
     conversationList: {
       overflowY: "auto",
       padding: "0px",
       margin: "0",
       listStyle: "none",
-      overflowY: "scroll",
     },
     smallLabel: {
-      fontSize: isPWA == true ? "1.5em" : ".9em", // Increased font size
+      fontSize: isPWA ? "1.5em" : ".9em",
     },
     createNewButton: {
       border: "1px",
       padding: "5px",
       borderRadius: "5px",
       marginTop: "10px",
-      fontSize: isPWA == true ? "1.2em" : ".9em", // Increased font size
+      fontSize: isPWA ? "1.2em" : ".9em",
     },
     peerAddressInput: {
       width: "100%",
       padding: "10px",
       boxSizing: "border-box",
       border: "0px solid #ccc",
-      fontSize: isPWA == true ? "1em" : ".9em",
+      fontSize: isPWA ? "1em" : ".9em",
       outline: "none",
     },
   };
-  const isValidEthereumAddress = (address) => {
+
+  const isValidEthereumAddress = (address: string): boolean => {
     return /^0x[a-fA-F0-9]{40}$/.test(address);
   };
 
-  const handleSearchChange = async (e) => {
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setCreateNew(false);
     setConversationFound(false);
     setSearchTerm(e.target.value);
@@ -69,8 +77,8 @@ export const ConversationContainer = ({
     if (isEthDomain) {
       setLoadingResolve(true);
       try {
-        const provider = new ethers.providers.CloudflareProvider();
-        resolvedAddress = await provider.resolveName(resolvedAddress);
+        const provider = new ethers.CloudflareProvider();
+        resolvedAddress = await provider.resolveName(resolvedAddress) as string;
       } catch (error) {
         console.log(error);
         setMessage("Error resolving address");
@@ -81,30 +89,26 @@ export const ConversationContainer = ({
     }
     if (resolvedAddress && isValidEthereumAddress(resolvedAddress)) {
       processEthereumAddress(resolvedAddress);
-      setSearchTerm(resolvedAddress); // <-- Add this line
+      setSearchTerm(resolvedAddress);
     } else {
       setMessage("Invalid Ethereum address");
-      setPeerAddress(null);
+      setPeerAddress("");
       setCreateNew(false);
-      //setCanMessage(false);
     }
   };
 
-  const processEthereumAddress = async (address) => {
+  const processEthereumAddress = async (address: string) => {
     setPeerAddress(address);
-    if (address === client.address) {
+    if (address === client?.address) {
       setMessage("No self messaging allowed");
       setCreateNew(false);
-      // setCanMessage(false);
     } else {
       const canMessageStatus = await client?.canMessage(address);
       if (canMessageStatus) {
         setPeerAddress(address);
-        // setCanMessage(true);
         setMessage("Address is on the network ✅");
         setCreateNew(true);
       } else {
-        //  setCanMessage(false);
         setMessage("Address is not on the network ❌");
         setCreateNew(false);
       }
@@ -133,13 +137,13 @@ export const ConversationContainer = ({
             isConsent={isConsent}
             searchTerm={searchTerm}
             selectConversation={setSelectedConversation}
-            onConversationFound={(state) => {
+            onConversationFound={(state: boolean) => {
               setConversationFound(state);
               if (state === true) setCreateNew(false);
             }}
           />
           {message && conversationFound !== true && <small>{message}</small>}
-          {peerAddress && createNew && canMessage && !conversationFound && (
+          {peerAddress && createNew && !conversationFound && (
             <>
               <button
                 style={styles.createNewButton}

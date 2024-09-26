@@ -1,7 +1,7 @@
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CHAIN_NAMESPACES, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Wallet, WalletDetailsParams } from "@rainbow-me/rainbowkit";
 import { createConnector as createWagmiConnector } from "wagmi";
@@ -37,12 +37,12 @@ uiConfig: {
   },
 }
 });
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
 adapterSettings: {
   uxMode: UX_MODE.REDIRECT,
 },
 });
-web3AuthInstance.configureAdapter(openloginAdapter);
+web3AuthInstance.configureAdapter(authAdapter);
 
 export const rainbowWeb3AuthConnector = (): Wallet =>  ({
     id: "web3auth",

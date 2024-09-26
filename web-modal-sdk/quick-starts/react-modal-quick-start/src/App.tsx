@@ -3,9 +3,10 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth } from "@web3auth/modal";
+import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -39,12 +40,20 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
 });
 
-const web3auth = new Web3Auth({
+const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
-});
+}
+const web3auth = new Web3Auth(web3AuthOptions);
 // IMP END - SDK Initialization
+
+// IMP START - Configuring External Wallets
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+adapters.forEach((adapter: IAdapter<unknown>) => {
+  web3auth.configureAdapter(adapter);
+});
+// IMP END - Configuring External Wallets
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);

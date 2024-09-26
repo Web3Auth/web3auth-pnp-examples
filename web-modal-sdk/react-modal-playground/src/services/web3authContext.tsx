@@ -1,10 +1,9 @@
-import { UX_MODE } from "@toruslabs/openlogin-utils";
-import { WEB3AUTH_NETWORK } from "@web3auth/base";
+import { AuthAdapter, MFA_LEVELS } from "@web3auth/auth-adapter";
+import { UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthOptions } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+import { BUTTON_POSITION, CONFIRMATION_STRATEGY, WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 import { chain } from "../config/chainConfig";
 
@@ -23,9 +22,9 @@ const web3AuthOptions: Web3AuthOptions = {
   privateKeyProvider,
 };
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   loginSettings: {
-    mfaLevel: "optional",
+    mfaLevel: MFA_LEVELS.OPTIONAL,
   },
   adapterSettings: {
     uxMode: UX_MODE.REDIRECT, // "redirect" | "popup"
@@ -34,14 +33,17 @@ const openloginAdapter = new OpenloginAdapter({
 
 const walletServicesPlugin = new WalletServicesPlugin({
   wsEmbedOpts: {},
-  walletInitOptions: { whiteLabel: { showWidgetButton: true, buttonPosition: "bottom-right" } },
+  walletInitOptions: {
+    whiteLabel: { showWidgetButton: true, buttonPosition: BUTTON_POSITION.BOTTOM_RIGHT },
+    confirmationStrategy: CONFIRMATION_STRATEGY.MODAL,
+  },
 });
 
 const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
 const web3AuthContextConfig = {
   web3AuthOptions,
-  adapters: [openloginAdapter, ...adapters],
+  adapters: [authAdapter, ...adapters],
   plugins: [walletServicesPlugin],
 };
 

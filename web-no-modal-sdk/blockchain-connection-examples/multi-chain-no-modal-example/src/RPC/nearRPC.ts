@@ -1,3 +1,4 @@
+import { getED25519Key } from "@web3auth/auth-adapter";
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import { connect, KeyPair, keyStores, utils } from "near-api-js";
 export default class NearRPC {
@@ -43,7 +44,6 @@ export default class NearRPC {
         method: "private_key", // private_key
       })) as string;
 
-      const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
       const privateKeyEd25519 = getED25519Key(privateKey).sk.toString("hex");
 
       const privateKeyEd25519Buffer = Buffer.from(privateKeyEd25519, "hex");

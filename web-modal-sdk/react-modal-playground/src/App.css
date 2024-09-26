@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
 .container {
   width: 60%;
   margin: auto;
@@ -117,8 +119,6 @@
     width: 100%;
   }
 }
-
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
 body {
   font-family: "DM Sans", sans-serif !important;

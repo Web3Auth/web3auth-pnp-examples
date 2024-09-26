@@ -5,26 +5,35 @@ import {
   useSendMessage,
   useStreamMessages,
   useClient,
+  Conversation,
+  DecodedMessage,
+  Client,
 } from "@xmtp/react-sdk";
 import MessageItem from "./MessageItem";
 
-export const MessageContainer = ({
+interface MessageContainerProps {
+  conversation: Conversation;
+  isPWA?: boolean;
+  isContained?: boolean;
+}
+
+export const MessageContainer: React.FC<MessageContainerProps> = ({
   conversation,
   isPWA = false,
   isContained = false,
 }) => {
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { client } = useClient();
-  const { messages, isLoading } = useMessages(conversation);
+  const { messages, isLoading } = useMessages(conversation as any);
 
-  const styles = {
+  const styles: { [key: string]: React.CSSProperties } = {
     messagesContainer: {
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
       height: "100%",
-      fontSize: isPWA == true ? "1.2em" : ".9em", // Increased font size
+      fontSize: isPWA ? "1.2em" : ".9em",
     },
     loadingText: {
       textAlign: "center",
@@ -41,16 +50,16 @@ export const MessageContainer = ({
     },
   };
 
-  useStreamMessages(conversation);
+  useStreamMessages(conversation as any);
   const { sendMessage } = useSendMessage();
 
-  const handleSendMessage = async (newMessage) => {
+  const handleSendMessage = async (newMessage: string) => {
     if (!newMessage.trim()) {
       alert("empty message");
       return;
     }
     if (conversation && conversation.peerAddress) {
-      await sendMessage(conversation, newMessage);
+      await sendMessage(conversation as any, newMessage);
     }
   };
 
@@ -66,14 +75,13 @@ export const MessageContainer = ({
       ) : (
         <>
           <ul style={styles.messagesList}>
-            {messages.slice().map((message) => {
+            {messages.slice().map((message: any) => {
               return (
                 <MessageItem
                   isPWA={isPWA}
                   key={message.id}
                   message={message}
                   senderAddress={message.senderAddress}
-                  client={client}
                 />
               );
             })}
@@ -81,7 +89,7 @@ export const MessageContainer = ({
           </ul>
           <MessageInput
             isPWA={isPWA}
-            onSendMessage={(msg) => {
+            onSendMessage={(msg: string) => {
               handleSendMessage(msg);
             }}
           />

@@ -152,7 +152,7 @@ export default class SolanaRpc {
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
-      const { blockhash } = await conn.getRecentBlockhash("finalized");
+      const { blockhash } = await conn.getLatestBlockhash("finalized");
       const TransactionInstruction = SystemProgram.transfer({
         fromPubkey: new PublicKey(pubKey[0]),
         toPubkey: new PublicKey(pubKey[0]),
@@ -179,7 +179,7 @@ export default class SolanaRpc {
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
-      const { blockhash } = await conn.getRecentBlockhash("finalized");
+      const { blockhash } = await conn.getLatestBlockhash("finalized");
 
       const TransactionInstruction = SystemProgram.transfer({
         fromPubkey: new PublicKey(pubKey[0]),
@@ -216,7 +216,7 @@ export default class SolanaRpc {
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
-      const { blockhash } = await conn.getRecentBlockhash("finalized");
+      const { blockhash } = await conn.getLatestBlockhash("finalized");
 
 
       const transactionInstruction = SystemProgram.transfer({

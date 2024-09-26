@@ -55,7 +55,7 @@ import { ref, onMounted } from "vue";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
@@ -102,8 +102,8 @@ export default {
       privateKeyProvider,
     });
 
-    const openloginAdapter = new OpenloginAdapter();
-    web3auth.configureAdapter(openloginAdapter);
+    const authAdapter = new AuthAdapter();
+    web3auth.configureAdapter(authAdapter);
     // IMP END - SDK Initialization
 
     onMounted(async () => {
@@ -127,7 +127,7 @@ export default {
 
     const login = async () => {
       // IMP START - Login
-      provider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      provider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
         loginProvider: "google",
       });
       // IMP END - Login

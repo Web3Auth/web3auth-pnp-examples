@@ -5,7 +5,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
 import { Chain } from "wagmi/chains";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
   // Create Web3Auth Instance
@@ -37,13 +37,13 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     enableLogging: true,
   });
 
-  const openloginAdapter = new OpenloginAdapter({
+  const authAdapter = new AuthAdapter({
     adapterSettings: {
       uxMode: UX_MODE.REDIRECT,
     }
   });
 
-  web3AuthInstance.configureAdapter(openloginAdapter);
+  web3AuthInstance.configureAdapter(authAdapter);
 
   const walletServicesPlugin = new WalletServicesPlugin({
     walletInitOptions: {

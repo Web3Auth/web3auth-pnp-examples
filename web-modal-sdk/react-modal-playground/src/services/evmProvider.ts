@@ -5,6 +5,17 @@ import { ContractFactory, ethers } from "ethers";
 import { IWalletProvider } from "./walletProvider";
 
 const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
+  const getPublicKey = async (): Promise<string> => {
+    try {
+      const pubKey: string = await provider.request({ method: "public_key" });
+      // Remove 0x and return the compressed public key
+      return pubKey.slice(2) as string;
+    } catch (error: any) {
+      uiConsole(error);
+      return error.toString();
+    }
+  };
+
   const getAddress = async (): Promise<string> => {
     try {
       const ethersProvider = new ethers.BrowserProvider(provider as any);
@@ -171,6 +182,7 @@ const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unk
     deployContract,
     readContract,
     writeContract,
+    getPublicKey,
   };
 };
 

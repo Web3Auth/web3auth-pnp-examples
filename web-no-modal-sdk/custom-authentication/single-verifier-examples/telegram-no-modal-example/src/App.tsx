@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import "./App.css";
 import RPC from "./evm.viem";
 
@@ -27,7 +27,7 @@ const web3auth = new Web3AuthNoModal({
   privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     uxMode: UX_MODE.REDIRECT,
     loginConfig: {
@@ -39,7 +39,7 @@ const openloginAdapter = new OpenloginAdapter({
     },
   },
 });
-web3auth.configureAdapter(openloginAdapter);
+web3auth.configureAdapter(authAdapter);
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -77,7 +77,7 @@ function App() {
   const loginWithWeb3Auth = async (token: string) => {
     await web3auth?.init();
 
-    const web3authProvider = await web3auth?.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth?.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "jwt",
       extraLoginOptions: {
         id_token: token,

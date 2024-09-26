@@ -1,24 +1,30 @@
 import React from "react";
-import { useClient, ContentTypeId } from "@xmtp/react-sdk";
+import { useClient, ContentTypeId, DecodedMessage } from "@xmtp/react-sdk";
 
-const MessageItem = ({ message, senderAddress, isPWA = false }) => {
+interface MessageItemProps {
+  message: DecodedMessage;
+  senderAddress: string;
+  isPWA?: boolean;
+}
+
+const MessageItem: React.FC<MessageItemProps> = ({ message, senderAddress, isPWA = false }) => {
   const { client } = useClient();
-  const styles = {
+  const styles: { [key: string]: React.CSSProperties } = {
     messageContent: {
       backgroundColor: "lightblue",
-      padding: isPWA == true ? "10px 20px" : "5px 10px",
+      padding: isPWA ? "10px 20px" : "5px 10px",
       alignSelf: "flex-start",
       textAlign: "left",
       display: "inline-block",
-      margin: isPWA == true ? "10px" : "5px",
-      borderRadius: isPWA == true ? "10px" : "5px",
+      margin: isPWA ? "10px" : "5px",
+      borderRadius: isPWA ? "10px" : "5px",
       maxWidth: "80%",
       wordBreak: "break-word",
       cursor: "pointer",
       listStyle: "none",
     },
     renderedMessage: {
-      fontSize: isPWA == true ? "16px" : "12px",
+      fontSize: isPWA ? "16px" : "12px",
       wordBreak: "break-word",
       padding: "0px",
     },
@@ -40,37 +46,38 @@ const MessageItem = ({ message, senderAddress, isPWA = false }) => {
       justifyContent: "flex-end",
     },
     timeStamp: {
-      fontSize: isPWA == true ? "12px" : "8px",
+      fontSize: isPWA ? "12px" : "8px",
       color: "grey",
     },
   };
 
-  const renderFooter = (timestamp) => {
+  const renderFooter = (timestamp: Date) => {
     return (
       <div style={styles.footer}>
         <span style={styles.timeStamp}>
-          {`${new Date(timestamp).getHours()}:${String(
-            new Date(timestamp).getMinutes()
+          {`${timestamp.getHours()}:${String(
+            timestamp.getMinutes()
           ).padStart(2, "0")}`}
         </span>
       </div>
     );
   };
-  const renderMessage = (message) => {
-    const contentType = ContentTypeId.fromString(message.contentType);
-    const codec = client.codecFor(contentType);
+
+  const renderMessage = (message: DecodedMessage) => {
+    const contentType = message.contentType;
+    const codec = client?.codecFor(contentType);
     console.log("codec", codec);
-    let content = message.content;
+    let content: string | undefined = message.content as string;
     if (!codec) {
       /*Not supported content type*/
       if (message?.contentFallback !== undefined)
         content = message?.contentFallback;
-      else return;
+      else return null;
     }
     return (
       <div style={styles.messageContent}>
         <div style={styles.renderedMessage}>{content}</div>
-        {renderFooter(message.sentAt)}
+        {renderFooter(message.sent)}
       </div>
     );
   };
@@ -88,4 +95,5 @@ const MessageItem = ({ message, senderAddress, isPWA = false }) => {
     </MessageComponent>
   );
 };
+
 export default MessageItem;

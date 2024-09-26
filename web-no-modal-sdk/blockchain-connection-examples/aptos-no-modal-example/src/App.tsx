@@ -155,6 +155,7 @@ function App() {
 
   const loggedInView = (
     <>
+      <h2>A new account is not formed until it has some funds within it. Get airdropped some tokens to start with.</h2>
       <div className="flex-container">
         <div>
           <button onClick={getUserInfo} className="card">
@@ -172,13 +173,13 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
+          <button onClick={getAirdrop} className="card">
+            Get Airdrop
           </button>
         </div>
         <div>
-          <button onClick={getAirdrop} className="card">
-            Get Airdrop
+          <button onClick={getBalance} className="card">
+            Get Balance
           </button>
         </div>
         <div>

@@ -39,7 +39,7 @@ yarn dev
 
 - Schema Id: 0x65
 - Full Schema Id: onchain_evm_11155111_0x65
-- Sign Scan link: https://testnet-scan.sign.global/schema/onchain_evm_11155111_0x65
+- Sign Scan link: https:// testnet-scan.sign.global/ schema/ onchain_evm_11155111_0x65
 
 [Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
 

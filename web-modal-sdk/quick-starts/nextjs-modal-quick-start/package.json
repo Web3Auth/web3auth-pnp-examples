@@ -29,7 +29,7 @@
     "@types/react-dom": "18.3.0",
     "bufferutil": "^4.0.8",
     "eslint": "8.44.0",
-    "eslint-config-next": "13.4.9",
+    "eslint-config-next": "14.2.13",
     "typescript": "5.5.4",
     "utf-8-validate": "^5.0.10"
   }

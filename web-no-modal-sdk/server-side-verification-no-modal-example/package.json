@@ -31,7 +31,7 @@
     "@types/react-dom": "18.0.10",
     "empty-module": "^0.0.2",
     "eslint": "8.30.0",
-    "eslint-config-next": "12.3.1",
+    "eslint-config-next": "14.2.13",
     "typescript": "5.0.4",
     "zlib-browserify": "^0.0.3"
   }

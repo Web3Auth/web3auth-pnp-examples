@@ -60,9 +60,9 @@ class SolanaProvider {
     return signedTx.signatures.first.toBase58();
   }
 
-  Future<RecentBlockhash> getRecentBlockhash() async {
+  Future<LatestBlockhash> getRecentBlockhash() async {
     return await solanaClient.rpcClient
-        .getRecentBlockhash(commitment: Commitment.finalized)
+        .getLatestBlockhash(commitment: Commitment.finalized)
         .value;
   }
 }

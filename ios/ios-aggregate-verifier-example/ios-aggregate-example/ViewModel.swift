@@ -21,22 +21,22 @@ class ViewModel: ObservableObject {
             redirectUrl: "web3auth.ios-aggregate-example://auth",
             loginConfig: [
                 TypeOfLogin.google.rawValue:
-                    .init(
-                        verifier: "aggregate-sapphire",
-                        typeOfLogin: .google,
-                        name: "Web3Auth-Aggregate-Verifier-Google-Example",
-                        clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
-                        verifierSubIdentifier: "w3a-google"
-                    )
+                        .init(
+                            verifier: "aggregate-sapphire",
+                            typeOfLogin: .google,
+                            name: "Web3Auth-Aggregate-Verifier-Google-Example",
+                            clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
+                            verifierSubIdentifier: "w3a-google"
+                        ),
+                TypeOfLogin.jwt.rawValue:
+                        .init(
+                            verifier: "aggregate-sapphire",
+                            typeOfLogin: .jwt,
+                            name: "Web3Auth-Aggregate-Verifier-GitHub-Example",
+                            clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu",
+                            verifierSubIdentifier: "w3a-a0-github"
+                        )
             ],
-            whiteLabel: W3AWhiteLabelData(
-                appName: "Web3Auth Stub",
-                logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
-                logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
-                defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
-                mode: .dark,
-                theme: ["primary": "#d53f8c"]
-            ),
             mfaSettings:  MfaSettings(
                 deviceShareFactor: MfaSetting(enable: true, priority: 1),
                 backUpShareFactor: MfaSetting(enable: true, priority: 2),
@@ -56,18 +56,16 @@ class ViewModel: ObservableObject {
             navigationTitle = loggedIn ? "UserInfo" : "Agg-Verifier Example"
         })
     }
-
+    
     func loginWithGoogle() {
         Task{
             do {
                 let result = try await web3Auth?.login(
-                            W3ALoginParams(
-                            loginProvider: .GOOGLE,
-                            dappShare: nil,
-                            extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil),
-                            mfaLevel: .DEFAULT,
-                            curve: .SECP256K1
-                        ))
+                    W3ALoginParams(
+                        loginProvider: .GOOGLE,
+                        dappShare: nil,
+                        extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil)
+                    ))
                 await MainActor.run(body: {
                     user = result
                     loggedIn = true
@@ -83,11 +81,9 @@ class ViewModel: ObservableObject {
             do {
                 let result = try await web3Auth?.login(
                     W3ALoginParams(
-                    loginProvider: .JWT,
-                    dappShare: nil,
-                    extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: "github", domain: "https://web3auth.au.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "email", isVerifierIdCaseSensitive: false, additionalParams: nil),
-                    mfaLevel: .DEFAULT,
-                    curve: .SECP256K1
+                        loginProvider: .JWT,
+                        dappShare: nil,
+                        extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: "github", domain: "https://web3auth.au.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "email", isVerifierIdCaseSensitive: false, additionalParams: nil)
                     ))
                 await MainActor.run(body: {
                     user = result

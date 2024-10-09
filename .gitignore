@@ -98,6 +98,7 @@ tests/cases/user/prettier/prettier
 .eslintcache
 .expo
 build
+**/.env
 
 # Nuxt dev/build outputs
 .output

@@ -1,0 +1,37 @@
+{
+  "name": "aa-modal-example",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@web3auth/account-abstraction-provider": "9.2.0-alpha.7",
+    "@web3auth/base": "9.2.0-alpha.7",
+    "@web3auth/ethereum-provider": "9.2.0-alpha.7",
+    "@web3auth/no-modal": "9.2.0-alpha.7",
+    "@web3auth/auth-adapter": "9.2.0-alpha.7",
+    "ethers": "^6.13.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "@types/react": "^18.3.10",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "buffer": "^6.0.3",
+    "eslint": "^9.11.1",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.12",
+    "globals": "^15.9.0",
+    "process": "^0.11.10",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.7.0",
+    "vite": "^5.4.8"
+  }
+}

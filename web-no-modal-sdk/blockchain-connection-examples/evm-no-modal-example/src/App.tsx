@@ -16,13 +16,13 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
+  chainId: "0xa4b1", // Arbitrum One chainId
+  rpcTarget: "https://arb1.arbitrum.io/rpc",
+  displayName: "Arbitrum One",
+  blockExplorerUrl: "https://arbiscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+  logo: "https://arbitrum.foundation/logo.png",
 };
 
 let injectedAdapters: any;
@@ -107,7 +107,7 @@ function App() {
 
         const walletServicesPluginInstance = new WalletServicesPlugin({
           wsEmbedOpts: {},
-          walletInitOptions: { whiteLabel: { showWidgetButton: true } },
+          walletInitOptions: { whiteLabel: { showWidgetButton: true, hideTopup: true }, confirmationStrategy: "modal" },
         });
 
         setWalletServicesPlugin(walletServicesPluginInstance);
@@ -319,12 +319,19 @@ function App() {
     await walletServicesPlugin.showWalletConnectScanner();
   };
 
+  // This works only when the user gor to checkout page via this function
   const showCheckout = async () => {
     if (!walletServicesPlugin) {
       uiConsole("provider not initialized yet");
       return;
     }
-    await walletServicesPlugin.showCheckout();
+    const checkoutParams = {
+      show: true,
+      receiveWalletAddress: "0x7DF1fEf832b57E46dE2E1541951289C04B2781Aa",
+      tokenList: ["USDC", "ARB"],
+      fiatList: ["USD", "EUR"],
+    };
+    await walletServicesPlugin.showCheckout(checkoutParams);
   };
 
   const loginWithInjected = async (adapterName: string) => {

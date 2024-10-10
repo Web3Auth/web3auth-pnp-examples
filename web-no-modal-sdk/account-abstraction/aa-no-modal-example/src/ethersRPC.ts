@@ -53,7 +53,7 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
     const signer = await ethersProvider.getSigner();
 
     const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
-    const amount = ethers.parseEther("0.001");
+    const amount = ethers.parseEther("0.0001");
 
     // Submit transaction to the blockchain
     const tx = await signer.sendTransaction({
@@ -78,12 +78,19 @@ const sendBatchTransaction = async (provider: AccountAbstractionProvider): Promi
     const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
     const destination2 = "0xcEB7380d00A4750863a241BF74C7469f1C61F5F7"
 
-    const amount = ethers.parseEther("0.001");
+    const amount = ethers.parseEther("0.00001");
 
     // Submit transaction to the blockchain
     const tx = await bundlerClient.sendUserOperation({
       account: smartAccount,
       calls: [
+        // Approve USDC on Sepolia chain for Pimlico's ERC 20 Paymaster
+        // {
+        //   to: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+        //   abi: parseAbi(["function approve(address,uint)"]),
+        //   functionName: "approve",
+        //   args: ["0x0000000000000039cd5e8aE05257CE51C473ddd1", maxUint256],
+        // },
         {
           to: destination,
           value: amount,
@@ -98,9 +105,9 @@ const sendBatchTransaction = async (provider: AccountAbstractionProvider): Promi
     })
 
     // Retrieve transaction hash
-    const receipt = await bundlerClient.getUserOperationReceipt({ hash: tx });
+    const receipt = await bundlerClient.getUserOperation({ hash: tx });
 
-    return receipt;
+    return receipt.transactionHash;
   } catch (error) {
     return error as string;
   }

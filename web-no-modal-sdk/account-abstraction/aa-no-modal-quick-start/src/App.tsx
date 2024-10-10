@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { ADAPTER_EVENTS, CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { AccountAbstractionProvider, SafeSmartAccount } from "@web3auth/account-abstraction-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
@@ -56,12 +56,16 @@ function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
+  web3auth.addListener(ADAPTER_EVENTS.CONNECTED, () => {
+    setLoggedIn(true);
+  })
+
   useEffect(() => {
     const init = async () => {
       try {
         await web3auth.init();
         setProvider(web3auth.provider);
-        console.log(web3auth.status);
+
         if (web3auth.connected) {
           setLoggedIn(true);
         }
@@ -77,7 +81,7 @@ function App() {
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
-    console.log(web3auth.connected);
+
     setProvider(web3authProvider);
     if (web3auth.connected) {
       setLoggedIn(true);

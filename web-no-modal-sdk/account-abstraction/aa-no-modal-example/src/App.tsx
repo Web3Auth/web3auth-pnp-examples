@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { ADAPTER_EVENTS, CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { AccountAbstractionProvider, SafeSmartAccount } from "@web3auth/account-abstraction-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
@@ -30,6 +30,10 @@ export const accountAbstractionProvider = new AccountAbstractionProvider({
     chainConfig,
     bundlerConfig: {
       url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+      // paymasterContext: {
+      //   // type: "erc20token",
+      //   token: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"
+      // },
     },
     smartAccountInit: new SafeSmartAccount(),
     paymasterConfig: {
@@ -52,9 +56,14 @@ const web3auth = new Web3AuthNoModal({
 const authadapter = new AuthAdapter();
 web3auth.configureAdapter(authadapter);
 
+
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
+
+  web3auth.addListener(ADAPTER_EVENTS.CONNECTED, () => {
+    setLoggedIn(true);
+  })
 
   useEffect(() => {
     const init = async () => {

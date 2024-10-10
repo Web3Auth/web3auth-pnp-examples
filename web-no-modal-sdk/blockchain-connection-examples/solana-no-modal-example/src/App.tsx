@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter } from "@web3auth/base";
+import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+import { WalletConnectModal } from "@walletconnect/modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
-import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter";
+import { getInjectedAdapters } from "@web3auth/default-solana-adapter";
 import RPC from "./solanaRPC";
 import "./App.css";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-let defaultSolanaAdapters: IAdapter<unknown>[] = [];
+let injectedAdapters: IAdapter<unknown>[] = [];
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -47,8 +49,20 @@ function App() {
         });
         web3auth.configureAdapter(authAdapter);
 
-        defaultSolanaAdapters = await getDefaultExternalAdapters({ options: web3authOptions });
-        defaultSolanaAdapters.forEach((adapter) => {
+        // adding wallet connect v2 adapter
+        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.SOLANA, ["0x1", "0x2"], "04309ed1007e77d1f119b85205bb779d");
+        const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
+        const walletConnectV2Adapter = new WalletConnectV2Adapter({
+          adapterSettings: {
+            qrcodeModal: walletConnectModal,
+            ...defaultWcSettings.adapterSettings,
+          },
+          loginSettings: { ...defaultWcSettings.loginSettings },
+        });
+        web3auth.configureAdapter(walletConnectV2Adapter);
+
+        injectedAdapters = getInjectedAdapters({ options: web3authOptions });
+        injectedAdapters.forEach((adapter) => {
           web3auth.configureAdapter(adapter);
         });
 
@@ -73,6 +87,15 @@ function App() {
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
+    setProvider(web3authProvider);
+  };
+
+  const loginWCModal = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
     setProvider(web3authProvider);
   };
 
@@ -283,9 +306,12 @@ function App() {
   const unloggedInView = (
     <>
       <button onClick={loginWithGoogle} className="card">
-        Login
+        Login with Google
       </button>
-      {defaultSolanaAdapters?.map((adapter: IAdapter<unknown>) => (
+      <button onClick={loginWCModal} className="card">
+        Login with Wallet Connect v2
+      </button>
+      {injectedAdapters?.map((adapter: IAdapter<unknown>) => (
         <button key={adapter.name.toUpperCase()} onClick={() => loginWithAdapter(adapter.name)} className="card">
           Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet
         </button>

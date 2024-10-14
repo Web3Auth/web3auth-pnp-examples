@@ -2,6 +2,8 @@
 import { AccountAbstractionProvider } from "@web3auth/account-abstraction-provider";
 import type { IProvider } from "@web3auth/base";
 import { ethers } from "ethers";
+import { getAction } from "viem/utils";
+import { waitForUserOperationReceipt } from "viem/account-abstraction";
 
 const getChainId = async (provider: IProvider): Promise<any> => {
   try {
@@ -81,7 +83,7 @@ const sendBatchTransaction = async (provider: AccountAbstractionProvider): Promi
     const amount = ethers.parseEther("0.00001");
 
     // Submit transaction to the blockchain
-    const tx = await bundlerClient.sendUserOperation({
+    const userOpHash = await bundlerClient.sendUserOperation({
       account: smartAccount,
       calls: [
         // Approve USDC on Sepolia chain for Pimlico's ERC 20 Paymaster
@@ -105,9 +107,15 @@ const sendBatchTransaction = async (provider: AccountAbstractionProvider): Promi
     })
 
     // Retrieve transaction hash
-    const receipt = await bundlerClient.getUserOperation({ hash: tx });
+     const receipt = await getAction(
+        bundlerClient,
+        waitForUserOperationReceipt,
+        "waitForUserOperationReceipt"
+    )({
+        hash: userOpHash
+    });
 
-    return receipt.transactionHash;
+    return receipt.receipt.transactionHash;
   } catch (error) {
     return error as string;
   }

@@ -1,5 +1,5 @@
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, UX_MODE, Web3AuthNoModalOptions } from "@web3auth/base";
-import { OpenloginAdapterOptions } from "@web3auth/openlogin-adapter";
+import { AuthAdapterOptions } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -24,7 +24,7 @@ export const web3AuthConfig: Web3AuthNoModalOptions = {
 };
 
 
-export const openloginAdapterConfig: OpenloginAdapterOptions ={
+export const authAdapterConfig: AuthAdapterOptions ={
     adapterSettings: {
       uxMode: UX_MODE.REDIRECT,
     },

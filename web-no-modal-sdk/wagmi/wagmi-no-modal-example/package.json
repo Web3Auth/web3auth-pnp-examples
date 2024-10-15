@@ -10,17 +10,18 @@
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.31",
     "@types/react-dom": "^18.0.11",
-    "@web3auth/base": "^8.6.2",
-    "@web3auth/ethereum-provider": "^8.6.2",
-    "@web3auth/no-modal": "^8.6.2",
-    "@web3auth/openlogin-adapter": "^8.6.2",
-    "@web3auth/wallet-services-plugin": "^8.6.2",
-    "@web3auth/web3auth-wagmi-connector": "^6.0.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@web3auth/base": "^9.0.2",
+    "@web3auth/ethereum-provider": "^9.0.2",
+    "@web3auth/no-modal": "^9.1.0",
+    "@web3auth/openlogin-adapter": "^9.0.0-alpha.0",
+    "@web3auth/wallet-services-plugin": "^9.1.0",
+    "@web3auth/web3auth-wagmi-connector": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "typescript": "^5.3.3",
     "viem": "^2.7.12",
+    "vite": "^5.3.5",
     "wagmi": "^2.5.7",
     "web-vitals": "^3.3.2"
   },
@@ -29,16 +30,13 @@
   },
   "devDependencies": {
     "buffer": "^6.0.3",
-    "process": "^0.11.10",
-    "react-app-rewired": "^2.2.1",
-    "react-scripts": "5.0.1"
+    "empty-module": "^0.0.2",
+    "process": "^0.11.10"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "lint": "react-scripts lint"
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
   },
   "eslintConfig": {
     "extends": [

@@ -3,23 +3,29 @@ let web3auth = null;
 (async function init() {
   $(".btn-logged-in").hide();
   $("#sign-tx").hide();
-  // IMP START - SDK Initialization
+
   // IMP START - Dashboard Registration
 
   const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get your clientId from https://dashboard.web3auth.io
   // IMP END - Dashboard Registration
 
+  // IMP START - Chain Config
   const chainConfig = {
     chainNamespace: "eip155",
-    chainId: "0x1", // Please use 0x1 for Mainnet
-    rpcTarget: "https://rpc.ankr.com/eth",
-    displayName: "Ethereum Mainnet",
-    blockExplorerUrl: "https://etherscan.io/",
+    chainId: "0xaa36a7",
+    rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "Ethereum Sepolia Testnet",
+    blockExplorerUrl: "https://sepolia.etherscan.io",
     ticker: "ETH",
     tickerName: "Ethereum",
+    logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
   };
+  // IMP END - Chain Config
 
-const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvider({ config: { chainConfig } });
+  // IMP START - SDK Initialization
+  const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvider({ config: { chainConfig } });
 
   web3auth = new window.NoModal.Web3AuthNoModal({
     clientId,
@@ -27,8 +33,8 @@ const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvide
     web3AuthNetwork: "sapphire_mainnet",
   });
 
-  const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter();
-  web3auth.configureAdapter(openloginAdapter);
+  const authAdapter = new window.AuthAdapter.AuthAdapter();
+  web3auth.configureAdapter(authAdapter);
 
   await web3auth.init();
   // IMP END - SDK Initialization
@@ -45,9 +51,10 @@ const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvide
 $("#login").click(async function (event) {
   try {
     // IMP START - Login
-    await web3auth.connectTo("openlogin", {
+    await web3auth.connectTo("auth", {
       loginProvider: "google",
-    }); // IMP END - Login
+    }); 
+    // IMP END - Login
     $(".btn-logged-out").hide();
     $(".btn-logged-in").show();
     uiConsole("Logged in Successfully!");

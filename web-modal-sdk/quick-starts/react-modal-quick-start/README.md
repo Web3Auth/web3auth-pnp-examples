@@ -9,9 +9,9 @@ This example demonstrates how to use Web3Auth with EVM in React.
 
 ## How to Use
 
-One-Click Deploy to Vercel
+### One-Click Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-modal-quick-start&project-name=w3a-evm-modal&repository-name=w3a-evm-modal)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-vite-evm-modal-quick-start&project-name=w3a-react-vite-no-modal&repository-name=w3a-react-vite-no-modal)
 
 ### Download Manually
 
@@ -24,11 +24,11 @@ Install & Run:
 ```bash
 cd w3a-example
 npm install
-npm run start
+npm run dev
 # or
 cd w3a-example
 yarn
-yarn start
+yarn dev
 ```
 
 ## Important Links

@@ -11,6 +11,7 @@ using Nethereum.ABI.Encoders;
 using Nethereum.Hex.HexTypes;
 using Nethereum.Web3.Accounts;
 using Nethereum.Web3.Accounts.Managed;
+using Newtonsoft.Json.Linq;
 
 public class Web3AuthScript : MonoBehaviour
 {
@@ -62,6 +63,7 @@ public class Web3AuthScript : MonoBehaviour
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
         web3Auth.onMFASetup += onMFASetup;
+        web3Auth.onSignResponse += onSignResponse;
 
         updateConsole("Ready to Login!");
     }
@@ -281,6 +283,35 @@ public class Web3AuthScript : MonoBehaviour
         };
         web3Auth.launchWalletServices(chainConfig);
     }
+
+    public void PopupSignMessageUI()
+    {
+        var chainConfig = new ChainConfig()
+        {
+            chainId = "0xaa36a7",
+            rpcTarget = "https://rpc.ankr.com/eth_sepolia",
+            ticker = "ETH",
+            chainNamespace = Web3Auth.ChainNamespace.EIP155
+        };
+
+        JArray paramsArray = new JArray
+        {
+             "Hello World",
+             account.Address,
+             "Android"
+        };
+
+        web3Auth.request(chainConfig, "personal_sign", paramsArray);
+    }
+
+
+    private void onSignResponse(SignResponse signResponse)
+
+    {
+        Debug.Log("Retrieved SignResponse: " + signResponse);
+        updateConsole("Retrieved SignResponse: " + signResponse);
+    }
+
 
 
 

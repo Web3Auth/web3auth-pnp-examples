@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 
@@ -38,7 +38,7 @@ function App() {
           privateKeyProvider,
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           loginSettings: {
             mfaLevel: "optional",
           },
@@ -75,7 +75,7 @@ function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
         setWeb3auth(web3auth);
 
         await web3auth.init();
@@ -96,7 +96,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "jwt",
       extraLoginOptions: {
         domain: "https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com",
@@ -269,7 +269,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>{" "}
-        & ReactJS Example using AWS Cognito
+        & React Example using AWS Cognito
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

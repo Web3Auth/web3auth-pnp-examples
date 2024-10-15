@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
 import RPC from "./xrplRPC";
 import "./App.css";
@@ -59,18 +59,11 @@ function App() {
           privateKeyProvider: xrplProvider,
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           loginSettings: {
             mfaLevel: "optional",
           },
           adapterSettings: {
-            uxMode: "redirect", // "redirect" | "popup"
-            whiteLabel: {
-              logoLight: "https://web3auth.io/images/web3authlog.png",
-              logoDark: "https://web3auth.io/images/web3authlogodark.png",
-              defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-              // dark: false, // whether to enable dark mode. defaultValue: false
-            },
             mfaSettings: {
               deviceShareFactor: {
                 enable: true,
@@ -95,7 +88,7 @@ function App() {
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
 
         setWeb3auth(web3auth);
 
@@ -255,7 +248,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS XRPL Example
+        & React XRPL Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

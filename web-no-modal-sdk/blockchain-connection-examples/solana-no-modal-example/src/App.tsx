@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter } from "@web3auth/base";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter";
 import RPC from "./solanaRPC";
 import "./App.css";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
+let defaultSolanaAdapters: IAdapter<unknown>[] = [];
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -29,21 +30,27 @@ function App() {
 
         const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
 
-        const web3auth = new Web3AuthNoModal({
+        const web3authOptions: IWeb3AuthCoreOptions = {
           clientId,
           privateKeyProvider,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-        });
+        };
+        const web3auth = new Web3AuthNoModal(web3authOptions);
 
         setWeb3auth(web3auth);
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           privateKeyProvider,
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
+
+        defaultSolanaAdapters = await getDefaultExternalAdapters({ options: web3authOptions });
+        defaultSolanaAdapters.forEach((adapter) => {
+          web3auth.configureAdapter(adapter);
+        });
 
         await web3auth.init();
         setProvider(web3auth.provider);
@@ -58,14 +65,23 @@ function App() {
     init();
   }, []);
 
-  const login = async () => {
+  const loginWithGoogle = async () => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
+    setProvider(web3authProvider);
+  };
+
+  const loginWithAdapter = async (adapterName: string) => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connectTo(adapterName);
     setProvider(web3authProvider);
   };
 
@@ -167,16 +183,6 @@ function App() {
     uiConsole(receipt);
   };
 
-  const mintNFT = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const NFT = await rpc.mintNFT();
-    uiConsole(NFT);
-  };
-
   const signMessage = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -258,11 +264,6 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={mintNFT} className="card">
-            Mint NFT
-          </button>
-        </div>
-        <div>
           <button onClick={getPrivateKey} className="card">
             Get Private Key
           </button>
@@ -280,9 +281,16 @@ function App() {
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <>
+      <button onClick={loginWithGoogle} className="card">
+        Login
+      </button>
+      {defaultSolanaAdapters?.map((adapter: IAdapter<unknown>) => (
+        <button key={adapter.name.toUpperCase()} onClick={() => loginWithAdapter(adapter.name)} className="card">
+          Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet
+        </button>
+      ))}
+    </>
   );
 
   return (
@@ -291,7 +299,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Solana Example
+        & React Solana Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

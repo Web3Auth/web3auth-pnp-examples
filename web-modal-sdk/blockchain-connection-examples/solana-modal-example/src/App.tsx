@@ -5,7 +5,7 @@ import RPC from "./solanaRPC";
 import "./App.css";
 
 // Adapters
-import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
+import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -16,13 +16,13 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const chainConfig = {
-    chainId: "0x3",
+    chainId: "0x2",
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
-    rpcTarget: "https://api.testnet.solana.com",
+    rpcTarget: "https://api.devnet.solana.com",
     tickerName: "SOLANA",
     ticker: "SOL",
-    decimals: 18,
-    blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
+    decimals: 9,
+    blockExplorerUrl: "https://explorer.solana.com/?cluster=devnet",
     logo: "https://images.toruswallet.io/sol.svg",
   };
 
@@ -53,7 +53,7 @@ function App() {
         });
 
         // Setup external adapaters
-        const adapters = await getDefaultExternalAdapters({
+        const adapters = await getInjectedAdapters({
           options: {
             clientId,
             chainConfig,
@@ -340,7 +340,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Solana Example
+        & React Solana Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

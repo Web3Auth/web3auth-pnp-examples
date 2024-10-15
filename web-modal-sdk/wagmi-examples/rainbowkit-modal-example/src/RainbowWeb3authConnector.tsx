@@ -41,7 +41,7 @@ const web3AuthInstance = new Web3Auth({
 
 export const rainbowWeb3AuthConnector = (): Wallet => ({
   id: "web3auth",
-  name: "web3auth",
+  name: "Web3auth",
   rdns: "web3auth",
   iconUrl: "https://web3auth.io/images/web3authlog.png",
   iconBackground: "#fff",

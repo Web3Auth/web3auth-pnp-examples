@@ -38,4 +38,5 @@ public class Web3AuthOptions {
     public MfaSettings? mfaSettings { get; set; } = null;
     public int sessionTime { get; set; } = 86400;
     public ChainConfig? chainConfig { get; set; }
+    public Dictionary<string, string> originData { get; set; } = null;
 }

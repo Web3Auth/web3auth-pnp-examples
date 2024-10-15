@@ -11,7 +11,7 @@ const DisconnectWeb3AuthButton = () => {
       <div
         className="flex flex-row rounded-full px-6 py-3 text-white justify-center align-center cursor-pointer"
         style={{ backgroundColor: "#0364ff" }}
-        onClick={() => logout({ cleanup: true })}
+        onClick={() => logout()}
       >
         <img src={web3AuthLogoWhite} className="headerLogo" />
         Disconnect

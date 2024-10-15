@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
-import { CHAIN_NAMESPACES, PLUGIN_STATUS, IProvider } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+
 import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
-// import RPC from "./viemRPC"; // for using viem
+// import RPC from "./web3RPC"; // for using web3.js
+import RPC from "./viemRPC"; // for using viem
 // import RPC from "./ethersRPC"; // for using ethers.js
-import { useWalletServicesPlugin  } from "@web3auth/wallet-services-plugin-react-hooks";
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
 
 const newChain = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -22,7 +23,6 @@ const newChain = {
 
 function App() {
   const {
-    initModal,
     provider,
     web3Auth,
     isConnected,
@@ -38,27 +38,13 @@ function App() {
     addAndSwitchChain,
   } = useWeb3Auth();
 
-  const { showCheckout, showWalletConnectScanner, showWalletUI, plugin, isPluginConnected } = useWalletServicesPlugin();
+  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
   const [unloggedInView, setUnloggedInView] = useState<JSX.Element | null>(null);
   const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(
     <div>
       <h2>MFA is disabled</h2>
     </div>
   );
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        if (web3Auth) {
-          await initModal();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, [initModal, web3Auth]);
 
   const getChainId = async () => {
     if (!provider) {
@@ -78,6 +64,7 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const address = await rpc.getAccounts();
     uiConsole(address);
+    printUrl(address, "address");
   };
 
   const getBalance = async () => {
@@ -98,6 +85,7 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const receipt = await rpc.sendTransaction();
     uiConsole(receipt);
+    printUrl(receipt.transactionHash, "transaction");
   };
 
   const signMessage = async () => {
@@ -108,6 +96,36 @@ function App() {
     const rpc = new RPC(provider as IProvider);
     const signedMessage = await rpc.signMessage();
     uiConsole(signedMessage);
+  };
+
+  const signTypedDataMessage = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const signedMessage = await rpc.signTypedDataMessage();
+    uiConsole(signedMessage);
+  };
+
+  const signTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const signature = await rpc.signTransaction();
+    uiConsole(signature);
+  };
+
+  const deployContract = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider as IProvider);
+    const message = await rpc.deployContract();
+    uiConsole(message);
   };
 
   const readContract = async () => {
@@ -131,7 +149,7 @@ function App() {
     if (receipt) {
       setTimeout(async () => {
         await readContract();
-      }, 2000);
+      }, 10000);
     }
   };
 
@@ -145,12 +163,22 @@ function App() {
     uiConsole(privateKey);
   };
 
-  function uiConsole(...args: any[]): void {
+  const uiConsole = (...args: any[]): void => {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
-  }
+  };
+
+  const printUrl = (hash: string, type: "transaction" | "address" = "address") => {
+    const explorerLink = `https://sepolia.etherscan.io/${type === "transaction" ? "tx" : "address"}/${hash}`;
+    const anchor = `<a href="${explorerLink}" target="_blank" rel="noopener noreferrer">${hash}</a>`;
+
+    const consoleElement = document.querySelector("#console>p");
+    if (consoleElement) {
+      consoleElement.innerHTML = anchor;
+    }
+  };
 
   const loggedInView = (
     <>
@@ -179,8 +207,12 @@ function App() {
         <div>
           <button
             disabled={isMFAEnabled}
-            onClick={() => {
-              enableMFA();
+            onClick={async () => {
+              try {
+                await enableMFA();
+              } catch (e) {
+                uiConsole(e);
+              }
             }}
             className="card"
           >
@@ -215,7 +247,10 @@ function App() {
           <button
             onClick={() => {
               if (isPluginConnected) {
-                showCheckout();
+                showCheckout({
+
+                  show: true,
+                });
               }
             }}
             className="card"
@@ -285,12 +320,33 @@ function App() {
         </div>
         <div>
           <button onClick={signMessage} className="card">
-            Sign Message
+            Personal Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={signTypedDataMessage} className="card">
+            signTypedData Message
+          </button>
+        </div>
+        <div>
+          <button onClick={signTransaction} className="card">
+            Sign Transaction
           </button>
         </div>
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              const receipt = deployContract();
+              uiConsole(receipt);
+            }}
+            className="card"
+          >
+            Deploy Contract
           </button>
         </div>
         <div>
@@ -365,7 +421,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Ethereum Example
+        & React Ethereum Example
       </h1>
       <div className="container" style={{ textAlign: "center" }}>
         {isConnected && MFAHeader}

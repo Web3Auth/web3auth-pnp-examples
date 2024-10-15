@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 // import RPC from './ethersRPC' // for using ethers.js
@@ -37,19 +37,19 @@ function App() {
           privateKeyProvider,
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
             loginConfig: {
               facebook: {
                 verifier: "w3a-facebook-demo",
                 typeOfLogin: "facebook",
-                clientId: "215892741216994", //use your app client id you got from facebook
+                clientId: "342380202252650", //use your app client id you got from facebook
               },
             },
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
         setWeb3auth(web3auth);
 
         await web3auth.init();
@@ -71,7 +71,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "facebook",
     });
     setProvider(web3authProvider);
@@ -238,7 +238,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>{" "}
-        Core & ReactJS Example for Facebook Login
+        Core & React Example for Facebook Login
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

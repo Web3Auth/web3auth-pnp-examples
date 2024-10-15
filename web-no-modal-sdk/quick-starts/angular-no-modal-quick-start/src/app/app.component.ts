@@ -1,29 +1,38 @@
 /* eslint-disable no-console */
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 // IMP END - Quick Start
-import Web3 from "web3";
 
-// IMP START - SDK Initialization
+// IMP START - Blockchain Calls
+import RPC from "./ethersRPC";
+// import RPC from "./viemRPC";
+// import RPC from "./web3RPC";
+// IMP END - Blockchain Calls
+
 // IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
+// IMP START - Chain Config
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
-  logo: "ethereum-logo.svg",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
+// IMP END - Chain Config
 
+// IMP START - SDK Initialization
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const web3auth = new Web3AuthNoModal({
@@ -32,15 +41,16 @@ const web3auth = new Web3AuthNoModal({
   privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter();
-web3auth.configureAdapter(openloginAdapter);
+const authAdapter = new AuthAdapter();
+web3auth.configureAdapter(authAdapter);
 // IMP END - SDK Initialization
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent {
   title = "angular-app";
 
@@ -72,7 +82,7 @@ export class AppComponent {
   login = async () => {
     // IMP START - Login
 
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     // IMP END - Login
@@ -100,15 +110,13 @@ export class AppComponent {
   };
 
   // IMP START - Blockchain Calls
+  // Check the RPC file for the implementation
   getAccounts = async () => {
     if (!this.provider) {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(this.provider as any);
-
-    // Get user's Ethereum public address
-    const address = await web3.eth.getAccounts();
+    const address = await RPC.getAccounts(this.provider);
     this.uiConsole(address);
   };
 
@@ -117,16 +125,7 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(this.provider as any);
-
-    // Get user's Ethereum public address
-    const address = (await web3.eth.getAccounts())[0];
-
-    // Get user's balance in ether
-    const balance = web3.utils.fromWei(
-      await web3.eth.getBalance(address), // Balance is in wei
-      "ether"
-    );
+    const balance = await RPC.getBalance(this.provider);
     this.uiConsole(balance);
   };
 
@@ -135,20 +134,19 @@ export class AppComponent {
       this.uiConsole("provider not initialized yet");
       return;
     }
-    const web3 = new Web3(this.provider as any);
-
-    // Get user's Ethereum public address
-    const fromAddress = (await web3.eth.getAccounts())[0];
-
-    const originalMessage = "YOUR_MESSAGE";
-
-    // Sign the message
-    const signedMessage = await web3.eth.personal.sign(
-      originalMessage,
-      fromAddress,
-      "test password!" // configure your own password here.
-    );
+    const signedMessage = await RPC.signMessage(this.provider);
     this.uiConsole(signedMessage);
+  };
+
+
+  sendTransaction = async () => {
+    if (!this.provider) {
+      this.uiConsole("provider not initialized yet");
+      return;
+    }
+    this.uiConsole("Sending Transaction...");
+    const transactionReceipt = await RPC.sendTransaction(this.provider);
+    this.uiConsole(transactionReceipt);
   };
   // IMP END - Blockchain Calls
 

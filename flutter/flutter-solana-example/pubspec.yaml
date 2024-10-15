@@ -1,19 +1,22 @@
 name: flutter_solana_example
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=2.18.0 <4.0.0'
+  sdk: ">=2.18.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   get_it: ^7.6.4
   hex: ^0.2.0
-  solana: ^0.30.0+1
-  web3auth_flutter: ^5.0.3
+  solana: ^0.31.0
+  web3auth_flutter: ^5.0.4
 
+dependency_overrides:
+  pinenacl: ^0.6.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

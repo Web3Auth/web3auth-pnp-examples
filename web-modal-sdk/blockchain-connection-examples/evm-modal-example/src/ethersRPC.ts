@@ -86,12 +86,14 @@ export default class EthereumRpc {
       // const amount = ethers.utils.parseEther("0.001");
       const amount = ethers.parseEther("0.001");
 
+      const fees = await ethersProvider.getFeeData()
+
       // Submit transaction to the blockchain
       const tx = await signer.sendTransaction({
         to: destination,
         value: amount,
-        maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
-        maxFeePerGas: "6000000000000", // Max fee per gas
+        maxPriorityFeePerGas: fees.maxPriorityFeePerGas, // Max priority fee per gas
+        maxFeePerGas: fees.maxFeePerGas, // Max fee per gas
       });
 
       // Wait for transaction to be mined

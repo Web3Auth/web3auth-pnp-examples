@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import "./App.css";
 import RPC from "./aptosRPC";
 
@@ -35,12 +35,12 @@ function App() {
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
         });
 
-        const openloginAdapter = new OpenloginAdapter({
+        const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
           },
         });
-        web3auth.configureAdapter(openloginAdapter);
+        web3auth.configureAdapter(authAdapter);
 
         setWeb3auth(web3auth);
 
@@ -62,7 +62,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
@@ -112,7 +112,7 @@ function App() {
       return;
     }
     const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
+    const balance = await rpc.getBalance(await rpc.getAccounts());
     uiConsole(balance);
   };
 
@@ -122,8 +122,8 @@ function App() {
       return;
     }
     const rpc = new RPC(provider);
-    const airdrop = await rpc.getAirdrop();
-    uiConsole("Airdropped some tokens TxID: " + airdrop);
+    const airdrop = await rpc.getAirdrop(await rpc.getAccounts(), 1000000000000000);
+    uiConsole("Airdropped some tokens TxID: " + airdrop.hash);
   };
 
   const sendTransaction = async () => {
@@ -155,6 +155,7 @@ function App() {
 
   const loggedInView = (
     <>
+      <h2>A new account is not formed until it has some funds within it. Get airdropped some tokens to start with.</h2>
       <div className="flex-container">
         <div>
           <button onClick={getUserInfo} className="card">
@@ -172,13 +173,13 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
+          <button onClick={getAirdrop} className="card">
+            Get Airdrop
           </button>
         </div>
         <div>
-          <button onClick={getAirdrop} className="card">
-            Get Airdrop
+          <button onClick={getBalance} className="card">
+            Get Balance
           </button>
         </div>
         <div>
@@ -215,7 +216,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Aptos Example
+        & React Aptos Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

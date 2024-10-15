@@ -2,8 +2,6 @@
 import { AccountAbstractionProvider } from "@web3auth/account-abstraction-provider";
 import type { IProvider } from "@web3auth/base";
 import { ethers } from "ethers";
-import { getAction } from "viem/utils";
-import { waitForUserOperationReceipt } from "viem/account-abstraction";
 
 const getChainId = async (provider: IProvider): Promise<any> => {
   try {
@@ -107,14 +105,10 @@ const sendBatchTransaction = async (provider: AccountAbstractionProvider): Promi
     })
 
     // Retrieve transaction hash
-     const receipt = await getAction(
-        bundlerClient,
-        waitForUserOperationReceipt,
-        "waitForUserOperationReceipt"
-    )({
-        hash: userOpHash
+    const receipt = await bundlerClient.waitForUserOperationReceipt({
+      hash: userOpHash,
     });
-
+    
     return receipt.receipt.transactionHash;
   } catch (error) {
     return error as string;

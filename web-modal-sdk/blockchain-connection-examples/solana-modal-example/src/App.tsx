@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { WalletConnectModal } from "@walletconnect/modal";
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 
 import RPC from "./solanaRPC";
 import "./App.css";
 
 // Adapters
-import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -19,7 +17,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const chainConfig = {
-    chainId: "0x2",
+    chainId: "0x1",
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     rpcTarget: "https://api.devnet.solana.com",
     tickerName: "SOLANA",
@@ -55,26 +53,14 @@ function App() {
           privateKeyProvider: solanaPrivateKeyPrvoider,
         });
 
-        // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.SOLANA, ["0x1", "0x2"], "04309ed1007e77d1f119b85205bb779d");
-        const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
-        const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          adapterSettings: {
-            qrcodeModal: walletConnectModal,
-            ...defaultWcSettings.adapterSettings,
-          },
-          loginSettings: { ...defaultWcSettings.loginSettings },
-        });
-        web3auth.configureAdapter(walletConnectV2Adapter);
-
         // Setup external adapters
-        const adapters = getInjectedAdapters({
+        const adapters = getDefaultExternalAdapters({
           options: {
             clientId,
             chainConfig,
           },
         });
-        adapters.forEach((adapter) => {
+        adapters.forEach((adapter: IAdapter<any>) => {
           web3auth.configureAdapter(adapter);
         });
 

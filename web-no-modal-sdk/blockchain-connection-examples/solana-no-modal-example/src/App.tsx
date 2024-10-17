@@ -14,14 +14,13 @@ let injectedAdapters: IAdapter<unknown>[] = [];
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.SOLANA,
-          chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+          chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
           rpcTarget: "https://api.devnet.solana.com",
           displayName: "Solana Devnet",
           blockExplorerUrl: "https://explorer.solana.com",
@@ -68,9 +67,6 @@ function App() {
 
         await web3auth.init();
         setProvider(web3auth.provider);
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
       } catch (error) {
         console.error(error);
       }
@@ -133,7 +129,6 @@ function App() {
     }
     await web3auth.logout();
     setProvider(null);
-    setLoggedIn(false);
   };
 
   const getAccounts = async () => {
@@ -328,7 +323,7 @@ function App() {
         & React Solana Example
       </h1>
 
-      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
+      <div className="grid">{web3auth?.status === "connected" ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a

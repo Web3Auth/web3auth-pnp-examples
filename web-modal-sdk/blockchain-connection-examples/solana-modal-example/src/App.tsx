@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { WalletConnectModal } from "@walletconnect/modal";
+import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+
 import RPC from "./solanaRPC";
 import "./App.css";
 
@@ -52,8 +55,20 @@ function App() {
           privateKeyProvider: solanaPrivateKeyPrvoider,
         });
 
-        // Setup external adapaters
-        const adapters = await getInjectedAdapters({
+        // adding wallet connect v2 adapter
+        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.SOLANA, ["0x1", "0x2"], "04309ed1007e77d1f119b85205bb779d");
+        const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
+        const walletConnectV2Adapter = new WalletConnectV2Adapter({
+          adapterSettings: {
+            qrcodeModal: walletConnectModal,
+            ...defaultWcSettings.adapterSettings,
+          },
+          loginSettings: { ...defaultWcSettings.loginSettings },
+        });
+        web3auth.configureAdapter(walletConnectV2Adapter);
+
+        // Setup external adapters
+        const adapters = getInjectedAdapters({
           options: {
             clientId,
             chainConfig,

@@ -339,6 +339,14 @@ function App() {
     await walletServicesPlugin.showCheckout();
   };
 
+  const showSwap = async () => {
+    if (!walletServicesPlugin) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    await walletServicesPlugin.showSwap();
+  };
+
   const loginWithInjected = async (adapterName: string) => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
@@ -398,7 +406,12 @@ function App() {
         </div>
         <div>
           <button onClick={showCheckout} className="card">
-            Fiat to Crypto
+            Show Checkout (Fiat to Crypto)
+          </button>
+        </div>
+        <div>
+          <button onClick={showSwap} className="card">
+            Swap
           </button>
         </div>
         <div>

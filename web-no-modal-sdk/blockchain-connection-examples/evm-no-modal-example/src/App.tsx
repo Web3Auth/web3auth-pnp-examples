@@ -60,6 +60,7 @@ function App() {
         const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
+            buildEnv: "testing",
             mfaSettings: {
               deviceShareFactor: {
                 enable: true,

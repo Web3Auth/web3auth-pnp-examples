@@ -81,6 +81,16 @@ function App() {
                 priority: 4,
                 mandatory: true,
               },
+              passkeysFactor: {
+                enable: true,
+                priority: 5,
+                mandatory: false,
+              },
+              authenticatorFactor: {
+                enable: true,
+                priority: 6,
+                mandatory: false,
+              },
             },
           },
           loginSettings: {

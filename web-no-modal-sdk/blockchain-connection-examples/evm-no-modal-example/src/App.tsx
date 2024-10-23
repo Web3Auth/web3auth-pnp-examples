@@ -54,13 +54,21 @@ function App() {
             },
             useLogoLoader: true,
           },
+          useCoreKitKey: true,
         };
         const web3auth = new Web3AuthNoModal(web3authNoModalOptions);
 
         const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
-            buildEnv: "testing",
+            // buildEnv: "testing",
+            loginConfig: {
+              email_passwordless: {
+                verifier: "w3a-email-passwordless-demo",
+                typeOfLogin: "email_passwordless",
+                clientId,
+              },
+            },
             mfaSettings: {
               deviceShareFactor: {
                 enable: true,

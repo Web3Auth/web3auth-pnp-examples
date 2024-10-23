@@ -1,5 +1,5 @@
 {
-  "name": "aa-modal-example",
+  "name": "aa-modal-quick-start",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,10 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@web3auth/account-abstraction-provider": "9.2.1",
-    "@web3auth/base": "9.2.1",
-    "@web3auth/ethereum-provider": "9.2.1",
-    "@web3auth/modal": "9.2.1",
+    "@web3auth/account-abstraction-provider": "9.3.0",
+    "@web3auth/base": "9.3.0",
+    "@web3auth/ethereum-provider": "9.3.0",
+    "@web3auth/modal": "9.3.0",
     "ethers": "^6.13.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

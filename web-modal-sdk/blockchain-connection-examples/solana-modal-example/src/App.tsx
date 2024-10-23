@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+
 import RPC from "./solanaRPC";
 import "./App.css";
 
 // Adapters
-import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -16,7 +17,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const chainConfig = {
-    chainId: "0x2",
+    chainId: "0x1",
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     rpcTarget: "https://api.devnet.solana.com",
     tickerName: "SOLANA",
@@ -52,14 +53,14 @@ function App() {
           privateKeyProvider: solanaPrivateKeyPrvoider,
         });
 
-        // Setup external adapaters
-        const adapters = await getInjectedAdapters({
+        // Setup external adapters
+        const adapters = getDefaultExternalAdapters({
           options: {
             clientId,
             chainConfig,
           },
         });
-        adapters.forEach((adapter) => {
+        adapters.forEach((adapter: IAdapter<any>) => {
           web3auth.configureAdapter(adapter);
         });
 

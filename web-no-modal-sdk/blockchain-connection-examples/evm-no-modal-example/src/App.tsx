@@ -31,6 +31,8 @@ function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
   const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
     const init = async () => {
@@ -58,6 +60,7 @@ function App() {
         const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
+            buildEnv: "testing",
             mfaSettings: {
               deviceShareFactor: {
                 enable: true,
@@ -78,6 +81,16 @@ function App() {
                 enable: true,
                 priority: 4,
                 mandatory: true,
+              },
+              passkeysFactor: {
+                enable: true,
+                priority: 5,
+                mandatory: false,
+              },
+              authenticatorFactor: {
+                enable: true,
+                priority: 6,
+                mandatory: false,
               },
             },
           },
@@ -149,7 +162,7 @@ function App() {
     const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
       loginProvider: "sms_passwordless",
       extraLoginOptions: {
-        login_hint: "+65-XXXXXXX",
+        login_hint: phoneNumber.trim(),
       },
     });
     setProvider(web3authProvider);
@@ -166,7 +179,7 @@ function App() {
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "email_passwordless",
       extraLoginOptions: {
-        login_hint: "hello@web3auth.io",
+        login_hint: email.trim(),
       },
     });
     setProvider(web3authProvider);
@@ -327,6 +340,14 @@ function App() {
     await walletServicesPlugin.showCheckout();
   };
 
+  const showSwap = async () => {
+    if (!walletServicesPlugin) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    await walletServicesPlugin.showSwap();
+  };
+
   const loginWithInjected = async (adapterName: string) => {
     if (!web3auth) {
       uiConsole("web3auth not initialized yet");
@@ -386,7 +407,12 @@ function App() {
         </div>
         <div>
           <button onClick={showCheckout} className="card">
-            Fiat to Crypto
+            Show Checkout (Fiat to Crypto)
+          </button>
+        </div>
+        <div>
+          <button onClick={showSwap} className="card">
+            Swap
           </button>
         </div>
         <div>
@@ -427,26 +453,32 @@ function App() {
   );
 
   const unloggedInView = (
-    <>
+    <div className="login-container">
       <button onClick={login} className="card">
         Login
       </button>
-      <button onClick={loginWithSMS} className="card">
-        SMS Login (e.g +cc-number)
-      </button>
-      <button onClick={loginWithEmail} className="card">
-        Email Login (e.g hello@web3auth.io)
-      </button>
+      <div className="input-button-group">
+        <input type="text" placeholder="+65-XXXXXXX" required onChange={(e) => setPhoneNumber(e.target.value)} />
+        <button onClick={loginWithSMS} className="card login-button">
+          SMS Login
+        </button>
+      </div>
+      <div className="input-button-group">
+        <input type="email" placeholder="username@email.io" required onChange={(e) => setEmail(e.target.value)} />
+        <button onClick={loginWithEmail} className="card login-button">
+          Email Login
+        </button>
+      </div>
       <button onClick={loginWCModal} className="card">
         Login with Wallet Connect v2
       </button>
 
       {injectedAdapters?.map((adapter: IAdapter<unknown>) => (
         <button key={adapter.name.toUpperCase()} onClick={() => loginWithInjected(adapter.name)} className="card">
-          `Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet`
+          Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet
         </button>
       ))}
-    </>
+    </div>
   );
 
   return (
@@ -455,7 +487,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>{" "}
-        & React Ethereum Example
+        NoModal React-Vite Ethereum Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

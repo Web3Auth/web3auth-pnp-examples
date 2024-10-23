@@ -33,6 +33,7 @@ Here is an example `.env` file template
 ```
 VITE_API_KEY = "YOUR_PIMLICO_API_KEY"
 ```
+<!-- markdown-link-check-disable-next-line -->
 Get your pimlico API key from the [Pimlico Dashboard](https://dashboard.pimlico.io/)
 
 ## Run 

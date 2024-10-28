@@ -12,13 +12,13 @@
       "esnext"
     ],
     "module": "esnext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ESNext",
+    "target": "esnext",
     "types": [
       "vite/client"
     ]

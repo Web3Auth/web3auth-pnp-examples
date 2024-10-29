@@ -4,7 +4,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-evm-adapter";
+// import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-evm-adapter";
 
 const chainConfig = {
   chainId: "0xaa36a7", // for wallet connect make sure to pass in this chain in the loginSettings of the adapter.

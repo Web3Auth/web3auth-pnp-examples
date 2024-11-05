@@ -12,7 +12,7 @@ This example demonstrates how to use Web3Auth [Account abstraction provider](htt
 1. Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/account-abstraction-examples/safe/safe-modal-example w3a-safe-example
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/account-abstraction-examples/safe-modal-example w3a-safe-example
 ```
 
 2. Navigate into the project directory

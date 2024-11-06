@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Button, ScrollView, Dimensions, TextInput } from "react-native";
-
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK, ChainNamespace } from "@web3auth/react-native-sdk";
+import Web3Auth, { ChainNamespace, LOGIN_PROVIDER, WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import React, { useEffect, useState } from "react";
+import { Button, Dimensions, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import EncryptedStorage from "react-native-encrypted-storage";
+
 import RPC from "./solanaRPC";
 
 const scheme = "solanarnexample"; // Or your desired app redirection scheme
-const redirectUrl = `${scheme}://openlogin`;
+const redirectUrl = `${scheme}://auth`;
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -30,7 +30,8 @@ const privateKeyProvider = new SolanaPrivateKeyProvider({
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   redirectUrl,
-  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  privateKeyProvider,
 });
 
 export default function App() {
@@ -43,9 +44,7 @@ export default function App() {
     const init = async () => {
       await web3auth.init();
 
-      if (web3auth.ed25519Key) {
-        await privateKeyProvider.setupProvider(web3auth.ed25519Key);
-
+      if (web3auth.connected) {
         setProvider(privateKeyProvider);
         setLoggedIn(true);
       }
@@ -73,9 +72,7 @@ export default function App() {
         },
       });
 
-      if (web3auth.ed25519Key) {
-        await privateKeyProvider.setupProvider(web3auth.ed25519Key);
-
+      if (web3auth.connected) {
         setProvider(privateKeyProvider);
         uiConsole("Logged In");
         setLoggedIn(true);
@@ -95,7 +92,7 @@ export default function App() {
 
     await web3auth.logout();
 
-    if (!web3auth.privKey) {
+    if (!web3auth.connected) {
       setProvider(null);
       uiConsole("Logged out");
       setLoggedIn(false);
@@ -143,7 +140,7 @@ export default function App() {
   };
 
   const uiConsole = (...args: unknown[]) => {
-    setConsole(JSON.stringify(args || {}, null, 2) + "\n\n\n\n" + console);
+    setConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${console}`);
   };
 
   const loggedInView = (

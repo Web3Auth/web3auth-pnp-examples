@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Button, ScrollView, Dimensions } from "react-native";
-import * as WebBrowser from "@toruslabs/react-native-web-browser";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK, ChainNamespace } from "@web3auth/react-native-sdk";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import firebaseAuth from "@react-native-firebase/auth";
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import Web3Auth, { ChainNamespace, LOGIN_PROVIDER, WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
+import React, { useEffect, useState } from "react";
+import { Button, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import EncryptedStorage from "react-native-encrypted-storage";
 
 // import RPC from './web3RPC'; // for using web3.js
 import RPC from "./ethersRPC"; // for using ethers.js
 
 const scheme = "web3authrnbarefirebase"; // Or your desired app redirection scheme
-const redirectUrl = `${scheme}://openlogin`;
+const redirectUrl = `${scheme}://auth`;
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 
 const chainConfig = {
@@ -35,7 +35,7 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
-  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
   redirectUrl,
   useCoreKitKey: true,
   loginConfig: {
@@ -46,6 +46,7 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
       clientId,
     },
   },
+  privateKeyProvider: ethereumPrivateKeyProvider,
 });
 
 async function signInWithEmailPassword() {
@@ -67,8 +68,7 @@ export default function App() {
       // IMP START - SDK Initialization
       await web3auth.init();
 
-      if (web3auth.privKey) {
-        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+      if (web3auth.connected) {
         // IMP END - SDK Initialization
         setProvider(ethereumPrivateKeyProvider);
         setLoggedIn(true);
@@ -96,8 +96,7 @@ export default function App() {
       });
 
       uiConsole("Logged In");
-      if (web3auth.privKey) {
-        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+      if (web3auth.connected) {
         // IMP END - Login
         setProvider(ethereumPrivateKeyProvider);
         uiConsole("Logged In");
@@ -117,7 +116,7 @@ export default function App() {
     setConsole("Logging out");
     await web3auth.logout();
 
-    if (!web3auth.privKey) {
+    if (!web3auth.connected) {
       setProvider(null);
       uiConsole("Logged out");
       setLoggedIn(false);
@@ -294,7 +293,7 @@ export default function App() {
   };
 
   const uiConsole = (...args: unknown[]) => {
-    setConsole(JSON.stringify(args || {}, null, 2) + "\n\n\n\n" + console);
+    setConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${console}`);
   };
 
   const loggedInView = (

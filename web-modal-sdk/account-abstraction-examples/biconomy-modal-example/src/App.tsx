@@ -2,10 +2,9 @@ import "./App.css";
 
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { AccountAbstractionProvider, SafeSmartAccount } from "@web3auth/account-abstraction-provider";
+import { AccountAbstractionProvider, BiconomySmartAccount } from "@web3auth/account-abstraction-provider";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { useEffect, useState } from "react";
-
 
 import RPC from "./ethersRPC";
 
@@ -30,11 +29,11 @@ const accountAbstractionProvider = new AccountAbstractionProvider({
     bundlerConfig: {
       url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
     },
-    smartAccountInit: new SafeSmartAccount(),
+    smartAccountInit: new BiconomySmartAccount(),
     paymasterConfig: {
       url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
-    }
-  }
+    },
+  },
 });
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -45,8 +44,8 @@ const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
-  accountAbstractionProvider
-}
+  accountAbstractionProvider,
+};
 
 const web3auth = new Web3Auth(web3AuthOptions);
 
@@ -90,7 +89,6 @@ function App() {
     setLoggedIn(false);
     uiConsole("logged out");
   };
-
 
   const getAccounts = async () => {
     if (!provider) {
@@ -201,7 +199,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & AA React Quick Start
+        & Biconomy AA React Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

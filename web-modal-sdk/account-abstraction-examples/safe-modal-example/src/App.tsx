@@ -6,7 +6,6 @@ import { AccountAbstractionProvider, SafeSmartAccount } from "@web3auth/account-
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { useEffect, useState } from "react";
 
-
 import RPC from "./ethersRPC";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -33,8 +32,8 @@ const accountAbstractionProvider = new AccountAbstractionProvider({
     smartAccountInit: new SafeSmartAccount(),
     paymasterConfig: {
       url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
-    }
-  }
+    },
+  },
 });
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -45,8 +44,8 @@ const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
-  accountAbstractionProvider
-}
+  accountAbstractionProvider,
+};
 
 const web3auth = new Web3Auth(web3AuthOptions);
 
@@ -90,7 +89,6 @@ function App() {
     setLoggedIn(false);
     uiConsole("logged out");
   };
-
 
   const getAccounts = async () => {
     if (!provider) {
@@ -201,7 +199,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & AA React Quick Start
+        & Safe AA React Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

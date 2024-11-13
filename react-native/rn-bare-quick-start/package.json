@@ -20,7 +20,7 @@
     "react-native": "0.74.2",
     "react-native-encrypted-storage": "^4.0.3"
   },
-  "//IMP END": "IMP START - Web3Auth Installation",
+  "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",

@@ -1,9 +1,11 @@
 buildscript {
     ext {
         buildToolsVersion = "34.0.0"
+        // IMP START - Requirements Android
         minSdkVersion = 23
         compileSdkVersion = 34
         targetSdkVersion = 34
+        // IMP END - Requirements Android
         ndkVersion = "26.1.10909125"
         kotlinVersion = "1.9.22"
     }

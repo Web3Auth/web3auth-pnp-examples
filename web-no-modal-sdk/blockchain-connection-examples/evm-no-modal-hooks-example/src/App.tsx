@@ -12,8 +12,8 @@ const newChain = {
   rpcTarget: "https://rpc.ankr.com/polygon",
   displayName: "Polygon Mainnet",
   blockExplorerUrl: "https://polygonscan.com",
-  ticker: "MATIC",
-  tickerName: "MATIC",
+  ticker: "POL",
+  tickerName: "Polygon Ecosystem token",
   logo: "https://images.toruswallet.io/polygon.svg",
 };
 

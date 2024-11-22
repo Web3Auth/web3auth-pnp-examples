@@ -31,8 +31,8 @@ export const chain: {
     // Use services like Infura, Quicknode etc
     displayName: "Polygon Mainnet",
     blockExplorerUrl: "https://polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Matic",
+    ticker: "POL",
+    tickerName: "Polygon Ecosystem token",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
   polygonTest: {
@@ -43,8 +43,8 @@ export const chain: {
     // Use services like Infura, Quicknode etc
     displayName: "Polygon Amoy Testnet",
     blockExplorerUrl: "https://amoy.polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Matic",
+    ticker: "POL",
+    tickerName: "Polygon Ecosystem token",
     logo: "https://web3auth.io/images/web3authlog.png",
   },
   base: {

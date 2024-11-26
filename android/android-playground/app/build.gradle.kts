@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.android_playground"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -57,7 +57,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.13.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.27.1")
     implementation("androidx.compose.material:material-icons-extended:1.6.7")
-    implementation("com.github.web3auth:web3auth-android-sdk:8.0.1")
+    implementation("com.github.web3auth:web3auth-android-sdk:9.0.0")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.7")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.7")
     implementation("androidx.activity:activity-compose:1.9.0")

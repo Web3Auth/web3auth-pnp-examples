@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IAdapter, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 
 import RPC from "./solanaRPC";
 import "./App.css";
 
 // Adapters
-import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
+import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -66,7 +66,65 @@ function App() {
 
         setWeb3auth(web3auth);
 
-        await web3auth.initModal();
+        await web3auth.initModal({
+          modalConfig: {
+            [WALLET_ADAPTERS.AUTH]: {
+              label: "auth",
+              loginMethods: {
+                // it will hide the facebook option from the Web3Auth modal.
+                facebook: {
+                  name: "facebook",
+                  showOnModal: false,
+                },
+                reddit: {
+                  name: "reddit",
+                  showOnModal: false,
+                },
+                twitch: {
+                  name: "twitch",
+                  showOnModal: false,
+                },
+                line: {
+                  name: "line",
+                  showOnModal: false,
+                },
+                kakao: {
+                  name: "kakao",
+                  showOnModal: false,
+                },
+                linkedin: {
+                  name: "linkedin",
+                  showOnModal: false,
+                },
+                twitter: {
+                  name: "twitter",
+                  showOnModal: false,
+                },
+                weibo: {
+                  name: "weibo",
+                  showOnModal: false,
+                },
+                wechat: {
+                  name: "wechat",
+                  showOnModal: false,
+                },
+                farcaster: {
+                  name: "farcaster",
+                  showOnModal: false,
+                },
+                email_passwordless: {
+                  name: "email-passwordless",
+                  showOnModal: true,
+                },
+                sms_passwordless: {
+                  name: "sms-passwordless",
+                  showOnModal: true,
+                },
+              },
+              showOnModal: true,
+            },
+          },
+        });
         setProvider(web3auth.provider);
 
         if (web3auth.connected) {

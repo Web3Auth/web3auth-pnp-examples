@@ -4,7 +4,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-// import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-evm-adapter";
+import { getDefaultExternalAdapters, getInjectedAdapters } from "@web3auth/default-evm-adapter";
 
 const chainConfig = {
   chainId: "0xaa36a7", // for wallet connect make sure to pass in this chain in the loginSettings of the adapter.
@@ -55,7 +55,7 @@ const authAdapter = new AuthAdapter({
       logoLight: "https://web3auth.io/images/web3authlog.png",
       logoDark: "https://web3auth.io/images/web3authlogodark.png",
       defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
-      mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
+      mode: "light", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
     },
     mfaSettings: {
       deviceShareFactor: {
@@ -85,10 +85,10 @@ const authAdapter = new AuthAdapter({
 const walletServicesPlugin = new WalletServicesPlugin();
 
 // const adapters = await getInjectedAdapters({options: web3AuthOptions});
-// const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
 export const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions,
-  adapters: [authAdapter],
+  adapters: [authAdapter, ...adapters],
   plugins: [walletServicesPlugin],
 };

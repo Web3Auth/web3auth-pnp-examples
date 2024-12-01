@@ -3,7 +3,7 @@ import Web3Auth
 import web3
 
 struct UserDetailView: View {
-
+    
     @State private var showingAlert = false
     @StateObject var web3RPC: Web3RPC
     @StateObject var viewModel: ViewModel
@@ -20,7 +20,7 @@ struct UserDetailView: View {
                 Section{
                     Button {
                         web3RPC.getAccounts()
-
+                        
                     } label: {
                         HStack{
                             Text("Get Public Key")
@@ -30,7 +30,7 @@ struct UserDetailView: View {
                     if(web3RPC.publicAddress != ""){
                         Text("\(web3RPC.publicAddress)")
                     }
-                     
+                    
                 } header: {
                     Text("Public key")
                 }
@@ -38,19 +38,19 @@ struct UserDetailView: View {
                     Text("Name \(user.userInfo?.name ?? "")")
                     Text("Email \(user.userInfo?.email ?? "")")
                 }
-                header: {
-                    Text("User Info")
-                }
+            header: {
+                Text("User Info")
+            }
                 Section{
-                   Button {
-                       web3RPC.getBalance()
-
-                   } label: {
-                       HStack{
-                           Text("Get Balance")
-                           Spacer()
-                       }
-                   }
+                    Button {
+                        web3RPC.getBalance()
+                        
+                    } label: {
+                        HStack{
+                            Text("Get Balance")
+                            Spacer()
+                        }
+                    }
                     if(web3RPC.balance>=0){
                         Text("\(web3RPC.balance) Eth")
                         
@@ -79,9 +79,9 @@ struct UserDetailView: View {
                     }
                     
                 }
-                header: {
-                    Text("Blockchain Calls")
-                }
+            header: {
+                Text("Blockchain Calls")
+            }
                 
                 Section(
                     header: Text("Web3Auth Operations")
@@ -99,23 +99,18 @@ struct UserDetailView: View {
                     }
                     
                     Button {
-                        viewModel.request()
-                    } label: {
-                        Text("Request Signature")
-                    }
-                    
-                    Button {
-                        viewModel.getSignature{
+                        viewModel.request{
                             result in
                             self.signature = result
                         }
                     } label: {
-                        Text("Get Signature")
+                        Text("Request Signature")
                     }
                     
                     if(!signature.isEmpty) {
                         Text(signature)
                     }
+                    
                 }
                 
                 

@@ -686,8 +686,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Web3Auth/web3auth-swift-sdk/";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
+				branch = fix_resolve_invalid_session;
+				kind = branch;
 			};
 		};
 		2888565B2BDA5EDC0087B92C /* XCRemoteSwiftPackageReference "web3" */ = {

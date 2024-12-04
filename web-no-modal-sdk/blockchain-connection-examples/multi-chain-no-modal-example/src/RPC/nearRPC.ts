@@ -47,7 +47,7 @@ export default class NearRPC {
       const privateKeyEd25519 = getED25519Key(privateKey).sk.toString("hex");
 
       const privateKeyEd25519Buffer = Buffer.from(privateKeyEd25519, "hex");
-      const bs58encode = utils.serialize.base_encode(privateKeyEd25519Buffer);
+      const bs58encode = utils.serialize.base_encode(privateKeyEd25519Buffer as any);
       const keyPair = KeyPair.fromString(`ed25519:${bs58encode}`);
       return keyPair;
     } catch (error) {

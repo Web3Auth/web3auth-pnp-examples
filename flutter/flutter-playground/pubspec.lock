@@ -292,13 +292,13 @@ packages:
     source: hosted
     version: "1.9.0"
   pinenacl:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: pinenacl
-      sha256: "57e907beaacbc3c024a098910b6240758e899674de07d6949a67b52fd984cbdf"
+      sha256: "3a5503637587d635647c93ea9a8fecf48a420cc7deebe6f1fc85c2a5637ab327"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.0"
+    version: "0.5.1"
   pointycastle:
     dependency: transitive
     description:
@@ -460,10 +460,10 @@ packages:
     dependency: "direct main"
     description:
       name: web3auth_flutter
-      sha256: "6590bf131dc773fda6a07ec6ee5ac2f63aa7bdaf36977fa3335b84f3083089d2"
+      sha256: "94eab6cebc241bcb9d2e00e857d97c0635a2778acc886db269bf41f91e794985"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.4"
+    version: "6.0.1"
   web3dart:
     dependency: "direct main"
     description:

@@ -473,10 +473,10 @@ packages:
     dependency: "direct main"
     description:
       name: web3auth_flutter
-      sha256: "6590bf131dc773fda6a07ec6ee5ac2f63aa7bdaf36977fa3335b84f3083089d2"
+      sha256: "94eab6cebc241bcb9d2e00e857d97c0635a2778acc886db269bf41f91e794985"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.4"
+    version: "6.0.1"
   web3dart:
     dependency: "direct main"
     description:
@@ -489,10 +489,10 @@ packages:
     dependency: "direct overridden"
     description:
       name: win32
-      sha256: "4d45dc9069dba4619dc0ebd93c7cec5e66d8482cb625a370ac806dcc8165f2ec"
+      sha256: "8b338d4486ab3fbc0ba0db9f9b4f5239b6697fcee427939a40e720cbb9ee0a69"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.5"
+    version: "5.9.0"
   xdg_directories:
     dependency: transitive
     description:

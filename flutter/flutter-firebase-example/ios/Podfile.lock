@@ -1,6 +1,6 @@
 PODS:
   - BigInt (5.2.0)
-  - curvelib.swift (1.0.1)
+  - curvelib.swift (2.0.0)
   - Firebase/Auth (10.18.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.18.0)
@@ -50,17 +50,17 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - TorusSessionManager (4.0.2):
-    - curvelib.swift (~> 1.0.1)
+  - TorusSessionManager (6.0.1):
+    - curvelib.swift (~> 2.0.0)
     - KeychainSwift (~> 20.0.0)
-  - Web3Auth (9.0.0):
+  - Web3Auth (10.0.1):
     - BigInt (~> 5.2.0)
-    - curvelib.swift (~> 1.0.1)
+    - curvelib.swift (~> 2.0.0)
     - KeychainSwift (~> 20.0.0)
-    - TorusSessionManager (~> 4.0.2)
+    - TorusSessionManager (~> 6.0.1)
   - web3auth_flutter (2.0.1):
     - Flutter
-    - Web3Auth (~> 9.0.0)
+    - Web3Auth (~> 10.0.1)
 
 DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -100,7 +100,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   BigInt: f668a80089607f521586bbe29513d708491ef2f7
-  curvelib.swift: d0746ae82bee34016c06da3567a97e493b3c979f
+  curvelib.swift: b9223e5cac801effed8a5fe8968e952b3fe427a5
   Firebase: 414ad272f8d02dfbf12662a9d43f4bba9bec2a06
   firebase_auth: 8e9ec02991ca4659111cc671c84d0c010b6bfb26
   firebase_core: 0af4a2b24f62071f9bf283691c0ee41556dcb3f5
@@ -115,10 +115,10 @@ SPEC CHECKSUMS:
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
-  TorusSessionManager: 05a1a8f3265d0949a1a342c4ba2c52882445b614
-  Web3Auth: 086b5152a43df347ceff196c0ce67f6330838884
-  web3auth_flutter: bc5ffefe573c72f7fb1814573269952b045b7b22
+  TorusSessionManager: 9c9871718233dc020ab4fde9bdf37802f01dae10
+  Web3Auth: c7fddb06065c213bf4fd8badd166201ab31cb29b
+  web3auth_flutter: 816f64706f40f7fc08698c77e53cd3c7ad0736f3
 
 PODFILE CHECKSUM: 775997f741c536251164e3eacf6e34abf2eb7a17
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

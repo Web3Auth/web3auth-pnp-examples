@@ -294,7 +294,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return Web3AuthFlutter.login(
       LoginParams(
         loginProvider: Provider.jwt,
-        mfaLevel: MFALevel.OPTIONAL,
         extraLoginOptions: ExtraLoginOptions(
           id_token: idToken,
           domain: 'firebase',

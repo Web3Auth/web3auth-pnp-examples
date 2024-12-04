@@ -78,10 +78,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       buildEnv: BuildEnv.production,
       // 259200 allows user to stay authenticated for 3 days with Web3Auth.
       // Default is 86400, which is 1 day.
-      sessionTime: 259200,
+      sessionTime: 40,
     ));
 
-    await Web3AuthFlutter.initialize();
+    try {
+      await Web3AuthFlutter.initialize();
+    } catch (e) {
+      log("Error initializing Web3Auth: $e");
+    }
     // IMP END - Initialize Web3Auth
 
     final String res = await Web3AuthFlutter.getPrivKey();
@@ -260,10 +264,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     try {
       log(userEmail);
       // IMP START - Login
-      return await Web3AuthFlutter.login(LoginParams(
+      final response = Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
         extraLoginOptions: ExtraLoginOptions(login_hint: userEmail),
       ));
+      log(response.toString());
+      return response;
       // IMP END - Login
     } catch (e) {
       log("Error during email/passwordless login: $e");

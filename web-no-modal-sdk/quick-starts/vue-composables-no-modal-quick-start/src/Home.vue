@@ -5,14 +5,14 @@
       <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
         Web3Auth
       </a>
-      Vue.js Quick Start
+      Vue Composables No Modal Quick Start
     </h2>
 
-    <button v-if="!loggedIn" class="card" @click="login" style="cursor: pointer">
+    <button v-if="status !== ADAPTER_STATUS.CONNECTED" class="card" @click="login" style="cursor: pointer">
       Login
     </button>
 
-    <div v-if="loggedIn">
+    <div v-if="status === ADAPTER_STATUS.CONNECTED">
       <div class="flex-container">
         <div>
           <button class="card" @click="getUserInfo" style="cursor: pointer">
@@ -40,7 +40,7 @@
           </button>
         </div>
         <div>
-          <button class="card" @click="logout" style="cursor: pointer">
+          <button class="card" @click="logout()" style="cursor: pointer">
             Logout
           </button>
         </div>
@@ -51,123 +51,89 @@
     </div>
 
     <footer class="footer">
-      <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start"
+      <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-composables-no-modal-quick-start"
         target="_blank" rel="noopener noreferrer">
         Source code
       </a>
       <a
-        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvue-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal">
+        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Fvue-composables-no-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal">
         <img src="https://vercel.com/button" alt="Deploy with Vercel" />
       </a>
     </footer>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useWeb3Auth } from "@web3auth/no-modal-vue-composables";
 // IMP START - Blockchain Calls
 import RPC from "./ethersRPC";
 import { ADAPTER_STATUS, WALLET_ADAPTERS } from '@web3auth/base';
-import { ref } from "vue";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
 // IMP END - Blockchain Calls
-const { status, connectTo, userInfo, provider } = useWeb3Auth();
+const { status, connectTo, userInfo, provider, logout } = useWeb3Auth();
 
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: "Home",
-  props: {
-    msg: String,
-  },
-  setup() {
-    const loggedIn = ref<boolean>(false);
-
-    const login = async () => {
-      // IMP START - Login
-      await connectTo(WALLET_ADAPTERS.AUTH, {
-      loginProvider: "google",
-    });
-      // IMP END - Login
-      if (status.value === ADAPTER_STATUS.CONNECTED) {
-        loggedIn.value = true;
-      }
-    };
-
-    const getUserInfo = async () => {
-      // IMP START - Get User Information
-      uiConsole(userInfo.value);
-      // IMP END - Get User Information
-    };
-
-    const logout = async () => {
-      // IMP START - Logout
-      await logout();
-      // IMP END - Logout
-      loggedIn.value = false;
-      uiConsole("logged out");
-    };
-
-    // IMP START - Blockchain Calls
-    const getAccounts = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const address = await RPC.getAccounts(provider.value!);
-      uiConsole(address);
-    };
-
-    const getBalance = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const balance = await RPC.getBalance(provider.value!);
-      uiConsole(balance);
-    };
-
-    const signMessage = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const signedMessage = await RPC.signMessage(provider.value!);
-      uiConsole(signedMessage);
-    };
-
-
-    const sendTransaction = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      uiConsole("Sending Transaction...");
-      const transactionReceipt = await RPC.sendTransaction(provider.value!);
-      uiConsole(transactionReceipt);
-    };
-    // IMP END - Blockchain Calls
-
-    function uiConsole(...args: any[]): void {
-      const el = document.querySelector("#console>p");
-      if (el) {
-        el.innerHTML = JSON.stringify(args || {}, null, 2);
-      }
-      console.log(...args);
-    }
-
-    return {
-      loggedIn,
-      login,
-      logout,
-      getUserInfo,
-      getAccounts,
-      getBalance,
-      signMessage,
-      sendTransaction,
-    };
-  },
+const login = async () => {
+  // IMP START - Login
+  await connectTo(WALLET_ADAPTERS.AUTH, {
+    loginProvider: "google",
+  });
+  // IMP END - Login
 };
+
+const getUserInfo = async () => {
+  // IMP START - Get User Information
+  uiConsole(userInfo.value);
+  // IMP END - Get User Information
+};
+
+// IMP START - Blockchain Calls
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const address = await RPC.getAccounts(provider.value!);
+  uiConsole(address);
+};
+
+const getBalance = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const balance = await RPC.getBalance(provider.value!);
+  uiConsole(balance);
+};
+
+const signMessage = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const signedMessage = await RPC.signMessage(provider.value!);
+  uiConsole(signedMessage);
+};
+
+
+const sendTransaction = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  uiConsole("Sending Transaction...");
+  const transactionReceipt = await RPC.sendTransaction(provider.value!);
+  uiConsole(transactionReceipt);
+};
+// IMP END - Blockchain Calls
+
+function uiConsole(...args: any[]): void {
+  const el = document.querySelector("#console>p");
+  if (el) {
+    el.innerHTML = JSON.stringify(args || {}, null, 2);
+  }
+  console.log(...args);
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

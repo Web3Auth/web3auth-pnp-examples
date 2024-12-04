@@ -1,9 +1,8 @@
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, Web3AuthNoModalOptions } from "@web3auth/base";
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3AuthOptions } from "@web3auth/no-modal";
 // IMP END - Quick Start
 
 // IMP START - Dashboard Registration
@@ -32,7 +31,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
   },
 });
 
-const web3AuthOptions: Web3AuthOptions = {
+const web3AuthOptions: Web3AuthNoModalOptions = {
   chainConfig,
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,

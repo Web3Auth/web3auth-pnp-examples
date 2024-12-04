@@ -63,7 +63,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3Auth } from "@web3auth/modal";
@@ -80,161 +80,139 @@ import RPC from "./ethersRPC";
 // import RPC from "./web3RPC";
 // IMP END - Blockchain Calls
 
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: "Home",
-  props: {
-    msg: String,
-  },
-  setup() {
-    const loggedIn = ref<boolean>(false);
-    let provider = <IProvider | null>(null);
+const loggedIn = ref<boolean>(false);
+let provider = <IProvider | null>(null);
 
-    // IMP START - Dashboard Registration
-    const clientId =
-      "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-    // IMP END - Dashboard Registration
-    
-    // IMP START - Chain Config
-    const chainConfig = {
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0xaa36a7",
-      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      // Avoid using public rpcTarget in production.
-      // Use services like Infura, Quicknode etc
-      displayName: "Ethereum Sepolia Testnet",
-      blockExplorerUrl: "https://sepolia.etherscan.io",
-      ticker: "ETH",
-      tickerName: "Ethereum",
-      logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    };
-    // IMP END - Chain Config
-    
-    // IMP START - SDK Initialization
-    const privateKeyProvider = new EthereumPrivateKeyProvider({
-      config: { chainConfig: chainConfig }
-    });
+// IMP START - Dashboard Registration
+const clientId =
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+// IMP END - Dashboard Registration
 
-    const web3AuthOptions: Web3AuthOptions = {
-      clientId,
-      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-      privateKeyProvider,
-    }
-    const web3auth = new Web3Auth(web3AuthOptions);
-    // IMP END - SDK Initialization
+// IMP START - Chain Config
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+// IMP END - Chain Config
 
-    onMounted(async () => {
-      const init = async () => {
-        try {
-          // IMP START - Configuring External Wallets
-          const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-          adapters.forEach((adapter: IAdapter<unknown>) => {
-            web3auth.configureAdapter(adapter);
-          });
-          // IMP END - Configuring External Wallets
-          // IMP START - SDK Initialization
-          await web3auth.initModal();
-          // IMP END - SDK Initialization
-          provider = web3auth.provider;
+// IMP START - SDK Initialization
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig: chainConfig }
+});
 
-          if (web3auth.connected) {
-            loggedIn.value = true;
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+}
+const web3auth = new Web3Auth(web3AuthOptions);
+// IMP END - SDK Initialization
 
-      init();
-    });
+onMounted(async () => {
+  const init = async () => {
+    try {
+      // IMP START - Configuring External Wallets
+      const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+      adapters.forEach((adapter: IAdapter<unknown>) => {
+        web3auth.configureAdapter(adapter);
+      });
+      // IMP END - Configuring External Wallets
+      // IMP START - SDK Initialization
+      await web3auth.initModal();
+      // IMP END - SDK Initialization
+      provider = web3auth.provider;
 
-    const login = async () => {
-      // IMP START - Login
-      provider = await web3auth.connect();
-      // IMP END - Login
       if (web3auth.connected) {
         loggedIn.value = true;
       }
-    };
-
-    const getUserInfo = async () => {
-      // IMP START - Get User Information
-      const user = await web3auth.getUserInfo();
-      // IMP END - Get User Information
-      uiConsole(user);
-    };
-
-    const logout = async () => {
-      // IMP START - Logout
-      await web3auth.logout();
-      // IMP END - Logout
-      provider = null;
-      loggedIn.value = false;
-      uiConsole("logged out");
-    };
-
-    // IMP START - Blockchain Calls
-    const getAccounts = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const address = await RPC.getAccounts(provider);
-      uiConsole(address);
-    };
-
-    const getBalance = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const balance = await RPC.getBalance(provider);
-      uiConsole(balance);
-    };
-
-    const signMessage = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      const signedMessage = await RPC.signMessage(provider);
-      uiConsole(signedMessage);
-    };
-
-
-    const sendTransaction = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
-        return;
-      }
-      uiConsole("Sending Transaction...");
-      const transactionReceipt = await RPC.sendTransaction(provider);
-      uiConsole(transactionReceipt);
-    };
-    // IMP END - Blockchain Calls
-
-    function uiConsole(...args: any[]): void {
-      const el = document.querySelector("#console>p");
-      if (el) {
-        el.innerHTML = JSON.stringify(args || {}, null, 2);
-      }
-      console.log(...args);
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    return {
-      loggedIn,
-      provider,
-      web3auth,
-      login,
-      logout,
-      getUserInfo,
-      getAccounts,
-      getBalance,
-      signMessage,
-      sendTransaction,
-    };
-  },
+  init();
+});
+
+const login = async () => {
+  // IMP START - Login
+  provider = await web3auth.connect();
+  // IMP END - Login
+  if (web3auth.connected) {
+    loggedIn.value = true;
+  }
 };
+
+const getUserInfo = async () => {
+  // IMP START - Get User Information
+  const user = await web3auth.getUserInfo();
+  // IMP END - Get User Information
+  uiConsole(user);
+};
+
+const logout = async () => {
+  // IMP START - Logout
+  await web3auth.logout();
+  // IMP END - Logout
+  provider = null;
+  loggedIn.value = false;
+  uiConsole("logged out");
+};
+
+// IMP START - Blockchain Calls
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const address = await RPC.getAccounts(provider);
+  uiConsole(address);
+};
+
+const getBalance = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const balance = await RPC.getBalance(provider);
+  uiConsole(balance);
+};
+
+const signMessage = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const signedMessage = await RPC.signMessage(provider);
+  uiConsole(signedMessage);
+};
+
+
+const sendTransaction = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  uiConsole("Sending Transaction...");
+  const transactionReceipt = await RPC.sendTransaction(provider);
+  uiConsole(transactionReceipt);
+};
+// IMP END - Blockchain Calls
+
+function uiConsole(...args: any[]): void {
+  const el = document.querySelector("#console>p");
+  if (el) {
+    el.innerHTML = JSON.stringify(args || {}, null, 2);
+  }
+  console.log(...args);
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

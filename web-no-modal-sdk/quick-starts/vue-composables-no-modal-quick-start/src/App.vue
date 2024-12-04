@@ -1,18 +1,16 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
 import Home from "./Home.vue";
-import { Web3AuthProvider } from "@web3auth/no-modal-vue-composables";
-import useWeb3AuthConfig from "./web3authContext";
-
-const { configs } = useWeb3AuthConfig();
-
-export default defineComponent({
-  name: "App",
-  components: {
-    Home,
-  },
-});
+import { Web3AuthProvider } from "@web3auth/no-modal-vue-composables"
+import web3AuthContextConfig from "./web3authContext";
 </script>
+
+<template>
+  <div class="min-h-screen flex flex-col">
+    <Web3AuthProvider :config="web3AuthContextConfig">
+      <Home msg="Welcome to Your Vue.js + TypeScript App" />
+    </Web3AuthProvider>
+  </div>
+</template>
 
 <style>
 #app {
@@ -24,11 +22,3 @@ export default defineComponent({
   margin-top: 60px;
 }
 </style>
-
-<template>
-  <div class="min-h-screen flex flex-col">
-    <Web3AuthProvider :config="configs">
-      <Home msg="Welcome to Your Vue.js + TypeScript App" />
-    </Web3AuthProvider>
-  </div>
-</template>

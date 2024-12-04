@@ -4,7 +4,10 @@ import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthOptions } from "@web3auth/modal";
 // IMP END - Quick Start
-import { computed } from "vue";
+
+// IMP START - Dashboard Registration
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+// IMP END - Dashboard Registration
 
 // IMP START - Chain Config
 const chainConfig = {
@@ -21,10 +24,6 @@ const chainConfig = {
 };
 // IMP END - Chain Config
 
-// IMP START - Dashboard Registration
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-// IMP END - Dashboard Registration
-
 // IMP START - SDK Initialization
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
@@ -40,23 +39,15 @@ const web3AuthOptions: Web3AuthOptions = {
 };
 // IMP END - SDK Initialization
 
-export default function useWeb3AuthConfig() {
-  const options = computed((): Web3AuthOptions => web3AuthOptions);
+// IMP START - Configuring External Wallets
+const adapters = getDefaultExternalAdapters({ options: web3AuthOptions });
+// IMP END - Configuring External Wallets
 
+const web3AuthContextConfig = {
+  web3AuthOptions,
   // IMP START - Configuring External Wallets
-  const externalAdaptersData = computed(() => {
-    const adapters = [];
-    adapters.push(...getDefaultExternalAdapters({ options: web3AuthOptions }));
-    return adapters;
-  });
+  adapters: [...adapters],
   // IMP END - Configuring External Wallets
+};
 
-  const configs = computed(() => {
-    return {
-      adapters: externalAdaptersData.value,
-      web3AuthOptions: options.value,
-    };
-  });
-
-  return { configs };
-}
+export default web3AuthContextConfig;

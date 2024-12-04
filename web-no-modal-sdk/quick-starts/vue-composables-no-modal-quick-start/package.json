@@ -1,0 +1,39 @@
+{
+  "name": "vue-composables-no-modal-quick-start",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "//IMP START": "IMP START - Web3Auth Installation",
+  "dependencies": {
+    "@babel/plugin-transform-private-methods": "^7.24.7",
+    "@web3auth/auth-adapter": "^9.4.5",
+    "@web3auth/base": "^9.4.5",
+    "@web3auth/default-evm-adapter": "^9.4.5",
+    "@web3auth/ethereum-provider": "^9.4.5",
+    "@web3auth/no-modal": "^9.4.5",
+    "@web3auth/no-modal-vue-composables": "^9.4.5",
+    "core-js": "^3.38.0",
+    "ethers": "^6.13.4",
+    "viem": "^2.21.45",
+    "vue": "^3.4.36",
+    "web3": "^4.15.0"
+  },
+  "//IMP END": "IMP END - Web3Auth Installation",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-plugin-typescript": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
+    "@vue/eslint-config-typescript": "^11.0.2",
+    "eslint": "^8.29.0",
+    "eslint-plugin-vue": "^9.8.0",
+    "typescript": "~5.5.4",
+    "url": "^0.11.4"
+  }
+}

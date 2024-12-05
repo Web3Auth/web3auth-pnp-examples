@@ -33,7 +33,7 @@ private fun getWeb3AuthHelper(context: Context): Web3AuthHelper {
             clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
             network = Network.SAPPHIRE_MAINNET,
             redirectUrl = Uri.parse( "w3a://com.example.android_playground/auth")
-        ), context
+        ), context.applicationContext
     )
 
     return Web3AuthHelperImpl(web3Auth)

@@ -149,7 +149,10 @@ class MainActivity : AppCompatActivity() {
         val logoutCompletableFuture = web3Auth.logout()
         // IMP END - Logout
         logoutCompletableFuture.whenComplete { _, error ->
+
             if (error == null) {
+                val user = web3Auth.getUserInfo()
+                Log.i("UserInfo", user.toString())
                 reRender()
             } else {
                 Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")

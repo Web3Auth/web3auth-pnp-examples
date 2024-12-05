@@ -16,6 +16,7 @@ import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.*
 import org.web3j.crypto.Credentials

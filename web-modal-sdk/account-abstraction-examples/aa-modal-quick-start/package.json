@@ -4,16 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@web3auth/account-abstraction-provider": "9.4.5",
-    "@web3auth/base": "9.4.5",
-    "@web3auth/ethereum-provider": "9.4.5",
-    "@web3auth/modal": "9.4.5",
+    "@web3auth/account-abstraction-provider": "9.5.0-alpha.1",
+    "@web3auth/base": "9.5.0-alpha.1",
+    "@web3auth/ethereum-provider": "9.5.0-alpha.1",
+    "@web3auth/modal": "9.5.0-alpha.1",
+    "@web3auth/wallet-services-plugin": "^9.5.0-alpha.1",
     "ethers": "^6.13.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

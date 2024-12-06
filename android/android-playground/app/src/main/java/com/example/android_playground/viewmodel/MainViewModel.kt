@@ -84,7 +84,11 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
 
     fun initialise() {
         viewModelScope.launch {
-            web3AuthHelper.initialize().await()
+            try {
+                web3AuthHelper.initialize().await()
+            }catch (e: Exception) {
+                Log.e("Initialize", e.toString())
+            }
             isUserLoggedIn()
         }
     }
@@ -122,9 +126,9 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
         viewModelScope.launch {
             try {
                 web3AuthHelper.logOut().await()
-                _isLoggedIn.emit(true)
-            } catch (e: Exception) {
                 _isLoggedIn.emit(false)
+            } catch (e: Exception) {
+                _isLoggedIn.emit(true)
             }
         }
     }

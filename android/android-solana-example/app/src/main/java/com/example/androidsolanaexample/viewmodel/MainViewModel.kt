@@ -1,5 +1,6 @@
 package com.example.androidsolanaexample.viewmodel
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidsolanaexample.data.Web3AuthHelper
@@ -48,7 +49,11 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val sola
 
     fun initialise() {
         viewModelScope.launch {
-            web3AuthHelper.initialize().await()
+            try {
+                web3AuthHelper.initialize().await()
+            } catch (e:Exception) {
+                Log.e("Initialization", e.toString())
+            }
             isUserLoggedIn()
         }
     }
@@ -84,9 +89,10 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val sola
         viewModelScope.launch {
             try {
                 web3AuthHelper.logOut().await()
-                _isLoggedIn.emit(true)
-            } catch (e: Exception) {
                 _isLoggedIn.emit(false)
+            } catch (e: Exception) {
+                Log.e("Logout", e.toString())
+                _isLoggedIn.emit(true)
             }
         }
     }

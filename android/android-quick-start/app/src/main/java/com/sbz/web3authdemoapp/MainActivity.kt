@@ -53,12 +53,11 @@ class MainActivity : AppCompatActivity() {
         // IMP START - Initialize Web3Auth
         web3Auth = Web3Auth(
             Web3AuthOptions(
-                context = this,
                 clientId = getString(R.string.web3auth_project_id),
                 network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
                 buildEnv = BuildEnv.PRODUCTION,
                 redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth")
-            )
+            ), this
         )
         // IMP END - Initialize Web3Auth
 
@@ -150,7 +149,10 @@ class MainActivity : AppCompatActivity() {
         val logoutCompletableFuture = web3Auth.logout()
         // IMP END - Logout
         logoutCompletableFuture.whenComplete { _, error ->
+
             if (error == null) {
+                val user = web3Auth.getUserInfo()
+                Log.i("UserInfo", user.toString())
                 reRender()
             } else {
                 Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")

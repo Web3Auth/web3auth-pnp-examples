@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 
         web3Auth = Web3Auth(
            Web3AuthOptions(
-               context = this,
                clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
                network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
                buildEnv = BuildEnv.PRODUCTION,
@@ -84,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                        clientId = getString(R.string.web3auth_auth0_client_id)
                    )
                )
-           )
+           ), context = this
         )
 
         // Handle user signing in when app is not alive

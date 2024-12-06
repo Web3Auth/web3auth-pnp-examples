@@ -29,8 +29,6 @@ class MainActivity : ComponentActivity() {
             modules(appModule)
         }
 
-        viewModel.setResultUrl(intent?.data)
-
         setContent {
             AndroidplaygroundTheme {
                 // A surface container using the 'background' color from the theme
@@ -43,6 +41,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
             viewModel.initialise()
+            viewModel.setResultUrl(intent?.data)
         }
     }
 

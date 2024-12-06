@@ -1,3 +1,4 @@
+import { AccountAbstractionProvider, SafeSmartAccount } from "@web3auth/account-abstraction-provider";
 import { AuthAdapter, MFA_LEVELS } from "@web3auth/auth-adapter";
 import { UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
@@ -15,11 +16,28 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
   },
 });
 
+const pimlicoAPIKey = import.meta.env.VITE_PIMLICO_API_KEY;
+
+const accountAbstractionProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig: chain.ethereum,
+    bundlerConfig: {
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+    },
+    smartAccountInit: new SafeSmartAccount(),
+    paymasterConfig: {
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+    },
+  },
+});
+
 const web3AuthOptions: Web3AuthOptions = {
   chainConfig: chain.ethereum,
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
+  accountAbstractionProvider,
+  useAAWithExternalWallet: false,
 };
 
 const authAdapter = new AuthAdapter({

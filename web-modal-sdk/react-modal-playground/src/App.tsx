@@ -2,7 +2,6 @@ import "./App.css";
 
 import { Web3AuthInnerContext, Web3AuthProvider } from "@web3auth/modal-react-hooks";
 import { WalletServicesProvider } from "@web3auth/wallet-services-plugin-react-hooks";
-import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Contract from "./pages/Contract";

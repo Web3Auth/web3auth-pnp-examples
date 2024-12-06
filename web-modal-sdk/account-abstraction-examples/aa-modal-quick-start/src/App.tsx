@@ -5,7 +5,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { AccountAbstractionProvider, SafeSmartAccount } from "@web3auth/account-abstraction-provider";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { useEffect, useState } from "react";
-
+import { BUTTON_POSITION, CONFIRMATION_STRATEGY, WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 import RPC from "./ethersRPC";
 
@@ -22,7 +22,7 @@ const chainConfig = {
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
-const pimlicoAPIKey = import.meta.env.VITE_API_KEY;
+const pimlicoAPIKey = import.meta.env.VITE_PIMLICO_API_KEY;
 
 const accountAbstractionProvider = new AccountAbstractionProvider({
   config: {
@@ -50,6 +50,16 @@ const web3AuthOptions: Web3AuthOptions = {
 
 const web3auth = new Web3Auth(web3AuthOptions);
 
+const walletServicesPlugin = new WalletServicesPlugin({
+  wsEmbedOpts: {},
+  walletInitOptions: {
+    whiteLabel: { showWidgetButton: true },
+    confirmationStrategy: CONFIRMATION_STRATEGY.MODAL,
+  },
+});
+
+web3auth.addPlugin(walletServicesPlugin);
+
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -58,11 +68,10 @@ function App() {
     const init = async () => {
       try {
         await web3auth.initModal();
-        setProvider(web3auth.provider);
-
         if (web3auth.connected) {
           setLoggedIn(true);
         }
+        setProvider(web3auth.provider);
       } catch (error) {
         console.error(error);
       }

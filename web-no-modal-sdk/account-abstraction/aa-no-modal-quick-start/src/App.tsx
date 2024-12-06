@@ -23,7 +23,7 @@ const chainConfig = {
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
-const pimlicoAPIKey = import.meta.env.VITE_API_KEY;
+const pimlicoAPIKey = import.meta.env.VITE_PIMLICO_API_KEY;
 
 const accountAbstractionProvider = new AccountAbstractionProvider({
   config: {

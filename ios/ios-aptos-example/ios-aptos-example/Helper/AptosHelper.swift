@@ -22,10 +22,8 @@ class AptosHelper {
     /// - Parameter privateKey: The private key received from Web3Auth.
     func initialize(privateKey: String) async throws {
         aptosClient = Aptos(aptosConfig: .testnet)
-        account = try generateAptosAccount(privateKey: privateKey)
-        
-        guard account != nil else {
-            throw NSError(domain: "AptosHelper", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to generate Aptos account."])
+        if !privateKey.isEmpty {
+            account = try generateAptosAccount(privateKey: privateKey)
         }
         
         print("Aptos client and account initialized successfully.")

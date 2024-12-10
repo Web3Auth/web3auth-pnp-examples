@@ -26,6 +26,18 @@
           <button class="card" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
         </div>
         <div>
+          <button class="card" @click="showWalletUi" style="cursor: pointer">Show Wallet UI</button>
+        </div>
+        <div>
+          <button class="card" @click="showWalletConnectScanner" style="cursor: pointer">Show Wallet Connect Scanner</button>
+        </div>
+        <div>
+          <button class="card" @click="showCheckout" style="cursor: pointer">Show Checkout</button>
+        </div>
+        <div>
+          <button class="card" @click="showSwap" style="cursor: pointer">Show Swap</button>
+        </div>
+        <div>
           <button class="card" @click="logout" style="cursor: pointer">Logout</button>
         </div>
       </div>
@@ -51,9 +63,10 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WALLET_PLUGINS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { AuthAdapter } from "@web3auth/auth-adapter";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
@@ -72,12 +85,12 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 // IMP START - Chain Config
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
   // Avoid using public rpcTarget in production.
   // Use services like Infura, Quicknode etc
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
@@ -92,6 +105,13 @@ const web3auth = new Web3AuthNoModal({
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
 });
+
+const walletServicesPluginInstance = new WalletServicesPlugin({
+  wsEmbedOpts: {},
+  walletInitOptions: { whiteLabel: { showWidgetButton: true } },
+});
+
+web3auth.addPlugin(walletServicesPluginInstance);
 
 const authAdapter = new AuthAdapter();
 web3auth.configureAdapter(authAdapter);
@@ -181,6 +201,38 @@ const sendTransaction = async () => {
   uiConsole("Sending Transaction...");
   const transactionReceipt = await RPC.sendTransaction(provider);
   uiConsole(transactionReceipt);
+};
+
+const showWalletUi = async () => {
+  if (!web3auth) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  await (web3auth.getPlugin(WALLET_PLUGINS.WALLET_SERVICES) as WalletServicesPlugin).showWalletUi();
+};
+
+const showWalletConnectScanner = async () => {
+  if (!web3auth) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  await (web3auth.getPlugin(WALLET_PLUGINS.WALLET_SERVICES) as WalletServicesPlugin).showWalletConnectScanner();
+};
+
+const showCheckout = async () => {
+  if (!web3auth) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  await (web3auth.getPlugin(WALLET_PLUGINS.WALLET_SERVICES) as WalletServicesPlugin).showCheckout();
+};
+
+const showSwap = async () => {
+  if (!web3auth) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  await (web3auth.getPlugin(WALLET_PLUGINS.WALLET_SERVICES) as WalletServicesPlugin).showSwap();
 };
 // IMP END - Blockchain Calls
 

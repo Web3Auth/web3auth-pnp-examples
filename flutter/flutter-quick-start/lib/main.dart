@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     String clientId =
         'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ';
     if (Platform.isAndroid) {
-      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter');
     } else if (Platform.isIOS) {
       redirectUrl = Uri.parse('com.example.w3aflutter://auth');
       // IMP END - Get your Web3Auth Client ID from Dashboard
@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       buildEnv: BuildEnv.production,
       // 259200 allows user to stay authenticated for 3 days with Web3Auth.
       // Default is 86400, which is 1 day.
-      sessionTime: 40,
+      sessionTime: 259200,
     ));
 
     try {
@@ -320,13 +320,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       final credentials = EthPrivateKey.fromHex(privateKey);
       final address = credentials.address;
 
+      log("Address: $address");
       // Get the balance in wei
       final weiBalance = await client.getBalance(address);
 
       // Convert wei to ether
       final etherBalance = EtherAmount.fromBigInt(
         EtherUnit.ether,
-        weiBalance.getInEther,
+        weiBalance.getInWei,
       );
 
       log(etherBalance.toString());

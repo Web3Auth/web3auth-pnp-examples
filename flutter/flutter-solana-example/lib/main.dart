@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ Future<void> main() async {
   final Uri redirectUrl;
   if (Platform.isAndroid) {
     redirectUrl =
-        Uri.parse('w3aexample://com.example.flutter_solana_example/auth');
+        Uri.parse('w3aexample://com.example.flutter_solana_example');
   } else {
     redirectUrl = Uri.parse('com.web3auth.fluttersolanasample://auth');
   }
@@ -29,10 +30,15 @@ Future<void> main() async {
         appName: "Solana Web3Auth Flutter",
         mode: ThemeModes.dark,
       ),
+      sessionTime: 40,
     ),
   );
 
-  await Web3AuthFlutter.initialize();
+  try {
+    await Web3AuthFlutter.initialize();
+  } catch (e) {
+    log(e.toString());
+  }
 
   runApp(const MainApp());
 }

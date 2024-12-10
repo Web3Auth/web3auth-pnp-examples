@@ -44,7 +44,13 @@ const web3AuthOptions: IWeb3AuthCoreOptions = {
 }
 const web3auth = new Web3AuthNoModal(web3AuthOptions);
 
-const authadapter = new AuthAdapter();
+const authadapter = new AuthAdapter({
+  adapterSettings: {
+    replaceUrlOnRedirect: true,
+    uxMode: "redirect",
+    redirectUrl: "http://localhost:5173/?abcdeh=askjhd",
+  }
+});
 web3auth.configureAdapter(authadapter);
 // IMP END - SDK Initialization
 

@@ -11,11 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@web3auth/account-abstraction-provider": "9.5.0-alpha.1",
+    "@web3auth/account-abstraction-provider": "9.5.0-alpha.2",
     "@web3auth/base": "9.5.0-alpha.1",
-    "@web3auth/ethereum-provider": "9.5.0-alpha.1",
-    "@web3auth/modal": "9.5.0-alpha.1",
-    "@web3auth/wallet-services-plugin": "^9.5.0-alpha.1",
+    "@web3auth/ethereum-provider": "9.5.0-alpha.2",
+    "@web3auth/modal": "9.5.0-alpha.2",
+    "@web3auth/wallet-services-plugin": "^9.5.0-alpha.2",
     "ethers": "^6.13.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

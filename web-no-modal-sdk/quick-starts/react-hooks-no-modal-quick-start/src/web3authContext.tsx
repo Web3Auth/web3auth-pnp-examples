@@ -24,7 +24,7 @@ const chainConfig = {
 };
 // IMP END - Chain Config
 
-// IMP START - SDK Initialization
+// IMP START - Instantiate SDK
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig,
@@ -39,18 +39,19 @@ const web3AuthOptions: Web3AuthNoModalOptions = {
 };
 
 const authAdapter = new AuthAdapter();
-// IMP END - SDK Initialization
+// IMP END - Instantiate SDK
 
 // IMP START - Configuring External Wallets
 const adapters = getDefaultExternalAdapters({ options: web3AuthOptions });
 // IMP END - Configuring External Wallets
 
-
+// IMP START - Instantiate SDK
 const web3AuthContextConfig = {
   web3AuthOptions,
   // IMP START - Configuring External Wallets
   adapters: [authAdapter, ...adapters],
   // IMP END - Configuring External Wallets
 };
+// IMP END - Instantiate SDK
 
 export default web3AuthContextConfig;

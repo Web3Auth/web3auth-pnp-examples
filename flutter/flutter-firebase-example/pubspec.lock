@@ -520,11 +520,10 @@ packages:
   web3auth_flutter:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "feat/update_pnp_swift_dep"
-      resolved-ref: "7f40219b0262ed1bc1e5e7eaff31650fdf345ea5"
-      url: "https://github.com/web3auth/web3auth-flutter-sdk.git"
-    source: git
+      name: web3auth_flutter
+      sha256: bffe815caac3e1f0357184b41a02d2988f4ace6e66b908a1d08e4c2cc9edc8de
+      url: "https://pub.dev"
+    source: hosted
     version: "6.1.0"
   web3dart:
     dependency: "direct main"

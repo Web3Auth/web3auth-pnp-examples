@@ -32,16 +32,17 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   String _result = '';
   bool logoutVisible = false;
-  String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
+  String rpcUrl = 'https://eth.llamarpc.com';
+  LoginParams? loginParams;
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
-      WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
-   @override
+  @override
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
@@ -55,8 +56,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     }
   }
 
-  
-
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     await Firebase.initializeApp(
@@ -68,7 +67,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     Uri redirectUrl;
     if (Platform.isAndroid) {
-      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter');
     } else if (Platform.isIOS) {
       redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
     } else {
@@ -108,7 +107,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ),
     );
 
-    await Web3AuthFlutter.initialize();
+    try {
+      await Web3AuthFlutter.initialize();
+    } catch (e) {
+      log(e.toString());
+    }
 
     final String res = await Web3AuthFlutter.getPrivKey();
     log(res);
@@ -225,6 +228,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                           onPressed: _sendTransaction,
                           child: const Text('Send Transaction'),
                         ),
+                        ElevatedButton(
+                          onPressed: _launchWalletUI,
+                          child: const Text('Launch Wallet UI'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _enableMFA,
+                          child: const Text('Enable MFA'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _transactionConfirmationUI,
+                          child: const Text('Transaction Confirmation UI'),
+                        ),
                       ],
                     ),
                   ),
@@ -275,12 +290,53 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     };
   }
 
+  Future<void> _enableMFA() async {
+    try {
+      final idToken = await FirebaseAuth.instance.currentUser?.getIdToken(true);
+      if (idToken == null) {
+        throw Exception('No user found');
+      }
+      loginParams = LoginParams(
+        loginProvider: Provider.jwt,
+        extraLoginOptions: ExtraLoginOptions(
+          id_token: idToken,
+          domain: 'firebase',
+        ),
+      );
+      await Web3AuthFlutter.enableMFA(loginParams: loginParams!);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> _transactionConfirmationUI() async {
+    final result = await Web3AuthFlutter.request(
+      ChainConfig(chainId: "0x1", rpcTarget: rpcUrl),
+      "personal_sign",
+      [
+        "Hello, World!",
+        await _getAddress(),
+      ],
+    );
+
+    log(result.toJson().toString());
+  }
+
+  Future<void> _launchWalletUI() async {
+    Web3AuthFlutter.launchWalletServices(ChainConfig(
+      chainId: '1',
+      rpcTarget: rpcUrl,
+    ));
+
+    return;
+  }
+
   Future<Web3AuthResponse> _withJWT() async {
     String idToken = "";
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: 'custom+id_token@firebase.login',
-        password: 'Welcome@W3A',
+        email: 'flutter@pnp.com',
+        password: 'flutter',
       );
       idToken = await credential.user?.getIdToken(true) ?? '';
     } on FirebaseAuthException catch (e) {
@@ -291,16 +347,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       }
     }
 
-    return Web3AuthFlutter.login(
-      LoginParams(
-        loginProvider: Provider.jwt,
-        mfaLevel: MFALevel.OPTIONAL,
-        extraLoginOptions: ExtraLoginOptions(
-          id_token: idToken,
-          domain: 'firebase',
-        ),
+    loginParams = LoginParams(
+      loginProvider: Provider.jwt,
+      extraLoginOptions: ExtraLoginOptions(
+        id_token: idToken,
+        domain: 'firebase',
       ),
     );
+
+    return Web3AuthFlutter.login(loginParams!);
   }
 
   Future<String> _getAddress() async {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_playground/core/service_locator.dart';
 import 'package:flutter_playground/core/utils/strings.dart';
@@ -17,8 +19,8 @@ void main() async {
 
   // Set up ServiceLoactor used for dependency injection.
   ServiceLocator.setUp();
-  
-  // Initialize the Web3AuthFlutter instance. 
+
+  // Initialize the Web3AuthFlutter instance.
   await Web3AuthFlutter.init(
     Web3AuthOptions(
       clientId: StringConstants.web3AuthClientId,
@@ -31,11 +33,15 @@ void main() async {
     ),
   );
 
-  await Web3AuthFlutter.initialize();
-  
+  try {
+    await Web3AuthFlutter.initialize();
+  } catch (e) {
+    log(e.toString());
+  }
+
   final chainConfigRepository = ServiceLocator.getIt<ChainConfigRepository>();
   final chainConfigs = chainConfigRepository.prepareChains();
-  
+
   // Setup HomeProvider for state management.
   runApp(ChangeNotifierProvider(
     create: (_) => HomeProvider(chainConfigs),

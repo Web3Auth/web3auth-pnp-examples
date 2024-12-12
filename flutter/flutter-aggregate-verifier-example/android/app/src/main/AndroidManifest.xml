@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <!-- Accept URIs: {YOUR_APP_PACKAGE_NAME}://* -->
-                <data android:scheme="w3a" android:host="com.example.w3aflutter" android:path="/auth" />
+                <data android:scheme="w3a" android:host="com.example.w3aflutter"/>
                 <!-- Accept URIs: w3a://com.example.w3aflutter/auth -->
             </intent-filter>
         </activity>

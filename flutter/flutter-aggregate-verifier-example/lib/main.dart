@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     Uri redirectUrl;
     if (Platform.isAndroid) {
-      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter');
     } else if (Platform.isIOS) {
       redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
     } else {
@@ -105,7 +105,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ),
     );
 
-    await Web3AuthFlutter.initialize();
+    try {
+      await Web3AuthFlutter.initialize();
+    } catch (e) {
+      log(e.toString());
+    }
 
     final String res = await Web3AuthFlutter.getPrivKey();
     log(res);
@@ -121,7 +125,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Web3Auth Flutter Auth0 Example'),
+          title: const Text('Web3Auth Flutter Aggregate Example'),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -154,7 +158,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       height: 10,
                     ),
                     const Text(
-                      'Welcome to Web3Auth Flutter Auth0 Example',
+                      'Welcome to Web3Auth Flutter Aggregate Example',
                       style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(

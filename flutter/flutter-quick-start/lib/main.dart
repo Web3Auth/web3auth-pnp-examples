@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     String clientId =
         'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ';
     if (Platform.isAndroid) {
-      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter');
     } else if (Platform.isIOS) {
       redirectUrl = Uri.parse('com.example.w3aflutter://auth');
       // IMP END - Get your Web3Auth Client ID from Dashboard
@@ -81,7 +81,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       sessionTime: 259200,
     ));
 
-    await Web3AuthFlutter.initialize();
+    try {
+      await Web3AuthFlutter.initialize();
+    } catch (e) {
+      log("Error initializing Web3Auth: $e");
+    }
     // IMP END - Initialize Web3Auth
 
     final String res = await Web3AuthFlutter.getPrivKey();
@@ -260,10 +264,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     try {
       log(userEmail);
       // IMP START - Login
-      return await Web3AuthFlutter.login(LoginParams(
+      final response = Web3AuthFlutter.login(LoginParams(
         loginProvider: Provider.email_passwordless,
         extraLoginOptions: ExtraLoginOptions(login_hint: userEmail),
       ));
+      log(response.toString());
+      return response;
       // IMP END - Login
     } catch (e) {
       log("Error during email/passwordless login: $e");
@@ -314,13 +320,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       final credentials = EthPrivateKey.fromHex(privateKey);
       final address = credentials.address;
 
+      log("Address: $address");
       // Get the balance in wei
       final weiBalance = await client.getBalance(address);
 
       // Convert wei to ether
       final etherBalance = EtherAmount.fromBigInt(
         EtherUnit.ether,
-        weiBalance.getInEther,
+        weiBalance.getInWei,
       );
 
       log(etherBalance.toString());

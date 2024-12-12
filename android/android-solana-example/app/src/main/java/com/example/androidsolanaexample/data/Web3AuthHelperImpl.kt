@@ -31,7 +31,12 @@ class Web3AuthHelperImpl(
     }
 
     override suspend fun initialize(): CompletableFuture<Void> {
-        return web3Auth.initialize()
+       try {
+          return web3Auth.initialize()
+       } catch(e: Exception) {
+           // Something went wrong
+           throw e
+       }
     }
 
     override suspend fun setResultUrl(uri: Uri?) {

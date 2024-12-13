@@ -73,8 +73,8 @@ export default function App() {
         loginProvider: LOGIN_PROVIDER.JWT,
         mfaLevel: "none",
         extraLoginOptions: {
-          domain: "https://web3auth.au.auth0.com",
-          verifierIdField: "email",
+          domain: 'https://web3auth.au.auth0.com',
+          verifierIdField: 'sub',
         },
       });
 

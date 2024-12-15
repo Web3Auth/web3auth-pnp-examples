@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tkey/curvelib.swift",
       "state" : {
-        "revision" : "9f88bd5e56d1df443a908f7a7e81ae4f4d9170ea",
-        "version" : "1.0.1"
+        "revision" : "432bf1abe7ff505fc2ac9fcf697341ff5b2dc6d0",
+        "version" : "2.0.0"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Web3Auth/session-manager-swift.git",
       "state" : {
-        "revision" : "20cc7bff065d7fe53164d17e7714a3f17d4cea2a",
-        "version" : "4.0.2"
+        "revision" : "d86cd2a7f6d8095531ed609c728d851820fe85be",
+        "version" : "6.0.1"
       }
     },
     {
@@ -150,8 +150,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/web3auth/web3auth-swift-sdk",
       "state" : {
-        "revision" : "fb4971ad9452a0f0cbf9f5742f22d1c5c6d7759c",
-        "version" : "9.0.0"
+        "revision" : "d7b946452919ec9a50d2dfeb67297c844bdec690",
+        "version" : "11.0.1"
       }
     },
     {

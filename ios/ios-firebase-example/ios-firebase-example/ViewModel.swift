@@ -83,20 +83,21 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func request() {
+    func request(signature: @escaping(String) -> ()) {
         Task {
             do {
                 var params = [Any]()
-                let address = Web3RPC(
+                let address: String? = Web3RPC(
                     user: web3Auth!.state!
                 )?.address.toChecksumAddress()
                 params.append("Hello, Web3Auth from iOS!")
                 params.append(
-                  address
+                    address!
                 )
+                
                 params.append("Web3Auth")
-    
-                try await self.web3Auth?.request(
+                
+                let result = try await self.web3Auth?.request(
                     chainConfig: ChainConfig(
                         chainId: "0x89",
                         rpcTarget: "https://polygon.llamarpc.com"
@@ -104,24 +105,14 @@ class ViewModel: ObservableObject {
                     method: "personal_sign",
                     requestParams: params
                 )
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    func getSignature(signature: @escaping(String) -> ()) {
-        Task {
-            do {
-               let response = try Web3Auth.getSignResponse()
-                if response!.success {
-                    signature(response!.result!)
+                
+                if result!.success {
+                    signature(result!.result!)
                 } else {
-                    signature(response!.error!)
+                    signature(result!.error!)
                 }
             } catch {
                 print(error.localizedDescription)
-                signature(error.localizedDescription)
             }
         }
     }

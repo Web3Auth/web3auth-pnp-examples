@@ -16,7 +16,7 @@
     "@web3auth/no-modal": "^9.5.1",
     "bufferutil": "^4.0.8",
     "ethers": "^6.13.2",
-    "next": "13.4.9",
+    "next": "14.2.15",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "utf-8-validate": "^6.0.3",

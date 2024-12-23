@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="w3a" android:host="com.example.flutterplayground" android:path="/auth" />
+                <data android:scheme="w3a" android:host="com.example.flutterplayground" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

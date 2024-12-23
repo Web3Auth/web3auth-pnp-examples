@@ -4,23 +4,20 @@ publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ">=2.18.0 <4.0.0"
+  sdk: ">=3.2.5 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  get_it: ^7.6.4
+  get_it: ^8.0.2
   hex: ^0.2.0
   solana: ^0.31.0
-  web3auth_flutter: ^5.0.4
-
-dependency_overrides:
-  pinenacl: ^0.6.0
+  web3auth_flutter: ^6.1.0
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true

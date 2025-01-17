@@ -25,7 +25,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3AuthOptions: Web3AuthOptions = {
   chainConfig,
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+  clientId: "BJLgyVU_tH-4QXOGBAQVtn2ZFQKP05VQ3iLr0uH_Y3g0DpRd3WUgiJA7-ftdNsDfOL4IauDriT1ZXAOyVObMOnI",
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   uiConfig: {
     uxMode: "redirect",

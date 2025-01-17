@@ -9,18 +9,16 @@ import {
   parseEther,
   serializeTransaction,
   encodeFunctionData,
-  TransactionSerializable,
   keccak256,
-  SerializeTransactionFn,
-  toHex,
+  TransactionSerializable,
 } from "viem";
 import type { IProvider } from "@web3auth/base";
 import { odysseyTestnet } from "viem/chains";
-import { eip7702Actions, hashAuthorization, recoverAuthorizationAddress, SignAuthorizationReturnType, verifyAuthorization } from "viem/experimental";
+import { hashAuthorization, prepareAuthorization, SignAuthorizationReturnType, verifyAuthorization } from "viem/experimental";
 
 const chain = odysseyTestnet;
 // Batch Delegation Contract Address on Odyssey Testnet
-const contractAddress = "0xC8527016Bd79e7AF8402B5EbCA93beF31FcBd90A";
+const contractAddress = "0x654F42b74885EE6803F403f077bc0409f1066c58";
 
 // Batch Delegation Contract ABI
 const abi = [
@@ -92,15 +90,12 @@ const signAuthorization = async (provider: IProvider): Promise<any> => {
 
     const addresses = await getAccounts(provider);
 
-    const nonce = await publicClient.getTransactionCount({
-      address: addresses[0],
+    const authorization = await prepareAuthorization(publicClient, {
+      account: addresses[0],
+      contractAddress,
     });
 
-    const authorizationHash = hashAuthorization({
-      contractAddress,
-      chainId: chain.id,
-      nonce,
-    });
+    const authorizationHash = hashAuthorization(authorization);
 
     const signature: Hex = (await provider.request({
       method: "eth_sign",
@@ -110,12 +105,10 @@ const signAuthorization = async (provider: IProvider): Promise<any> => {
     const parsedSignature = parseSignature(signature);
 
     const signedAuthorization: SignAuthorizationReturnType = {
-      contractAddress,
-      chainId: chain.id,
-      nonce,
+      ...authorization,
       r: parsedSignature.r,
       s: parsedSignature.s,
-      v: parsedSignature.v!,
+      yParity: parsedSignature.yParity,
     };
 
     const verified = await verifyAuthorization({
@@ -126,7 +119,83 @@ const signAuthorization = async (provider: IProvider): Promise<any> => {
 
     console.log(verified);
 
-    return signature;
+    return {
+      signature,
+      verified,
+    };
+  } catch (error) {
+    return error;
+  }
+};
+
+const submitAuthorization = async (provider: IProvider): Promise<any> => {
+  try {
+    const publicClient = createPublicClient({
+      chain: chain,
+      transport: http(),
+    });
+
+    const addresses = await getAccounts(provider);
+
+    const authorization = await prepareAuthorization(publicClient, {
+      account: addresses[0],
+      contractAddress,
+    });
+
+    const authorizationHash = hashAuthorization(authorization);
+
+    const signature: Hex = (await provider.request({
+      method: "eth_sign",
+      params: [addresses[0], authorizationHash],
+    })) as Hex;
+
+    const parsedSignature = parseSignature(signature);
+    console.log(parsedSignature);
+
+    const signedAuthorization: SignAuthorizationReturnType = {
+      ...authorization,
+      r: parsedSignature.r,
+      s: parsedSignature.s,
+      yParity: parsedSignature.yParity,
+    };
+
+    const estimateFeesPerGas = await publicClient.estimateFeesPerGas();
+    const nonce = await publicClient.getTransactionCount({ address: addresses[0] });
+
+    const transactionSerializable: TransactionSerializable = {
+      authorizationList: [signedAuthorization],
+      chainId: chain.id,
+      nonce: nonce,
+      to: "0xd2135CfB216b74109775236E36d4b433F1DF507B",
+      data: "0x",
+      value: parseEther("0.0000001"),
+      gas: 100000n,
+      maxFeePerGas: estimateFeesPerGas.maxFeePerGas,
+      maxPriorityFeePerGas: estimateFeesPerGas.maxPriorityFeePerGas,
+    };
+
+    const transactionSignature: Hex = (await provider.request({
+      method: "eth_sign",
+      params: [addresses[0], keccak256(serializeTransaction(transactionSerializable))],
+    })) as Hex;
+
+    const processedSignature = parseSignature(transactionSignature);
+
+    const signedSerializedTransaction = serializeTransaction(transactionSerializable, processedSignature);
+
+    const hash = await publicClient.sendRawTransaction({
+      serializedTransaction: signedSerializedTransaction,
+    });
+
+    const receipt = await publicClient.waitForTransactionReceipt({
+      hash,
+    });
+
+    return {
+      hash,
+      blockNumber: receipt.blockNumber.toString(),
+      status: receipt.status,
+    };
   } catch (error) {
     return error;
   }
@@ -141,34 +210,6 @@ const batchTransaction = async (provider: IProvider): Promise<any> => {
 
     const addresses = await getAccounts(provider);
 
-    const nonce = await publicClient.getTransactionCount({
-      address: addresses[0],
-    });
-
-    const authorizationHash = hashAuthorization({
-      contractAddress,
-      chainId: chain.id,
-      nonce: nonce + 1,
-    });
-
-    const signature: Hex = (await provider.request({
-      method: "eth_sign",
-      params: [addresses[0], authorizationHash],
-    })) as Hex;
-
-    const parsedSignature = parseSignature(signature);
-    console.log(parsedSignature);
-
-    const signedAuthorization: SignAuthorizationReturnType = {
-      contractAddress,
-      chainId: chain.id,
-      nonce: nonce + 1,
-      r: parsedSignature.r,
-      s: parsedSignature.s,
-      // v: parsedSignature.v,
-      yParity: parsedSignature.yParity,
-    };
-
     const encodedFunctionCall = encodeFunctionData({
       abi,
       functionName: "execute",
@@ -177,33 +218,26 @@ const batchTransaction = async (provider: IProvider): Promise<any> => {
           {
             data: "0x",
             to: "0xcb98643b8786950F0461f3B0edf99D88F274574D",
-            value: parseEther("0.001"),
+            value: parseEther("0.0000001"),
           },
           {
             data: "0x",
             to: "0xd2135CfB216b74109775236E36d4b433F1DF507B",
-            value: parseEther("0.002"),
+            value: parseEther("0.0000001"),
           },
         ],
       ],
     });
 
-    // const estimatedGas = await publicClient.estimateGas({
-    //   to: to,
-    // const estimatedGas = await publicClient.estimateGas({
-    //   to: to,
-    //   data: encodedFunctionCall,
-    // });
-
     const estimateFeesPerGas = await publicClient.estimateFeesPerGas();
+    const nonce = await publicClient.getTransactionCount({ address: addresses[0] });
 
-    const transactionSerializable = {
-      authorizationList: [signedAuthorization],
+    const transactionSerializable: TransactionSerializable = {
       chainId: chain.id,
       nonce: nonce,
       to: addresses[0],
       data: encodedFunctionCall,
-      gas: 1000000n,
+      gas: 100000n,
       maxFeePerGas: estimateFeesPerGas.maxFeePerGas,
       maxPriorityFeePerGas: estimateFeesPerGas.maxPriorityFeePerGas,
     };
@@ -219,18 +253,22 @@ const batchTransaction = async (provider: IProvider): Promise<any> => {
 
     const signedSerializedTransaction = serializeTransaction(transactionSerializable, processedSignature);
 
-    console.log(signedSerializedTransaction);
-
     const hash = await publicClient.sendRawTransaction({
       serializedTransaction: signedSerializedTransaction,
     });
 
-    console.log(hash);
+    const receipt = await publicClient.waitForTransactionReceipt({
+      hash,
+    });
 
-    return hash;
+    return {
+      hash,
+      blockNumber: receipt.blockNumber.toString(),
+      status: receipt.status,
+    };
   } catch (error) {
     return error;
   }
 };
 
-export default { getAccounts, getBalance, signAuthorization, batchTransaction };
+export default { getAccounts, getBalance, signAuthorization, batchTransaction, submitAuthorization };

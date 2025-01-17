@@ -109,6 +109,15 @@ function App() {
     uiConsole(hash);
   };
 
+  const submitAuthorization = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const hash = await RPC.submitAuthorization(provider);
+    uiConsole(hash);
+  };
+
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
@@ -138,6 +147,11 @@ function App() {
         <div>
           <button onClick={delegateAuthorization} className="card">
             Sign Authorization
+          </button>
+        </div>
+        <div>
+          <button onClick={submitAuthorization} className="card">
+            Send Authorization
           </button>
         </div>
         <div>

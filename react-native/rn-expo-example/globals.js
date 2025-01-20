@@ -1,5 +1,10 @@
 global.Buffer = require("buffer").Buffer;
 
+// eslint-disable-next-line import/first
+import { install } from "react-native-quick-crypto";
+
+install();
+
 // Needed so that 'stream-http' chooses the right default protocol.
 global.location = {
     protocol: "file:",

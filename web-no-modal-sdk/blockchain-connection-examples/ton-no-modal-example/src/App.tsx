@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal as Web3Auth } from "@web3auth/no-modal";
+import { Web3AuthNoModal as Web3Auth, Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { AuthAdapter } from "@web3auth/auth-adapter";
@@ -11,7 +11,7 @@ import TonRPC from "./tonRpc";
 const testnetRpc = await getHttpEndpoint({
   network: "testnet",
   protocol: "json-rpc",
-}); 
+});
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -35,10 +35,11 @@ function App() {
 
         const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
-        const web3auth = new Web3Auth({
+        const web3auth = new Web3AuthNoModal({
           clientId,
           privateKeyProvider,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+          useCoreKitKey: true,
         });
 
         setWeb3auth(web3auth);
@@ -46,6 +47,13 @@ function App() {
         const authAdapter = new AuthAdapter({
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
+            loginConfig: {
+              google: {
+                verifier: "w3a-google-demo",
+                typeOfLogin: "google",
+                clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", //use your app client id you got from google
+              },
+            },
           },
         });
         web3auth.configureAdapter(authAdapter);
@@ -113,6 +121,16 @@ function App() {
     uiConsole(address);
   };
 
+  const getPreGenAccounts = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new TonRPC(provider);
+    const address = await rpc.getPreGenAccounts();
+    uiConsole(address);
+  };
+
   const getBalance = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -175,7 +193,12 @@ function App() {
         </div>
         <div>
           <button onClick={getAccounts} className="card">
-            Get Accounts
+            Get Account
+          </button>
+        </div>
+        <div>
+          <button onClick={getPreGenAccounts} className="card">
+            Get PreGen Account
           </button>
         </div>
         <div>
@@ -208,18 +231,32 @@ function App() {
         <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
       <div className="faucet-message">
-        <p>Need test TON? Click <a href="https://faucet.tonxapi.com/" target="_blank" rel="noopener noreferrer">
+        <p>
+          Need test TON? Click{" "}
+          <a href="https://faucet.tonxapi.com/" target="_blank" rel="noopener noreferrer">
             here
-          </a> to visit the faucet and receive free testnet tokens.</p>
+          </a>{" "}
+          to visit the faucet and receive free testnet tokens.
+        </p>
         <p>Remember to use your TON testnet address when requesting tokens from the faucet.</p>
       </div>
     </>
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <>
+      <button onClick={login} className="card">
+        Login
+      </button>
+      <div>
+        <button onClick={getPreGenAccounts} className="card">
+          Get PreGen Account
+        </button>
+      </div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
+    </>
   );
 
   return (

@@ -16,7 +16,7 @@
     "@web3auth/base": "^9.5.1",
     "@web3auth/ethereum-provider": "^9.5.1",
     "@web3auth/no-modal": "^9.5.1",
-    "@xmtp/react-sdk": "^6.0.0",
+    "@xmtp/react-sdk": "^9.0.0",
     "empty-module": "^0.0.2",
     "ethers": "^6.13.2",
     "react": "^18.3.1",

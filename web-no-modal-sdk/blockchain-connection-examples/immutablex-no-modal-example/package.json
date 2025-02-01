@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@imtbl/core-sdk": "^2.0.0",
+    "@imtbl/core-sdk": "^3.6.1",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

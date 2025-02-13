@@ -55,7 +55,7 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between h-scree w-68 p-5 lg:flex hidden">
+    <div className="flex flex-col justify-between h-screen w-68 p-5 lg:flex">
       <div className="py-3">
         <strong className="px-4 block p-1 text-xs font-medium text-gray-400 uppercase">MENU</strong>
         <nav className="flex flex-col mt-6">

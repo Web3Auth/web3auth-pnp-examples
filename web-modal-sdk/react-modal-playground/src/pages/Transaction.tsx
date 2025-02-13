@@ -6,7 +6,7 @@ import Form from "../components/Form";
 import Header from "../components/Header";
 import NotConnectedPage from "../components/NotConnectedPage";
 import Sidebar from "../components/Sidebar";
-import SourceCode from "../components/SourceCode";
+//import SourceCode from "../components/SourceCode";
 import Tabs from "../components/Tabs";
 import { usePlayground } from "../services/playground";
 
@@ -76,14 +76,13 @@ function Transaction() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         {isConnected ? (
-          <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
-            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Signing/ Transaction</h1>
+          <div className=" w-full h-full flex flex-1 flex-col items-center justify-flex-start overflow-y-auto">
+            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl text-white">Signing/ Transaction</h1>
             <Tabs tabData={TabData} />
             {tab === "signMessage" ? (
               <Form formDetails={formDetailsSignMessage}>
                 <LoaderButton
-                  className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                  style={{ backgroundColor: "#0364ff" }}
+                  className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-black bg-primary hover:bg-secondary"
                   onClick={async () => {
                     setLoading(true);
                     await getSignature(message);
@@ -96,8 +95,7 @@ function Transaction() {
             ) : (
               <Form formDetails={formDetailsDestinationAddress}>
                 <LoaderButton
-                  className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                  style={{ backgroundColor: "#0364ff" }}
+                  className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-black bg-primary hover:bg-secondary"
                   onClick={async () => {
                     setLoading(true);
                     await sendTransaction(amount, address);
@@ -109,7 +107,7 @@ function Transaction() {
               </Form>
             )}
             <Console />
-            <SourceCode />
+            {/*             <SourceCode /> */}
           </div>
         ) : (
           <NotConnectedPage />

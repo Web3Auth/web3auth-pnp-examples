@@ -41,25 +41,21 @@ const Sidebar = () => {
   const location = useLocation();
   function linktoGo(label: string, path: any, id: number) {
     return (
-      <div
-        onClick={() => path()}
-        key={id}
-        className="flex items-center px-4 py-2 mb-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-primary  cursor-pointer"
-      >
+      <div onClick={() => path()} key={id} className="flex items-center px-4 py-2 mb-2 text-white rounded-lg hover:text-primary cursor-pointer">
         <span className="text-sm font-normal">{label}</span>
       </div>
     );
   }
   function activePage(label: string, id: number) {
     return (
-      <div key={id} className="flex items-center px-4 py-2 mb-2 rounded-lg bg-gray-100 text-primary cursor-pointer">
+      <div key={id} className="flex items-center px-4 py-2 mb-2 rounded-lg text-primary cursor-pointer">
         <span className="text-sm font-bold">{label}</span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col justify-between h-screen bg-white border-r w-64 p-5 lg:flex hidden">
+    <div className="flex flex-col justify-between h-scree w-68 p-5 lg:flex hidden">
       <div className="py-3">
         <strong className="px-4 block p-1 text-xs font-medium text-gray-400 uppercase">MENU</strong>
         <nav className="flex flex-col mt-6">

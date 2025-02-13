@@ -7,7 +7,7 @@ import { BUTTON_POSITION, CONFIRMATION_STRATEGY, WalletServicesPlugin } from "@w
 
 import { chain } from "../config/chainConfig";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+const clientId = "BPHQcxch5lFRTr0hhh9KcC2Jy_xz65YunZAh0G4lkEl_yNoi5jUXcN4zZfOtvgWj8UE-33T1H90ob2q8oDHj844";
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
@@ -18,7 +18,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 const web3AuthOptions: Web3AuthOptions = {
   chainConfig: chain.ethereum,
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
   privateKeyProvider,
 };
 

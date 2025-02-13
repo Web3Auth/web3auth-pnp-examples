@@ -40,7 +40,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
   return (
     <div className="py-16 w-11/12 px-4 sm:px-6 lg:px-8 z-0">
       <div className="flex flex-col space-y-2 md:flex-row md:justify-between md:space-y-0">
-        <h1 className="text-lg font-bold">Your Account Details</h1>
+        <h1 className="text-lg font-bold text-white">Your Account Details</h1>
         <Dropdown
           rounded
           options={[...Object.keys(chainList)]}
@@ -62,12 +62,12 @@ function AccountDetails({ children }: AccountDetailsProps) {
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
           {userInfo?.profileImage && <img className="object-fill w-24 h-24 rounded-lg" src={userInfo?.profileImage} referrerPolicy="no-referrer" />}
           {!userInfo?.profileImage && userInfo?.name && (
-            <span className="flex justify-center items-center bg-purple-100 font-bold w-24 h-24 rounded-lg text-[80px] text-purple-800">
+            <span className="flex justify-center items-center bg-secondary font-bold w-24 h-24 rounded-lg text-[80px] text-primary">
               {userInfo?.name.charAt(0).toUpperCase()}
             </span>
           )}
           {!(userInfo?.profileImage || userInfo?.name) && (
-            <span className="flex justify-center items-center bg-purple-100 font-bold w-24 h-24 rounded-lg text-[80px] text-purple-800">
+            <span className="flex justify-center items-center bg-secondary font-bold w-24 h-24 rounded-lg text-[80px] text-primary">
               {web3Auth.connectedAdapterName.charAt(0).toUpperCase()}
             </span>
           )}
@@ -144,15 +144,14 @@ function AccountDetails({ children }: AccountDetailsProps) {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path
                 className="opacity-75"
-                fill="#0364ff"
+                fill="#F5E17A"
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
           ) : (
             <button
               type="submit"
-              className="flex flex-row rounded-full px-6 py-3 text-white justify-center items-center cursor-pointer"
-              style={{ backgroundColor: "#0364ff" }}
+              className="flex flex-row rounded-full px-6 py-3 text-black justify-center items-center cursor-pointer bg-primary hover:bg-secondary"
               onClick={() => switchChain(chainDetails)}
             >
               Change Network Config

@@ -24,7 +24,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color: #F5E17A;
   text-decoration: none;
 }
 
@@ -38,10 +38,10 @@
   margin: 0.5rem;
   padding: 0.7rem;
   text-align: center;
-  color: #0070f3;
+  color: #F5E17A;
   background-color: #fafafa;
   text-decoration: none;
-  border: 1px solid #0070f3;
+  border: 1px solid #F5E17A;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   width: 100%;
@@ -98,7 +98,7 @@
 .headerButton {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  background: #0364ff;
+  background: #F5E17A;
   box-shadow: 2px 2px 12px rgba(3, 100, 255, 0.05);
   border-radius: 100px;
   flex-direction: row;
@@ -123,4 +123,5 @@
 body {
   font-family: "DM Sans", sans-serif !important;
   font-weight: 500;
+  background-color: black;
 }

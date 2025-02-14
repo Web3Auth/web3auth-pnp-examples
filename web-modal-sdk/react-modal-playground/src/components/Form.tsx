@@ -16,7 +16,7 @@ function Form({ heading, headingCenter, formDetails, children }: FormProps) {
   return (
     <div className="w-11/12 px-4 sm:px-6 lg:px-8  z-0">
       <p className={`text-lg font-bold ${headingCenter ? "text-center" : ""}`}>{heading}</p>
-      <div className="p-8 mt-6 mb-0 space-y-4 rounded-lg bg-white">
+      <div className="p-8 mt-6 mb-0 space-y-4 rounded-lg bg-dark text-white">
         <form action="" className="pb-6">
           {formDetails.map((formDetail) => (
             <div key={formDetail.label}>
@@ -26,7 +26,7 @@ function Form({ heading, headingCenter, formDetails, children }: FormProps) {
                   <input
                     type="email"
                     id="email"
-                    className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm  z-0"
+                    className="w-full p-4 pr-12 text-sm shadow-sm  z-0 bg-transparent border-b rounded-full border-gray-400 text-white focus:border-primary focus:outline-hidden"
                     value={formDetail.input}
                     onChange={(e) => {
                       formDetail.onChange(e.target.value as string);
@@ -36,7 +36,7 @@ function Form({ heading, headingCenter, formDetails, children }: FormProps) {
                   <input
                     type="email"
                     id="email"
-                    className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm  z-0"
+                    className="w-full p-4 pr-12 text-sm shadow-sm  z-0 bg-transparent border-b rounded-full border-gray-400 text-white focus:border-primary focus:outline-hidden"
                     value={formDetail.input}
                     {...(formDetail.readOnly ? { readOnly: true } : {})}
                   />

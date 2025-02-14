@@ -13,7 +13,7 @@ function renderTab(tabName: string, onClick?: any, active?: boolean) {
     );
   }
   return (
-    <a onClick={onClick} className="p-4 text-lg font-bold -mb-px border-b border-transparent text-white hover:text-primary cursor-pointer">
+    <a onClick={onClick} className="p-4 text-lg font-bold -mb-px border-b border-transparent text-gray-400 hover:text-primary cursor-pointer">
       {tabName}
     </a>
   );

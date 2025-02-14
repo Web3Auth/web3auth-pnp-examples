@@ -7,9 +7,9 @@ const Console = () => {
 
   return (
     <div className="py-16 w-11/12 px-4 py-16 sm:px-6 lg:px-8 flex-col">
-      <p className="text-lg font-bold text-white">Console</p>
-      <div className="justify-center p-8 mt-6 mb-0 space-y-4 rounded-lg bg-white">
-        <div className="md:flex items-flex-start p-1 bg-gray-200 overflow-scroll max-h-72">
+      <p className="text-lg font-bold text-gray-400">Console</p>
+      <div className="justify-center p-8 mt-6 mb-0 space-y-4 rounded-lg bg-dark">
+        <div className="md:flex items-flex-start p-1 bg-dark overflow-auto max-h-72 text-white">
           <pre className="font-mono overflow-scroll w-full">{playgroundConsole}</pre>
         </div>
       </div>

@@ -40,7 +40,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
   return (
     <div className="py-16 w-11/12 px-4 sm:px-6 lg:px-8 z-0">
       <div className="flex flex-col space-y-2 md:flex-row md:justify-between md:space-y-0">
-        <h1 className="text-lg font-bold text-white">Your Account Details</h1>
+        <h1 className="text-lg font-bold text-gray-400">Your Account Details</h1>
         <Dropdown
           rounded
           options={[...Object.keys(chainList)]}
@@ -58,24 +58,24 @@ function AccountDetails({ children }: AccountDetailsProps) {
           }}
         />
       </div>
-      <div className="md:p-8 p-4 mt-6 space-y-4 rounded-lg bg-white overflow-hidden w-full">
+      <div className="md:p-8 p-4 mt-6 space-y-4 rounded-lg bg-dark overflow-hidden w-full">
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
           {userInfo?.profileImage && <img className="object-fill w-24 h-24 rounded-lg" src={userInfo?.profileImage} referrerPolicy="no-referrer" />}
           {!userInfo?.profileImage && userInfo?.name && (
-            <span className="flex justify-center items-center bg-secondary font-bold w-24 h-24 rounded-lg text-[80px] text-primary">
+            <span className="flex justify-center items-center bg-primary font-bold w-24 h-24 rounded-lg text-[80px] text-secondary">
               {userInfo?.name.charAt(0).toUpperCase()}
             </span>
           )}
           {!(userInfo?.profileImage || userInfo?.name) && (
-            <span className="flex justify-center items-center bg-secondary font-bold w-24 h-24 rounded-lg text-[80px] text-primary">
+            <span className="flex justify-center items-center bg-primary font-bold w-24 h-24 rounded-lg text-[80px] text-secondary">
               {web3Auth.connectedAdapterName.charAt(0).toUpperCase()}
             </span>
           )}
           <div className="space-y-2 md:space-y-0 md:pl-8 flex flex-col justify-between">
             {isConnected && web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH ? (
-              <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{userInfo?.name}</span>
+              <span className="text-xl md:text-2xl text-white font-bold w-fit">{userInfo?.name}</span>
             ) : (
-              <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{`Connected to ${web3Auth.connectedAdapterName[0].toUpperCase()}${web3Auth.connectedAdapterName.slice(1).replace(/-/g, " ")}`}</span>
+              <span className="text-xl md:text-2xl text-white font-bold w-fit">{`Connected to ${web3Auth.connectedAdapterName[0].toUpperCase()}${web3Auth.connectedAdapterName.slice(1).replace(/-/g, " ")}`}</span>
             )}
             <div
               className="w-fit text-[8px] sm:text-sm bg-gray-100 text-gray-600 p-1 pl-3 pr-3 rounded-full z-0 flex flex-row justify-between space-x-4 items-center cursor-pointer"
@@ -105,21 +105,21 @@ function AccountDetails({ children }: AccountDetailsProps) {
           </button>
         )}
       </div>
-      <div className="p-8 mt-6 mb-0 rounded-lg bg-white flex flex-row justify-between flex-wrap">
+      <div className="p-8 mt-6 mb-0 rounded-lg bg-dark flex flex-row justify-between flex-wrap">
         <div className="p-2 flex flex-col space-y-4">
-          <span className="text-sm">Wallet Balance</span>
-          <div className="flex flex-row space-x-1 items-start">
+          <span className="text-sm text-white">Wallet Balance</span>
+          <div className="flex flex-row space-x-1 items-start text-white">
             <span className="text-2xl font-bold">{balance}</span>
             <span className="p-1 text-sm font-medium">{connectedChain?.ticker || ""}</span>
           </div>
         </div>
-        <div className="p-2 flex flex-col space-y-4">
+        <div className="p-2 flex flex-col space-y-4 text-white">
           <span className="text-sm">Chain ID</span>
           <span className="text-2xl font-bold">{connectedChain?.chainId || ""}</span>
         </div>
       </div>
 
-      <div className="p-8 mt-6 rounded-lg bg-white flex flex-col space-y-4">
+      <div className="p-8 mt-6 rounded-lg bg-dark flex flex-col space-y-4 text-white">
         <h2 className="text-lg font-bold">Use Custom Chain Config</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {Object.entries(chainDetails).map(
@@ -134,7 +134,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
                     id={field}
                     value={(value as string) || ""}
                     onChange={(e) => setChainDetails({ ...chainDetails, [field]: e.target.value })}
-                    className="form-input flex-1"
+                    className="form-input flex-1 bg-transparent border-b rounded-full border-gray-400 text-white focus:border-primary focus:outline-hidden"
                   />{" "}
                 </div>
               )

@@ -3,7 +3,7 @@ import Hamburger from "hamburger-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import wlfiLogo from "../assets/wlfiLogo.svg";
+import wlfiLogo from "../assets/wlfiLogo.png";
 import DisconnectWeb3AuthButton from "./DisconnectWeb3AuthButton";
 import Drawer from "./Drawer";
 

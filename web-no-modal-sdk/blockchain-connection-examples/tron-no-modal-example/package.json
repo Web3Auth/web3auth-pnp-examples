@@ -17,7 +17,7 @@
     "@web3auth/no-modal": "^9.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tronweb": "^4.4.0",
+    "tronweb": "^6.0.1",
     "typescript": "^5.0.4",
     "util": "^0.12.5",
     "vite": "^5.3.5",

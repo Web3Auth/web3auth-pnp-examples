@@ -43,6 +43,7 @@ function App() {
           uiConfig: {
             appName: "W3A Heroes",
             mode: "light",
+            uxMode: "redirect",
             // loginMethodsOrder: ["apple", "google", "twitter"],
             logoLight: "https://web3auth.io/images/web3authlog.png",
             logoDark: "https://web3auth.io/images/web3authlogodark.png",
@@ -53,6 +54,7 @@ function App() {
           },
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           privateKeyProvider: privateKeyProvider,
+          useCoreKitKey: true,
         });
 
         const authAdapter = new AuthAdapter({
@@ -133,6 +135,11 @@ function App() {
                   connection: "github",
                 }
               },
+              email_passwordless: {
+                verifier: "test-email-passwordless-mm",
+                typeOfLogin: "email_passwordless",
+                clientId,
+              },
             },
           },
         });
@@ -193,7 +200,7 @@ function App() {
                 // Disable email_passwordless and sms_passwordless
                 email_passwordless: {
                   name: "email_passwordless",
-                  showOnModal: false,
+                  showOnModal: true,
                 },
                 sms_passwordless: {
                   name: "sms_passwordless",

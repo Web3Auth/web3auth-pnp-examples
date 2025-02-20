@@ -13,13 +13,18 @@ class Web3AuthHelper {
     var web3Auth: Web3Auth!
     
     func initialize() async throws {
-        web3Auth = try await Web3Auth(
-            W3AInitParams(
-                clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
-                network: Network.sapphire_mainnet,
-                redirectUrl: "com.w3a.ios-solana-example://auth"
+        do {
+            web3Auth = try await Web3Auth(
+                W3AInitParams(
+                    clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+                    network: Network.sapphire_mainnet,
+                    redirectUrl: "com.w3a.ios-solana-example://auth"
+                )
             )
-        )
+        } catch let error {
+            print(error.localizedDescription)
+        }
+          
     }
     
     func isUserAuthenticated() -> Bool {

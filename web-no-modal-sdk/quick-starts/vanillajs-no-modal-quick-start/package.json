@@ -6,7 +6,7 @@
     "start": "http-server ."
   },
   "dependencies": {
-    "@web3auth/auth-adapter": "^9.0.2",
+    "@web3auth/auth-adapter": "^9.5.1",
     "http-server": "^14.1.1"
   },
   "devDependencies": {

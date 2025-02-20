@@ -16,8 +16,8 @@ const newChain = {
   // Use services like Infura, Quicknode etc
   displayName: "Polygon Mainnet",
   blockExplorerUrl: "https://polygonscan.com",
-  ticker: "MATIC",
-  tickerName: "MATIC",
+  ticker: "POL",
+  tickerName: "Polygon Ecosystem token",
   logo: "https://images.toruswallet.io/polygon.svg",
 };
 
@@ -38,7 +38,7 @@ function App() {
     addAndSwitchChain,
   } = useWeb3Auth();
 
-  const { showCheckout, showWalletConnectScanner, showWalletUI, isPluginConnected } = useWalletServicesPlugin();
+  const { showCheckout, showWalletConnectScanner, showWalletUI, showSwap, isPluginConnected } = useWalletServicesPlugin();
   const [unloggedInView, setUnloggedInView] = useState<JSX.Element | null>(null);
   const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(
     <div>
@@ -247,8 +247,8 @@ function App() {
           <button
             onClick={() => {
               if (isPluginConnected) {
+                uiConsole("Show Checkout doesn't work in Testnet network, please switch to mainnet. Click Add and Switch Chain button first.");
                 showCheckout({
-
                   show: true,
                 });
               }
@@ -256,6 +256,20 @@ function App() {
             className="card"
           >
             Show Checkout
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              if (isPluginConnected) {
+                showSwap({
+                  show: true,
+                });
+              }
+            }}
+            className="card"
+          >
+            Show Swap
           </button>
         </div>
         <div>

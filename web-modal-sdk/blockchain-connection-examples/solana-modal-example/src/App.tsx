@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IAdapter, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+
 import RPC from "./solanaRPC";
 import "./App.css";
 
@@ -16,7 +17,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const chainConfig = {
-    chainId: "0x2",
+    chainId: "0x1",
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     rpcTarget: "https://api.devnet.solana.com",
     tickerName: "SOLANA",
@@ -52,20 +53,78 @@ function App() {
           privateKeyProvider: solanaPrivateKeyPrvoider,
         });
 
-        // Setup external adapaters
-        const adapters = await getInjectedAdapters({
+        // Setup external adapters
+        const adapters = getDefaultExternalAdapters({
           options: {
             clientId,
             chainConfig,
           },
         });
-        adapters.forEach((adapter) => {
+        adapters.forEach((adapter: IAdapter<any>) => {
           web3auth.configureAdapter(adapter);
         });
 
         setWeb3auth(web3auth);
 
-        await web3auth.initModal();
+        await web3auth.initModal({
+          modalConfig: {
+            [WALLET_ADAPTERS.AUTH]: {
+              label: "auth",
+              loginMethods: {
+                // it will hide the facebook option from the Web3Auth modal.
+                facebook: {
+                  name: "facebook",
+                  showOnModal: false,
+                },
+                reddit: {
+                  name: "reddit",
+                  showOnModal: false,
+                },
+                twitch: {
+                  name: "twitch",
+                  showOnModal: false,
+                },
+                line: {
+                  name: "line",
+                  showOnModal: false,
+                },
+                kakao: {
+                  name: "kakao",
+                  showOnModal: false,
+                },
+                linkedin: {
+                  name: "linkedin",
+                  showOnModal: false,
+                },
+                twitter: {
+                  name: "twitter",
+                  showOnModal: false,
+                },
+                weibo: {
+                  name: "weibo",
+                  showOnModal: false,
+                },
+                wechat: {
+                  name: "wechat",
+                  showOnModal: false,
+                },
+                farcaster: {
+                  name: "farcaster",
+                  showOnModal: false,
+                },
+                email_passwordless: {
+                  name: "email-passwordless",
+                  showOnModal: true,
+                },
+                sms_passwordless: {
+                  name: "sms-passwordless",
+                  showOnModal: true,
+                },
+              },
+              showOnModal: true,
+            },
+          },
+        });
         setProvider(web3auth.provider);
 
         if (web3auth.connected) {

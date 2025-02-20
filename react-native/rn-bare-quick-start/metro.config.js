@@ -2,6 +2,7 @@ const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
 const defaultConfig = getDefaultConfig(__dirname);
 
+// IMP START - Bundler Issues
 const config = {
     resolver: {
         extraNodeModules: {
@@ -18,5 +19,6 @@ const config = {
         sourceExts: [...defaultConfig.resolver.sourceExts, 'svg'],
     },
 };
+// IMP END - Bundler Issues
 
 module.exports = mergeConfig(defaultConfig, config);

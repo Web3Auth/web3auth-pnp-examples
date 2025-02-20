@@ -37,12 +37,6 @@ class ViewModel: ObservableObject {
                             verifierSubIdentifier: "w3a-a0-github"
                         )
             ],
-            mfaSettings:  MfaSettings(
-                deviceShareFactor: MfaSetting(enable: true, priority: 1),
-                backUpShareFactor: MfaSetting(enable: true, priority: 2),
-                socialBackupFactor: MfaSetting(enable: true, priority: 3),
-                passwordFactor: MfaSetting(enable: true, priority: 4)
-            ),
             // 259200 allows user to stay authenticated for 3 days with Web3Auth.
             // Default is 86400, which is 1 day.
             sessionTime: 259200

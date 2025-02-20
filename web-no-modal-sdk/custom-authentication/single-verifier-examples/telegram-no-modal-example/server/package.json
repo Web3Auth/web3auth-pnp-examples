@@ -11,7 +11,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@telegram-auth/server": "^1.0.3",
-		"@web3auth/auth-adapter": "^9.0.2",
+		"@web3auth/auth-adapter": "^9.5.1",
 		"dotenv": "^16.4.5",
 		"express": "^4.19.2",
 		"jsonwebtoken": "^8.5.1"

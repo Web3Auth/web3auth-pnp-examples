@@ -6,7 +6,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
 //import RPC from "./evm.web3";
 // import RPC from './evm.ethers';
- import RPC from './evm.viem';
+import RPC from "./evm.viem";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
@@ -66,6 +66,12 @@ function App() {
                 typeOfLogin: "jwt",
                 clientId: "QiEf8qZ9IoasbZsbHvjKZku4LdnRC1Ct",
               },
+              auth0Google: {
+                verifier: "aggregate-sapphire",
+                verifierSubIdentifier: "w3a-a0-google",
+                typeOfLogin: "jwt",
+                clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu",
+              },
             },
           },
         });
@@ -110,6 +116,25 @@ function App() {
         // identify the user. This is mapped b/w google and email passwordless logins of Auth0
         verifierIdField: "email",
         isVerifierIdCaseSensitive: false,
+      },
+    });
+    setProvider(web3authProvider);
+  };
+
+  const loginAuth0Google = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+      loginProvider: "auth0Google",
+      extraLoginOptions: {
+        domain: "https://web3auth.au.auth0.com",
+        // this corresponds to the field inside jwt which must be used to uniquely
+        // identify the user. This is mapped b/w google and email passwordless logins of Auth0
+        verifierIdField: "email",
+        isVerifierIdCaseSensitive: false,
+        connection: "google-oauth2",
       },
     });
     setProvider(web3authProvider);
@@ -275,11 +300,14 @@ function App() {
       <button onClick={loginAuth0EmailPasswordless} className="card">
         Login using <b>Email Passwordless</b> [ via Auth0 ]
       </button>
+      <button onClick={loginAuth0Google} className="card">
+        Login using <b>Google</b> [ via Auth0 ]
+      </button>
       <button onClick={loginAuth0GitHub} className="card">
         Login using <b>GitHub</b> [ via Auth0 ]
       </button>
       <button onClick={loginFacebook} className="card">
-        Login using <b>Facebook</b> 
+        Login using <b>Facebook</b>
       </button>
     </>
   );

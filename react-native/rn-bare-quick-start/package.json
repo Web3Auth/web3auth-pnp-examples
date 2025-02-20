@@ -9,6 +9,7 @@
     "start": "react-native start",
     "test": "jest"
   },
+  "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
     "@ethersproject/shims": "^5.7.0",
     "@toruslabs/react-native-web-browser": "^1.1.0",
@@ -20,6 +21,7 @@
     "react-native-encrypted-storage": "^4.0.3",
     "react-native-quick-crypto": "^0.7.1"
   },
+  "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",

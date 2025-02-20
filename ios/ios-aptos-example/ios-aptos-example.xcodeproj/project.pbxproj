@@ -666,7 +666,7 @@
 			repositoryURL = "https://github.com/Web3Auth/web3auth-swift-sdk/";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
+				minimumVersion = 11.0.4;
 			};
 		};
 		A4DCEE6F2C8B36670048A663 /* XCRemoteSwiftPackageReference "aptos-swift-sdk" */ = {

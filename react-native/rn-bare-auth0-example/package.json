@@ -12,12 +12,13 @@
   "dependencies": {
     "@ethersproject/shims": "^5.7.0",
     "@toruslabs/react-native-web-browser": "^1.1.0",
-    "@web3auth/ethereum-provider": "^8.6.2",
-    "@web3auth/react-native-sdk": "^6.0.0",
+    "@web3auth/ethereum-provider": "^9.3.0",
+    "@web3auth/react-native-sdk": "^8.0.0",
     "ethers": "^6.13.0",
     "react": "18.2.0",
     "react-native": "0.74.2",
-    "react-native-encrypted-storage": "^4.0.3"
+    "react-native-encrypted-storage": "^4.0.3",
+    "react-native-quick-crypto": "^0.7.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

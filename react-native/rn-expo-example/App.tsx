@@ -8,7 +8,7 @@ import "./globals";
 // IMP START - Quick Start
 import * as WebBrowser from "expo-web-browser";
 import * as SecureStore from "expo-secure-store";
-import Web3Auth, { OPENLOGIN_NETWORK, LOGIN_PROVIDER, ChainNamespace } from "@web3auth/react-native-sdk";
+import Web3Auth, { WEB3AUTH_NETWORK, LOGIN_PROVIDER, ChainNamespace } from "@web3auth/react-native-sdk";
 import {EthereumPrivateKeyProvider} from '@web3auth/ethereum-provider';
 // IMP END - Quick Start
 import {ethers} from 'ethers';
@@ -52,7 +52,8 @@ const web3auth = new Web3Auth(WebBrowser, SecureStore, {
   // IMP START - Whitelist bundle ID
   redirectUrl,
   // IMP END - Whitelist bundle ID
-  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  privateKeyProvider: ethereumPrivateKeyProvider,
 });
 // IMP END - SDK Initialization
 
@@ -68,8 +69,7 @@ export default function App() {
       // IMP START - SDK Initialization
       await web3auth.init();
 
-      if (web3auth.privKey) {
-        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+      if (web3auth.connected) {
         // IMP END - SDK Initialization
         setProvider(ethereumPrivateKeyProvider);
         setLoggedIn(true);
@@ -98,8 +98,7 @@ export default function App() {
         },
       });
 
-      if (web3auth.privKey) {
-        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+      if (web3auth.connected) {
         // IMP END - Login
         setProvider(ethereumPrivateKeyProvider);
         uiConsole('Logged In');
@@ -121,7 +120,7 @@ export default function App() {
     await web3auth.logout();
     // IMP END - Logout
 
-    if (!web3auth.privKey) {
+    if (!web3auth.connected) {
       setProvider(null);
       uiConsole('Logged out');
       setLoggedIn(false);

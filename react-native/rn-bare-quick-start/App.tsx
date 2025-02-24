@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Button, ScrollView, Dimensions, TextInput } from "react-native";
 import "@ethersproject/shims";
-import { ethers } from "ethers";
 
 // IMP START - Quick Start
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK, ChainNamespace } from "@web3auth/react-native-sdk";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import Web3Auth, { ChainNamespace, LOGIN_PROVIDER, WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
+import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
+import { Button, Dimensions, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import EncryptedStorage from "react-native-encrypted-storage";
 // IMP END - Quick Start
 
 const scheme = "web3authrnexample"; // Or your desired app redirection scheme
 // IMP START - Whitelist bundle ID
-const redirectUrl = `${scheme}://openlogin`;
+const redirectUrl = `${scheme}://auth`;
 // IMP END - Whitelist bundle ID
 
 // IMP START - Dashboard Registration
@@ -45,7 +45,8 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   // IMP START - Whitelist bundle ID
   redirectUrl,
   // IMP END - Whitelist bundle ID
-  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  privateKeyProvider: ethereumPrivateKeyProvider,
 });
 // IMP END - SDK Initialization
 
@@ -60,8 +61,7 @@ export default function App() {
       // IMP START - SDK Initialization
       await web3auth.init();
 
-      if (web3auth.privKey) {
-        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+      if (web3auth.connected) {
         // IMP END - SDK Initialization
         setProvider(ethereumPrivateKeyProvider);
         setLoggedIn(true);
@@ -90,8 +90,7 @@ export default function App() {
         },
       });
 
-      if (web3auth.privKey) {
-        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+      if (web3auth.connected) {
         // IMP END - Login
         setProvider(ethereumPrivateKeyProvider);
         uiConsole("Logged In");
@@ -113,7 +112,7 @@ export default function App() {
     await web3auth.logout();
     // IMP END - Logout
 
-    if (!web3auth.privKey) {
+    if (!web3auth.connected) {
       setProvider(null);
       uiConsole("Logged out");
       setLoggedIn(false);
@@ -200,7 +199,7 @@ export default function App() {
   };
 
   const uiConsole = (...args: unknown[]) => {
-    setConsole(JSON.stringify(args || {}, null, 2) + "\n\n\n\n" + console);
+    setConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${console}`);
   };
 
   const loggedInView = (

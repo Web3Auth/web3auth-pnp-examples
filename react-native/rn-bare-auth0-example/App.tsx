@@ -1,6 +1,6 @@
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import Web3Auth, { ChainNamespace, LOGIN_PROVIDER, WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
+import Web3Auth, { ChainNamespace, LOGIN_PROVIDER } from "@web3auth/react-native-sdk";
 import React, { useEffect, useState } from "react";
 import { Button, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import EncryptedStorage from "react-native-encrypted-storage";
@@ -9,8 +9,8 @@ import EncryptedStorage from "react-native-encrypted-storage";
 import RPC from "./ethersRPC"; // for using ethers.js
 
 const scheme = "web3authrnbareauth0example"; // Or your desired app redirection scheme
-const redirectUrl = `${scheme}://auth`;
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+const redirectUrl = "web3authrnbareauth0example://auth";
+const clientId = "BLQmq83LgX8FRbjPcZ5lVX8EJUjrioOiw3YQd6qCoWs3Of8F2dZRD2nThUSLpbyKO7U3-bXe0D3j8hgjntShi40";
 
 const chainConfig = {
   chainNamespace: ChainNamespace.EIP155,
@@ -34,15 +34,15 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
-  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  network: "testnet", // or other networks
   redirectUrl,
   useCoreKitKey: true,
-  privateKeyProvider: ethereumPrivateKeyProvider,
   loginConfig: {
     jwt: {
-      verifier: "w3a-auth0-demo",
-      typeOfLogin: "jwt",
-      clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
+      verifierSubIdentifier: "google-shubs",
+      clientId: "1015336103925-reqktqs0ns9vfaeh7nbt8mi634u9157k.apps.googleusercontent.com",
+      typeOfLogin: "google",
+      verifier: "google-auth0-gooddollar",
     },
   },
 });
@@ -57,7 +57,8 @@ export default function App() {
       // IMP START - SDK Initialization
       await web3auth.init();
 
-      if (web3auth.connected) {
+      if (web3auth.privKey) {
+        await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
         // IMP END - SDK Initialization
         setProvider(ethereumPrivateKeyProvider);
         setLoggedIn(true);
@@ -72,14 +73,11 @@ export default function App() {
     await web3auth.login({
       loginProvider: LOGIN_PROVIDER.JWT,
       mfaLevel: "none",
-      extraLoginOptions: {
-        domain: "https://web3auth.au.auth0.com",
-        verifierIdField: "sub",
-      },
     });
 
     uiConsole("Logged In");
-    if (web3auth.connected) {
+    if (web3auth.privKey) {
+      await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
       // IMP END - Login
       setProvider(ethereumPrivateKeyProvider);
       uiConsole("Logged In");
@@ -99,7 +97,7 @@ export default function App() {
     setConsole("Logging out");
     await web3auth.logout();
 
-    if (!web3auth.connected) {
+    if (!web3auth.privKey) {
       setProvider(null);
       uiConsole("Logged out");
       setLoggedIn(false);

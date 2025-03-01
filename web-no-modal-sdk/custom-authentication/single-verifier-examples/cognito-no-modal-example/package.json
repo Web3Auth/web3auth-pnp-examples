@@ -16,7 +16,7 @@
     "@web3auth/ethereum-provider": "^9.5.1",
     "@web3auth/no-modal": "^9.5.1",
     "ethers": "^6.6.2",
-    "npm-check-updates": "^16.6.2",
+    "npm-check-updates": "^17.1.15",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.0.4",

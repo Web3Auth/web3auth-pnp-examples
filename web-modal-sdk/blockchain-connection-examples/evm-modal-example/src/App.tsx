@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/modal-react-hooks";
-import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+import { IProvider, getEvmChainConfig } from "@web3auth/base";
 
 import "./App.css";
 // import RPC from "./web3RPC"; // for using web3.js
@@ -8,18 +8,8 @@ import RPC from "./viemRPC"; // for using viem
 // import RPC from "./ethersRPC"; // for using ethers.js
 import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
 
-const newChain = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x89", // hex of 137, polygon mainnet
-  rpcTarget: "https://rpc.ankr.com/polygon",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Polygon Mainnet",
-  blockExplorerUrl: "https://polygonscan.com",
-  ticker: "POL",
-  tickerName: "Polygon Ecosystem token",
-  logo: "https://images.toruswallet.io/polygon.svg",
-};
+// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const newChain = getEvmChainConfig(0x13881)!;
 
 function App() {
   const {

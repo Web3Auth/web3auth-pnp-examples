@@ -1,21 +1,13 @@
 import { useEffect, useState } from "react";
 import { useWeb3Auth } from "@web3auth/no-modal-react-hooks";
 import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, IAdapter } from "@web3auth/base";
+import { IProvider, WALLET_ADAPTERS, IAdapter, getEvmChainConfig } from "@web3auth/base";
 import { adapters } from "./Web3AuthProvider";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 
-const newChain = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x89", // Polygon Mainnet
-  rpcTarget: "https://rpc.ankr.com/polygon",
-  displayName: "Polygon Mainnet",
-  blockExplorerUrl: "https://polygonscan.com",
-  ticker: "POL",
-  tickerName: "Polygon Ecosystem token",
-  logo: "https://images.toruswallet.io/polygon.svg",
-};
+// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const newChain = getEvmChainConfig(0x89)!;
 
 function App() {
   const { connectTo, authenticateUser, enableMFA, logout, userInfo, provider, isMFAEnabled, web3Auth, status, addAndSwitchChain } = useWeb3Auth();

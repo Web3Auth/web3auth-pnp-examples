@@ -2,47 +2,31 @@
 <template>
   <div id="app">
     <h2>
-      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
-        Web3Auth
-      </a>
+      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer"> Web3Auth </a>
       Vue Composables Modal Quick Start
     </h2>
 
-    <button v-if="status !== ADAPTER_STATUS.CONNECTED" class="card" @click="login" style="cursor: pointer">
-      Login
-    </button>
+    <button v-if="status !== ADAPTER_STATUS.CONNECTED" class="card" @click="login" style="cursor: pointer">Login</button>
 
     <div v-if="status === ADAPTER_STATUS.CONNECTED">
       <div class="flex-container">
         <div>
-          <button class="card" @click="getUserInfo" style="cursor: pointer">
-            Get User Info
-          </button>
+          <button class="card" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
         </div>
         <div>
-          <button class="card" @click="getAccounts" style="cursor: pointer">
-            Get Accounts
-          </button>
+          <button class="card" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
         </div>
         <div>
-          <button class="card" @click="getBalance" style="cursor: pointer">
-            Get Balance
-          </button>
+          <button class="card" @click="getBalance" style="cursor: pointer">Get Balance</button>
         </div>
         <div>
-          <button class="card" @click="signMessage" style="cursor: pointer">
-            Sign Message
-          </button>
+          <button class="card" @click="signMessage" style="cursor: pointer">Sign Message</button>
         </div>
         <div>
-          <button class="card" @click="sendTransaction" style="cursor: pointer">
-            Send Transaction
-          </button>
+          <button class="card" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
         </div>
         <div>
-          <button class="card" @click="logout()" style="cursor: pointer">
-            Logout
-          </button>
+          <button class="card" @click="logout()" style="cursor: pointer">Logout</button>
         </div>
       </div>
     </div>
@@ -51,12 +35,16 @@
     </div>
 
     <footer class="footer">
-      <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-composables-modal-quick-start"
-        target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-composables-modal-quick-start"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         Source code
       </a>
       <a
-        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvue-composables-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal">
+        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvue-composables-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal"
+      >
         <img src="https://vercel.com/button" alt="Deploy with Vercel" />
       </a>
     </footer>
@@ -67,7 +55,7 @@
 import { useWeb3Auth } from "@web3auth/modal-vue-composables";
 // IMP START - Blockchain Calls
 import RPC from "./ethersRPC";
-import { ADAPTER_STATUS } from '@web3auth/base';
+import { ADAPTER_STATUS } from "@web3auth/base";
 // import RPC from "./viemRPC";
 // import RPC from "./web3RPC";
 // IMP END - Blockchain Calls
@@ -112,7 +100,6 @@ const signMessage = async () => {
   const signedMessage = await RPC.signMessage(provider.value!);
   uiConsole(signedMessage);
 };
-
 
 const sendTransaction = async () => {
   if (!provider) {
@@ -185,7 +172,7 @@ a {
   flex-flow: row wrap;
 }
 
-.flex-container>div {
+.flex-container > div {
   width: 100px;
   margin: 10px;
   text-align: center;

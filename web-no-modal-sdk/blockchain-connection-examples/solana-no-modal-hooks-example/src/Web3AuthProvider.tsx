@@ -1,17 +1,9 @@
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
-import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, Web3AuthNoModalOptions, UX_MODE } from "@web3auth/base";
+import { WEB3AUTH_NETWORK, Web3AuthNoModalOptions, UX_MODE, getSolanaChainConfig } from "@web3auth/base";
 import { AuthAdapter, AuthAdapterOptions } from "@web3auth/auth-adapter";
 import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter";
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.SOLANA,
-  chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  rpcTarget: "https://api.devnet.solana.com",
-  displayName: "Solana Devnet",
-  blockExplorerUrl: "https://explorer.solana.com",
-  ticker: "SOL",
-  tickerName: "Solana Token",
-  logo: "",
-};
+// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const chainConfig = getSolanaChainConfig(0x3)!;
 
 const privateKeyProvider = new SolanaPrivateKeyProvider({
   config: {

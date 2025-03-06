@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
-import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, getEvmChainConfig } from "@web3auth/base";
 import "./App.css";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { web3AuthConfig, authAdapterConfig } from "./config/web3auth";
@@ -198,16 +198,7 @@ function App() {
 
     const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x13882",
-          rpcTarget: "https://rpc.ankr.com/polygon_amoy",
-          displayName: "Polygon Amoy Testnet",
-          blockExplorerUrl: "https://amoy.polygonscan.com",
-          ticker: "POL",
-          tickerName: "Polygon Ecosystem token",
-          logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
-        },
+        chainConfig: getEvmChainConfig(0x13881)!,
       },
     });
     await polygonPrivateKeyProvider.setupProvider(privateKey);
@@ -226,16 +217,7 @@ function App() {
 
     const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
-        chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x38",
-          rpcTarget: "https://rpc.ankr.com/bsc",
-          displayName: "Binance SmartChain Mainnet",
-          blockExplorerUrl: "https://bscscan.com/",
-          ticker: "BNB",
-          tickerName: "BNB",
-          logo: "https://cryptologos.cc/logos/bnb-bnb-logo.png",
-        },
+        chainConfig: getEvmChainConfig(0x38)!,
       },
     });
     await bnbPrivateKeyProvider.setupProvider(privateKey);

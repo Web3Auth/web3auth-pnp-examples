@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter, getEvmChainConfig } from "@web3auth/base";
 import { AuthAdapter, AuthLoginParams } from "@web3auth/auth-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
@@ -14,16 +14,8 @@ import RPC from "./web3RPC"; // for using web3.js
 
 const clientId = "BHgArYmWwSeq21czpcarYh0EVq2WWOzflX-NTK-tY1-1pauPzHKRRLgpABkmYiIV_og9jAvoIxQ8L3Smrwe04Lw"; // get from https://dashboard.web3auth.io
 
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-};
+// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const chainConfig = getEvmChainConfig(0x1)!;
 
 let injectedAdapters: any;
 function App() {
@@ -251,16 +243,8 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const newChain = {
-      chainId: "0xaa36a7", // for wallet connect make sure to pass in this chain in the loginSettings of the adapter.
-      displayName: "Ethereum Sepolia",
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
-      tickerName: "Ethereum Sepolia",
-      ticker: "ETH",
-      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      blockExplorerUrl: "https://sepolia.etherscan.io",
-      logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    };
+    // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+    const newChain = getEvmChainConfig(0xaa36a7)!;
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
   };
@@ -368,7 +352,7 @@ function App() {
     }
   };
 
-  function uiConsole(...args: any[]): void {
+  function uiConsole(...args: unknown[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);

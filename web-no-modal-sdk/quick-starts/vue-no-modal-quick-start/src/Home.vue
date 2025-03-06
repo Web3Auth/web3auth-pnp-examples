@@ -35,12 +35,16 @@
     </div>
 
     <footer class="footer">
-      <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start"
-        target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         Source code
       </a>
       <a
-        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Fvue-no-modal-quick-start&project-name=w3a-vue-no-modal&repository-name=w3a-vue-no-modal">
+        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Fvue-no-modal-quick-start&project-name=w3a-vue-no-modal&repository-name=w3a-vue-no-modal"
+      >
         <img src="https://vercel.com/button" alt="Deploy with Vercel" />
       </a>
     </footer>
@@ -51,7 +55,7 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 // IMP END - Quick Start
@@ -70,18 +74,8 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-};
+// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const chainConfig = getEvmChainConfig(0xaa36a7)!;
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization
@@ -172,7 +166,6 @@ const signMessage = async () => {
   uiConsole(signedMessage);
 };
 
-
 const sendTransaction = async () => {
   if (!provider) {
     uiConsole("provider not initialized yet");
@@ -184,14 +177,13 @@ const sendTransaction = async () => {
 };
 // IMP END - Blockchain Calls
 
-function uiConsole(...args: any[]): void {
+function uiConsole(...args: unknown[]): void {
   const el = document.querySelector("#console>p");
   if (el) {
     el.innerHTML = JSON.stringify(args || {}, null, 2);
   }
   console.log(...args);
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -245,7 +237,7 @@ a {
   flex-flow: row wrap;
 }
 
-.flex-container>div {
+.flex-container > div {
   width: 100px;
   margin: 10px;
   text-align: center;

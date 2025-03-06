@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter, getSolanaChainConfig } from "@web3auth/base";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
@@ -18,16 +18,8 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.SOLANA,
-          chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-          rpcTarget: "https://api.devnet.solana.com",
-          displayName: "Solana Devnet",
-          blockExplorerUrl: "https://explorer.solana.com",
-          ticker: "SOL",
-          tickerName: "Solana Token",
-          logo: "",
-        };
+        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+        const chainConfig = getSolanaChainConfig(0x1)!;
 
         const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
 

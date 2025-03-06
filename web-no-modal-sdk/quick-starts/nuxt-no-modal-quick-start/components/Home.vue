@@ -53,7 +53,7 @@
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { WALLET_ADAPTERS, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
 import type { IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { AuthAdapter } from "@web3auth/auth-adapter";
@@ -77,18 +77,8 @@ export default {
     // IMP END - Dashboard Registration
 
     // IMP START - Chain Config
-    const chainConfig = {
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0xaa36a7",
-      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      // Avoid using public rpcTarget in production.
-      // Use services like Infura, Quicknode etc
-      displayName: "Ethereum Sepolia Testnet",
-      blockExplorerUrl: "https://sepolia.etherscan.io",
-      ticker: "ETH",
-      tickerName: "Ethereum",
-      logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    };
+    // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+    const chainConfig = getEvmChainConfig(0xaa36a7)!;
     // IMP END - Chain Config
     
     // IMP START - SDK Initialization
@@ -194,7 +184,7 @@ export default {
   };
     // IMP END - Blockchain Calls
 
-    function uiConsole(...args: any[]): void {
+    function uiConsole(...args: unknown[]): void {
       const el = document.querySelector("#console>p");
       if (el) {
         el.innerHTML = JSON.stringify(args || {}, null, 2);

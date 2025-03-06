@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
+import { WALLET_ADAPTERS, IProvider, WEB3AUTH_NETWORK, UX_MODE, getEvmChainConfig } from "@web3auth/base";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import "./App.css";
@@ -19,16 +19,8 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0xaa36a7",
-          rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-          displayName: "Ethereum Sepolia Testnet",
-          blockExplorerUrl: "https://sepolia.etherscan.io",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-          logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-        };
+        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+        const chainConfig = getEvmChainConfig(0xaa36a7)!;
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IAdapter, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, IAdapter, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, getSolanaChainConfig } from "@web3auth/base";
 
 import RPC from "./solanaRPC";
 import "./App.css";
@@ -16,16 +16,8 @@ function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const chainConfig = {
-    chainId: "0x1",
-    chainNamespace: CHAIN_NAMESPACES.SOLANA,
-    rpcTarget: "https://api.devnet.solana.com",
-    tickerName: "SOLANA",
-    ticker: "SOL",
-    decimals: 9,
-    blockExplorerUrl: "https://explorer.solana.com/?cluster=devnet",
-    logo: "https://images.toruswallet.io/sol.svg",
-  };
+  // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+  const chainConfig = getSolanaChainConfig(0x2)!;
 
   useEffect(() => {
     const init = async () => {
@@ -157,17 +149,8 @@ function App() {
       return;
     }
 
-    const chainConfig = {
-      chainId: "0x2",
-      displayName: "Solana Testnet",
-      chainNamespace: CHAIN_NAMESPACES.SOLANA,
-      tickerName: "SOLANA",
-      ticker: "SOL",
-      decimals: 18,
-      rpcTarget: "https://api.testnet.solana.com",
-      blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
-      logo: "https://images.toruswallet.io/sol.svg",
-    };
+    // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+    const chainConfig = getSolanaChainConfig(0x3)!;
 
     await web3auth?.addChain(chainConfig);
     uiConsole("New Chain Added");
@@ -178,7 +161,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    await web3auth?.switchChain({ chainId: "0x2" });
+    await web3auth?.switchChain({ chainId: "0x3" });
     uiConsole("Chain Switched");
   };
 

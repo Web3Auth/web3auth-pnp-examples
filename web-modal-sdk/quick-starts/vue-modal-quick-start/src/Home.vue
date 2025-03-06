@@ -89,8 +89,9 @@ const clientId =
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
-const chainId = 11155111; // Sepolia testnet
-const chainConfig = getEvmChainConfig(chainId, clientId)!;
+const chainId = 0xaa36a7; // Sepolia testnet
+// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const chainConfig = getEvmChainConfig(chainId)!;
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization

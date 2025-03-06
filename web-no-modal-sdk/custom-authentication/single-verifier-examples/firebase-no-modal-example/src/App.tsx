@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
+import { WALLET_ADAPTERS, WEB3AUTH_NETWORK, UX_MODE, getEvmChainConfig } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { auth } from "./FireBaseConfig";
 import { AuthAdapter } from "@web3auth/auth-adapter";
@@ -20,16 +20,8 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth",
-          displayName: "Ethereum Mainnet",
-          blockExplorerUrl: "https://etherscan.io/",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-          logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-        };
+        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+        const chainConfig = getEvmChainConfig(0x13881)!;
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 

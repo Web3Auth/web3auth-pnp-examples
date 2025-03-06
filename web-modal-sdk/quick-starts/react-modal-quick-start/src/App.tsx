@@ -18,11 +18,12 @@ import RPC from "./ethersRPC";
 
 // IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-const chainId = 11155111; // Sepolia testnet
+const chainId = 0xaa36a7; // Sepolia testnet
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
-const chainConfig = getEvmChainConfig(chainId, clientId)!;
+// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const chainConfig = getEvmChainConfig(chainId)!;
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization

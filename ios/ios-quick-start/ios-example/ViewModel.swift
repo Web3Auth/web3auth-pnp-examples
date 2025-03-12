@@ -27,7 +27,8 @@ class ViewModel: ObservableObject {
             web3Auth = try await Web3Auth(W3AInitParams(
                 clientId: clientId,
                 network: network,
-                redirectUrl: "web3auth.ios-example://auth"
+                redirectUrl: "web3auth.ios-example://auth",
+                chainNamespace: .eip155
             ))
         } catch {
             print("Something went wrong")
@@ -58,6 +59,19 @@ class ViewModel: ObservableObject {
                 
             } catch {
                 print("Error")
+            }
+        }
+    }
+    
+    func manageMFA() {
+        Task {
+            do {
+                let value = try await web3Auth?.manageMFA(
+                    W3ALoginParams(loginProvider: .EMAIL_PASSWORDLESS, extraLoginOptions: ExtraLoginOptions(login_hint: web3Auth?.getUserInfo().email))
+                )
+                print(value)
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }

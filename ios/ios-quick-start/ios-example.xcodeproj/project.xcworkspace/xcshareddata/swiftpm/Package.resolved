@@ -159,8 +159,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/web3auth/web3auth-swift-sdk",
       "state" : {
-        "revision" : "35d05c0af33687dac1a35968f498658c8c1893c7",
-        "version" : "11.0.4"
+        "branch" : "feat/PD-4387-manageMFA",
+        "revision" : "2b3892559d3acff28af30dd0cb0f87f7b289f54f"
       }
     },
     {

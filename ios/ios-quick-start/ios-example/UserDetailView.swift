@@ -52,6 +52,13 @@ struct UserDetailView: View {
                     } label: {
                         Label("Send Transaction", systemImage: "paperplane.circle")
                     }
+                    
+                    Button {
+                        viewModel.manageMFA()
+                    } label: {
+                        Label("Manage MFA", systemImage: "person.crop.circle.dashed")
+                    }
+                    
                     if !web3RPC.sentTransactionID.isEmpty {
                         Text("\(web3RPC.sentTransactionID)")
                     }

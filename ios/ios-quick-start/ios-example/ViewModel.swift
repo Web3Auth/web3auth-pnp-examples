@@ -27,8 +27,8 @@ class ViewModel: ObservableObject {
             web3Auth = try await Web3Auth(W3AInitParams(
                 clientId: clientId,
                 network: network,
-                redirectUrl: "web3auth.ios-example://auth",
-                chainNamespace: .eip155
+                buildEnv: .testing,
+                redirectUrl: "web3auth.ios-example://auth"
             ))
         } catch {
             print("Something went wrong")

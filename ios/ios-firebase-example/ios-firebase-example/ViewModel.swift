@@ -23,6 +23,7 @@ class ViewModel: ObservableObject {
         web3Auth = try await Web3Auth(W3AInitParams(
             clientId: clientId,
             network: network,
+            buildEnv: .testing,
             redirectUrl: "web3auth.ios-firebase-example://auth",
             loginConfig: [
                 TypeOfLogin.jwt.rawValue:
@@ -77,6 +78,18 @@ class ViewModel: ObservableObject {
                 loginParams = try await prepareLoginParams()
                 _ = try await self.web3Auth?.enableMFA(prepareLoginParams())
                 
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func manageMFA() {
+        Task {
+            do {
+                loginParams = try await prepareLoginParams()
+                let result = try await self.web3Auth?.manageMFA(loginParams)
+                print(result)
             } catch {
                 print(error.localizedDescription)
             }

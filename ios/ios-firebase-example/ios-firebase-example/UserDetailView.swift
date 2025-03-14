@@ -111,6 +111,12 @@ struct UserDetailView: View {
                         Text(signature)
                     }
                     
+                    Button {
+                        viewModel.manageMFA()
+                    } label: {
+                        Text("Manage MFA")
+                    }
+                    
                 }
                 
                 

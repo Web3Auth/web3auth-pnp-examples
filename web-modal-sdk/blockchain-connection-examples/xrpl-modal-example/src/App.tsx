@@ -18,8 +18,8 @@ function App() {
     chainId: "0x2",
     // Avoid using public rpcTarget & wsTarget in production.
     // Use services like Infura, Quicknode etc
-    rpcTarget: "https://ripple-node.tor.us",
-    wsTarget: "wss://s2.ripple.com",
+    rpcTarget: "https://xrplcluster.com",
+    wsTarget: "wss://xrplcluster.com",
     ticker: "XRP",
     tickerName: "XRPL",
     displayName: "xrpl mainnet",
@@ -151,7 +151,7 @@ function App() {
     }
     const rpc = new RPC(provider);
     const userAccount = await rpc.getAccounts();
-    uiConsole("Accpuint info: ", userAccount);
+    uiConsole("Account info: ", userAccount);
   };
 
   const getBalance = async () => {

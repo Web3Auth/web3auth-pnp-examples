@@ -18,12 +18,12 @@ function App() {
     chainId: "0x2",
     // Avoid using public rpcTarget & wsTarget in production.
     // Use services like Infura, Quicknode etc
-    rpcTarget: "https://xrplcluster.com",
-    wsTarget: "wss://xrplcluster.com",
+    rpcTarget: "https://testnet.xrpl-labs.com",
+    wsTarget: "wss://testnet.xrpl-labs.com/",
     ticker: "XRP",
     tickerName: "XRPL",
-    displayName: "xrpl mainnet",
-    blockExplorerUrl: "https://livenet.xrpl.org",
+    displayName: "xrpl testnet",
+    blockExplorerUrl: "https://testnet.xrpl.org",
   };
 
   useEffect(() => {

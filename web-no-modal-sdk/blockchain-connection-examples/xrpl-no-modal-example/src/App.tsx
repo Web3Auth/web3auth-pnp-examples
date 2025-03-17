@@ -19,8 +19,8 @@ function App() {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.XRPL,
           chainId: "0x2",
-          rpcTarget: "https://testnet-ripple-node.tor.us",
-          wsTarget: "wss://s.altnet.rippletest.net",
+          rpcTarget: "https://testnet.xrpl-labs.com",
+          wsTarget: "wss://testnet.xrpl-labs.com/",
           ticker: "XRP",
           tickerName: "XRPL",
           displayName: "xrpl testnet",
@@ -36,6 +36,7 @@ function App() {
           clientId,
           privateKeyProvider,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+          enableLogging: true,
         });
 
         const authAdapter = new AuthAdapter({

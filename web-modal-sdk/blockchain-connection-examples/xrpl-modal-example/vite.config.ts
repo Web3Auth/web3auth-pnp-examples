@@ -7,6 +7,8 @@ export default defineConfig({
   resolve: {
     alias: {
       crypto: "empty-module",
+      stream: "stream-browserify",
+      assert: "assert",
     },
   },
   define: {

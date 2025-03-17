@@ -13,6 +13,7 @@ export default class XrplRPC {
       const accounts = await this.provider.request<never, string[]>({
         method: "xrpl_getAccounts",
       });
+      console.log("accounts", accounts);
       if (accounts) {
         const accInfo = await this.provider.request({
           method: "account_info",

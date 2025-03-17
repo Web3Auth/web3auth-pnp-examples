@@ -67,10 +67,11 @@ export default class XrplRPC {
     try {
       const msg = "Hello world";
       const hexMsg = convertStringToHex(msg);
+      console.log("hexMsg", hexMsg);
       const txSign = await this.provider.request<{ signature: string }, never>({
         method: "xrpl_signMessage",
         params: {
-          signature: hexMsg,
+          message: hexMsg,
         },
       });
       return txSign;

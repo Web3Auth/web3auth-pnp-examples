@@ -615,8 +615,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/web3auth/web3auth-swift-sdk";
 			requirement = {
-				branch = "feat/PD-4387-manageMFA";
-				kind = branch;
+				kind = revision;
+				revision = 61bc0beff966293983d39318bf37223a0697f2d1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

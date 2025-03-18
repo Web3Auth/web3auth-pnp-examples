@@ -63,6 +63,17 @@ class ViewModel: ObservableObject {
         }
     }
     
+    func enableMFA() {
+        Task {
+            do {
+                let value = try await web3Auth?.enableMFA()
+                print(value)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     func manageMFA() {
         Task {
             do {

@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { getPublicCompressed } from "@toruslabs/eccrypto";
 import { AuthAdapter } from "@web3auth/auth-adapter";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
 
-  function uiConsole(...args: any[]): void {
+  function uiConsole(...args: unknown[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
@@ -145,16 +145,8 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const chainConfig = {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth",
-          displayName: "Ethereum Mainnet",
-          blockExplorerUrl: "https://etherscan.io/",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-          logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-        };
+        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+        const chainConfig = getEvmChainConfig(0x1)!;
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 

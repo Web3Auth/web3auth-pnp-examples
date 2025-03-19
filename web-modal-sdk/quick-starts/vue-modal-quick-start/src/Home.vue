@@ -68,7 +68,7 @@ import { ref, onMounted } from "vue";
 // IMP START - Quick Start
 import { Web3Auth } from "@web3auth/modal";
 import type { Web3AuthOptions } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
 import type { IAdapter, IProvider } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
@@ -89,18 +89,9 @@ const clientId =
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-};
+const chainId = 0xaa36a7; // Sepolia testnet
+// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const chainConfig = getEvmChainConfig(chainId)!;
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization
@@ -120,7 +111,7 @@ onMounted(async () => {
   const init = async () => {
     try {
       // IMP START - Configuring External Wallets
-      const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+      const adapters = getDefaultExternalAdapters({ options: web3AuthOptions });
       adapters.forEach((adapter: IAdapter<unknown>) => {
         web3auth.configureAdapter(adapter);
       });

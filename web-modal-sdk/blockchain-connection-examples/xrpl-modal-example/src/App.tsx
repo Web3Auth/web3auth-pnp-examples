@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { IProvider, UX_MODE, WEB3AUTH_NETWORK, getXrplChainConfig } from "@web3auth/base";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
 import RPC from "./xrplRPC";
@@ -13,18 +13,8 @@ function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const chainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.XRPL,
-    chainId: "0x2",
-    // Avoid using public rpcTarget & wsTarget in production.
-    // Use services like Infura, Quicknode etc
-    rpcTarget: "https://testnet.xrpl-labs.com",
-    wsTarget: "wss://testnet.xrpl-labs.com/",
-    ticker: "XRP",
-    tickerName: "XRPL",
-    displayName: "xrpl testnet",
-    blockExplorerUrl: "https://testnet.xrpl.org",
-  };
+  // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+  const chainConfig = getXrplChainConfig(0x1)!;
 
   useEffect(() => {
     const init = async () => {

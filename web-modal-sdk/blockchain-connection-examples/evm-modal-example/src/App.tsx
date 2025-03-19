@@ -9,7 +9,7 @@ import RPC from "./viemRPC"; // for using viem
 import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
 
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const newChain = getEvmChainConfig(0x13881, clientId)!;
+const newChain = getEvmChainConfig(0x13882, clientId)!;
 
 function App() {
   const {

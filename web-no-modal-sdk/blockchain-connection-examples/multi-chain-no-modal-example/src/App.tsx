@@ -198,7 +198,7 @@ function App() {
 
     const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
-        chainConfig: getEvmChainConfig(0x13881, clientId)!,
+        chainConfig: getEvmChainConfig(0x13882, clientId)!,
       },
     });
     await polygonPrivateKeyProvider.setupProvider(privateKey);

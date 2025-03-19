@@ -32,7 +32,7 @@ function App() {
     const init = async () => {
       try {
         // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-        const chainConfig = getEvmChainConfig(0x13881, clientId)!;
+        const chainConfig = getEvmChainConfig(0x13882, clientId)!;
 
         const privateKeyProvider = new EthereumPrivateKeyProvider({
           config: { chainConfig },

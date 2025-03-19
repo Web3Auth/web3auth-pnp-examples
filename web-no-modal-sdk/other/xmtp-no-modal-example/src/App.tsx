@@ -9,14 +9,14 @@ import { ethers, JsonRpcSigner } from "ethers";
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0x13881, clientId)!;
+const chainConfig = getEvmChainConfig(0x13882, clientId)!;
 
 declare global {
   interface Window {
     FloatingInbox: {
       open: () => void;
       close: () => void;
-    }
+    };
   }
 }
 
@@ -63,7 +63,7 @@ function App() {
         const wallet = await getWallet();
         setWallet(wallet);
       }
-    }
+    };
     getDetails();
   }, [provider, loggedIn]);
 
@@ -85,7 +85,7 @@ function App() {
     const ethersProvider = new ethers.BrowserProvider(provider);
 
     return ethersProvider.getSigner();
-  }
+  };
 
   const getAccounts = async (): Promise<any> => {
     if (!provider) {
@@ -103,7 +103,7 @@ function App() {
     } catch (error) {
       return error;
     }
-  }
+  };
 
   const logout = async () => {
     await web3auth.logout();
@@ -174,44 +174,26 @@ function App() {
   return (
     <div style={styles.HomePageWrapperStyle}>
       <h1>Web3Auth XMTP Quickstart </h1>
-      <button
-        className="home-button"
-        style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }}
-        onClick={() => login()}
-      >
+      <button className="home-button" style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }} onClick={() => login()}>
         {loggedIn ? "Connected" : "Login with Google"}
       </button>
       {loggedIn && (
-        <button
-          className="home-button"
-          style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }}
-          onClick={() => logout()}
-        >
+        <button className="home-button" style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }} onClick={() => logout()}>
           Logout
         </button>
       )}
       <h3>{address}</h3>
       {loggedIn && (
         <section className="App-section">
-          <button
-            className="home-button"
-            style={styles.ButtonStyledStyle}
-            onClick={() => window.FloatingInbox.open()}
-          >
+          <button className="home-button" style={styles.ButtonStyledStyle} onClick={() => window.FloatingInbox.open()}>
             Open
           </button>
-          <button
-            className="home-button"
-            style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }}
-            onClick={() => window.FloatingInbox.close()}
-          >
+          <button className="home-button" style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }} onClick={() => window.FloatingInbox.close()}>
             Close
           </button>
         </section>
       )}
-      {loggedIn && (
-        <FloatingInbox wallet={wallet} onLogout={logout} />
-      )}
+      {loggedIn && <FloatingInbox wallet={wallet} onLogout={logout} />}
     </div>
   );
 }

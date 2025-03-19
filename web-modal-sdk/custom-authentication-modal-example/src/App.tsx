@@ -13,7 +13,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-const chainId = 0x13881;
+const chainId = 0x13882;
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -45,7 +45,7 @@ function App() {
             defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
             loginGridCol: 3,
             primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
-            loginMethodsOrder: ["google", "github", "twitter", "farcaster", "discord", "twitch", "facebook",],
+            loginMethodsOrder: ["google", "github", "twitter", "farcaster", "discord", "twitch", "facebook"],
           },
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           privateKeyProvider: privateKeyProvider,
@@ -109,7 +109,7 @@ function App() {
                   domain: "https://web3auth.au.auth0.com",
                   verifierIdField: "sub",
                   isVerifierIdCaseSensitive: true,
-                }
+                },
               },
               google: {
                 verifier: "aggregate-sapphire",
@@ -127,7 +127,7 @@ function App() {
                   verifierIdField: "email",
                   isVerifierIdCaseSensitive: false,
                   connection: "github",
-                }
+                },
               },
             },
           },

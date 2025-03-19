@@ -74,7 +74,7 @@ export default {
     // IMP END - Dashboard Registration
 
     // IMP START - Chain Config
-    const chainId = 0x13881; // Polygon Amoy Testnet
+    const chainId = 0x13882; // Polygon Amoy Testnet
     // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
     const chainConfig = getEvmChainConfig(chainId, clientId)!;
     // IMP END - Chain Config

@@ -141,7 +141,7 @@ function App() {
     }
     const rpc = new RPC(provider);
     const userAccount = await rpc.getAccounts();
-    uiConsole("Accpuint info: ", userAccount);
+    uiConsole("Account info: ", userAccount);
   };
 
   const getBalance = async () => {

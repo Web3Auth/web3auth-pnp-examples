@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      crypto: "empty-module",
+      crypto: "crypto-browserify",
       assert: "assert",
       http: "empty-module",
       https: "empty-module",

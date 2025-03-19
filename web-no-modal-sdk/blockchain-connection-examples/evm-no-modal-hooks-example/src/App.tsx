@@ -6,8 +6,9 @@ import { adapters } from "./Web3AuthProvider";
 import "./App.css";
 import RPC from "./web3RPC"; // for using web3.js
 
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const newChain = getEvmChainConfig(0x89)!;
+const newChain = getEvmChainConfig(0x89, clientId)!;
 
 function App() {
   const { connectTo, authenticateUser, enableMFA, logout, userInfo, provider, isMFAEnabled, web3Auth, status, addAndSwitchChain } = useWeb3Auth();

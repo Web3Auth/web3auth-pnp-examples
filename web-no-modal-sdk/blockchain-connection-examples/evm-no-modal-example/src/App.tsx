@@ -15,7 +15,7 @@ import RPC from "./web3RPC"; // for using web3.js
 const clientId = "BHgArYmWwSeq21czpcarYh0EVq2WWOzflX-NTK-tY1-1pauPzHKRRLgpABkmYiIV_og9jAvoIxQ8L3Smrwe04Lw"; // get from https://dashboard.web3auth.io
 
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0x1)!;
+const chainConfig = getEvmChainConfig(0x1, clientId)!;
 
 let injectedAdapters: any;
 function App() {
@@ -46,7 +46,7 @@ function App() {
             },
             useLogoLoader: true,
           },
-          useCoreKitKey: true,
+          useCoreKitKey: false,
         };
         const web3auth = new Web3AuthNoModal(web3authNoModalOptions);
 
@@ -244,7 +244,7 @@ function App() {
       return;
     }
     // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-    const newChain = getEvmChainConfig(0xaa36a7)!;
+    const newChain = getEvmChainConfig(0xaa36a7, clientId)!;
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
   };

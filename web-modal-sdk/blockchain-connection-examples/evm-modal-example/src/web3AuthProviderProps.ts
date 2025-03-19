@@ -6,8 +6,10 @@ import { AuthAdapter } from "@web3auth/auth-adapter";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0xaa36a7)!;
+const chainConfig = getEvmChainConfig(0xaa36a7, clientId)!;
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
@@ -17,7 +19,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3AuthOptions: Web3AuthOptions = {
   chainConfig,
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+  clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   uiConfig: {
     uxMode: "redirect",

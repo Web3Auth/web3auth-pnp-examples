@@ -11,7 +11,7 @@ import RPC from "./ethersRPC";
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0xaa36a7)!;
+const chainConfig = getEvmChainConfig(0xaa36a7, clientId)!;
 
 const pimlicoAPIKey = import.meta.env.VITE_API_KEY;
 

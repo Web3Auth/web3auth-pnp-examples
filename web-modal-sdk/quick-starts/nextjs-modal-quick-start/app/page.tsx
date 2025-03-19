@@ -24,7 +24,7 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 // IMP START - Chain Config
 const chainId = 0xaa36a7; // Sepolia testnet
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(chainId)!;
+const chainConfig = getEvmChainConfig(chainId, clientId)!;
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization

@@ -25,7 +25,7 @@ function App() {
     const init = async () => {
       try {
         // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-        const chainConfig = getEvmChainConfig(chainId);
+        const chainConfig = getEvmChainConfig(chainId, clientId);
         if (!chainConfig) {
           throw new Error(`Chain configuration not found for chainId: ${chainId}`);
         }
@@ -288,7 +288,7 @@ function App() {
     }
     const newchainId = 0xaa36a7;
     // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-    const newChain = getEvmChainConfig(newchainId);
+    const newChain = getEvmChainConfig(newchainId, clientId);
     if (!newChain) {
       uiConsole(`Chain configuration not found for chainId: ${newchainId}`);
       return;

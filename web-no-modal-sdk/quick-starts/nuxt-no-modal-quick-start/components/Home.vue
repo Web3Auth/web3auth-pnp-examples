@@ -78,7 +78,7 @@ export default {
 
     // IMP START - Chain Config
     // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-    const chainConfig = getEvmChainConfig(0xaa36a7)!;
+    const chainConfig = getEvmChainConfig(0xaa36a7, clientId)!;
     // IMP END - Chain Config
     
     // IMP START - SDK Initialization

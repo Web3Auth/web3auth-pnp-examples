@@ -2,47 +2,31 @@
 <template>
   <div id="app">
     <h2>
-      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
-        Web3Auth
-      </a>
+      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer"> Web3Auth </a>
       Vue.js Quick Start
     </h2>
 
-    <button v-if="!loggedIn" class="card" @click="login" style="cursor: pointer">
-      Login
-    </button>
+    <button v-if="!loggedIn" class="card" @click="login" style="cursor: pointer">Login</button>
 
     <div v-if="loggedIn">
       <div class="flex-container">
         <div>
-          <button class="card" @click="getUserInfo" style="cursor: pointer">
-            Get User Info
-          </button>
+          <button class="card" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
         </div>
         <div>
-          <button class="card" @click="getAccounts" style="cursor: pointer">
-            Get Accounts
-          </button>
+          <button class="card" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
         </div>
         <div>
-          <button class="card" @click="getBalance" style="cursor: pointer">
-            Get Balance
-          </button>
+          <button class="card" @click="getBalance" style="cursor: pointer">Get Balance</button>
         </div>
         <div>
-          <button class="card" @click="signMessage" style="cursor: pointer">
-            Sign Message
-          </button>
+          <button class="card" @click="signMessage" style="cursor: pointer">Sign Message</button>
         </div>
         <div>
-          <button class="card" @click="sendTransaction" style="cursor: pointer">
-            Send Transaction
-          </button>
+          <button class="card" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
         </div>
         <div>
-          <button class="card" @click="logout" style="cursor: pointer">
-            Logout
-          </button>
+          <button class="card" @click="logout" style="cursor: pointer">Logout</button>
         </div>
       </div>
     </div>
@@ -51,12 +35,16 @@
     </div>
 
     <footer class="footer">
-      <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start"
-        target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         Source code
       </a>
       <a
-        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvue-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal">
+        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvue-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal"
+      >
         <img src="https://vercel.com/button" alt="Deploy with Vercel" />
       </a>
     </footer>
@@ -81,29 +69,28 @@ import RPC from "./ethersRPC";
 // IMP END - Blockchain Calls
 
 const loggedIn = ref<boolean>(false);
-let provider = <IProvider | null>(null);
+let provider: IProvider | null = null;
 
 // IMP START - Dashboard Registration
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
 const chainId = 0xaa36a7; // Sepolia testnet
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(chainId)!;
+const chainConfig = getEvmChainConfig(chainId, clientId)!;
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization
 const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: chainConfig }
+  config: { chainConfig: chainConfig },
 });
 
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
-}
+};
 const web3auth = new Web3Auth(web3AuthOptions);
 // IMP END - SDK Initialization
 
@@ -185,7 +172,6 @@ const signMessage = async () => {
   uiConsole(signedMessage);
 };
 
-
 const sendTransaction = async () => {
   if (!provider) {
     uiConsole("provider not initialized yet");
@@ -257,7 +243,7 @@ a {
   flex-flow: row wrap;
 }
 
-.flex-container>div {
+.flex-container > div {
   width: 100px;
   margin: 10px;
   text-align: center;

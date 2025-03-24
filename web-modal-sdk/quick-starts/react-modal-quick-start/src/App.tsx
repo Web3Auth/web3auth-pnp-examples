@@ -3,7 +3,7 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { Web3Auth, Web3AuthOptions, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig, CustomChainConfig } from "@web3auth/modal";
+import { Web3Auth, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig, CustomChainConfig } from "@web3auth/modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -15,22 +15,22 @@ import RPC from "./ethersRPC";
 
 // IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-const chainId = 0xaa36a7; // Sepolia testnet
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+const chainId = 0xaa36a7; // Sepolia testnet
 const chains: CustomChainConfig[] = [getEvmChainConfig(chainId, clientId)!];
 // IMP END - Chain Config
 
-const web3AuthOptions: Web3AuthOptions = {
+// IMP START - SDK Initialization
+const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   chains,
   defaultChainId: chainId.toString(),
   multiInjectedProviderDiscovery: true,
-};
-const web3auth = new Web3Auth(web3AuthOptions);
+});
 // IMP END - SDK Initialization
 
 function App() {

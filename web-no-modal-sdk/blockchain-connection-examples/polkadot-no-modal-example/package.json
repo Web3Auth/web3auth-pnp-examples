@@ -17,7 +17,7 @@
     "@web3auth/auth-adapter": "^9.7.0",
     "@web3auth/base": "^9.7.0",
     "@web3auth/base-provider": "^9.7.0",
-    "@web3auth/no-modal": "^10.0.0-alpha.1",
+    "@web3auth/no-modal": "^10.0.0-alpha.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.9.4",

@@ -29,7 +29,7 @@ const web3auth = new Web3Auth({
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   chains,
   defaultChainId: chainId.toString(),
-  multiInjectedProviderDiscovery: true,
+  // multiInjectedProviderDiscovery: true,
 });
 // IMP END - SDK Initialization
 

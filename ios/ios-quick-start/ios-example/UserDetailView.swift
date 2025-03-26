@@ -54,12 +54,6 @@ struct UserDetailView: View {
                     }
                     
                     Button {
-                        viewModel.enableMFA()
-                    } label: {
-                        Label("Enable MFA", systemImage: "person.crop.circle.dashed")
-                    }
-                    
-                    Button {
                         viewModel.manageMFA()
                     } label: {
                         Label("Manage MFA", systemImage: "person.crop.circle.dashed")

@@ -21,7 +21,7 @@ public class Web3AuthScript : MonoBehaviour
     private string userInfo;
     private Account account;
     Web3 web3;
-    const string rpcURL = "https://rpc.ankr.com/eth_sepolia";
+    const string rpcURL = "https://1rpc.io/sepolia";
 
     // Start is called before the first frame update
     void Start()
@@ -289,7 +289,7 @@ public class Web3AuthScript : MonoBehaviour
         var chainConfig = new ChainConfig()
         {
             chainId = "0xaa36a7",
-            rpcTarget = "https://rpc.ankr.com/eth_sepolia",
+            rpcTarget = "https://1rpc.io/sepolia",
             ticker = "ETH",
             chainNamespace = Web3Auth.ChainNamespace.EIP155
         };

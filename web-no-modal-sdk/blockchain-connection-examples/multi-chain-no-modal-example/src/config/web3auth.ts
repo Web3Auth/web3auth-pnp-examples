@@ -7,7 +7,7 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth",
+    rpcTarget: "https://1rpc.io/eth",
     displayName: "Ethereum Mainnet",
     blockExplorerUrl: "https://etherscan.io",
     ticker: "ETH",

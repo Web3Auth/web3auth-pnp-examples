@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3: Web3j
     private lateinit var credentials: Credentials
     private lateinit var emailInput: EditText
-    private val rpcUrl = "https://rpc.ankr.com/eth_sepolia"
+    private val rpcUrl = "https://1rpc.io/sepolia"
 
     private val gson = Gson()
 

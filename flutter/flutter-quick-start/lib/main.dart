@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 // IMP END - Quick Start
   String _result = '';
   bool logoutVisible = false;
-  String rpcUrl = 'https://rpc.ankr.com/eth_sepolia';
+  String rpcUrl = 'https://1rpc.io/sepolia';
   // TextEditingController for handling input from the text field
   final TextEditingController emailController = TextEditingController();
 

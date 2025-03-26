@@ -19,7 +19,7 @@ function App() {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.OTHER,
           chainId: "0x1",
-          rpcTarget: "https://rpc.ankr.com/eth",
+          rpcTarget: "https://1rpc.io/eth",
           displayName: "Aptos Mainnet",
           blockExplorerUrl: "",
           ticker: "APT",

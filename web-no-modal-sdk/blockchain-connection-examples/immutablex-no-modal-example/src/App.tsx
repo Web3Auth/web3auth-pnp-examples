@@ -19,7 +19,7 @@ function App() {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "0x1", // Please use 0x1 for Mainnet
-          rpcTarget: "https://rpc.ankr.com/eth",
+          rpcTarget: "https://1rpc.io/eth",
           displayName: "Ethereum Mainnet",
           blockExplorerUrl: "https://etherscan.io/",
           ticker: "ETH",

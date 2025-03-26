@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
     private lateinit var web3: Web3j
     private lateinit var credentials: Credentials
-    private val rpcUrl = "https://rpc.ankr.com/eth_sepolia"
+    private val rpcUrl = "https://1rpc.io/sepolia"
     private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -212,7 +212,7 @@ class MainActivity : AppCompatActivity() {
         val completableFuture = web3Auth.launchWalletServices(
            ChainConfig(
                 chainId = "0x1",
-                rpcTarget = "https://rpc.ankr.com/eth",
+                rpcTarget = "https://1rpc.io/eth",
                 ticker = "ETH",
                 chainNamespace = ChainNamespace.EIP155
             )

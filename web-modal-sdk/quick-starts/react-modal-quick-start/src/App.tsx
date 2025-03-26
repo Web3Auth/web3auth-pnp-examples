@@ -3,7 +3,7 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { authConnector, CONNECTOR_EVENTS, CustomChainConfig, getEvmChainConfig, IProvider, Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
+import { authConnector, CONNECTOR_EVENTS, CustomChainConfig, getEvmChainConfig, IProvider, WALLET_CONNECTORS, Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -42,7 +42,25 @@ function App() {
     const init = async () => {
       try {
         // IMP START - SDK Initialization
-        await web3auth.initModal();
+        await web3auth.initModal({
+          modalConfig: {
+            [WALLET_CONNECTORS.AUTH]: {
+              label: "auth",
+              loginMethods: {
+                google: {
+                  name: "google login",
+                  showOnModal: true,
+                  authConnectionId: "w3a-google-demo",
+                },
+                facebook: {
+                  name: "facebook login",
+                  showOnModal: false,
+                },
+              },
+              showOnModal: true,
+            },
+          },
+        });
         // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 

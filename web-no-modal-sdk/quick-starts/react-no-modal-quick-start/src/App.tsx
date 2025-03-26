@@ -27,9 +27,8 @@ const web3auth = new Web3AuthNoModal({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   chains,
-  defaultChainId: chainId.toString(),
   multiInjectedProviderDiscovery: true,
-  connectors: [authConnector({})]
+  connectors: [authConnector()],
 });
 // IMP END - SDK Initialization
 
@@ -61,6 +60,9 @@ function App() {
     // IMP START - Login
     web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
       loginProvider: "google",
+      authConnectionId: "w3a-google-demo",
+      typeOfLogin: "google",
+      clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", //use your app client id you got from google   
     });
     // IMP END - Login
     setProvider(web3authProvider);

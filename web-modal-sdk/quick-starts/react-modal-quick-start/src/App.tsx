@@ -3,7 +3,7 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { Web3Auth, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig, CustomChainConfig } from "@web3auth/modal";
+import { authConnector, CustomChainConfig, getEvmChainConfig, IProvider, Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -28,7 +28,8 @@ const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   chains,
-  defaultChainId: chainId.toString(),
+  defaultChainId: chains[0].chainId,
+  connectors: [authConnector({ connectorSettings: { buildEnv: "testing", redirectUrl: window.location.origin } })],
   // multiInjectedProviderDiscovery: true,
 });
 // IMP END - SDK Initialization

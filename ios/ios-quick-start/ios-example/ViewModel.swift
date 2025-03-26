@@ -27,6 +27,7 @@ class ViewModel: ObservableObject {
             web3Auth = try await Web3Auth(W3AInitParams(
                 clientId: clientId,
                 network: network,
+                buildEnv: .testing,
                 redirectUrl: "web3auth.ios-example://auth"
             ))
         } catch {
@@ -58,6 +59,17 @@ class ViewModel: ObservableObject {
                 
             } catch {
                 print("Error")
+            }
+        }
+    }
+    
+    func manageMFA() {
+        Task {
+            do {
+                let value = try await web3Auth?.manageMFA()
+                print(value)
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }

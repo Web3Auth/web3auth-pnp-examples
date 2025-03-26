@@ -3,7 +3,7 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { authConnector, CustomChainConfig, getEvmChainConfig, IProvider, Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
+import { authConnector, CONNECTOR_EVENTS, CustomChainConfig, getEvmChainConfig, IProvider, Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -46,9 +46,13 @@ function App() {
         // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 
-        if (web3auth.connected) {
+        web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
           setLoggedIn(true);
-        }
+        });
+
+        // if (web3auth.connected) {
+        //   setLoggedIn(true);
+        // }
       } catch (error) {
         console.error(error);
       }

@@ -1,6 +1,6 @@
-import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
+import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/modal";
 
-export const chain: {
+export const chains: {
   [key: string]: CustomChainConfig;
 } = {
   ethereum: {
@@ -228,3 +228,5 @@ export const chain: {
   //   tickerName: "sFUEL",
   // },
 };
+
+export const web3AuthChains: CustomChainConfig[] = [...Object.values(chains)];

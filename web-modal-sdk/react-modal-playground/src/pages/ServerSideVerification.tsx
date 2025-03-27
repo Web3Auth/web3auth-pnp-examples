@@ -1,4 +1,4 @@
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { useWeb3Auth } from "@web3auth/modal/react";
 import React, { useState } from "react";
 
 import Console from "../components/Console";

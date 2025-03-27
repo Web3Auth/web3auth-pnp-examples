@@ -1,4 +1,4 @@
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { useWeb3Auth } from "@web3auth/modal/react";
 import Hamburger from "hamburger-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

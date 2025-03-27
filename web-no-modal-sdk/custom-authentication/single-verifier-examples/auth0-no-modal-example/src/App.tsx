@@ -41,6 +41,10 @@ function App() {
                 verifier: "w3a-auth0-demo",
                 typeOfLogin: "jwt",
                 clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
+                jwtParameters: {
+                  domain: "https://web3auth.au.auth0.com",
+                  verifierIdField: "sub",
+                },
               },
             },
             mfaSettings: {
@@ -91,11 +95,6 @@ function App() {
     }
     const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
       loginProvider: "jwt",
-      extraLoginOptions: {
-        domain: "https://web3auth.au.auth0.com",
-        verifierIdField: "email",
-        // connection: "google-oauth2", // Use this to skip Auth0 Modal for Google login.
-      },
     });
     setProvider(web3authProvider);
   };
@@ -126,6 +125,14 @@ function App() {
     await web3auth.logout();
     setLoggedIn(false);
     setProvider(null);
+  };
+
+  const enableMfa = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    await web3auth.enableMFA();
   };
 
   const getChainId = async () => {
@@ -230,6 +237,11 @@ function App() {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={enableMfa} className="card">
+            Enable MFA
           </button>
         </div>
         <div>

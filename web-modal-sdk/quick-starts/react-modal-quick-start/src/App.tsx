@@ -3,10 +3,10 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+// import { IAdapter, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+// import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+// import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { type CustomChainConfig, getEvmChainConfig, IProvider, Web3Auth, WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -18,32 +18,36 @@ import RPC from "./ethersRPC";
 
 // IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-const chainId = 0xaa36a7; // Sepolia testnet
+const chainId = 11155111; // Sepolia testnet
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(chainId, clientId)!;
+const chainConfig: CustomChainConfig | null = getEvmChainConfig(chainId);
+console.log(chainConfig);
+if (!chainConfig) {
+  throw new Error("Chain config not found");
+}
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
+// const privateKeyProvider = new EthereumPrivateKeyProvider({
+//   config: { chainConfig },
+// });
 
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
+  // chains: [chainConfig],
+  // web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 };
 const web3auth = new Web3Auth(web3AuthOptions);
 // IMP END - SDK Initialization
 
 // IMP START - Configuring External Wallets
-const adapters = getDefaultExternalAdapters({ options: web3AuthOptions });
-adapters.forEach((adapter: IAdapter<unknown>) => {
-  web3auth.configureAdapter(adapter);
-});
+// const adapters = getDefaultExternalAdapters({ options: web3AuthOptions });
+// adapters.forEach((adapter: IAdapter<unknown>) => {
+//   web3auth.configureAdapter(adapter);
+// });
 // IMP END - Configuring External Wallets
 
 function App() {

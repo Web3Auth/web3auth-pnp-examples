@@ -1,11 +1,18 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-console */
 import "./App.css";
 
 // IMP START - Quick Start
-import { IAdapter, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, getEvmChainConfig } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { AuthAdapter } from "@web3auth/auth-adapter";
+import {
+  authConnector,
+  type CustomChainConfig,
+  getEvmChainConfig,
+  IProvider,
+  IWeb3AuthCoreOptions,
+  WALLET_CONNECTORS,
+  WEB3AUTH_NETWORK,
+  Web3AuthNoModal,
+} from "@web3auth/no-modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -21,21 +28,27 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 
 // IMP START - Chain Config
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0xaa36a7, clientId)!;
+const chainConfig: CustomChainConfig | null = getEvmChainConfig(11155111, clientId);
+console.log(chainConfig);
+if (!chainConfig) {
+  throw new Error("Chain config not found");
+}
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+// const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const web3AuthOptions: IWeb3AuthCoreOptions = {
   clientId,
+  chains: [chainConfig],
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-}
+  // privateKeyProvider,
+  connectors: [authConnector({ connectorSettings: { buildEnv: "testing", redirectUrl: window.location.origin } })],
+};
 const web3auth = new Web3AuthNoModal(web3AuthOptions);
 
-const authadapter = new AuthAdapter();
-web3auth.configureAdapter(authadapter);
+// const authadapter = new AuthAdapter();
+// web3auth.configureAdapter(authadapter);
 // IMP END - SDK Initialization
 
 function App() {
@@ -62,9 +75,9 @@ function App() {
   }, []);
 
   const login = async () => {
-    var web3authProvider = null;
+    let web3authProvider = null;
     // IMP START - Login
-    web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+    web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
       loginProvider: "google",
     });
     // IMP END - Login
@@ -118,7 +131,6 @@ function App() {
     const signedMessage = await RPC.signMessage(provider);
     uiConsole(signedMessage);
   };
-
 
   const sendTransaction = async () => {
     if (!provider) {

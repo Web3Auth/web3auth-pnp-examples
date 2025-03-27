@@ -28,9 +28,7 @@ const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   chains,
-  defaultChainId: chains[0].chainId,
   connectors: [authConnector({ connectorSettings: { buildEnv: "testing", redirectUrl: window.location.origin } })],
-  // multiInjectedProviderDiscovery: true,
 });
 // IMP END - SDK Initialization
 
@@ -42,25 +40,7 @@ function App() {
     const init = async () => {
       try {
         // IMP START - SDK Initialization
-        await web3auth.initModal({
-          modalConfig: {
-            [WALLET_CONNECTORS.AUTH]: {
-              label: "auth",
-              loginMethods: {
-                google: {
-                  name: "google login",
-                  showOnModal: true,
-                  authConnectionId: "w3a-google-demo",
-                },
-                facebook: {
-                  name: "facebook login",
-                  showOnModal: false,
-                },
-              },
-              showOnModal: true,
-            },
-          },
-        });
+        await web3auth.initModal();
         // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 
@@ -84,9 +64,9 @@ function App() {
     const web3authProvider = await web3auth.connect();
     // IMP END - Login
     setProvider(web3authProvider);
-    if (web3auth.connected) {
+    web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
       setLoggedIn(true);
-    }
+    });
   };
 
   const getUserInfo = async () => {

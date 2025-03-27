@@ -1,4 +1,4 @@
-import { IProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/modal";
 
 import evmProvider from "./evmProvider";
 

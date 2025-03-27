@@ -1,4 +1,4 @@
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { useWeb3Auth } from "@web3auth/modal/react";
 import React from "react";
 
 import web3AuthLogoWhite from "../assets/web3authLogoWhite.svg";

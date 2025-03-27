@@ -1,5 +1,5 @@
-import { CustomChainConfig, WALLET_ADAPTERS } from "@web3auth/base";
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { CustomChainConfig, WALLET_CONNECTORS } from "@web3auth/modal";
+import { useWeb3Auth } from "@web3auth/modal/react";
 import React, { JSX, useEffect, useState } from "react";
 
 import Dropdown from "../components/DropDown";
@@ -18,7 +18,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
     connectedChain,
     isLoading,
     chainList,
-    switchChain,
+    changeChain,
     getChainId,
     chainListOptionSelected,
   } = usePlayground();
@@ -51,7 +51,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
           onChange={async (option) => {
             if ((await getChainId()) !== chainList[option].chainId) {
               console.log(option);
-              await switchChain(chainList[option]);
+              await changeChain(chainList[option]);
             }
             updateConnectedChain(option);
             setSelectedChain(option);
@@ -68,14 +68,14 @@ function AccountDetails({ children }: AccountDetailsProps) {
           )}
           {!(userInfo?.profileImage || userInfo?.name) && (
             <span className="flex justify-center items-center bg-purple-100 font-bold w-24 h-24 rounded-lg text-[80px] text-purple-800">
-              {web3Auth.connectedAdapterName.charAt(0).toUpperCase()}
+              {web3Auth.connectedConnectorName.charAt(0).toUpperCase()}
             </span>
           )}
           <div className="space-y-2 md:space-y-0 md:pl-8 flex flex-col justify-between">
-            {isConnected && web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH ? (
+            {isConnected && web3Auth.connectedConnectorName === WALLET_CONNECTORS.AUTH ? (
               <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{userInfo?.name}</span>
             ) : (
-              <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{`Connected to ${web3Auth.connectedAdapterName[0].toUpperCase()}${web3Auth.connectedAdapterName.slice(1).replace(/-/g, " ")}`}</span>
+              <span className="text-xl md:text-2xl text-gray-800 font-bold w-fit">{`Connected to ${web3Auth.connectedConnectorName[0].toUpperCase()}${web3Auth.connectedConnectorName.slice(1).replace(/-/g, " ")}`}</span>
             )}
             <div
               className="w-fit text-[8px] sm:text-sm bg-gray-100 text-gray-600 p-1 pl-3 pr-3 rounded-full z-0 flex flex-row justify-between space-x-4 items-center cursor-pointer"
@@ -99,7 +99,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
             </div>
           </div>
         </div>
-        {isConnected && web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH && (
+        {isConnected && web3Auth.connectedConnectorName === WALLET_CONNECTORS.AUTH && (
           <button className="w-full p-4 text-sm border-gray-200 rounded-lg shadow-sm" onClick={getUserInfo}>
             View User Info in Console
           </button>
@@ -153,7 +153,7 @@ function AccountDetails({ children }: AccountDetailsProps) {
               type="submit"
               className="flex flex-row rounded-full px-6 py-3 text-white justify-center items-center cursor-pointer"
               style={{ backgroundColor: "#0364ff" }}
-              onClick={() => switchChain(chainDetails)}
+              onClick={() => changeChain(chainDetails)}
             >
               Change Network Config
             </button>

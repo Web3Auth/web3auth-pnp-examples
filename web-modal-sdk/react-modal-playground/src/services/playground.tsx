@@ -1,9 +1,9 @@
-import { ADAPTER_STATUS, CustomChainConfig, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { CONNECTOR_STATUS, CustomChainConfig, IProvider, WALLET_CONNECTORS } from "@web3auth/modal";
+import { useWeb3Auth } from "@web3auth/modal/react";
 import * as jose from "jose";
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
-import { chain } from "../config/chainConfig";
+import { chains } from "../config/chainConfig";
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
 
 export interface IPlaygroundContext {
@@ -29,7 +29,7 @@ export interface IPlaygroundContext {
   writeContract: (contractAddress: string, contractABI: any, updatedValue: string) => Promise<string>;
   getIdToken: () => Promise<string>;
   verifyServerSide: (idToken: string) => Promise<any>;
-  switchChain: (customChainConfig: CustomChainConfig) => Promise<void>;
+  changeChain: (customChainConfig: CustomChainConfig) => Promise<void>;
   updateConnectedChain: (network: string | CustomChainConfig) => void;
 }
 
@@ -40,9 +40,9 @@ export const PlaygroundContext = createContext<IPlaygroundContext>({
   balance: null,
   chainId: null,
   playgroundConsole: "",
-  chainList: chain,
+  chainList: chains,
   chainListOptionSelected: "ethereum",
-  connectedChain: chain.ethereum,
+  connectedChain: chains.ethereum,
   getUserInfo: async () => null,
   getPublicKey: async () => "",
   getAddress: async () => "",
@@ -56,7 +56,7 @@ export const PlaygroundContext = createContext<IPlaygroundContext>({
   writeContract: async () => "",
   getIdToken: async () => "",
   verifyServerSide: async () => {},
-  switchChain: async () => null,
+  changeChain: async () => null,
   updateConnectedChain: () => {},
 });
 
@@ -73,17 +73,17 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [address, setAddress] = useState<string | null>(null);
   const [balance, setBalance] = useState<string | null>(null);
-  const [chainList, setChainDetails] = useState(chain);
+  const [chainList, setChainDetails] = useState(chains);
   const [chainListOptionSelected, setChainListOptionSelected] = useState("ethereum");
   const [chainId, setChainId] = useState<any>(null);
   const [playgroundConsole, setPlaygroundConsole] = useState<string>("");
-  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chain.ethereum);
+  const [connectedChain, setConnectedChain] = useState<CustomChainConfig>(chains.ethereum);
   const uiConsole = (...args: unknown[]) => {
     setPlaygroundConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${playgroundConsole}`);
     console.log(...args);
   };
 
-  const { status, connect, addAndSwitchChain, userInfo, provider, web3Auth, authenticateUser } = useWeb3Auth();
+  const { status, connect, switchChain, userInfo, provider, web3Auth, authenticateUser } = useWeb3Auth();
   // const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
 
   const setNewWalletProvider = useCallback(
@@ -97,9 +97,9 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   );
 
   useEffect(() => {
-    if (status === ADAPTER_STATUS.READY) {
+    if (status === CONNECTOR_STATUS.READY) {
       connect();
-    } else if (status === ADAPTER_STATUS.CONNECTED) {
+    } else if (status === CONNECTOR_STATUS.CONNECTED) {
       setNewWalletProvider(provider);
     }
   }, [web3Auth, status, provider, connect, setNewWalletProvider]);
@@ -244,7 +244,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
         return;
       }
       // ideally this should be done on the server side
-      if (web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH) {
+      if (web3Auth.connectedConnectorName === WALLET_CONNECTORS.AUTH) {
         const pubkey = await getPublicKey();
         const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks"));
         const jwtDecoded = await jose.jwtVerify(idTokenInFrontend, jwks, {
@@ -311,7 +311,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
           })
         )
       ) {
-        setChainDetails({ ...chain, custom: chainDetails });
+        setChainDetails({ ...chains, custom: chainDetails });
       }
       setConnectedChain(chainDetails);
       setChainListOptionSelected("custom");
@@ -320,7 +320,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     uiConsole("No network or chainDetails provided");
   };
 
-  const switchChain = async (chainConfig: CustomChainConfig) => {
+  const changeChain = async (chainConfig: CustomChainConfig) => {
     if (!web3Auth || !provider) {
       uiConsole("web3Auth or provider is not initialized yet");
       return;
@@ -328,7 +328,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
 
     try {
       setIsLoading(true);
-      await addAndSwitchChain(chainConfig);
+      await switchChain(chainConfig);
       setChainId(await walletProvider.getChainId());
       setAddress(await walletProvider.getAddress());
       setBalance(await walletProvider.getBalance());
@@ -364,7 +364,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     writeContract,
     verifyServerSide,
     getIdToken,
-    switchChain,
+    changeChain,
     updateConnectedChain,
   };
   return <PlaygroundContext.Provider value={contextProvider}>{children}</PlaygroundContext.Provider>;

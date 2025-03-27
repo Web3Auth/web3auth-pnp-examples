@@ -1,6 +1,5 @@
-import { WALLET_ADAPTERS } from "@web3auth/base";
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
-import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+import { WALLET_CONNECTORS } from "@web3auth/modal";
+import { useWeb3Auth } from "@web3auth/modal/react";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -9,7 +8,7 @@ import { usePlayground } from "../services/playground";
 
 const Sidebar = () => {
   const { connectedChain } = usePlayground();
-  const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
+  // const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
   const { web3Auth, isConnected } = useWeb3Auth();
 
   const navigate = useNavigate();
@@ -71,13 +70,13 @@ const Sidebar = () => {
           {location.pathname === "/server-side-verification"
             ? activePage("Server Side Verification", 4)
             : linktoGo("Server Side Verification", goToServerSideVerification, 4)}
-          {isConnected && web3Auth.connectedAdapterName === WALLET_ADAPTERS.AUTH && (
+          {isConnected && web3Auth.connectedConnectorName === WALLET_CONNECTORS.AUTH && (
             <>
-              {linktoGo("WalletConnect Scanner", showWalletConnectScanner, 6)}
-              {linktoGo("Wallet UI", showWalletUI, 7)}
-              {connectedChain.chainId === "0xaa36a7" || connectedChain.chainId === "0x13882"
+              {/* {linktoGo("WalletConnect Scanner", showWalletConnectScanner, 6)} */}
+              {/* {linktoGo("Wallet UI", showWalletUI, 7)} */}
+              {/* connectedChain.chainId === "0xaa36a7" || connectedChain.chainId === "0x13882"
                 ? linktoGo("Faucet Link", goToFaucet, 8)
-                : linktoGo("Fiat On Ramp", showCheckout, 8)}
+                : linktoGo("Fiat On Ramp", showCheckout, 8) */}
               {linktoGo("Explorer Link", goToExplorer, 9)}
               {linktoGo("Source Code", goToSounceCode, 10)}
             </>

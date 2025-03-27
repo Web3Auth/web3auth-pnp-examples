@@ -1,4 +1,4 @@
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { useWeb3Auth } from "@web3auth/modal/react";
 import React from "react";
 
 import AccountDetails from "../components/AccountDetails";

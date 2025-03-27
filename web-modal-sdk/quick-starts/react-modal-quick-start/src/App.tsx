@@ -1,12 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-console */
 import "./App.css";
 
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { authConnector, CONNECTOR_EVENTS, CustomChainConfig, getEvmChainConfig, IProvider, Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -18,33 +16,24 @@ import RPC from "./ethersRPC";
 
 // IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-const chainId = 0xaa36a7; // Sepolia testnet
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(chainId, clientId)!;
+const chainId = 0xaa36a7; // Sepolia testnet
+const chains: CustomChainConfig[] = [getEvmChainConfig(chainId, clientId)!];
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3AuthOptions: Web3AuthOptions = {
+const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-};
-const web3auth = new Web3Auth(web3AuthOptions);
-// IMP END - SDK Initialization
-
-// IMP START - Configuring External Wallets
-const adapters = getDefaultExternalAdapters({ options: web3AuthOptions });
-adapters.forEach((adapter: IAdapter<unknown>) => {
-  web3auth.configureAdapter(adapter);
+  chains,
+  // defaultChainId: chains[0].chainId,
+  connectors: [authConnector({ connectorSettings: { buildEnv: "testing", redirectUrl: window.location.origin } })],
+  // multiInjectedProviderDiscovery: true,
 });
-// IMP END - Configuring External Wallets
+// IMP END - SDK Initialization
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -58,9 +47,13 @@ function App() {
         // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 
-        if (web3auth.connected) {
+        web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
           setLoggedIn(true);
-        }
+        });
+
+        // if (web3auth.connected) {
+        //   setLoggedIn(true);
+        // }
       } catch (error) {
         console.error(error);
       }

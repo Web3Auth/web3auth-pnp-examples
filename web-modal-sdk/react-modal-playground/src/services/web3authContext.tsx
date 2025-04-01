@@ -1,21 +1,11 @@
 import { authConnector, walletServicesPlugin, WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
 
-import { web3AuthChains } from "../config/chainConfig";
-
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+const clientId = "BIpw3vwP0QqF_QecEtEFYxEac6pW7i478ouMUwg-qiWp8ipe-OkD6FUabv99lG0iVO02GWd591bJeiYiM1Sl_Nc";
 
 const web3AuthOptions: Web3AuthOptions = {
-  chains: web3AuthChains,
-  defaultChainId: web3AuthChains[0].chainId,
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  connectors: [
-    authConnector({
-      loginSettings: {
-        mfaLevel: "optional",
-      },
-    }),
-  ],
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  connectors: [authConnector({ connectorSettings: { buildEnv: "testing", redirectUrl: window.location.origin } })],
   plugins: [walletServicesPlugin()],
 };
 

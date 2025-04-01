@@ -28,7 +28,7 @@
     "ethers": "^6.13.2",
     "viem": "^2.19.1",
     "web3": "^4.11.1",
-    "zone.js": "^0.14.10"
+    "zone.js": "^0.15.0"
   },
   "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {

@@ -14,7 +14,7 @@ import web3AuthContextConfig from "./services/web3authContext";
 function App() {
   return (
     <div>
-      <Web3AuthProvider config={web3AuthContextConfig}>
+      <Web3AuthProvider config={{ web3AuthOptions: web3AuthContextConfig }}>
         <Playground>
           <BrowserRouter>
             <Routes>

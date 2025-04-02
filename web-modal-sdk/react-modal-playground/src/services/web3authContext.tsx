@@ -5,7 +5,7 @@ const clientId = "BIpw3vwP0QqF_QecEtEFYxEac6pW7i478ouMUwg-qiWp8ipe-OkD6FUabv99lG
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-  connectors: [authConnector({ connectorSettings: { buildEnv: "testing", redirectUrl: window.location.origin } })],
+  authBuildEnv: "testing",
   plugins: [walletServicesPlugin()],
 };
 

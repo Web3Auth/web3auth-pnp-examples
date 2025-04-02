@@ -25,6 +25,16 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
     enableLogging: true,
     connectors: [authConnector({ connectorSettings: { buildEnv: "testing" } })],
+    chains: chains.map(chain => ({
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      chainId: `0x${chain.id.toString(16)}`,
+      rpcTarget: chain.rpcUrls.default.http[0],
+      displayName: chain.name,
+      blockExplorerUrl: chain.blockExplorers?.default.url || "",
+      ticker: chain.nativeCurrency.symbol,
+      tickerName: chain.nativeCurrency.name,
+      logo: "",
+    })),
     plugins: [walletServicesPlugin()],
   });
 

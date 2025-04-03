@@ -22,9 +22,9 @@ const clientId = "BIpw3vwP0QqF_QecEtEFYxEac6pW7i478ouMUwg-qiWp8ipe-OkD6FUabv99lG
 const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  authBuildEnv: "testing",
   connectors: [
     authConnector({
-      connectorSettings: { buildEnv: "testing" },
       loginSettings: {
         mfaLevel: "optional",
       }

@@ -6,7 +6,7 @@ import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
   // Create Web3Auth Instance
-  const clientId = "BKrfI3vHDt2VRU0sir2o_ZiCtTaDLPK9MKDv9fhu_EOf2K5IBOoVf3zCUDS-NDBVYwESXoADdeJ_8yN4pM-nDaU"; // get from https://dashboard.web3auth.io
+  const clientId = "BIpw3vwP0QqF_QecEtEFYxEac6pW7i478ouMUwg-qiWp8ipe-OkD6FUabv99lG0iVO02GWd591bJeiYiM1Sl_Nc"; // get from https://dashboard.web3auth.io
 
   const name = "My App Name";
 
@@ -24,18 +24,15 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     },
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
     enableLogging: true,
-    connectors: [authConnector({ connectorSettings: { buildEnv: "testing" } })],
-    chains: chains.map(chain => ({
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: `0x${chain.id.toString(16)}`,
-      rpcTarget: chain.rpcUrls.default.http[0],
-      displayName: chain.name,
-      blockExplorerUrl: chain.blockExplorers?.default.url || "",
-      ticker: chain.nativeCurrency.symbol,
-      tickerName: chain.nativeCurrency.name,
-      logo: "",
-    })),
+    authBuildEnv: "testing",
     plugins: [walletServicesPlugin()],
+    connectors: [
+      authConnector({
+        loginSettings: {
+          mfaLevel: "optional",
+        }
+      }),
+    ],
   });
 
   return Web3AuthConnector({

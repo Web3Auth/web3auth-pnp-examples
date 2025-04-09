@@ -6,7 +6,7 @@ import "./App.css";
 import {
   authConnector,
   type CustomChainConfig,
-  getEvmChainConfig,
+  // getEvmChainConfig,
   IProvider,
   IWeb3AuthCoreOptions,
   WALLET_CONNECTORS,
@@ -23,16 +23,16 @@ import RPC from "./ethersRPC";
 // IMP END - Blockchain Calls
 
 // IMP START - Dashboard Registration
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BId-ta7y72kd_PJb8gYRyQ2IA9KOlBia4-8Ab9MisZQz1X5ClMHlUZdyPxSBNHhpO2YkGNrKzAgw7uGDZBOy9Io"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig: CustomChainConfig | null = getEvmChainConfig(11155111, clientId);
-console.log(chainConfig);
-if (!chainConfig) {
-  throw new Error("Chain config not found");
-}
+// const chainConfig: CustomChainConfig | null = getEvmChainConfig(11155111, clientId);
+// console.log(chainConfig);
+// if (!chainConfig) {
+//   throw new Error("Chain config not found");
+// }
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization
@@ -40,10 +40,11 @@ if (!chainConfig) {
 
 const web3AuthOptions: IWeb3AuthCoreOptions = {
   clientId,
-  chains: [chainConfig],
+  // chains: [chainConfig],
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   // privateKeyProvider,
-  connectors: [authConnector({ connectorSettings: { buildEnv: "testing", redirectUrl: window.location.origin } })],
+  connectors: [authConnector()],
+  authBuildEnv: "testing",
 };
 const web3auth = new Web3AuthNoModal(web3AuthOptions);
 
@@ -78,7 +79,7 @@ function App() {
     let web3authProvider = null;
     // IMP START - Login
     web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      loginProvider: "google",
+      authConnection: "google",
     });
     // IMP END - Login
     setProvider(web3authProvider);

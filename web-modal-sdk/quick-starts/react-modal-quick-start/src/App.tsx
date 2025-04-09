@@ -6,7 +6,7 @@ import "./App.css";
 // import { IAdapter, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 // import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 // import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { type CustomChainConfig, getEvmChainConfig, IProvider, Web3Auth, WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
+import { IProvider, Web3Auth, WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -17,17 +17,17 @@ import RPC from "./ethersRPC";
 // IMP END - Blockchain Calls
 
 // IMP START - Dashboard Registration
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-const chainId = 11155111; // Sepolia testnet
+const clientId = "BId-ta7y72kd_PJb8gYRyQ2IA9KOlBia4-8Ab9MisZQz1X5ClMHlUZdyPxSBNHhpO2YkGNrKzAgw7uGDZBOy9Io"; // get from https://dashboard.web3auth.io
+// const chainId = 11155111; // Sepolia testnet
 // IMP END - Dashboard Registration
 
 // IMP START - Chain Config
 // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig: CustomChainConfig | null = getEvmChainConfig(chainId);
-console.log(chainConfig);
-if (!chainConfig) {
-  throw new Error("Chain config not found");
-}
+// const chainConfig: CustomChainConfig | null = getEvmChainConfig(chainId);
+// console.log(chainConfig);
+// if (!chainConfig) {
+//   throw new Error("Chain config not found");
+// }
 // IMP END - Chain Config
 
 // IMP START - SDK Initialization
@@ -38,7 +38,8 @@ if (!chainConfig) {
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   // chains: [chainConfig],
-  // web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  authBuildEnv: "testing",
 };
 const web3auth = new Web3Auth(web3AuthOptions);
 // IMP END - SDK Initialization

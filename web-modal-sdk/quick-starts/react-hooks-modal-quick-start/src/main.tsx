@@ -1,8 +1,9 @@
+/* eslint-disable simple-import-sort/imports */
 import "./index.css";
 
 import ReactDOM from "react-dom/client";
 // IMP START - Setup Web3Auth Provider
-import { Web3AuthProvider } from "@web3auth/modal-react-hooks";
+import { Web3AuthProvider } from "@web3auth/modal/react";
 import web3AuthContextConfig from "./web3authContext";
 // IMP END - Setup Web3Auth Provider
 

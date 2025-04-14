@@ -1,4 +1,4 @@
-import type { IProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/modal";
 import Web3 from "web3";
 
 const getChainId = async (provider: IProvider): Promise<string> => {

@@ -3,10 +3,7 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { CONNECTOR_EVENTS, IProvider, Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -18,33 +15,15 @@ import RPC from "./ethersRPC";
 
 // IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-const chainId = 0xaa36a7; // Sepolia testnet
 // IMP END - Dashboard Registration
 
-// IMP START - Chain Config
-// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(chainId, clientId)!;
-// IMP END - Chain Config
-
 // IMP START - SDK Initialization
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3AuthOptions: Web3AuthOptions = {
+const web3auth = new Web3Auth({
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-};
-const web3auth = new Web3Auth(web3AuthOptions);
-// IMP END - SDK Initialization
-
-// IMP START - Configuring External Wallets
-const adapters = getDefaultExternalAdapters({ options: web3AuthOptions });
-adapters.forEach((adapter: IAdapter<unknown>) => {
-  web3auth.configureAdapter(adapter);
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // SAPPHIRE_MAINNET, SAPPHIRE_DEVNET
+  authBuildEnv: "testing",
 });
-// IMP END - Configuring External Wallets
+// IMP END - SDK Initialization
 
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -58,9 +37,9 @@ function App() {
         // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 
-        if (web3auth.connected) {
+        web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
           setLoggedIn(true);
-        }
+        });
       } catch (error) {
         console.error(error);
       }
@@ -74,9 +53,9 @@ function App() {
     const web3authProvider = await web3auth.connect();
     // IMP END - Login
     setProvider(web3authProvider);
-    if (web3auth.connected) {
+    web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
       setLoggedIn(true);
-    }
+    });
   };
 
   const getUserInfo = async () => {
@@ -205,7 +184,7 @@ function App() {
           href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-modal-quick-start"
           target="_blank"
           rel="noopener noreferrer"
-        >
+        > 
           Source code
         </a>
         <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-modal-quick-start&project-name=w3a-react-vite-no-modal&repository-name=w3a-react-vite-no-modal">

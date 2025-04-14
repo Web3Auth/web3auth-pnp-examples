@@ -1,7 +1,6 @@
 import type { IProvider } from "@web3auth/base";
 import Web3 from "web3";
 
-
 const getChainId = async (provider: IProvider): Promise<string> => {
   try {
     const web3 = new Web3(provider);
@@ -13,20 +12,20 @@ const getChainId = async (provider: IProvider): Promise<string> => {
   } catch (error) {
     return error as string;
   }
-}
+};
 
 const getAccounts = async (provider: IProvider): Promise<any> => {
   try {
     const web3 = new Web3(provider as any);
 
     // Get user's Ethereum public address
-    const address = (await web3.eth.getAccounts());
+    const address = await web3.eth.getAccounts();
 
     return address;
   } catch (error) {
     return error;
   }
-}
+};
 
 const getBalance = async (provider: IProvider): Promise<string> => {
   try {
@@ -45,7 +44,7 @@ const getBalance = async (provider: IProvider): Promise<string> => {
   } catch (error) {
     return error as string;
   }
-}
+};
 
 const signMessage = async (provider: IProvider): Promise<string> => {
   try {
@@ -67,7 +66,7 @@ const signMessage = async (provider: IProvider): Promise<string> => {
   } catch (error) {
     return error as string;
   }
-}
+};
 
 const sendTransaction = async (provider: IProvider): Promise<any> => {
   try {
@@ -84,7 +83,7 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
       to: destination,
       data: "0x",
       value: amount,
-    }
+    };
 
     // calculate gas transaction before sending
     transaction = { ...transaction, gas: await web3.eth.estimateGas(transaction) } as any;
@@ -92,16 +91,13 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
     // Submit transaction to the blockchain and wait for it to be mined
     const receipt = await web3.eth.sendTransaction(transaction);
 
-    return JSON.stringify(receipt, (key, value) =>
-      typeof value === 'bigint'
-        ? value.toString()
-        : value // return everything else unchanged
+    return JSON.stringify(
+      receipt,
+      (key, value) => (typeof value === "bigint" ? value.toString() : value) // return everything else unchanged
     );
   } catch (error) {
     return error as string;
   }
-}
+};
 
-
-
-export default {getChainId, getAccounts, getBalance, sendTransaction, signMessage};
+export default { getChainId, getAccounts, getBalance, sendTransaction, signMessage };

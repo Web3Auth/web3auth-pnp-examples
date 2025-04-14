@@ -49,12 +49,7 @@
 <script lang="ts">
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
-import { Web3Auth } from "@web3auth/modal";
-import type { Web3AuthOptions } from "@web3auth/modal";
-import { WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import type { IAdapter, IProvider } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { CONNECTOR_EVENTS, type IProvider, Web3Auth, WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
@@ -73,21 +68,10 @@ export default {
     const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
     // IMP END - Dashboard Registration
 
-    // IMP START - Chain Config
-    const chainId = 0x13882; // Polygon Amoy Testnet
-    // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-    const chainConfig = getEvmChainConfig(chainId, clientId)!;
-    // IMP END - Chain Config
-
-    // IMP START - SDK Initialization
-    const privateKeyProvider = new EthereumPrivateKeyProvider({
-      config: { chainConfig: chainConfig }
-    });
-
     const web3AuthOptions: Web3AuthOptions = {
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-      privateKeyProvider,
+      authBuildEnv: "testing",
     }
     const web3auth = new Web3Auth(web3AuthOptions);
     // IMP END - SDK Initialization
@@ -98,20 +82,14 @@ export default {
     onMounted(async () => {
       const init = async () => {
         try {
-          // IMP START - Configuring External Wallets
-          const adapters = getDefaultExternalAdapters({ options: web3AuthOptions });
-          adapters.forEach((adapter: IAdapter<unknown>) => {
-            web3auth.configureAdapter(adapter);
-          });
-          // IMP END - Configuring External Wallets
           // IMP START - SDK Initialization
           await web3auth.initModal();
           // IMP END - SDK Initialization
           provider = web3auth.provider;
 
-          if (web3auth.connected) {
+          web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
             loggedIn.value = true;
-          }
+          });
         } catch (error) {
           console.error(error);
         }
@@ -124,9 +102,9 @@ export default {
       // IMP START - Login
       provider = await web3auth.connect();
       // IMP END - Login
-      if (web3auth.connected) {
+      web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
         loggedIn.value = true;
-      }
+       });
     };
 
     const getUserInfo = async () => {

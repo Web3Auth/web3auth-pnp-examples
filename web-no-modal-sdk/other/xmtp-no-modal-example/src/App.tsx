@@ -1,15 +1,10 @@
-import { IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { AuthAdapter } from "@web3auth/auth-adapter";
+import { IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { Web3AuthNoModal, authConnector, WALLET_CONNECTORS } from "@web3auth/no-modal";
 import { useEffect, useState } from "react";
 import { FloatingInbox } from "./FloatingInbox";
 import { ethers, JsonRpcSigner } from "ethers";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
-// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0x13882, clientId)!;
 
 declare global {
   interface Window {
@@ -20,16 +15,12 @@ declare global {
   }
 }
 
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
 const web3auth = new Web3AuthNoModal({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
+  authBuildEnv: "testing",
+  connectors: [authConnector()],
 });
-
-const authAdapter = new AuthAdapter();
-web3auth.configureAdapter(authAdapter);
 
 function App() {
   const isPWA = true;
@@ -68,7 +59,7 @@ function App() {
   }, [provider, loggedIn]);
 
   const login = async () => {
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
       loginProvider: "google",
     });
     setProvider(web3authProvider);

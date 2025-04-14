@@ -1,311 +1,164 @@
 import { useEffect, useState } from "react";
-
-// Import Single Factor Auth SDK for no redirect flow
-import { Web3Auth, decodeToken } from "@web3auth/single-factor-auth";
-import { ADAPTER_EVENTS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { PasskeysPlugin } from "@web3auth/passkeys-sfa-plugin";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-
-import { GoogleLogin, CredentialResponse, googleLogout } from "@react-oauth/google";
-
-// RPC libraries for blockchain calls
-// import RPC from "./evm.web3";
-// import RPC from "./evm.viem";
-import RPC from "./evm.ethers";
-
-import Loading from "./Loading";
+import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
 import "./App.css";
-import { shouldSupportPasskey } from "./utils";
-
-const verifier = "w3a-sfa-web-google";
+// Import RPC libraries for blockchain calls
+// import RPC from "./evm.web3";
+import RPC from "./evm.ethers";
+// import RPC from "./evm.viem";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
-const chainConfig = {
-  chainId: "0xaa36a7",
-  displayName: "Ethereum Sepolia Testnet",
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  tickerName: "Ethereum",
-  ticker: "ETH",
-  decimals: 18,
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
-};
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
+// Initialising Web3Auth No Modal SDK
+const web3auth = new Web3AuthNoModal({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  authBuildEnv: "testing",
+  connectors: [authConnector()],
+});
 
 function App() {
-  const [web3authSFAuth, setWeb3authSFAuth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(null);
-  const [pkPlugin, setPkPlugin] = useState<PasskeysPlugin | null>(null);
-  const [wsPlugin, setWsPlugin] = useState<WalletServicesPlugin | null>(null);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [rpID, setRpID] = useState<string>("");
-  const [rpName, setRpName] = useState<string>("");
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
-      if (window.location.hostname === "localhost") {
-        setRpID("localhost");
-        setRpName("localhost");
-      } else {
-        const hostnameParts = window.location.hostname.split(".");
-        if (hostnameParts.length >= 2) {
-          setRpID(hostnameParts.slice(-2).join("."));
-          setRpName(window.location.hostname);
-        } else {
-          setRpID(window.location.hostname);
-          setRpName(window.location.hostname);
-        }
-      }
       try {
-        const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-          config: { chainConfig },
-        });
-        // Initialising Web3Auth Single Factor Auth SDK
-        const web3authSfa = new Web3Auth({
-          clientId, // Get your Client ID from Web3Auth Dashboard
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // ["sapphire_mainnet", "sapphire_devnet", "mainnet", "cyan", "aqua", and "testnet"]
-          usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
-          privateKeyProvider: ethereumPrivateKeyProvider,
-        });
-        const plugin = new PasskeysPlugin({
-          rpID,
-          rpName,
-          buildEnv: "production",
-        });
-        web3authSfa?.addPlugin(plugin);
-        setPkPlugin(plugin);
-        const wsPlugin = new WalletServicesPlugin({
-          walletInitOptions: {
-            whiteLabel: {
-              logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-              logoDark: "https://web3auth.io/images/web3auth-logo.svg",
-            },
-          },
-        });
-        web3authSfa?.addPlugin(wsPlugin);
-        setWsPlugin(wsPlugin);
-        web3authSfa.on(ADAPTER_EVENTS.CONNECTED, (data) => {
-          console.log("sfa:connected", data);
-          console.log("sfa:state", web3authSfa?.state);
-          setProvider(web3authSfa.provider);
-        });
-        web3authSfa.on(ADAPTER_EVENTS.DISCONNECTED, () => {
-          console.log("sfa:disconnected");
-          setProvider(null);
-        });
-        await web3authSfa.init();
-        setWeb3authSFAuth(web3authSfa);
-        // (window as any).web3auth = web3authSfa;
+        await web3auth.init();
+        if (web3auth.connected) {
+          setLoggedIn(true);
+        }
       } catch (error) {
         console.error(error);
       }
+
+      // Load Google One Tap script
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
     };
 
     init();
   }, []);
 
-  const onSuccess = async (response: CredentialResponse) => {
+  useEffect(() => {
+    if (window.google && !loggedIn) {
+      window.google.accounts.id.initialize({
+        client_id: "461819774167-3n0b5lkkdt3e23jlhb0q2rb4nj3c4k6f.apps.googleusercontent.com",
+        callback: handleCredentialResponse,
+        auto_select: false,
+        cancel_on_tap_outside: false,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById("googleOneTap"),
+        { theme: "outline", size: "large", width: "100%" }
+      );
+      window.google.accounts.id.prompt();
+    }
+  }, [window.google, loggedIn]);
+
+  const handleCredentialResponse = async (response: any) => {
     try {
-      if (!web3authSFAuth) {
-        uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
+      if (!web3auth) {
+        uiConsole("Web3Auth No Modal SDK not initialized yet");
         return;
       }
       setIsLoggingIn(true);
+      
       const idToken = response.credential;
-      // console.log(idToken);
-      if (!idToken) {
-        setIsLoggingIn(false);
-        return;
-      }
-      const { payload } = decodeToken(idToken);
-      await web3authSFAuth.connect({
-        verifier,
-        verifierId: (payload as any)?.email,
-        idToken: idToken!,
+      
+      await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+        authConnection: AUTH_CONNECTION.CUSTOM,
+        authConnectionId: "google-one-tap",
+        extraLoginOptions: {
+          id_token: idToken,
+        },
       });
+      
       setIsLoggingIn(false);
-    } catch (err) {
-      // Single Factor Auth SDK throws an error if the user has already enabled MFA
-      // One can use the Web3AuthNoModal SDK to handle this case
+      setLoggedIn(true);
+    } catch (error) {
       setIsLoggingIn(false);
-      console.error(err);
+      console.error(error);
     }
   };
 
-  const loginWithPasskey = async () => {
-    try {
-      setIsLoggingIn(true);
-      if (!pkPlugin) throw new Error("Passkey plugin not initialized");
-      const result = shouldSupportPasskey();
-      if (!result.isBrowserSupported) {
-        uiConsole("Browser not supported");
-        return;
-      }
-      await pkPlugin.loginWithPasskey();
-      uiConsole("Passkey logged in successfully");
-    } catch (error) {
-      console.error((error as Error).message);
-      uiConsole((error as Error).message);
-    } finally {
-      setIsLoggingIn(false);
+  const authenticateUser = async () => {
+    if (!web3auth) {
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
+      return;
     }
+    const idToken = await web3auth.authenticateUser();
+    uiConsole(idToken);
   };
 
   const getUserInfo = async () => {
-    if (!web3authSFAuth) {
-      uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
+    if (!web3auth) {
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
       return;
     }
-    const getUserInfo = await web3authSFAuth.getUserInfo();
-    uiConsole(getUserInfo);
+    const user = await web3auth.getUserInfo();
+    uiConsole(user);
   };
 
   const logout = async () => {
-    if (!web3authSFAuth) {
-      uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
+    if (!web3auth) {
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
       return;
     }
-    googleLogout();
-    web3authSFAuth.logout();
-    return;
+    web3auth.logout();
+    setLoggedIn(false);
   };
 
   const getAccounts = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const userAccount = await rpc.getAccounts();
     uiConsole(userAccount);
   };
 
   const getBalance = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
 
   const signMessage = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const result = await rpc.signMessage();
     uiConsole(result);
   };
 
   const sendTransaction = async () => {
-    if (!provider) {
+    if (!web3auth?.provider) {
       uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const result = await rpc.signAndSendTransaction();
     uiConsole(result);
-  };
-
-  const authenticateUser = async () => {
-    if (!web3authSFAuth) {
-      uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
-      return;
-    }
-    try {
-      const userCredential = await web3authSFAuth.authenticateUser();
-      uiConsole(userCredential);
-    } catch (err) {
-      uiConsole(err);
-    }
-  };
-
-  const addChain = async () => {
-    try {
-      const newChain = {
-        chainId: "0x13882",
-        displayName: "Sepolia Testnet ETH",
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        rpcTarget: "https://rpc.ankr.com/polygon_amoy",
-        blockExplorerUrl: "https://amoy.polygonscan.com/",
-        ticker: "MATIC",
-        tickerName: "MATIC",
-        logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
-      };
-      await web3authSFAuth?.addChain(newChain);
-      uiConsole("Polygon Amoy Testnet added successfully");
-    } catch (err) {
-      uiConsole(err);
-    }
-  };
-
-  const switchChain = async () => {
-    try {
-      await web3authSFAuth?.switchChain({ chainId: "0x13882" });
-      uiConsole("Chain switched to Polygon Amoy Testnet successfully");
-    } catch (err) {
-      uiConsole(err);
-    }
-  };
-
-  const registerPasskey = async () => {
-    try {
-      if (!pkPlugin || !web3authSFAuth) {
-        uiConsole("plugin not initialized yet");
-        return;
-      }
-      const result = shouldSupportPasskey();
-      if (!result.isBrowserSupported) {
-        uiConsole("Browser not supported");
-        return;
-      }
-      const userInfo = await web3authSFAuth?.getUserInfo();
-      const res = await pkPlugin.registerPasskey({
-        username: `google|${userInfo?.email || userInfo?.name} - ${new Date().toLocaleDateString("en-GB")}`,
-      });
-      console.log("res", res);
-      if (res) uiConsole("Passkey saved successfully");
-    } catch (error: unknown) {
-      uiConsole((error as Error).message);
-    }
-  };
-
-  const listAllPasskeys = async () => {
-    if (!pkPlugin) {
-      uiConsole("plugin not initialized yet");
-      return;
-    }
-    const res = await pkPlugin.listAllPasskeys();
-    uiConsole(res);
-  };
-
-  const showCheckout = async () => {
-    if (!wsPlugin) {
-      uiConsole("wallet services plugin not initialized yet");
-      return;
-    }
-    await wsPlugin.showCheckout();
-  };
-
-  const showWalletUI = async () => {
-    if (!wsPlugin) {
-      uiConsole("wallet services plugin not initialized yet");
-      return;
-    }
-    await wsPlugin.showWalletUi();
-  };
-
-  const showWalletScanner = async () => {
-    if (!wsPlugin) {
-      uiConsole("wallet services plugin not initialized yet");
-      return;
-    }
-    await wsPlugin.showWalletConnectScanner();
   };
 
   function uiConsole(...args: any[]): void {
@@ -339,51 +192,6 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={addChain} className="card">
-            Add Chain
-          </button>
-        </div>
-        <div>
-          <button onClick={switchChain} className="card">
-            Switch Chain
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={registerPasskey} className="card">
-            Register passkey
-          </button>
-        </div>
-        <div>
-          <button onClick={listAllPasskeys} className="card">
-            List all Passkeys
-          </button>
-        </div>
-        <div>
-          <button onClick={showCheckout} className="card">
-            (Buy Crypto) Show Checkout
-          </button>
-        </div>
-        <div>
-          <button onClick={showWalletUI} className="card">
-            Show Wallet UI
-          </button>
-        </div>
-        <div>
-          <button onClick={showWalletScanner} className="card">
-            Show Wallet Scanner
-          </button>
-        </div>
-        <div>
           <button onClick={logout} className="card">
             Log Out
           </button>
@@ -398,9 +206,8 @@ function App() {
 
   const logoutView = (
     <>
-      <GoogleLogin onSuccess={onSuccess} useOneTap />
-      <button onClick={loginWithPasskey} className="card passkey">
-        Login with Passkey
+      <button onClick={logout} className="card">
+        Log Out
       </button>
     </>
   );
@@ -416,7 +223,7 @@ function App() {
 
       <p className="grid">Sign in with Google and register passkeys before doing Login with Passkey</p>
 
-      {isLoggingIn ? <Loading /> : <div className="grid">{web3authSFAuth ? (provider ? loginView : logoutView) : null}</div>}
+      {isLoggingIn ? <Loading /> : <div className="grid">{loggedIn ? loginView : logoutView}</div>}
 
       <footer className="footer">
         <a

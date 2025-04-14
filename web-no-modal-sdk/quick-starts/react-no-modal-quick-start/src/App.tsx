@@ -2,7 +2,7 @@
 import "./App.css";
 
 // IMP START - Quick Start
-import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig, CustomChainConfig, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
+import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
 // IMP END - Quick Start
 import { useEffect, useState } from "react";
 
@@ -16,18 +16,11 @@ import RPC from "./ethersRPC";
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
-// IMP START - Chain Config
-// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainId = 0xaa36a7; // Sepolia testnet
-const chains: CustomChainConfig[] = [getEvmChainConfig(chainId, clientId)!];
-// IMP END - Chain Config
-
 // IMP START - SDK Initialization
 const web3auth = new Web3AuthNoModal({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  chains,
-  multiInjectedProviderDiscovery: true,
+  authBuildEnv: "testing",
   connectors: [authConnector()],
 });
 // IMP END - SDK Initialization
@@ -60,9 +53,6 @@ function App() {
     // IMP START - Login
     web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
       loginProvider: "google",
-      authConnectionId: "w3a-google-demo",
-      typeOfLogin: "google",
-      clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", //use your app client id you got from google   
     });
     // IMP END - Login
     setProvider(web3authProvider);

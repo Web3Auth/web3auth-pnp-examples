@@ -52,11 +52,7 @@
 <script lang="ts">
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { WALLET_ADAPTERS, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import type { IProvider } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { AuthAdapter } from "@web3auth/auth-adapter";
+import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
@@ -75,23 +71,14 @@ export default {
     // IMP START - Dashboard Registration
     const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
     // IMP END - Dashboard Registration
-
-    // IMP START - Chain Config
-    // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-    const chainConfig = getEvmChainConfig(0xaa36a7, clientId)!;
-    // IMP END - Chain Config
     
     // IMP START - SDK Initialization
-    const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
     const web3auth = new Web3AuthNoModal({
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-      privateKeyProvider,
+      authBuildEnv: "testing",
+      connectors: [authConnector()],
     });
-
-    const authAdapter = new AuthAdapter();
-    web3auth.configureAdapter(authAdapter);
     // IMP END - SDK Initialization
     
     const loggedIn = ref<boolean>(false);
@@ -118,7 +105,7 @@ export default {
 
     const login = async () => {
       // IMP START - Login
-      provider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+      provider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
         loginProvider: "google",
       });
       // IMP END - Login

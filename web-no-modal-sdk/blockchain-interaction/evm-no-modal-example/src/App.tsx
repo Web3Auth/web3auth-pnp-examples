@@ -14,10 +14,6 @@ import RPC from "./web3RPC"; // for using web3.js
 
 const clientId = "BHgArYmWwSeq21czpcarYh0EVq2WWOzflX-NTK-tY1-1pauPzHKRRLgpABkmYiIV_og9jAvoIxQ8L3Smrwe04Lw"; // get from https://dashboard.web3auth.io
 
-// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0x1, clientId)!;
-
-let injectedAdapters: any;
 function App() {
   const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -29,11 +25,15 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
+        const chainConfig = getEvmChainConfig(0x1, clientId)!;
+        
         const web3authNoModalOptions: IWeb3AuthCoreOptions = {
           clientId,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-          privateKeyProvider,
+          useCoreKitKey: false,
+          authBuildEnv: "testing",
+          connectors: [],
           uiConfig: {
             appName: "W3A Heroes",
             appUrl: "https://web3auth.io",
@@ -46,11 +46,42 @@ function App() {
             },
             useLogoLoader: true,
           },
-          useCoreKitKey: false,
-        };
-        const web3auth = new Web3AuthNoModal(web3authNoModalOptions);
-
-        const authAdapter = new AuthAdapter({
+          loginSettings: {
+            mfaLevel: "optional",
+          },
+          mfaSettings: {
+            deviceShareFactor: {
+              enable: true,
+              priority: 1,
+              mandatory: true,
+            },
+            backUpShareFactor: {
+              enable: true,
+              priority: 2,
+              mandatory: false,
+            },
+            socialBackupFactor: {
+              enable: true,
+              priority: 3,
+              mandatory: false,
+            },
+            passwordFactor: {
+              enable: true,
+              priority: 4,
+              mandatory: true,
+            },
+            passkeysFactor: {
+              enable: true,
+              priority: 5,
+              mandatory: false,
+            },
+            authenticatorFactor: {
+              enable: true,
+              priority: 6,
+              mandatory: false,
+            },
+          },
+          redirectUrl: window.location.origin,
           adapterSettings: {
             uxMode: UX_MODE.REDIRECT,
             // buildEnv: "testing",
@@ -61,48 +92,13 @@ function App() {
                 clientId,
               },
             },
-            mfaSettings: {
-              deviceShareFactor: {
-                enable: true,
-                priority: 1,
-                mandatory: true,
-              },
-              backUpShareFactor: {
-                enable: true,
-                priority: 2,
-                mandatory: false,
-              },
-              socialBackupFactor: {
-                enable: true,
-                priority: 3,
-                mandatory: false,
-              },
-              passwordFactor: {
-                enable: true,
-                priority: 4,
-                mandatory: true,
-              },
-              passkeysFactor: {
-                enable: true,
-                priority: 5,
-                mandatory: false,
-              },
-              authenticatorFactor: {
-                enable: true,
-                priority: 6,
-                mandatory: false,
-              },
-            },
           },
-          loginSettings: {
-            mfaLevel: "optional",
-          },
-          privateKeyProvider,
-        });
-        web3auth.configureAdapter(authAdapter);
+        };
+        
+        const web3auth = new Web3AuthNoModal(web3authNoModalOptions);
 
         // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.EIP155, ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d");
+        const defaultWcSettings = await getWalletConnectV2Settings("eip155", ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d");
         const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
         const walletConnectV2Adapter = new WalletConnectV2Adapter({
           adapterSettings: {
@@ -113,7 +109,7 @@ function App() {
         });
         web3auth.configureAdapter(walletConnectV2Adapter);
 
-        injectedAdapters = await getInjectedAdapters({ options: web3authNoModalOptions });
+        const injectedAdapters = await getInjectedAdapters({ options: web3authNoModalOptions });
         injectedAdapters.forEach((adapter: IAdapter<unknown>) => {
           web3auth.configureAdapter(adapter);
         });

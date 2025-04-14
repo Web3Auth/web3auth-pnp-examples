@@ -5,36 +5,16 @@ let web3auth = null;
   $("#sign-tx").hide();
 
   // IMP START - Dashboard Registration
-
   const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get your clientId from https://dashboard.web3auth.io
   // IMP END - Dashboard Registration
 
-  // IMP START - Chain Config
-  const chainConfig = {
-    chainNamespace: "eip155",
-    chainId: "0xaa36a7",
-    rpcTarget: "https://1rpc.io/sepolia",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Ethereum Sepolia Testnet",
-    blockExplorerUrl: "https://sepolia.etherscan.io",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-    logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-  };
-  // IMP END - Chain Config
-
   // IMP START - SDK Initialization
-  const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvider({ config: { chainConfig } });
-
   web3auth = new window.NoModal.Web3AuthNoModal({
     clientId,
-    privateKeyProvider,
     web3AuthNetwork: "sapphire_mainnet",
+    authBuildEnv: "testing",
+    connectors: [window.NoModal.authConnector()],
   });
-
-  const authAdapter = new window.AuthAdapter.AuthAdapter();
-  web3auth.configureAdapter(authAdapter);
 
   await web3auth.init();
   // IMP END - SDK Initialization
@@ -51,7 +31,7 @@ let web3auth = null;
 $("#login").click(async function (event) {
   try {
     // IMP START - Login
-    await web3auth.connectTo("auth", {
+    await web3auth.connectTo(window.NoModal.WALLET_CONNECTORS.AUTH, {
       loginProvider: "google",
     }); 
     // IMP END - Login

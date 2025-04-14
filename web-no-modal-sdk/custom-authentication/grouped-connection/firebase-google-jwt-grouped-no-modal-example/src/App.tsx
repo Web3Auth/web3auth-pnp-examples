@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { WALLET_ADAPTERS, IProvider, WEB3AUTH_NETWORK, UX_MODE, getEvmChainConfig } from "@web3auth/base";
-import { AuthAdapter } from "@web3auth/auth-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
+import { IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
 import { initializeApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
 import "./App.css";
@@ -13,7 +11,6 @@ import RPC from "./evm.viem";
 const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
 
 // Your web app's Firebase configuration
-
 const firebaseConfig = {
   apiKey: "AIzaSyAAAF-xdPur0wJpgwXLGdLZWDwRCTRLdX8",
   authDomain: "web3auth-firebase-github.firebaseapp.com",
@@ -31,38 +28,38 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-        const chainConfig = getEvmChainConfig(0x13882, clientId)!;
-
-        const privateKeyProvider = new EthereumPrivateKeyProvider({
-          config: { chainConfig },
-        });
-
         const web3auth = new Web3AuthNoModal({
           clientId,
           web3AuthNetwork: WEB3AUTH_NETWORK.TESTNET,
-          privateKeyProvider,
-        });
-
-        const authAdapter = new AuthAdapter({
-          adapterSettings: {
-            uxMode: UX_MODE.REDIRECT,
-            loginConfig: {
-              google: {
-                verifier: "aggregate-verifier-google-firebase",
-                verifierSubIdentifier: "w3a-google",
-                typeOfLogin: "google",
-                clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-              },
-              firebaseGithub: {
-                verifier: "aggregate-verifier-google-firebase",
-                verifierSubIdentifier: "w3a-firebase",
-                typeOfLogin: "jwt",
-              },
+          authBuildEnv: "testing",
+          connectors: [authConnector()],
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x13882", // Please use 0x1 for Mainnet
+            rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+            displayName: "Polygon Mumbai Testnet",
+            blockExplorerUrl: "https://mumbai.polygonscan.com/",
+            ticker: "MATIC",
+            tickerName: "Matic",
+          },
+          loginConfig: {
+            google: {
+              verifier: "aggregate-verifier-google-firebase",
+              verifierSubIdentifier: "w3a-google",
+              typeOfLogin: "google",
+              clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+            },
+            firebaseGithub: {
+              verifier: "aggregate-verifier-google-firebase",
+              verifierSubIdentifier: "w3a-firebase",
+              typeOfLogin: "jwt",
             },
           },
+          uiConfig: {
+            uxMode: UX_MODE.REDIRECT
+          }
         });
-        web3auth.configureAdapter(authAdapter);
+
         setWeb3auth(web3auth);
 
         await web3auth.init();
@@ -84,7 +81,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
       loginProvider: "google",
     });
     console.log("web3authProvider", web3authProvider);
@@ -110,7 +107,7 @@ function App() {
     const idToken = await loginRes.user.getIdToken(true);
     console.log("idToken", idToken);
 
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
       loginProvider: "firebaseGithub",
       extraLoginOptions: {
         id_token: idToken,

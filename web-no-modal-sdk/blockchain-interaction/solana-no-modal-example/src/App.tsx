@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter, getSolanaChainConfig } from "@web3auth/base";
+import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
+import { CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter, getSolanaChainConfig } from "@web3auth/base";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
@@ -10,7 +10,7 @@ import RPC from "./solanaRPC";
 import "./App.css";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-let injectedAdapters: IAdapter<unknown>[] = [];
+
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -18,27 +18,19 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-        const chainConfig = getSolanaChainConfig(0x1)!;
-
-        const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
-
         const web3authOptions: IWeb3AuthCoreOptions = {
           clientId,
-          privateKeyProvider,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-        };
-        const web3auth = new Web3AuthNoModal(web3authOptions);
-
-        setWeb3auth(web3auth);
-
-        const authAdapter = new AuthAdapter({
-          privateKeyProvider,
-          adapterSettings: {
+          authBuildEnv: "testing",
+          connectors: [authConnector()],
+          chainConfig: getSolanaChainConfig(0x1),
+          uiConfig: {
             uxMode: UX_MODE.REDIRECT,
-          },
-        });
-        web3auth.configureAdapter(authAdapter);
+          }
+        };
+        
+        const web3auth = new Web3AuthNoModal(web3authOptions);
+        setWeb3auth(web3auth);
 
         // adding wallet connect v2 adapter
         const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.SOLANA, ["0x1", "0x2"], "04309ed1007e77d1f119b85205bb779d");
@@ -52,7 +44,8 @@ function App() {
         });
         web3auth.configureAdapter(walletConnectV2Adapter);
 
-        injectedAdapters = getInjectedAdapters({ options: web3authOptions });
+        // Get injected adapters
+        const injectedAdapters = getInjectedAdapters({ options: web3authOptions });
         injectedAdapters.forEach((adapter) => {
           web3auth.configureAdapter(adapter);
         });
@@ -72,7 +65,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
@@ -83,7 +76,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
+    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.WALLET_CONNECT_V2);
     setProvider(web3authProvider);
   };
 

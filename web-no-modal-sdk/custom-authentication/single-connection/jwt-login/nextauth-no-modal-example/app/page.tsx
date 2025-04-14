@@ -1,11 +1,97 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
+import { signIn, signOut, useSession } from "next-auth/react";
+import RPC from "../lib/evm.ethers";
 import Image from "next/image";
 
-import { auth } from "@/auth";
 import SignIn from "@/components/auth/signin-button";
 import Profile from "@/components/profile";
 
-export default async function Home() {
-  const session = await auth();
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+
+// Initialising Web3Auth No Modal SDK
+const web3auth = new Web3AuthNoModal({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  authBuildEnv: "testing",
+  connectors: [authConnector()],
+});
+
+export default function Home() {
+  const { data: session } = useSession();
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [consoleOutput, setConsoleOutput] = useState<string>("");
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        await web3auth.init();
+        if (web3auth.connected) {
+          setLoggedIn(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    init();
+  }, []);
+
+  const connectWeb3Auth = async () => {
+    if (!session?.idToken) return;
+    
+    try {
+      setIsLoggingIn(true);
+      await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+        authConnection: AUTH_CONNECTION.CUSTOM,
+        authConnectionId: "nextauth-web3auth",
+        extraLoginOptions: {
+          id_token: session.idToken,
+        },
+      });
+      setLoggedIn(true);
+      setIsLoggingIn(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoggingIn(false);
+    }
+  };
+
+  const getUserInfo = async () => {
+    try {
+      const userInfo = await web3auth.getUserInfo();
+      uiConsole(userInfo);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getAccounts = async () => {
+    try {
+      const rpc = new RPC(web3auth.provider);
+      const accounts = await rpc.getAccounts();
+      uiConsole(accounts);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await signOut();
+      web3auth.logout();
+      setLoggedIn(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  function uiConsole(...args: any[]): void {
+    setConsoleOutput(JSON.stringify(args || {}, null, 2));
+  }
 
   return (
     <main className="flex flex-col items-center justify-between p-24">

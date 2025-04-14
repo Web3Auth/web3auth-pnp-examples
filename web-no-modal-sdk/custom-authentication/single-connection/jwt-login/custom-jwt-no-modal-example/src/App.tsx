@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { WALLET_ADAPTERS, IProvider, UX_MODE, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { AuthAdapter } from "@web3auth/auth-adapter";
+import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
 import "./App.css";
 // import RPC from './evm.web3';
 import RPC from "./evm.viem";
@@ -10,42 +7,22 @@ import RPC from "./evm.viem";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
+// Initialising Web3Auth No Modal SDK
+const web3auth = new Web3AuthNoModal({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  authBuildEnv: "testing",
+  connectors: [authConnector()]
+});
+
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
-        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-        const chainConfig = getEvmChainConfig(0x13882, clientId)!;
-
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-        const web3auth = new Web3AuthNoModal({
-          clientId,
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-          privateKeyProvider,
-        });
-
-        const authAdapter = new AuthAdapter({
-          adapterSettings: {
-            uxMode: UX_MODE.REDIRECT,
-            loginConfig: {
-              jwt: {
-                verifier: "w3a-node-demo",
-                typeOfLogin: "jwt",
-                clientId,
-              },
-            },
-          },
-        });
-        web3auth.configureAdapter(authAdapter);
-        setWeb3auth(web3auth);
-
         await web3auth.init();
-        setProvider(web3auth.provider);
         if (web3auth.connected) {
           setLoggedIn(true);
         }
@@ -71,26 +48,32 @@ function App() {
 
   const login = async () => {
     if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
       return;
     }
-    const idToken = await getIdToken();
-    console.log(idToken);
-
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-      loginProvider: "jwt",
-      extraLoginOptions: {
-        id_token: idToken,
-        verifierIdField: "sub",
-        domain: "http://localhost:3000",
-      },
-    });
-    setProvider(web3authProvider);
+    setIsLoggingIn(true);
+    try {
+      const idToken = await getIdToken();
+      
+      await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+        authConnection: AUTH_CONNECTION.CUSTOM,
+        authConnectionId: "w3a-node-demo",
+        extraLoginOptions: {
+          id_token: idToken,
+        },
+      });
+      
+      setIsLoggingIn(false);
+      setLoggedIn(true);
+    } catch (err) {
+      setIsLoggingIn(false);
+      console.error(err);
+    }
   };
 
   const authenticateUser = async () => {
     if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
       return;
     }
     const idToken = await web3auth.authenticateUser();
@@ -99,7 +82,7 @@ function App() {
 
   const getUserInfo = async () => {
     if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
       return;
     }
     const user = await web3auth.getUserInfo();
@@ -108,60 +91,59 @@ function App() {
 
   const logout = async () => {
     if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
       return;
     }
-    await web3auth.logout();
+    web3auth.logout();
     setLoggedIn(false);
-    setProvider(null);
   };
 
   const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const userAccount = await rpc.getAccounts();
     uiConsole(userAccount);
   };
 
   const getBalance = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const balance = await rpc.getBalance();
     uiConsole(balance);
   };
 
   const getChainId = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
 
   const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const result = await rpc.signMessage();
     uiConsole(result);
   };
 
   const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
       return;
     }
-    const rpc = new RPC(provider);
+    const rpc = new RPC(web3auth.provider);
     const result = await rpc.sendTransaction();
     uiConsole(result);
   };

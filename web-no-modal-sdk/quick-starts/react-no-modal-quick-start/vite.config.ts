@@ -3,19 +3,21 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
-// IMP START - Bundler Issues
 export default defineConfig({
   plugins: [react()],
+  // alias are only to be added when absolutely necessary, these modules are already present in the browser environment
   resolve: {
-    alias: {
-      crypto: "empty-module",
-    },
+  alias: {
+  // crypto: "crypto-browserify",
+  // // assert: "assert",
+  // http: "stream-http",
+  // // https: "https-browserify",
+  // // url: "url",
+  // // zlib: "browserify-zlib",
+  // stream: "readable-stream",
+  },
   },
   define: {
     global: "globalThis",
   },
-  build: {
-    target: "esnext",
-  },
-  // IMP END - Bundler Issues
 });

@@ -1,51 +1,33 @@
+/* eslint-disable no-console */
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { WALLET_ADAPTERS, IProvider, WEB3AUTH_NETWORK, UX_MODE, getEvmChainConfig } from "@web3auth/base";
-import { AuthAdapter } from "@web3auth/auth-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import axios from "axios";
-
 import "./App.css";
+
+// Import Web3Auth packages
+import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION } from "@web3auth/no-modal";
+
+// Import RPC handlers
 //import RPC from "./web3RPC"; // for using web3.js
 // import RPC from './ethersRPC' // for using ethers.js
 import RPC from "./viemRPC"; // for using viem
 
+// Clientid from Web3Auth Dashboard
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
+// Initialize Web3Auth
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  authBuildEnv: "testing",
+  connectors: [authConnector()],
+});
+
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
       try {
-        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-        const chainConfig = getEvmChainConfig(0x13882, clientId)!;
-        console.log("chainConfig", chainConfig);
-        const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-        const web3auth = new Web3AuthNoModal({
-          clientId,
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-          privateKeyProvider,
-        });
-
-        const authAdapter = new AuthAdapter({
-          adapterSettings: {
-            uxMode: UX_MODE.REDIRECT,
-            loginConfig: {
-              discord: {
-                verifier: "w3a-discord-demo",
-                typeOfLogin: "discord",
-                clientId: "1151006428610433095", //use your app client id you got from discord
-              },
-            },
-          },
-        });
-        web3auth.configureAdapter(authAdapter);
-        setWeb3auth(web3auth);
-
         await web3auth.init();
         setProvider(web3auth.provider);
 
@@ -61,14 +43,22 @@ function App() {
   }, []);
 
   const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
+    try {
+      const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+        authConnection: AUTH_CONNECTION.CUSTOM,
+        authConnectionId: "w3a-discord-demo",
+        extraLoginOptions: {
+          domain: "https://discord.com/api/v10/oauth2/authorize",
+          clientId: "1151006428610433095", //use your app client id you got from discord
+        },
+      });
+      setProvider(web3authProvider);
+      if (web3auth.connected) {
+        setLoggedIn(true);
+      }
+    } catch (error) {
+      console.error(error);
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-      loginProvider: "discord",
-    });
-    setProvider(web3authProvider);
   };
 
   const authenticateUser = async () => {
@@ -97,6 +87,7 @@ function App() {
     await web3auth.logout();
     setLoggedIn(false);
     setProvider(null);
+    uiConsole("logged out");
   };
 
   const getChainId = async () => {
@@ -108,6 +99,7 @@ function App() {
     const chainId = await rpc.getChainId();
     uiConsole(chainId);
   };
+
   const getAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -133,6 +125,7 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
+    uiConsole("Sending Transaction...");
     const rpc = new RPC(provider);
     const receipt = await rpc.sendTransaction();
     uiConsole(receipt);
@@ -153,8 +146,9 @@ function App() {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
+    const privateKey = await provider.request({
+      method: "eth_private_key",
+    });
     uiConsole(privateKey);
   };
 
@@ -162,37 +156,9 @@ function App() {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
     }
   }
-
-  // Revoke access from Discord using access token
-  // Note: This is just for demonstration purposes and should only be done via a back channel, i.e., the server-side.
-  const revokeAccessToken = async () => {
-    try {
-      const DISCORD_CLIENT_ID = ""; // use your app client id you got from discord
-      const DISCORD_SECRET = ""; // use your app client secret you got from discord
-      const ACCESS_TOKEN = ""; // access token from the discord
-
-      const formData = new FormData();
-      formData.append("token", `${ACCESS_TOKEN}`);
-
-      const response = await axios.post("https://discord.com/api/oauth2/token/revoke", formData, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Basic ${Buffer.from(`${DISCORD_CLIENT_ID}:${DISCORD_SECRET}`).toString("base64")}`,
-        },
-      });
-
-      if (response.status === 200) {
-        console.log("Access token revoked successfully");
-        alert("Access token revoked successfully, try logging in again");
-      } else {
-        console.log("Failed to revoke access token");
-      }
-    } catch (error) {
-      console.error("Error revoking access token:", (error as any).message);
-    }
-  };
 
   const loggedInView = (
     <>
@@ -250,14 +216,9 @@ function App() {
   );
 
   const unloggedInView = (
-    <>
-      <button onClick={login} className="card">
-        Login
-      </button>
-      <button onClick={revokeAccessToken} className="card">
-        Revoke token
-      </button>
-    </>
+    <button onClick={login} className="card">
+      Login with Discord
+    </button>
   );
 
   return (
@@ -266,20 +227,20 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth
         </a>{" "}
-        Core & React Example for Discord Login
+        & React Example using Discord
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/discord-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-connection/implicit-login/discord-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
           Source code
         </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fcustom-authentication%2Fdiscord-no-modal-example&project-name=w3a-discord-no-modal&repository-name=w3a-discord-no-modal">
+        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fcustom-authentication%2Fsingle-connection%2Fimplicit-login%2Fdiscord-no-modal-example&project-name=w3a-discord-no-modal&repository-name=w3a-discord-no-modal">
           <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>

@@ -9,6 +9,14 @@ import { ethers } from "ethers";
 import Head from "next/head";
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
+import { useIsMounted } from "../hooks/useIsMounted";
+import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION } from "@web3auth/no-modal";
+import type { NextPage } from "next";
+import { AuthKitSignInData, getUserInfo, SignInWithFarcaster } from "@farcaster/auth-kit";
+import styles from "../styles/Home.module.css";
+
+// RPC libraries for blockchain calls
+import RPC from "../utils/evm.ethers";
 
 const config = {
   relay: "https://relay.farcaster.xyz",
@@ -33,11 +41,14 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const verifier = "w3a-farcaster-demo";
 
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from the Web3Auth Dashboard
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+
+// Initialising Web3Auth No Modal SDK
+const web3auth = new Web3AuthNoModal({
+  clientId, // Get your Client ID from Web3Auth Dashboard
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  usePnPKey: false, // By default, this SDK returns CoreKitKey by default.
-  privateKeyProvider,
+  authBuildEnv: "testing",
+  connectors: [authConnector()],
 });
 
 const login = async (idToken: any) => {
@@ -152,6 +163,154 @@ function uiConsole(...args: any[]): void {
 }
 
 export default function Home() {
+  const isMounted = useIsMounted();
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [user, setUser] = useState<any | null>(null);
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        await web3auth.init();
+        if (web3auth.connected) {
+          setLoggedIn(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    init();
+  }, []);
+
+  const onSignInSuccess = async (data: AuthKitSignInData) => {
+    try {
+      if (!web3auth) {
+        uiConsole("Web3Auth No Modal SDK not initialized yet");
+        return;
+      }
+      setIsLoggingIn(true);
+      
+      const signature = data.message?.signature;
+      const messageBody = JSON.stringify(data.message?.message);
+      
+      // Connect using the signature and message
+      await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+        authConnection: AUTH_CONNECTION.CUSTOM,
+        authConnectionId: "farcaster-web3auth",
+        extraLoginOptions: {
+          signature,
+          messageBody,
+        },
+      });
+    
+      // Get user info
+      const userInfo = await getUserInfo(data);
+      setUser(userInfo);
+
+      setLoggedIn(true);
+      setIsLoggingIn(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoggingIn(false);
+    }
+  };
+
+  const getUserInfo = async () => {
+    if (!web3auth) {
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
+      return;
+    }
+    try {
+      setLoading(true);
+      const userInfo = await web3auth.getUserInfo();
+      setLoading(false);
+      uiConsole(userInfo);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
+
+  const getAccounts = async () => {
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
+      return;
+    }
+    try {
+      setLoading(true);
+      const rpc = new RPC(web3auth.provider);
+      const userAccount = await rpc.getAccounts();
+      setLoading(false);
+      uiConsole(userAccount);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
+
+  const getBalance = async () => {
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
+      return;
+    }
+    try {
+      setLoading(true);
+      const rpc = new RPC(web3auth.provider);
+      const balance = await rpc.getBalance();
+      setLoading(false);
+      uiConsole(balance);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
+
+  const sendTransaction = async () => {
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
+      return;
+    }
+    try {
+      setLoading(true);
+      const rpc = new RPC(web3auth.provider);
+      const result = await rpc.signAndSendTransaction();
+      setLoading(false);
+      uiConsole(result);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
+
+  const signMessage = async () => {
+    if (!web3auth.provider) {
+      uiConsole("No provider found");
+      return;
+    }
+    try {
+      setLoading(true);
+      const rpc = new RPC(web3auth.provider);
+      const result = await rpc.signMessage();
+      setLoading(false);
+      uiConsole(result);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
+
+  const logout = () => {
+    if (!web3auth) {
+      uiConsole("Web3Auth No Modal SDK not initialized yet");
+      return;
+    }
+    web3auth.logout();
+    setLoggedIn(false);
+    setUser(null);
+  };
+
   return (
     <>
       <Head>
@@ -283,28 +442,28 @@ function Profile() {
         <button
           type="button"
           style={{ padding: "6px 12px", margin: "6px 6px", cursor: "pointer" }}
-          onClick={() => getAccounts(web3auth.provider as IProvider)}
+          onClick={() => getAccounts()}
         >
           Get Account
         </button>
         <button
           type="button"
           style={{ padding: "6px 12px", margin: "6px 6px", cursor: "pointer" }}
-          onClick={() => getBalance(web3auth.provider as IProvider)}
+          onClick={() => getBalance()}
         >
           Get Balance
         </button>
         <button
           type="button"
           style={{ padding: "6px 12px", margin: "6px 6px", cursor: "pointer" }}
-          onClick={() => signMessage(web3auth.provider as IProvider)}
+          onClick={() => signMessage()}
         >
           Sign Message
         </button>
         <button
           type="button"
           style={{ padding: "6px 12px", margin: "6px 6px", cursor: "pointer" }}
-          onClick={() => signTransaction(web3auth.provider as IProvider)}
+          onClick={() => sendTransaction()}
         >
           Send Transaction
         </button>

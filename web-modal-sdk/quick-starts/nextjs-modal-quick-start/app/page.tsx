@@ -4,11 +4,8 @@
 "use client";
 
 // IMP START - Quick Start
-import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
-// IMP END - Quick Start
+import { CONNECTOR_EVENTS, IProvider, Web3Auth, WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
+// IMP END - Quick Start  
 import { useEffect, useState } from "react";
 
 // IMP START - Blockchain Calls
@@ -21,21 +18,11 @@ import RPC from "./ethersRPC";
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
-// IMP START - Chain Config
-const chainId = 0xaa36a7; // Sepolia testnet
-// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(chainId, clientId)!;
-// IMP END - Chain Config
-
 // IMP START - SDK Initialization
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
+  authBuildEnv: "testing",
 }
 const web3auth = new Web3Auth(web3AuthOptions);
 // IMP END - SDK Initialization
@@ -47,20 +34,14 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // IMP START - Configuring External Wallets
-        const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-        adapters.forEach((adapter: IAdapter<unknown>) => {
-          web3auth.configureAdapter(adapter);
-        });
-        // IMP END - Configuring External Wallets
         // IMP START - SDK Initialization
         await web3auth.initModal();
         // IMP END - SDK Initialization
         setProvider(web3auth.provider);
 
-        if (web3auth.connected) {
+        web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
           setLoggedIn(true);
-        }
+        });
       } catch (error) {
         console.error(error);
       }
@@ -74,9 +55,9 @@ function App() {
     const web3authProvider = await web3auth.connect();
     // IMP END - Login
     setProvider(web3authProvider);
-    if (web3auth.connected) {
+    web3auth.on(CONNECTOR_EVENTS.CONNECTED, () => {
       setLoggedIn(true);
-    }
+    });
   };
 
   const getUserInfo = async () => {

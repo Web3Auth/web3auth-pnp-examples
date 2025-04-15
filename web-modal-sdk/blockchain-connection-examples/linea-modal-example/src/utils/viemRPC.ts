@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import type { IProvider } from "@web3auth/base";
 import { createPublicClient, createWalletClient, custom, formatEther, parseEther } from "viem";
+import { getTransactionCount } from "viem/actions";
 import { lineaSepolia, mainnet, polygonAmoy, sepolia } from "viem/chains";
 
 import { sendBundle } from "./lineaRPC";
@@ -141,11 +142,16 @@ const sendBundleTransaction = async (provider: IProvider): Promise<any> => {
 
     const address = await walletClient.getAddresses();
 
+    const nonce = await getTransactionCount(walletClient, {
+      address: address[0],
+    });
+
     // Prepare transaction
     const requestTx1 = await walletClient.prepareTransactionRequest({
+      nonce,
       account: address[0],
       to: address[0],
-      value: parseEther("0.0001"),
+      value: parseEther("0.001"),
     });
 
     // Sign transaction
@@ -154,9 +160,10 @@ const sendBundleTransaction = async (provider: IProvider): Promise<any> => {
 
     // Send transaction
     const requestTx2 = await walletClient.prepareTransactionRequest({
+      nonce: nonce + 1,
       account: address[0],
       to: address[0],
-      value: parseEther("0.0004"),
+      value: parseEther("0.004"),
     });
 
     // Sign transaction

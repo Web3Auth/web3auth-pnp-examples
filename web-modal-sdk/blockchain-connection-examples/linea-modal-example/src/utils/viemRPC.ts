@@ -158,7 +158,7 @@ const sendBundleTransaction = async (provider: IProvider): Promise<any> => {
     const signatureTx1 = await walletClient.signTransaction(requestTx1 as any);
     console.log("signatureTx1", signatureTx1);
 
-    // Send transaction
+    // Prepare second transaction
     const requestTx2 = await walletClient.prepareTransactionRequest({
       nonce: nonce + 1,
       account: address[0],
@@ -166,7 +166,7 @@ const sendBundleTransaction = async (provider: IProvider): Promise<any> => {
       value: parseEther("0.004"),
     });
 
-    // Sign transaction
+    // Sign second transaction
     const signatureTx2 = await walletClient.signTransaction(requestTx2 as any);
     console.log("signatureTx2", signatureTx2);
 

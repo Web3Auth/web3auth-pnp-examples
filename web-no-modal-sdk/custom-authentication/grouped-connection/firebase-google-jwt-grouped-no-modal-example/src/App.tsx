@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
+import { Web3AuthNoModal, WALLET_CONNECTORS } from "@web3auth/no-modal";
 import { IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
 import { initializeApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
@@ -32,7 +32,6 @@ function App() {
           clientId,
           web3AuthNetwork: WEB3AUTH_NETWORK.TESTNET,
           authBuildEnv: "testing",
-          connectors: [authConnector()],
           chainConfig: {
             chainNamespace: "eip155",
             chainId: "0x13882", // Please use 0x1 for Mainnet

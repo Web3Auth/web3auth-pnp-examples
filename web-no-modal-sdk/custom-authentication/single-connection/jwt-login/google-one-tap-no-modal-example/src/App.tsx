@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
+import { Web3AuthNoModal, WALLET_CONNECTORS, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
 import "./App.css";
 // Import RPC libraries for blockchain calls
 // import RPC from "./evm.web3";
@@ -19,7 +19,6 @@ const web3auth = new Web3AuthNoModal({
   clientId, // Get your Client ID from Web3Auth Dashboard
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",
-  connectors: [authConnector()],
 });
 
 function App() {

@@ -1,135 +1,30 @@
-import { IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { AuthAdapter } from "@web3auth/auth-adapter";
-import { useEffect, useState } from "react";
-import EthereumRPC from "./ethereumRPC";
 import "./App.css";
-import SignClient from "./signClient";
 
-
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-
-// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0xaa36a7, clientId)!;
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-});
-
-const authAdapter = new AuthAdapter();
-web3auth.configureAdapter(authAdapter);
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS } from "@web3auth/no-modal";
+import { useAccount } from "wagmi";
+import { SendTransaction } from "./components/sendTransaction";
+import { Balance } from "./components/getBalance";
+import { useWalletClient } from "wagmi";
+import SignClient from "./components/signClient";
 
 function App() {
-  const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-
-        await web3auth.init();
-        setProvider(web3auth.provider);
-
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
+  const { connect, isConnected } = useWeb3AuthConnect();
+  const { disconnect } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { address, connector } = useAccount();
+  const { data: walletClient } = useWalletClient();
 
   const login = async () => {
-
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-      loginProvider: "google",
+    await connect(WALLET_CONNECTORS.AUTH, {
+      authConnection: "google",
     });
-
-    setProvider(web3authProvider);
-
-    if (web3auth.connected) {
-      setLoggedIn(true);
-    }
-  };
-
-  const getUserInfo = async () => {
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  };
-
-  const logout = async () => {
-    await web3auth.logout();
-    setProvider(null);
-    setLoggedIn(false);
-    uiConsole("logged out");
-  };
-
-
-  const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("Provider not initialized yet");
-      return;
-    }
-
-    const ethereumRPC = new EthereumRPC(provider!);
-    const address = await ethereumRPC.getAccount();
-    uiConsole(address);
-  };
-
-  const getBalance = async () => {
-    if (!provider) {
-      uiConsole("Provider not initialized yet");
-      return;
-    }
-
-    const ethereumRPC = new EthereumRPC(provider!);
-    const balance = await ethereumRPC.fetchBalance();
-    uiConsole(balance);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("Provider not initialized yet");
-      return;
-    }
-
-    const ethereumRPC = new EthereumRPC(provider!);
-    const signedMessage = await ethereumRPC.signMessage();
-    uiConsole(signedMessage);
-  };
-
-
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("Provider not initialized yet");
-      return;
-    }
-
-    const ethereumRPC = new EthereumRPC(provider!);
-    uiConsole("Sending Transaction...");
-
-    const hash = await ethereumRPC.sendTransaction();
-    uiConsole(hash);
   };
 
   const createAttestation = async () => {
-    if (!provider) {
-      uiConsole("Provider not initialized yet");
-      return;
-    }
-
-    const ethereumRPC = new EthereumRPC(provider!);
-    const signClient = new SignClient(ethereumRPC.walletClient);
+    const signClient = new SignClient(walletClient);
     uiConsole("Creating Attestation...");
 
-    const address = await ethereumRPC.getAccount();
     const response = await signClient.attest(address);
 
     uiConsole({
@@ -139,16 +34,9 @@ function App() {
   };
 
   const fetchAccountAttestations = async () => {
-    if (!provider) {
-      uiConsole("Provider not initialized yet");
-      return;
-    }
-
-    const ethereumRPC = new EthereumRPC(provider!);
-    const signClient = new SignClient(ethereumRPC.walletClient);
+    const signClient = new SignClient(walletClient);
     uiConsole("Fetching Attestation...");
 
-    const address = await ethereumRPC.getAccount();
     const response = await signClient.fetchAccountAttestations(address);
 
     uiConsole(response);
@@ -164,30 +52,12 @@ function App() {
 
   const loggedInView = (
     <>
+      <h2>Connected to {connector?.name}</h2>
+      <div>{address}</div>
       <div className="flex-container">
         <div>
-          <button onClick={getUserInfo} className="card">
+          <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
-          </button>
-        </div>
-        <div>
-          <button onClick={getAccounts} className="card">
-            Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
           </button>
         </div>
         <div>
@@ -201,11 +71,13 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={logout} className="card">
+          <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
         </div>
       </div>
+      <SendTransaction />
+      <Balance />
     </>
   );
 
@@ -228,7 +100,7 @@ function App() {
         Quick Start
       </h1>
 
-      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>

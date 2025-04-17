@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 // Import Web3Auth packages
-import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 
 // Import RPC handlers
 //import RPC from "./web3RPC"; // for using web3.js
@@ -18,7 +18,6 @@ const web3auth = new Web3AuthNoModal({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",
-  connectors: [authConnector()],
 });
 
 function App() {

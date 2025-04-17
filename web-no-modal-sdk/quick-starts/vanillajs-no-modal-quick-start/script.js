@@ -13,7 +13,6 @@ let web3auth = null;
     clientId,
     web3AuthNetwork: "sapphire_mainnet",
     authBuildEnv: "testing",
-    connectors: [window.NoModal.authConnector()],
   });
 
   await web3auth.init();

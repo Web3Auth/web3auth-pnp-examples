@@ -6,17 +6,17 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
   // alias are only to be added when absolutely necessary, these modules are already present in the browser environment
-  resolve: {
-  alias: {
+  // resolve: {
+  // alias: {
   // crypto: "crypto-browserify",
-  // // assert: "assert",
+  // assert: "assert",
   // http: "stream-http",
-  // // https: "https-browserify",
-  // // url: "url",
-  // // zlib: "browserify-zlib",
-  // stream: "readable-stream",
-  },
-  },
+  // https: "https-browserify",
+  // url: "url",
+  // zlib: "browserify-zlib",
+  // stream: "stream-browserify",
+  // },
+  // },
   define: {
     global: "globalThis",
   },

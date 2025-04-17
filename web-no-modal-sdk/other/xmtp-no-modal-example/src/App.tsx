@@ -1,5 +1,5 @@
 import { IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { Web3AuthNoModal, authConnector, WALLET_CONNECTORS } from "@web3auth/no-modal";
+import { Web3AuthNoModal, WALLET_CONNECTORS } from "@web3auth/no-modal";
 import { useEffect, useState } from "react";
 import { FloatingInbox } from "./FloatingInbox";
 import { ethers, JsonRpcSigner } from "ethers";
@@ -19,7 +19,6 @@ const web3auth = new Web3AuthNoModal({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",
-  connectors: [authConnector()],
 });
 
 function App() {

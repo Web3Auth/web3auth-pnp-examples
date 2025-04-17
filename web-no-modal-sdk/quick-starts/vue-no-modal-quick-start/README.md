@@ -11,12 +11,12 @@ This example demonstrates how to use Web3Auth with EVM in Vue.js
 
 ### One-Click Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Fvue-no-modal-quick-start&project-name=w3a-vue-no-modal&repository-name=w3a-vue-no-modal)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvue-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal)
 
 ### Download Manually
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start w3a-example
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/quick-starts/vue-modal-quick-start w3a-example
 ```
 
 Install & Run:
@@ -24,11 +24,11 @@ Install & Run:
 ```bash
 cd w3a-example
 npm install
-npm run dev
+npm run serve
 # or
 cd w3a-example
 yarn
-yarn dev
+yarn serve
 ```
 
 ## Important Links

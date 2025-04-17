@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
+import { Web3AuthNoModal, WALLET_CONNECTORS, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
 import { signIn, signOut, useSession } from "next-auth/react";
 import RPC from "../lib/evm.ethers";
 import Image from "next/image";
@@ -16,7 +16,6 @@ const web3auth = new Web3AuthNoModal({
   clientId, // Get your Client ID from Web3Auth Dashboard
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",
-  connectors: [authConnector()],
 });
 
 export default function Home() {

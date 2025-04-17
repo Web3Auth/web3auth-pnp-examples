@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
 import { Component } from '@angular/core';
 // IMP START - Quick Start
-import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
+import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
-// import RPC from "./web3RPC";
 // IMP END - Blockchain Calls
 
 // IMP START - Dashboard Registration
@@ -19,7 +18,6 @@ const web3auth = new Web3AuthNoModal({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",
-  connectors: [authConnector()],
 });
 // IMP END - SDK Initialization
 
@@ -60,7 +58,7 @@ export class AppComponent {
   login = async () => {
     // IMP START - Login
     const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      loginProvider: "google",
+      authConnection: AUTH_CONNECTION.GOOGLE,
     });
     // IMP END - Login
 

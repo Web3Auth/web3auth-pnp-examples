@@ -1,129 +1,87 @@
 <!-- eslint-disable vue/no-ref-as-operand -->
 <template>
-  <div id="app">
-    <h2>
-      <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer"> Web3Auth </a>
-      Vue.js Quick Start
-    </h2>
+  <div class="container">
+    <main class="main">
+      <h2 class="title">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
+          Web3Auth
+        </a>
+        Vue Composables No Modal Quick Start
+      </h2>
 
-    <button v-if="!loggedIn" class="card" @click="login" style="cursor: pointer">Login</button>
+      <button v-if="status !== ADAPTER_STATUS.CONNECTED" class="card" @click="login">
+        Login
+      </button>
 
-    <div v-if="loggedIn">
-      <div class="flex-container">
-        <div>
-          <button class="card" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
-        </div>
-        <div>
-          <button class="card" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
-        </div>
-        <div>
-          <button class="card" @click="getBalance" style="cursor: pointer">Get Balance</button>
-        </div>
-        <div>
-          <button class="card" @click="signMessage" style="cursor: pointer">Sign Message</button>
-        </div>
-        <div>
-          <button class="card" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
-        </div>
-        <div>
-          <button class="card" @click="logout" style="cursor: pointer">Logout</button>
+      <div v-if="status === ADAPTER_STATUS.CONNECTED" class="flex-col">
+        <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))">
+          <div>
+            <button class="card" @click="getUserInfo">
+              Get User Info
+            </button>
+          </div>
+          <div>
+            <button class="card" @click="getAccounts">
+              Get Accounts
+            </button>
+          </div>
+          <div>
+            <button class="card" @click="getBalance">
+              Get Balance
+            </button>
+          </div>
+          <div>
+            <button class="card" @click="signMessage">
+              Sign Message
+            </button>
+          </div>
+          <div>
+            <button class="card" @click="sendTransaction">
+              Send Transaction
+            </button>
+          </div>
+          <div>
+            <button class="card" @click="logout()">
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <div id="console" style="white-space: pre-line">
-      <p style="white-space: pre-line"></p>
-    </div>
+      <div id="console">
+        <p></p>
+      </div>
 
-    <footer class="footer">
-      <a
-        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Source code
-      </a>
-      <a
-        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Fvue-no-modal-quick-start&project-name=w3a-vue-no-modal&repository-name=w3a-vue-no-modal"
-      >
-        <img src="https://vercel.com/button" alt="Deploy with Vercel" />
-      </a>
-    </footer>
+      <footer class="footer">
+        <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-composables-no-modal-quick-start"
+          target="_blank" rel="noopener noreferrer">
+          Source code
+        </a>
+        <a
+          href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Fvue-composables-no-modal-quick-start&project-name=w3a-vue-modal&repository-name=w3a-vue-modal">
+          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+        </a>
+      </footer>
+    </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-// IMP START - Quick Start
-import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
-// IMP END - Quick Start
-
-// IMP START - Blockchain Calls
-import RPC from "./ethersRPC";
-// import RPC from "./viemRPC";
-// import RPC from "./web3RPC";
-// IMP END - Blockchain Calls
-
-const loggedIn = ref<boolean>(false);
-let provider: IProvider | null = null;
-
-// IMP START - Dashboard Registration
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-// IMP END - Dashboard Registration
-
-// IMP START - SDK Initialization
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  authBuildEnv: "testing",
-  connectors: [authConnector()],
-});
-// IMP END - SDK Initialization
-
-onMounted(async () => {
-  const init = async () => {
-    try {
-      // IMP START - SDK Initialization
-      await web3auth.init();
-      // IMP END - SDK Initialization
-      provider = web3auth.provider;
-
-      if (web3auth.connected) {
-        loggedIn.value = true;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  init();
-});
+import { useWeb3Auth } from "@web3auth/no-modal-vue-composables";
+import { ADAPTER_STATUS, WALLET_ADAPTERS } from "@web3auth/base";
+const { status, connectTo, userInfo, provider, logout } = useWeb3Auth();
 
 const login = async () => {
   // IMP START - Login
-  provider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+  await connectTo(WALLET_ADAPTERS.AUTH, {
     loginProvider: "google",
   });
   // IMP END - Login
-
-  if (web3auth.connected) {
-    loggedIn.value = true;
-  }
 };
 
 const getUserInfo = async () => {
   // IMP START - Get User Information
-  const user = await web3auth.getUserInfo();
+  uiConsole(userInfo.value);
   // IMP END - Get User Information
-  uiConsole(user);
-};
-
-const logout = async () => {
-  // IMP START - Logout
-  await web3auth.logout();
-  // IMP END - Logout
-  provider = null;
-  loggedIn.value = false;
-  uiConsole("logged out");
 };
 
 // IMP START - Blockchain Calls
@@ -132,7 +90,7 @@ const getAccounts = async () => {
     uiConsole("provider not initialized yet");
     return;
   }
-  const address = await RPC.getAccounts(provider);
+  const address = await RPC.getAccounts(provider.value!);
   uiConsole(address);
 };
 
@@ -141,7 +99,7 @@ const getBalance = async () => {
     uiConsole("provider not initialized yet");
     return;
   }
-  const balance = await RPC.getBalance(provider);
+  const balance = await RPC.getBalance(provider.value!);
   uiConsole(balance);
 };
 
@@ -150,9 +108,10 @@ const signMessage = async () => {
     uiConsole("provider not initialized yet");
     return;
   }
-  const signedMessage = await RPC.signMessage(provider);
+  const signedMessage = await RPC.signMessage(provider.value!);
   uiConsole(signedMessage);
 };
+
 
 const sendTransaction = async () => {
   if (!provider) {
@@ -160,12 +119,12 @@ const sendTransaction = async () => {
     return;
   }
   uiConsole("Sending Transaction...");
-  const transactionReceipt = await RPC.sendTransaction(provider);
+  const transactionReceipt = await RPC.sendTransaction(provider.value!);
   uiConsole(transactionReceipt);
 };
 // IMP END - Blockchain Calls
 
-function uiConsole(...args: unknown[]): void {
+function uiConsole(...args: any[]): void {
   const el = document.querySelector("#console>p");
   if (el) {
     el.innerHTML = JSON.stringify(args || {}, null, 2);
@@ -174,72 +133,139 @@ function uiConsole(...args: unknown[]): void {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#app {
-  width: 80%;
-  margin: auto;
-  padding: 0 2rem;
+/* Container layout */
+.container {
+  width: 100%;
+  padding: 0 1rem;
+  margin: 0 auto;
 }
 
-h3 {
-  margin: 40px 0 0;
+.main {
+  min-height: 100vh;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-
-.card {
-  margin: 0.5rem;
-  padding: 0.7rem;
+/* Typography */
+.title {
+  font-size: 1.75rem;
   text-align: center;
-  color: #0070f3;
-  background-color: #fafafa;
+  margin: 1.5rem 0;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.title a {
+  color: var(--primary-color);
   text-decoration: none;
-  border: 1px solid #0070f3;
-  border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Buttons and Cards */
+button, .card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+button:hover, .card:hover {
+  background-color: var(--bg-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Utils */
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   width: 100%;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
-  cursor: pointer;
-  background-color: #f1f1f1;
-}
-
-.flex-container {
+.flex-col {
   display: flex;
-  flex-flow: row wrap;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
 }
 
-.flex-container > div {
-  width: 100px;
-  margin: 10px;
-  text-align: center;
-  line-height: 75px;
-  font-size: 30px;
+.grid {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
 }
 
+/* Console output */
 #console {
   width: 100%;
-  height: 100%;
+  max-height: 250px;
   overflow: auto;
   word-wrap: break-word;
-  font-size: 16px;
   font-family: monospace;
+  font-size: 0.85rem;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  background-color: var(--bg-light);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
   text-align: left;
+}
+
+/* Footer */
+.footer {
+  width: 100%;
+  padding: 2rem 0;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: var(--primary-color);
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
 }
 </style>

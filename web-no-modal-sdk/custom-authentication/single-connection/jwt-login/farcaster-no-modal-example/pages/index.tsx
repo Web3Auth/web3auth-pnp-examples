@@ -10,7 +10,7 @@ import Head from "next/head";
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { useIsMounted } from "../hooks/useIsMounted";
-import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { Web3AuthNoModal, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 import type { NextPage } from "next";
 import { AuthKitSignInData, getUserInfo, SignInWithFarcaster } from "@farcaster/auth-kit";
 import styles from "../styles/Home.module.css";
@@ -48,7 +48,6 @@ const web3auth = new Web3AuthNoModal({
   clientId, // Get your Client ID from Web3Auth Dashboard
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",
-  connectors: [authConnector()],
 });
 
 const login = async (idToken: any) => {

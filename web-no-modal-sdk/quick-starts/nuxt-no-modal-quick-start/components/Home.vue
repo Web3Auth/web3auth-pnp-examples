@@ -52,7 +52,7 @@
 <script lang="ts">
 import { ref, onMounted } from "vue";
 // IMP START - Quick Start
-import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
+import { Web3AuthNoModal, IProvider, WEB3AUTH_NETWORK, WALLET_CONNECTORS } from "@web3auth/no-modal";
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
@@ -77,7 +77,6 @@ export default {
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
       authBuildEnv: "testing",
-      connectors: [authConnector()],
     });
     // IMP END - SDK Initialization
     

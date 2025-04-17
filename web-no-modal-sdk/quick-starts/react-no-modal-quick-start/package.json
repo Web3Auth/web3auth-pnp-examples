@@ -1,5 +1,5 @@
 {
-  "name": "react-vite-no-modal-quick-start",
+  "name": "react-hooks-no-modal-quick-start",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,14 +12,12 @@
   },
   "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
-    "@coinbase/wallet-sdk": "^4.3.1",
-    "@web3auth/no-modal": "^10.0.0-beta.2",
-    "empty-module": "^0.0.2",
-    "ethers": "^6.13.2",
+    "@tanstack/react-query": "^5.37.1",
+    "@tanstack/react-table": "^8.10.4",
+    "@web3auth/no-modal": "^10.0.0-beta.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "viem": "^2.18.8",
-    "web3": "^4.11.1"
+    "wagmi": "^2.14.16"
   },
   "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {
@@ -29,6 +27,6 @@
     "buffer": "^6.0.3",
     "process": "^0.11.10",
     "typescript": "^5.5.4",
-    "vite": "^5.3.5"
+    "vite": "^5.4.0"
   }
 }

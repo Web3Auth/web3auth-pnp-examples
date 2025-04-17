@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal, WALLET_CONNECTORS, authConnector } from "@web3auth/no-modal";
+import { Web3AuthNoModal, WALLET_CONNECTORS } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter, getSolanaChainConfig } from "@web3auth/base";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
@@ -22,7 +22,6 @@ function App() {
           clientId,
           web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
           authBuildEnv: "testing",
-          connectors: [authConnector()],
           chainConfig: getSolanaChainConfig(0x1),
           uiConfig: {
             uxMode: UX_MODE.REDIRECT,

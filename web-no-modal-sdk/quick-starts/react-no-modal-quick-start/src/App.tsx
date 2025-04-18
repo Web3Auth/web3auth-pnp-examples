@@ -6,7 +6,7 @@ import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
 import { SwitchChain } from "./components/switchNetwork";
 function App() {
-  const { connect, isConnected } = useWeb3AuthConnect();
+  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
   // IMP START - Logout
   const { disconnect } = useWeb3AuthDisconnect();
   // IMP END - Logout
@@ -31,7 +31,7 @@ function App() {
 
   const loggedInView = (
     <>
-      <h2>Connected to {connector?.name}</h2>
+      <h2>Connected to {connectorName}</h2>
       <div>{address}</div>
       <div className="flex-container"> 
         <div>

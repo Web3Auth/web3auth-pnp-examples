@@ -14,7 +14,7 @@
 		"@web3auth/auth-adapter": "^9.7.0",
 		"@web3auth/base": "^9.7.0",
 		"@web3auth/ethereum-provider": "^9.7.0",
-		"@web3auth/no-modal": "^10.0.0-beta.5",
+		"@web3auth/no-modal": "^10.0.0-beta.6",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
 		"ethers": "^6.6.2",

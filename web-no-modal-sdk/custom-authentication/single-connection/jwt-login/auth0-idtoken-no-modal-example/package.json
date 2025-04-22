@@ -1,28 +1,24 @@
 {
-  "name": "sfa-web-auth0-example",
+  "name": "jwt-no-modal-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@auth0/auth0-react": "^2.2.0",
-    "@coinbase/wallet-sdk": "^4.3.2",
+    "@auth0/auth0-react": "^2.3.0",
+    "@tanstack/react-query": "^5.37.1",
     "@web3auth/no-modal": "^10.0.0-beta.6",
-    "ethers": "^6.7.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "viem": "^2.9.15",
-    "web3": "^4.1.1"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "wagmi": "^2.14.16"
   },
   "devDependencies": {
-    "@types/node": "^18.13.0",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.10",
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "buffer": "^6.0.3",
-    "empty-module": "^0.0.2",
-    "prettier": "^2.8.4",
     "process": "^0.11.10",
     "typescript": "^5.5.4",
-    "vite": "^5.4.2"
+    "vite": "^5.4.0"
   },
   "eslintConfig": {
     "extends": [
@@ -46,7 +42,9 @@
   },
   "scripts": {
     "start": "vite",
+    "dev": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint"
   }
 }

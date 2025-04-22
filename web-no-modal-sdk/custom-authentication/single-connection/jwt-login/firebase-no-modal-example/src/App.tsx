@@ -1,224 +1,88 @@
-import { useEffect, useState } from "react";
-import { Web3AuthNoModal, WALLET_CONNECTORS, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
-import { auth } from "./FireBaseConfig";
-import { GoogleAuthProvider, TwitterAuthProvider, signInWithPopup } from "firebase/auth";
-
+/* eslint-disable no-console */
 import "./App.css";
-// import RPC from "./evm.ethers";
-// import RPC from "./evm.web3";
-import RPC from "./evm.viem";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { useAccount } from "wagmi";
+import { SendTransaction } from "./components/sendTransaction";
+import { Balance } from "./components/getBalance";
+import { SwitchChain } from "./components/switchNetwork";
+import { initializeApp } from "firebase/app";
+import { getAuth, GithubAuthProvider, signInWithPopup } from "firebase/auth";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAAAF-xdPur0wJpgwXLGdLZWDwRCTRLdX8",
+  authDomain: "web3auth-firebase-github.firebaseapp.com",
+  projectId: "web3auth-firebase-github",
+  storageBucket: "web3auth-firebase-github.appspot.com",
+  messagingSenderId: "384159528034",
+  appId: "1:384159528034:web:9a9121481ea2948237cd3b",
+};
 
-// Initialising Web3Auth No Modal SDK
-const web3auth = new Web3AuthNoModal({
-  clientId, // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  authBuildEnv: "testing",
-});
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
+  const { disconnect } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { address } = useAccount();
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        await web3auth.init();
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const loginWithFirebaseGithub = async () => {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const githubProvider = new GithubAuthProvider();
 
-    init();
-  }, []);
+    const result = await signInWithPopup(auth, githubProvider);    
 
-  const signInWithGoogle = async () => {
-    try {
-      if (!web3auth) {
-        uiConsole("Web3Auth No Modal SDK not initialized yet");
-        return;
-      }
-      setIsLoggingIn(true);
-      
-      const googleProvider = new GoogleAuthProvider();
-      const loginRes = await signInWithPopup(auth, googleProvider);
-      const idToken = await loginRes.user.getIdToken(true);
-      
-      await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-        authConnection: AUTH_CONNECTION.CUSTOM,
-        authConnectionId: "w3a-firebase-demo",
-        extraLoginOptions: {
-          id_token: idToken,
-        },
-      });
-      
-      setIsLoggingIn(false);
-      setLoggedIn(true);
-    } catch (err) {
-      setIsLoggingIn(false);
-      console.error(err);
-    }
-  };
+    const idToken = await result.user.getIdToken(true);
 
-  const signInWithTwitter = async () => {
-    try {
-      if (!web3auth) {
-        uiConsole("Web3Auth No Modal SDK not initialized yet");
-        return;
-      }
-      setIsLoggingIn(true);
-      
-      const twitterProvider = new TwitterAuthProvider();
-      const loginRes = await signInWithPopup(auth, twitterProvider);
-      const idToken = await loginRes.user.getIdToken(true);
-      
-      await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-        authConnection: AUTH_CONNECTION.CUSTOM,
-        authConnectionId: "w3a-firebase-demo",
-        extraLoginOptions: {
-          id_token: idToken,
-        },
-      });
-      
-      setIsLoggingIn(false);
-      setLoggedIn(true);
-    } catch (err) {
-      setIsLoggingIn(false);
-      console.error(err);
-    }
-  };
-
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("Web3Auth No Modal SDK not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
-  };
-
-  const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("Web3Auth No Modal SDK not initialized yet");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  };
-
-  const logout = async () => {
-    if (!web3auth) {
-      uiConsole("Web3Auth No Modal SDK not initialized yet");
-      return;
-    }
-    web3auth.logout();
-    setLoggedIn(false);
-  };
-
-  const getAccounts = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("No provider found");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider);
-    const userAccount = await rpc.getAccounts();
-    uiConsole(userAccount);
-  };
-
-  const getBalance = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("No provider found");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
-  };
-
-  const signMessage = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("No provider found");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider);
-    const result = await rpc.signMessage();
-    uiConsole(result);
-  };
-
-  const sendTransaction = async () => {
-    if (!web3auth?.provider) {
-      uiConsole("No provider found");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider);
-    const result = await rpc.signAndSendTransaction();
-    uiConsole(result);
+    connect(WALLET_CONNECTORS.AUTH, {
+      groupedAuthConnectionId: "aggregate-sapphire",
+      authConnectionId: "w3a-firebase",
+      authConnection: AUTH_CONNECTION.CUSTOM,
+      login_hint: idToken,
+      extraLoginOptions: {
+        id_token: idToken,
+      },
+    });
   };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
     }
   }
 
-  const loginView = (
+  const loggedInView = (
     <>
-      <div className="flex-container">
+      <h2>Connected to {connectorName}</h2>
+      <div>{address}</div>
+      <div className="flex-container"> 
         <div>
-          <button onClick={getUserInfo} className="card">
+          <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
           </button>
         </div>
         <div>
-          <button onClick={authenticateUser} className="card">
-            Get ID Token
-          </button>
-        </div>
-        <div>
-          <button onClick={getAccounts} className="card">
-            Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={logout} className="card">
+          <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
         </div>
       </div>
-
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
-      </div>
+      <SendTransaction />
+      <Balance />
+      <SwitchChain />
     </>
   );
 
-  const logoutView = (
+  const unloggedInView = (
     <div className="flex-container">
-      <button onClick={signInWithTwitter} className="card">
-        Login with Twitter
-      </button>
-      <button onClick={signInWithGoogle} className="card">
-        Login with Google
+      <button onClick={loginWithFirebaseGithub} className="card">
+        Login with Firebase GitHub
       </button>
     </div>
   );
@@ -227,23 +91,23 @@ function App() {
     <div className="container">
       <h1 className="title">
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
-          Web3Auth
-        </a>{" "}
-        & Firebase React Example for Google Login
+          Web3Auth{" "}
+        </a>
+        & React No Modal with Firebase
       </h1>
 
-      <div className="grid">{loggedIn ? loginView : logoutView}</div>
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/firebase-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-connection/jwt-login/firebase-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fcustom-authentication%2Fsingle-verifier-examples%2Ffirebase-no-modal-example&project-name=w3a-firebase-no-modal&repository-name=w3a-firebase-no-modal">
-          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

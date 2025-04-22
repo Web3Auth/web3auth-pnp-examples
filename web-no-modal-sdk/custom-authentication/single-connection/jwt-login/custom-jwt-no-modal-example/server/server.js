@@ -6,7 +6,7 @@ const app = express();
 const cors = require('cors');
 
 // Allow requests from client-side
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 app.post('/api/token', async (req, res) => {
 	try {

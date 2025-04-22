@@ -1,149 +1,38 @@
-import { useEffect, useState } from "react";
-
-// Import No Modal SDK instead of Single Factor Auth
-import { Web3AuthNoModal, WALLET_CONNECTORS, AUTH_CONNECTION, WEB3AUTH_NETWORK } from "@web3auth/no-modal";
-
-// RPC libraries for blockchain calls
-// import RPC from "./evm.web3";
-// import RPC from "./evm.viem";
-import RPC from "./evm.ethers";
-
+/* eslint-disable no-console */
+import "./App.css";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { useAccount } from "wagmi";
+import { SendTransaction } from "./components/sendTransaction";
+import { Balance } from "./components/getBalance";
+import { SwitchChain } from "./components/switchNetwork";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import Loading from "./Loading";
-import "./App.css";
-
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
-// Initialising Web3Auth No Modal SDK
-const web3auth = new Web3AuthNoModal({
-  clientId, // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // ["cyan", "testnet"]
-  authBuildEnv: "testing",
-});
-
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
+  const { disconnect } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { address } = useAccount();
   const { getIdTokenClaims, loginWithPopup } = useAuth0();
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        await web3auth.init();
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
-
-  const login = async () => {
-    // trying logging in with the No Modal SDK
+  const loginWithAuth0 = async () => {
     try {
-      if (!web3auth) {
-        uiConsole("Web3Auth No Modal SDK not initialized yet");
-        return;
-      }
-      setIsLoading(true);
       await loginWithPopup();
-      const id_token = (await getIdTokenClaims())?.__raw.toString();
-      if (!id_token) {
-        console.error("No id token found");
-        return;
+      const idToken = (await getIdTokenClaims())?.__raw.toString();
+      if (!idToken) {
+        throw new Error("No id token found");
       }
-      
-      await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-        authConnection: AUTH_CONNECTION.CUSTOM,
+      await connect(WALLET_CONNECTORS.AUTH, {
         authConnectionId: "w3a-auth0-demo",
+        authConnection: AUTH_CONNECTION.CUSTOM,
+        login_hint: idToken,
         extraLoginOptions: {
-          id_token,
+          id_token: idToken,
         },
       });
-      
-      setIsLoading(false);
-      setLoggedIn(true);
+
     } catch (err) {
-      setIsLoading(false);
       console.error(err);
-    }
-  };
-
-  const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("Web3Auth No Modal SDK not initialized yet");
-      return;
-    }
-    const userInfo = await web3auth.getUserInfo();
-    uiConsole(userInfo);
-  };
-
-  const logout = () => {
-    if (!web3auth) {
-      uiConsole("Web3Auth No Modal SDK not initialized yet");
-      return;
-    }
-    web3auth.logout();
-    setLoggedIn(false);
-    return;
-  };
-
-  const getAccounts = async () => {
-    if (!web3auth) {
-      uiConsole("No provider found");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider);
-    const userAccount = await rpc.getAccounts();
-    uiConsole(userAccount);
-  };
-
-  const getBalance = async () => {
-    if (!web3auth) {
-      uiConsole("No provider found");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
-  };
-
-  const signMessage = async () => {
-    if (!web3auth) {
-      uiConsole("No provider found");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider);
-    const result = await rpc.signMessage();
-    uiConsole(result);
-  };
-
-  const sendTransaction = async () => {
-    if (!web3auth) {
-      uiConsole("No provider found");
-      return;
-    }
-    const rpc = new RPC(web3auth.provider);
-    const result = await rpc.signAndSendTransaction();
-    uiConsole(result);
-  };
-
-  const authenticateUser = async () => {
-    try {
-      const userCredential = await web3auth.authenticateUser();
-      uiConsole(userCredential);
-    } catch (err) {
-      uiConsole(err);
-    }
-  };
-
-  const switchChain = async () => {
-    try {
-      await web3auth.switchChain({ chainId: "0xaa36a7" });
-      uiConsole("Chain switched successfully");
-    } catch (err) {
-      uiConsole(err);
     }
   };
 
@@ -151,80 +40,60 @@ function App() {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
     }
   }
 
-  const loginView = (
+  const loggedInView = (
     <>
-      <div className="flex-container">
+      <h2>Connected to {connectorName}</h2>
+      <div>{address}</div>
+      <div className="flex-container"> 
         <div>
-          <button onClick={getUserInfo} className="card">
+          <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
           </button>
         </div>
         <div>
-          <button onClick={authenticateUser} className="card">
-            Authenticate User
-          </button>
-        </div>
-        <div>
-          <button onClick={getAccounts} className="card">
-            Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={switchChain} className="card">
-            Switch Chain
-          </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={logout} className="card">
+          <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
         </div>
       </div>
-
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
-      </div>
+      <SendTransaction />
+      <Balance />
+      <SwitchChain />
     </>
   );
 
-  const logoutView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+  const unloggedInView = (
+    <div className="flex-container">
+      <button 
+        onClick={loginWithAuth0} 
+        className="card" 
+      >
+        Login with Auth0
+      </button>
+    </div>
   );
 
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="https://web3auth.io/docs/sdk/core-kit/sfa-web" rel="noreferrer">
-          Web3Auth
-        </a>{" "}
-        SFA React Auth0 GitHub Example
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
+          Web3Auth{" "}
+        </a>
+        & React No Modal with Auth0 ID Token
       </h1>
 
-      {isLoading ? <Loading /> : <div className="grid">{web3auth ? (loggedIn ? loginView : logoutView) : null}</div>}
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-auth0-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-connection/jwt-login/auth0-idtoken-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

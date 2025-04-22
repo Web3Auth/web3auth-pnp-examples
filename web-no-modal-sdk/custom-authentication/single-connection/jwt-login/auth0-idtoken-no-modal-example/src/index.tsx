@@ -1,20 +1,35 @@
-import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+
+import ReactDOM from "react-dom/client";
+// Setup Web3Auth Provider
+import { Web3AuthProvider } from "@web3auth/no-modal/react";
+import web3AuthContextConfig from "./web3authContext";
+// Setup Wagmi Provider
+import { WagmiProvider } from "@web3auth/no-modal/react/wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Auth0Provider } from "@auth0/auth0-react";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+import App from "./App";
+
+const queryClient = new QueryClient();
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-  <Auth0Provider
-    domain="web3auth.au.auth0.com"
-    clientId="hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O"
-    authorizationParams={{
-      redirect_uri: window.location.origin,
-      connection: "github",
-    }}
-  >
-    <App />
-  </Auth0Provider>
+  // Setup Web3Auth Provider
+  <Web3AuthProvider config={web3AuthContextConfig}>
+    {/* Setup Wagmi Provider */}
+    <QueryClientProvider client={queryClient}>
+      <WagmiProvider>
+        <Auth0Provider
+          domain="web3auth.au.auth0.com"
+          clientId="hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O"
+          authorizationParams={{
+            redirect_uri: window.location.origin,
+          }}
+        >
+          <App />
+        </Auth0Provider>
+      </WagmiProvider>
+    </QueryClientProvider>
+  </Web3AuthProvider>
 );

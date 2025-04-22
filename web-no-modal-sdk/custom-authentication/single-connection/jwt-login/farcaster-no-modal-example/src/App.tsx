@@ -6,7 +6,14 @@ import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
 import { SwitchChain } from "./components/switchNetwork";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// Farcaster configuration
+declare global {
+  interface Window {
+    farcaster: any;
+  }
+}
 
 function App() {
   const { connect, isConnected, connectorName } = useWeb3AuthConnect();
@@ -15,36 +22,61 @@ function App() {
   const { address } = useAccount();
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
 
-  const getIdToken = async () => {
-    // Get ID Token from server
-    const res = await fetch("http://localhost:8080/api/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
-    return data?.token;
-  };
+  useEffect(() => {
+    // Load Farcaster Connect script
+    const script = document.createElement("script");
+    script.src = "https://connect.farcaster.xyz/connect.js";
+    script.async = true;
+    document.body.appendChild(script);
 
-  const loginWithJWT = async () => {
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const loginWithFarcaster = async () => {
     setIsLoggingIn(true);
     try {
-      const idToken = await getIdToken();
-      
-      await connect(WALLET_CONNECTORS.AUTH, {
-        authConnection: AUTH_CONNECTION.CUSTOM,
-        authConnectionId: "w3a-node-demo",
-        login_hint: idToken,
-        extraLoginOptions: {
-          id_token: idToken,
-        },
+      if (!window.farcaster) {
+        console.error("Farcaster Connect not loaded");
+        setIsLoggingIn(false);
+        return;
+      }
+
+      const farcasterConnect = window.farcaster.connect({
+        relay: "https://relay.farcaster.xyz",
+        domain: window.location.host,
+        siweUri: window.location.origin,
       });
+
+      const result = await farcasterConnect.signIn();
       
-      setIsLoggingIn(false);
+      if (result.success) {
+        // Get JWT from backend
+        const response = await fetch("http://localhost:8080/api/farcaster/auth", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(result),
+        });
+        
+        const data = await response.json();
+        
+        if (data.token) {
+          await connect(WALLET_CONNECTORS.AUTH, {
+            authConnection: AUTH_CONNECTION.CUSTOM,
+            authConnectionId: "w3a-farcaster-demo",
+            extraLoginOptions: {
+              id_token: data.token,
+            },
+          });
+        }
+      }
     } catch (err) {
-      setIsLoggingIn(false);
       console.error(err);
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -81,11 +113,11 @@ function App() {
   const unloggedInView = (
     <div className="flex-container">
       <button 
-        onClick={loginWithJWT} 
+        onClick={loginWithFarcaster} 
         className="card" 
         disabled={isLoggingIn}
       >
-        {isLoggingIn ? "Logging in..." : "Login with Custom JWT"}
+        {isLoggingIn ? "Logging in..." : "Login with Farcaster"}
       </button>
     </div>
   );
@@ -96,7 +128,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & React No Modal with Custom JWT
+        & React No Modal with Farcaster
       </h1>
 
       <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
@@ -106,7 +138,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-connection/jwt-login/custom-jwt-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-connection/jwt-login/farcaster-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -1,6 +1,6 @@
 import "./App.css";
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS } from "@web3auth/no-modal";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
@@ -14,9 +14,9 @@ function App() {
   const { address, connector } = useAccount();
 
   const login = async () => {
-    // IMP START - Login
+    // IMP START - Login  
     await connect(WALLET_CONNECTORS.AUTH, {
-      authConnection: "google",
+      authConnection: AUTH_CONNECTION.GOOGLE,
     });
     // IMP END - Login
   };

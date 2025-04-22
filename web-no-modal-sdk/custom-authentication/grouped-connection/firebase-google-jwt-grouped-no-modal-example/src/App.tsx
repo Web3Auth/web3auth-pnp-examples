@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
-import { Web3AuthNoModal, WALLET_CONNECTORS } from "@web3auth/no-modal";
-import { IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
-import { initializeApp } from "firebase/app";
-import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
 import "./App.css";
-// import RPC from "./evm.ethers";
-// import RPC from "./evm.web3";
-import RPC from "./evm.viem";
-
-const clientId = "BHr_dKcxC0ecKn_2dZQmQeNdjPgWykMkcodEHkVvPMo71qzOV6SgtoN8KCvFdLN7bf34JOm89vWQMLFmSfIo84A"; // get from https://dashboard.web3auth.io
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { initializeApp } from "firebase/app";
+import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { SendTransaction } from "./components/sendTransaction";
+import { Balance } from "./components/getBalance";
+import { SwitchChain } from "./components/switchNetwork";
+import { useAccount } from "wagmi";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,255 +20,117 @@ const firebaseConfig = {
 };
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
+  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
+  const { disconnect } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { address } = useAccount();
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const web3auth = new Web3AuthNoModal({
-          clientId,
-          web3AuthNetwork: WEB3AUTH_NETWORK.TESTNET,
-          authBuildEnv: "testing",
-          chainConfig: {
-            chainNamespace: "eip155",
-            chainId: "0x13882", // Please use 0x1 for Mainnet
-            rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-            displayName: "Polygon Mumbai Testnet",
-            blockExplorerUrl: "https://mumbai.polygonscan.com/",
-            ticker: "MATIC",
-            tickerName: "Matic",
-          },
-          loginConfig: {
-            google: {
-              verifier: "aggregate-verifier-google-firebase",
-              verifierSubIdentifier: "w3a-google",
-              typeOfLogin: "google",
-              clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-            },
-            firebaseGithub: {
-              verifier: "aggregate-verifier-google-firebase",
-              verifierSubIdentifier: "w3a-firebase",
-              typeOfLogin: "jwt",
-            },
-          },
-          uiConfig: {
-            uxMode: UX_MODE.REDIRECT
-          }
-        });
+  const loginWithGoogle = async (response: CredentialResponse) => {
+    const idToken = response.credential;
 
-        setWeb3auth(web3auth);
-
-        await web3auth.init();
-        setProvider(web3auth.provider);
-
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
-
-  const loginGoogle = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      loginProvider: "google",
+    await connect(WALLET_CONNECTORS.AUTH, {
+      groupedAuthConnectionId: "aggregate-sapphire",
+      authConnectionId: "w3a-google",
+      authConnection: AUTH_CONNECTION.CUSTOM,
+      login_hint: idToken,
+      extraLoginOptions: {
+        id_token: idToken,
+      },
     });
-    console.log("web3authProvider", web3authProvider);
-    setProvider(web3authProvider);
   };
 
-  const signInWithGithub = async (): Promise<UserCredential> => {
+  const loginWithFirebaseGithub = async () => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const githubProvider = new GithubAuthProvider();
 
-    const result = await signInWithPopup(auth, githubProvider);
-    return result;
-  };
+    const result = await signInWithPopup(auth, githubProvider);    
 
-  const loginGitHub = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const loginRes = await signInWithGithub();
-    console.log("login details", loginRes);
-    const idToken = await loginRes.user.getIdToken(true);
-    console.log("idToken", idToken);
+    const idToken = await result.user.getIdToken(true);
 
-    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      loginProvider: "firebaseGithub",
+    connect(WALLET_CONNECTORS.AUTH, {
+      groupedAuthConnectionId: "aggregate-sapphire",
+      authConnectionId: "w3a-firebase",
+      authConnection: AUTH_CONNECTION.CUSTOM,
+      login_hint: idToken,
       extraLoginOptions: {
         id_token: idToken,
-        verifierIdField: "email",
-        domain: "http://localhost:3000",
       },
     });
-    setProvider(web3authProvider);
-  };
-
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
-  };
-
-  const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  };
-
-  const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    await web3auth.logout();
-    setLoggedIn(false);
-    setProvider(null);
-  };
-
-  const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const userAccount = await rpc.getAccounts();
-    uiConsole(userAccount);
-  };
-
-  const getBalance = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const result = await rpc.signMessage();
-    uiConsole(result);
-  };
-
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const result = await rpc.signAndSendTransaction();
-    uiConsole(result);
   };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
     }
   }
 
-  const loginView = (
+  const loggedInView = (
     <>
+      <h2>Connected to {connectorName}</h2>
+      <div>{address}</div>
       <div className="flex-container">
         <div>
-          <button onClick={getUserInfo} className="card">
+          <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
           </button>
         </div>
         <div>
-          <button onClick={authenticateUser} className="card">
-            Get ID Token
-          </button>
-        </div>
-        <div>
-          <button onClick={getAccounts} className="card">
-            Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={logout} className="card">
+          <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
         </div>
       </div>
-
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
-      </div>
+      <SendTransaction />
+      <Balance />
+      <SwitchChain />
     </>
   );
 
-  const logoutView = (
-    <>
-      <button onClick={loginGoogle} className="card">
-        Login using <b>Google</b>
+  const unloggedInView = (
+    <div className="flex-container">
+      <div className="card">
+        <GoogleLogin
+          onSuccess={loginWithGoogle}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+          shape="pill"
+          theme="filled_blue"
+          text="signin_with"
+          size="large"
+          logo_alignment="center"
+        />
+      </div>
+      <button onClick={loginWithFirebaseGithub} className="card">
+        Login with Firebase GitHub
       </button>
-      <button onClick={loginGitHub} className="card">
-        Login using <b>GitHub</b> [ via Firebase ]
-      </button>
-    </>
+    </div>
   );
 
   return (
     <div className="container">
       <h1 className="title">
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
-          Web3Auth
-        </a>{" "}
-        & Firebase React Example for Google Login
+          Web3Auth{" "}
+        </a>
+        & React No Modal with Firebase & Google Grouped Connection JWT
       </h1>
 
-      <div className="grid">{loggedIn ? loginView : logoutView}</div>
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/firebase-google-aggregate-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/grouped-connection/firebase-google-jwt-grouped-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fcustom-authentication%2Faggregate-verifier-examples%2Ffirebase-google-aggregate-no-modal-example&project-name=w3a-firebase-aggregate-no-modal&repository-name=w3a-firebase-aggregate-no-modal">
-          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

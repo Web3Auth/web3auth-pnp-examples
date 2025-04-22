@@ -25,6 +25,9 @@ function App() {
       groupedAuthConnectionId: "aggregate-sapphire",
       authConnectionId: "w3a-a0-google",
       authConnection: AUTH_CONNECTION.CUSTOM,
+      extraLoginOptions: {
+        connection: "google-oauth2",
+      },
     });
   };
 
@@ -33,7 +36,9 @@ function App() {
       groupedAuthConnectionId: "aggregate-sapphire",
       authConnectionId: "w3a-a0-github",
       authConnection: AUTH_CONNECTION.CUSTOM,
-
+      extraLoginOptions: {
+        connection: "github",
+      },
     });
   };
 

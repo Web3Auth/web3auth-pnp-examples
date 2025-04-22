@@ -13,9 +13,11 @@
     "@tanstack/react-query": "^5.37.1",
     "@tanstack/react-table": "^8.10.4",
     "@web3auth/no-modal": "^10.0.0-beta.6",
+    "jose": "^5.2.4",
     "next": "13.4.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-toastify": "^10.0.5",
     "wagmi": "^2.14.16"
   },
   "//IMP END": "IMP END - Web3Auth Installation",

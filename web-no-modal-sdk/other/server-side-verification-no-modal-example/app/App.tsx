@@ -1,24 +1,21 @@
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS, accountAbstractionProvider } from "@web3auth/no-modal";
+import "react-toastify/dist/ReactToastify.css";
+
+import { toast } from "react-toastify";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useIdentityToken, useWeb3Auth} from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS } from "@web3auth/no-modal";
 import { useAccount } from "wagmi";
 import { SendTransaction } from "../components/sendTransaction";
 import { Balance } from "../components/getBalance";
 import { SwitchChain } from "../components/switchNetwork";
+import { useEffect } from "react";
+
 function App() {
   const { connect, isConnected } = useWeb3AuthConnect();
-  // IMP START - Logout
   const { disconnect } = useWeb3AuthDisconnect();
-  // IMP END - Logout
   const { userInfo } = useWeb3AuthUser();
+  const { token, authenticateUser } = useIdentityToken();
+  const { web3Auth } = useWeb3Auth();
   const { address, connector } = useAccount();
-
-  const login = async () => {
-    // IMP START - Login
-    await connect(WALLET_CONNECTORS.AUTH, {
-      authConnection: "google",
-    });
-    // IMP END - Login
-  };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -28,6 +25,56 @@ function App() {
     }
   }
 
+  const validateIdToken = async () => {
+    await getIdToken();
+    const pubKey = await web3Auth!.provider!.request({ method: "public_key" });
+
+    // Validate idToken with server
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ appPubKey: pubKey }),
+    });
+    if (res.status === 200) {
+      toast.success("JWT Verification Successful");
+      uiConsole(`Logged in Successfully!`, userInfo);
+    } else {
+      toast.error("JWT Verification Failed");
+      console.log("JWT Verification Failed");
+      await disconnect();
+    }
+    return res.status;
+  };
+
+  const login = async () => {
+    await connect(WALLET_CONNECTORS.AUTH, {
+      authConnection: "google",
+    });
+  };
+
+  const getIdToken = async () => {
+    await authenticateUser();
+    uiConsole(token);
+  };
+
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        if (isConnected) {
+          await validateIdToken();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    init();
+  }, [isConnected]);
+
   const loggedInView = (
     <>
       <h2>Connected to {connector?.name}</h2>
@@ -36,6 +83,16 @@ function App() {
         <div>
           <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={getIdToken} className="card">
+            Get ID Token
+          </button>
+        </div>
+        <div>
+          <button onClick={validateIdToken} className="card">
+            Validate ID Token
           </button>
         </div>
         <div>
@@ -62,7 +119,7 @@ function App() {
             <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
               Web3Auth{" "}
             </a>
-            & Next.js No Modal Quick Start
+            & Next.js No Modal Server Side Verification Example
           </h1>
 
           <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
@@ -72,13 +129,13 @@ function App() {
 
           <footer className="footer">
             <a
-              href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/react-hooks-no-modal-quick-start"
+              href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/other/server-side-verification-no-modal-example"
               target="_blank"
               rel="noopener noreferrer"
             >
               Source code
             </a>
-            <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Freact-hooks-no-modal-quick-start&project-name=react-hooks-no-modal-quick-start&repository-name=react-hooks-no-modal-quick-start">
+            <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fother%2Fserver-side-verification-no-modal-example&project-name=w3a-ssv-no-modal&repository-name=w3a-ssv-no-modal">
               <img src="https://vercel.com/button" alt="Deploy with Vercel" />
             </a>
           </footer>

@@ -1,38 +1,34 @@
-
 import { useSolanaWallet } from "@web3auth/no-modal/react/solana";
 import {
-  Connection,
   LAMPORTS_PER_SOL,
   PublicKey,
 } from "@solana/web3.js";
-import { CustomChainConfig } from "@web3auth/no-modal/";
 import { useEffect, useState } from "react";
 
 export function Balance() {
-  const { accounts, solanaWallet } = useSolanaWallet();
+  const { accounts, connection } = useSolanaWallet();
   const [balance, setBalance] = useState<number | null>(null);
 
-  useEffect(() => {
-    const fetchBalance = async () => {
-      if (solanaWallet) {
-        const config = await solanaWallet.request<string[], CustomChainConfig>({
-          method: "solana_provider_config",
-          params: [],
-        });
-        const conn = new Connection(config.rpcTarget);
-        const balance = await conn.getBalance(new PublicKey(accounts![0]));
+  const fetchBalance = async () => {
+    if (connection && accounts && accounts.length > 0) {
+        const publicKey = new PublicKey(accounts[0]);
+        const balance = await connection.getBalance(publicKey);
         setBalance(balance);
-      }
-    };
-    fetchBalance();
-  }, [solanaWallet]);
+    }
+  };
 
+  useEffect(() => {
+    fetchBalance();
+  }, [connection, accounts]);
 
   return (
     <div>
       <h2>Balance</h2>
 
-      <div>Balance: {balance !== null ? `${balance / LAMPORTS_PER_SOL} SOL` : 'Loading...'}</div>
+      <div>Balance: {balance !== null ? `${balance / LAMPORTS_PER_SOL} SOL` : 'NULL'}</div>
+      <button onClick={fetchBalance} type="submit" className="card">
+          Fetch Balance
+      </button>
     </div>
   )
 }

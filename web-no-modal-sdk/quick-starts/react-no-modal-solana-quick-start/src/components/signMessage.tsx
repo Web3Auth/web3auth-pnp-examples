@@ -7,8 +7,8 @@ export function SignMessage() {
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
-    const message = formData.get('message') as string
-    signMessage(message);
+    const message = formData.get('message')
+    signMessage(message!.toString());
   }
 
   return (

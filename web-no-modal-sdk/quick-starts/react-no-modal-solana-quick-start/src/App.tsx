@@ -6,7 +6,7 @@ import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
 import { SendVersionedTransaction } from "./components/sendVersionedTransaction";
 import { SignMessage } from "./components/signMessage";
-
+import { SwitchChain } from "./components/switchNetwork";
 function App() {
   const { connect, isConnected, connectorName } = useWeb3AuthConnect();
   // IMP START - Logout
@@ -34,7 +34,7 @@ function App() {
   const loggedInView = (
     <>
       <h2>Connected to {connectorName}</h2>
-      <div>{accounts![0]}</div>
+      <div>{accounts?.[0]}</div>
       <div className="flex-container"> 
         <div>
           <button onClick={() => uiConsole(userInfo)} className="card">
@@ -51,6 +51,7 @@ function App() {
       <SignMessage />
       <SendTransaction />
       <SendVersionedTransaction />
+      <SwitchChain />
     </>
   );
 

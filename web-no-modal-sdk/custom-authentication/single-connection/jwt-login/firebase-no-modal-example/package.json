@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@tanstack/react-query": "^5.37.1",
-    "@web3auth/no-modal": "^10.0.0-beta.6",
+    "@web3auth/no-modal": "^10.0.0-beta.7",
     "firebase": "^11.6.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

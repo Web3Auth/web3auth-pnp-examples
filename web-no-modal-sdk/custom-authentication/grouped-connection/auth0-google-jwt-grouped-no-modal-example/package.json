@@ -6,7 +6,7 @@
     "@auth0/auth0-react": "^2.2.0",
     "@react-oauth/google": "^0.11.1",
     "@tanstack/react-query": "^5.37.1",
-    "@web3auth/no-modal": "^10.0.0-beta.6",
+    "@web3auth/no-modal": "^10.0.0-beta.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "wagmi": "^2.14.16"

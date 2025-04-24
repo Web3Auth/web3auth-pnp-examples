@@ -1,5 +1,5 @@
 // IMP START - Quick Start
-import { WEB3AUTH_NETWORK, type Web3AuthNoModalOptions } from "@web3auth/no-modal";
+import { authConnector, MFA_LEVELS, WEB3AUTH_NETWORK, type Web3AuthNoModalOptions } from "@web3auth/no-modal";
 // IMP END - Quick Start
 
 // IMP START - Dashboard Registration
@@ -11,6 +11,11 @@ const web3AuthOptions: Web3AuthNoModalOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",
+  connectors: [authConnector({
+    loginSettings: {
+      mfaLevel: MFA_LEVELS.MANDATORY,
+    }
+  })],
 };
 // IMP END - Instantiate SDK
 

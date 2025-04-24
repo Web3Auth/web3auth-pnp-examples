@@ -17,6 +17,7 @@ function App() {
 
   const [MFAHeader, setMFAHeader] = useState<JSX.Element | null>(null);
   const [pluginStatus, setPluginStatus] = useState<string>("disconnected");
+  const [error, setError] = useState<string | null>(null);
 
   // Update MFA status header
   useEffect(() => {
@@ -41,9 +42,14 @@ function App() {
       uiConsole("Provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
-    const chainId = await rpc.getChainId();
-    uiConsole(chainId);
+    try {
+      const rpc = new RPC(provider as IProvider);
+      const chainId = await rpc.getChainId();
+      uiConsole(chainId);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to get chain ID");
+    }
   };
 
   const getAccounts = async () => {
@@ -51,9 +57,14 @@ function App() {
       uiConsole("Provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
-    const accounts = await rpc.getAccounts();
-    uiConsole(accounts);
+    try {
+      const rpc = new RPC(provider as IProvider);
+      const accounts = await rpc.getAccounts();
+      uiConsole(accounts);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to get accounts");
+    }
   };
 
   const getBalance = async () => {
@@ -61,9 +72,14 @@ function App() {
       uiConsole("Provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
+    try {
+      const rpc = new RPC(provider as IProvider);
+      const balance = await rpc.getBalance();
+      uiConsole(balance);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to get balance");
+    }
   };
 
   const sendTransaction = async () => {
@@ -71,9 +87,14 @@ function App() {
       uiConsole("Provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
+    try {
+      const rpc = new RPC(provider as IProvider);
+      const receipt = await rpc.sendTransaction();
+      uiConsole(receipt);
+    } catch (err) {
+      console.error(err);
+      setError("Transaction failed");
+    }
   };
 
   const signMessage = async () => {
@@ -81,9 +102,14 @@ function App() {
       uiConsole("Provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
-    const signedMessage = await rpc.signMessage();
-    uiConsole(signedMessage);
+    try {
+      const rpc = new RPC(provider as IProvider);
+      const signedMessage = await rpc.signMessage();
+      uiConsole(signedMessage);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to sign message");
+    }
   };
 
   const uiConsole = (...args: any[]): void => {
@@ -104,8 +130,13 @@ function App() {
         <div>
           <button
             onClick={async () => {
-              const { idToken } = await authenticateUser();
-              uiConsole(idToken);
+              try {
+                const { idToken } = await authenticateUser();
+                uiConsole(idToken);
+              } catch (err) {
+                console.error(err);
+                setError("Failed to get ID token");
+              }
             }}
             className="card"
           >
@@ -115,7 +146,12 @@ function App() {
         <div>
           <button
             onClick={() => {
-              enableMFA();
+              try {
+                enableMFA();
+              } catch (err) {
+                console.error(err);
+                setError("Failed to enable MFA");
+              }
             }}
             className="card"
           >
@@ -130,7 +166,12 @@ function App() {
         <div>
           <button
             onClick={() => {
-              addAndSwitchChain(newChain);
+              try {
+                addAndSwitchChain(newChain);
+              } catch (err) {
+                console.error(err);
+                setError("Failed to add/switch chain");
+              }
             }}
             className="card"
           >
@@ -160,7 +201,12 @@ function App() {
         <div>
           <button
             onClick={() => {
-              showWalletUI();
+              try {
+                showWalletUI();
+              } catch (err) {
+                console.error(err);
+                setError("Failed to show wallet UI");
+              }
             }}
             className="card"
           >
@@ -170,7 +216,12 @@ function App() {
         <div>
           <button
             onClick={() => {
-              showWalletConnectScanner();
+              try {
+                showWalletConnectScanner();
+              } catch (err) {
+                console.error(err);
+                setError("Failed to show wallet connect scanner");
+              }
             }}
             className="card"
           >
@@ -180,7 +231,12 @@ function App() {
         <div>
           <button
             onClick={() => {
-              showCheckout();
+              try {
+                showCheckout();
+              } catch (err) {
+                console.error(err);
+                setError("Failed to show checkout");
+              }
             }}
             className="card"
           >
@@ -188,11 +244,23 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={() => logout()} className="card">
-            Log Out
+          <button 
+            onClick={() => {
+              try {
+                logout();
+              } catch (err) {
+                console.error(err);
+                setError("Failed to logout");
+              }
+            }} 
+            className="card"
+            disabled={status === "logging-out"}
+          >
+            {status === "logging-out" ? "Logging Out..." : "Log Out"}
           </button>
         </div>
       </div>
+      {error && <div className="error">{error}</div>}
       <div id="console">
         <p></p>
       </div>
@@ -210,7 +278,7 @@ function App() {
       <div className="container" style={{ textAlign: "center" }}>
         {MFAHeader}
         <h2>Web3Auth Status: {status}</h2>
-        <h2>Wallet Services Plugin Status: {pluginStatus}</h2> {/* Plugin status added here */}
+        <h2>Wallet Services Plugin Status: {pluginStatus}</h2>
       </div>
 
       <div className="grid">
@@ -218,21 +286,40 @@ function App() {
           loggedInView
         ) : (
           <>
-          <button
-            className="card"
-            onClick={() => {
-              connectTo(WALLET_ADAPTERS.AUTH, {
-                loginProvider: "google",
-              });
-            }}
-          >
-            Login With Google
-          </button>
-          {adapters?.map((adapter: IAdapter<unknown>) => (
-            <button key={adapter.name.toUpperCase()} onClick={() => connectTo(adapter.name)} className="card">
-              `Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet`
+            <button
+              className="card"
+              onClick={() => {
+                try {
+                  connectTo(WALLET_ADAPTERS.AUTH, {
+                    loginProvider: "google",
+                  });
+                } catch (err) {
+                  console.error(err);
+                  setError("Failed to connect");
+                }
+              }}
+              disabled={status === "connecting"}
+            >
+              {status === "connecting" ? "Connecting..." : "Login With Google"}
             </button>
-          ))}
+            {adapters?.map((adapter: IAdapter<unknown>) => (
+              <button 
+                key={adapter.name.toUpperCase()} 
+                onClick={() => {
+                  try {
+                    connectTo(adapter.name);
+                  } catch (err) {
+                    console.error(err);
+                    setError("Failed to connect");
+                  }
+                }} 
+                className="card"
+                disabled={status === "connecting"}
+              >
+                {status === "connecting" ? "Connecting..." : `Login with ${adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet`}
+              </button>
+            ))}
+            {error && <div className="error">{error}</div>}
           </>
         )}
       </div>

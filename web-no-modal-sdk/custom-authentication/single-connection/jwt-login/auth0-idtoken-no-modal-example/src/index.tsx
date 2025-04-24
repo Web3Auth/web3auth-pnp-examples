@@ -23,9 +23,6 @@ root.render(
         <Auth0Provider
           domain="web3auth.au.auth0.com"
           clientId="hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O"
-          authorizationParams={{
-            redirect_uri: window.location.origin,
-          }}
         >
           <App />
         </Auth0Provider>

@@ -12,7 +12,7 @@ export function SendTransaction() {
     const to = formData.get('address') as string
     const value = formData.get('value') as string
 
-    const block = await connection!.getLatestBlockhash("finalized");
+    const block = await connection!.getLatestBlockhash();
     const TransactionInstruction = SystemProgram.transfer({
       fromPubkey: new PublicKey(accounts![0]),
       toPubkey: new PublicKey(to),
@@ -41,7 +41,7 @@ export function SendTransaction() {
           step="0.01"
           required
         />
-        <button disabled={isPending} type="submit" className="card">
+        <button disabled={isPending} type="submit" >
           {isPending ? 'Confirming...' : 'Send'}
         </button>
       </form>

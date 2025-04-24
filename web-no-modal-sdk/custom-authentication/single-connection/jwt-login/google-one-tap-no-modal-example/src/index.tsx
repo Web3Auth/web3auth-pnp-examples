@@ -20,7 +20,7 @@ root.render(
     {/* Setup Wagmi Provider */}
     <QueryClientProvider client={queryClient}>
       <WagmiProvider>
-      <GoogleOAuthProvider clientId="461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com">
           <App />
         </GoogleOAuthProvider>
       </WagmiProvider>

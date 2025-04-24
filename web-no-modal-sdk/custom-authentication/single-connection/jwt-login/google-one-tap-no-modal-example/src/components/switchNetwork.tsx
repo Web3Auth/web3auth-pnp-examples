@@ -1,20 +1,26 @@
-import { useSwitchChain } from "wagmi";
+import { useChainId, useSwitchChain } from 'wagmi'
 
 export function SwitchChain() {
-  const { chains, switchChain } = useSwitchChain();
-  
+  const chainId = useChainId()
+  const { chains, switchChain, error } = useSwitchChain()
+
   return (
-    <div className="flex-container">
+    <div>
+      <h2>Switch Chain</h2>
+      <h3>Connected to {chainId}</h3>
       {chains.map((chain) => (
-        <div key={chain.id}>
-          <button
-            onClick={() => switchChain({ chainId: chain.id })}
-            className="card"
-          >
-            Switch to {chain.name}
-          </button>
-        </div>
+        <button
+          disabled={chainId === chain.id}
+          key={chain.id}
+          onClick={() => switchChain({ chainId: chain.id })}
+          type="button"
+          className="card"
+        >
+          {chain.name}
+        </button>
       ))}
+
+      {error?.message}
     </div>
-  );
-} 
+  )
+}

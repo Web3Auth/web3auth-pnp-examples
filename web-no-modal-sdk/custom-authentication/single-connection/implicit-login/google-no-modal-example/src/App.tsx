@@ -8,8 +8,8 @@ import { Balance } from "./components/getBalance";
 import { SwitchChain } from "./components/switchNetwork";
 
 function App() {
-  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
-  const { disconnect } = useWeb3AuthDisconnect();
+  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { address } = useAccount();
 
@@ -29,7 +29,7 @@ function App() {
   }
 
   const loggedInView = (
-    <>
+    <div className="grid">
       <h2>Connected to {connectorName}</h2>
       <div>{address}</div>
       <div className="flex-container"> 
@@ -42,19 +42,25 @@ function App() {
           <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
       </div>
       <SendTransaction />
       <Balance />
       <SwitchChain />
-    </>
+    </div>
   );
 
   const unloggedInView = (
-    <div className="flex-container">
-      <button onClick={loginWithGoogle} className="card">
-        Login with Google
-      </button>
+    <div className="grid">
+      <div className="flex-container">
+        <button onClick={loginWithGoogle} className="card">
+          Login with Google
+        </button>
+      </div>
+      {connectLoading && <div className="loading">Connecting...</div>}
+      {connectError && <div className="error">{connectError.message}</div>}
     </div>
   );
 
@@ -67,7 +73,7 @@ function App() {
         & React No Modal with Google
       </h1>
 
-      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      {isConnected ? loggedInView : unloggedInView}
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>

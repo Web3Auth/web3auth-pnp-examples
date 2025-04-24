@@ -30,7 +30,7 @@ export function SendTransaction() {
           step="0.000000001"
           required
         />
-        <button disabled={isPending} type="submit" className="card">
+        <button disabled={isPending} type="submit">
           {isPending ? 'Confirming...' : 'Send'}
         </button>
       </form>

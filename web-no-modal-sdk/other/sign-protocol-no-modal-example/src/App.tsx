@@ -6,26 +6,18 @@ import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
 import { useWalletClient } from "wagmi";
-import SignClient from "./components/signClient";
+import {attest, fetchAccountAttestations} from "./components/signClient";
 
 function App() {
-  const { connect, isConnected } = useWeb3AuthConnect();
-  const { disconnect } = useWeb3AuthDisconnect();
+  const { connect, isConnected, loading: connectLoading, error: connectError, connectorName } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
-  const { address, connector } = useAccount();
+  const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
 
-  const login = async () => {
-    await connect(WALLET_CONNECTORS.AUTH, {
-      authConnection: "google",
-    });
-  };
-
   const createAttestation = async () => {
-    const signClient = new SignClient(walletClient);
     uiConsole("Creating Attestation...");
-
-    const response = await signClient.attest(address);
+    const response = await attest(walletClient!, address!);
 
     uiConsole({
       "hash": response.txHash,
@@ -33,11 +25,10 @@ function App() {
     });
   };
 
-  const fetchAccountAttestations = async () => {
-    const signClient = new SignClient(walletClient);
+  const getAccountAttestations = async () => {
     uiConsole("Fetching Attestation...");
 
-    const response = await signClient.fetchAccountAttestations(address);
+    const response = await fetchAccountAttestations(address!);
 
     uiConsole(response);
   }
@@ -51,8 +42,8 @@ function App() {
   }
 
   const loggedInView = (
-    <>
-      <h2>Connected to {connector?.name}</h2>
+    <div className="grid">
+      <h2>Connected to {connectorName}</h2>
       <div>{address}</div>
       <div className="flex-container">
         <div>
@@ -66,7 +57,7 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={fetchAccountAttestations} className="card">
+          <button onClick={getAccountAttestations} className="card">
             Fetch attestations
           </button>
         </div>
@@ -74,17 +65,25 @@ function App() {
           <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
       </div>
       <SendTransaction />
       <Balance />
-    </>
+    </div>
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <div className="grid">
+      <button onClick={() => connect(WALLET_CONNECTORS.AUTH, {
+        authConnection: "google",
+      })} className="card">
+        Login
+      </button>
+      {connectLoading && <div className="loading">Connecting...</div>}
+      {connectError && <div className="error">{connectError.message}</div>}
+    </div>
   );
 
   return (
@@ -100,21 +99,18 @@ function App() {
         Quick Start
       </h1>
 
-      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      {isConnected ? loggedInView : unloggedInView}
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/react-no-modal-quick-start"
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/other/sign-protocol-no-modal-example"
           target="_blank"
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Freact-modal-quick-start&project-name=w3a-evm-modal&repository-name=w3a-evm-modal">
-          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

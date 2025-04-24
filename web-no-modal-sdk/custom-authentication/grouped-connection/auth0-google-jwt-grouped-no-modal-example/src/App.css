@@ -236,3 +236,11 @@ input::placeholder {
 		max-width: 1024px;
 	}
 }
+.error {
+	color: red;
+}
+
+.loading {
+	color: var(--primary-color);
+}
+

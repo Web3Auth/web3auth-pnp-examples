@@ -9,8 +9,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { GoogleLogin, CredentialResponse, googleLogout } from "@react-oauth/google";
 
 function App() {
-  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
-  const { disconnect } = useWeb3AuthDisconnect();
+  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { address } = useAccount();
   const { getIdTokenClaims, loginWithPopup } = useAuth0();
@@ -73,6 +73,8 @@ function App() {
           <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
       </div>
       <SendTransaction />

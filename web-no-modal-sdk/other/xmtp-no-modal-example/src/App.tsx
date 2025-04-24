@@ -1,11 +1,9 @@
-import { IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { Web3AuthNoModal, WALLET_CONNECTORS } from "@web3auth/no-modal";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth } from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 import { useEffect, useState } from "react";
 import { FloatingInbox } from "./FloatingInbox";
 import { ethers, JsonRpcSigner } from "ethers";
-
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
+import "./index.css";
 declare global {
   interface Window {
     FloatingInbox: {
@@ -15,65 +13,36 @@ declare global {
   }
 }
 
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  authBuildEnv: "testing",
-});
-
 function App() {
-  const isPWA = true;
-  const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();  
+  const { provider } = useWeb3Auth();
+  
   const [address, setAddress] = useState<string | null>(null);
   const [wallet, setWallet] = useState<any | null>(null);
 
   useEffect(() => {
-    const init = async () => {
-      try {
-        await web3auth.init();
-        setProvider(web3auth.provider);
-
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
-
-  useEffect(() => {
     const getDetails = async () => {
-      if (web3auth.connected) {
-        const address = await getAccounts();
-        setAddress(address);
-        const wallet = await getWallet();
-        setWallet(wallet);
+      if (isConnected && provider) {
+        try {
+          const address = await getAccounts();
+          setAddress(address);
+          const wallet = await getWallet();
+          setWallet(wallet);
+        } catch (err) {
+          console.error(err);
+        }
       }
     };
     getDetails();
-  }, [provider, loggedIn]);
-
-  const login = async () => {
-    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      loginProvider: "google",
-    });
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
-    }
-  };
+  }, [provider, isConnected]);
 
   const getWallet = async (): Promise<JsonRpcSigner | null> => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return null;
     }
-    const ethersProvider = new ethers.BrowserProvider(provider);
-
+    const ethersProvider = new ethers.BrowserProvider(provider as any);
     return ethersProvider.getSigner();
   };
 
@@ -83,24 +52,15 @@ function App() {
       return;
     }
     try {
-      const ethersProvider = new ethers.BrowserProvider(provider);
+      const ethersProvider = new ethers.BrowserProvider(provider as any);
       const signer = await ethersProvider.getSigner();
 
       // Get user's Ethereum public address
-      const address = signer.getAddress();
-
-      return await address;
+      const address = await signer.getAddress();
+      return address;
     } catch (error) {
       return error;
     }
-  };
-
-  const logout = async () => {
-    await web3auth.logout();
-    setProvider(null);
-    setWallet(null);
-    setLoggedIn(false);
-    uiConsole("logged out");
   };
 
   function uiConsole(...args: unknown[]): void {
@@ -164,16 +124,30 @@ function App() {
   return (
     <div style={styles.HomePageWrapperStyle}>
       <h1>Web3Auth XMTP Quickstart </h1>
-      <button className="home-button" style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }} onClick={() => login()}>
-        {loggedIn ? "Connected" : "Login with Google"}
+      <button 
+        className="home-button" 
+        style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }} 
+        onClick={() => connect(WALLET_CONNECTORS.AUTH, {
+          authConnection: AUTH_CONNECTION.GOOGLE,
+        })} 
+        disabled={connectLoading}
+      >
+        {isConnected ? "Connected" : connectLoading ? "Connecting..." : "Login with Google"}
       </button>
-      {loggedIn && (
-        <button className="home-button" style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }} onClick={() => logout()}>
-          Logout
+      {isConnected && (
+        <button 
+          className="home-button" 
+          style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }} 
+          onClick={() => disconnect()} 
+          disabled={disconnectLoading}
+        >
+          {disconnectLoading ? "Logging out..." : "Logout"}
         </button>
       )}
+      {connectError && <div className="error">{connectError.message}</div>}
+      {disconnectError && <div className="error">{disconnectError.message}</div>}
       <h3>{address}</h3>
-      {loggedIn && (
+      {isConnected && (
         <section className="App-section">
           <button className="home-button" style={styles.ButtonStyledStyle} onClick={() => window.FloatingInbox.open()}>
             Open
@@ -183,7 +157,7 @@ function App() {
           </button>
         </section>
       )}
-      {loggedIn && <FloatingInbox wallet={wallet} onLogout={logout} />}
+      {isConnected && <FloatingInbox wallet={wallet} onLogout={() => disconnect()} />}
     </div>
   );
 }

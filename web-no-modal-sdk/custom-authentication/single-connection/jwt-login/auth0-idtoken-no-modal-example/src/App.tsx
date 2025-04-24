@@ -13,7 +13,7 @@ function App() {
   const { disconnect } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { address } = useAccount();
-  const { getIdTokenClaims, loginWithPopup } = useAuth0();
+  const { getIdTokenClaims, loginWithPopup, logout } = useAuth0();
 
   const loginWithAuth0 = async () => {
     try {
@@ -25,9 +25,9 @@ function App() {
       await connect(WALLET_CONNECTORS.AUTH, {
         authConnectionId: "w3a-auth0-demo",
         authConnection: AUTH_CONNECTION.CUSTOM,
-        login_hint: idToken,
+        id_token: idToken,
         extraLoginOptions: {
-          id_token: idToken,
+          isUserIdCaseSensitive: false,
         },
       });
 
@@ -55,7 +55,14 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={() => disconnect()} className="card">
+          <button onClick={() => {
+            disconnect(); 
+            logout({ 
+              logoutParams: {
+                returnTo: window.location.origin,
+              }
+            });
+          }} className="card">
             Log Out
           </button>
         </div>

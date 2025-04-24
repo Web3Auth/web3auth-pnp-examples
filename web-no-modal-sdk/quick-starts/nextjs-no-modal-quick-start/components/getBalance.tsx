@@ -4,13 +4,12 @@ import { formatUnits } from "viem";
 export function Balance() {
   const { address } = useAccount()
 
-  const { data: default_ } = useBalance({ address })
+  const { data, isLoading, error } = useBalance({ address })
 
   return (
     <div>
       <h2>Balance</h2>
-
-      <div>Balance: {default_?.value !== undefined ? `${formatUnits(default_.value, default_.decimals)} ${default_.symbol}` : 'Loading...'}</div>
+      <div>{data?.value !== undefined && `${formatUnits(data.value, data.decimals)} ${data.symbol}`} {isLoading && 'Loading...'} {error && 'Error: ' + error.message}</div>
     </div>
   )
 }

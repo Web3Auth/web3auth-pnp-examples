@@ -11,7 +11,7 @@ const web3AuthOptions: Web3AuthNoModalOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",
-  chainId: "0xaa36a7",
+  defaultChainId: "0xaa36a7",
 };
 // IMP END - Instantiate SDK
 

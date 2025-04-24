@@ -21,6 +21,8 @@ function App() {
   const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -130,6 +132,7 @@ function App() {
         }
       } catch (error) {
         console.error(error);
+        setError("Failed to initialize Web3Auth");
       }
     };
 
@@ -141,12 +144,21 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-      loginProvider: "google",
-    });
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
+    try {
+      setLoading(true);
+      setError(null);
+      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+        loginProvider: "google",
+      });
+      setProvider(web3authProvider);
+      if (web3auth.connected) {
+        setLoggedIn(true);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,15 +167,24 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
-      loginProvider: "sms_passwordless",
-      extraLoginOptions: {
-        login_hint: phoneNumber.trim(),
-      },
-    });
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
+    try {
+      setLoading(true);
+      setError(null);
+      const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
+        loginProvider: "sms_passwordless",
+        extraLoginOptions: {
+          login_hint: phoneNumber.trim(),
+        },
+      });
+      setProvider(web3authProvider);
+      if (web3auth.connected) {
+        setLoggedIn(true);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "SMS login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -172,15 +193,24 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-      loginProvider: "email_passwordless",
-      extraLoginOptions: {
-        login_hint: email.trim(),
-      },
-    });
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
+    try {
+      setLoading(true);
+      setError(null);
+      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+        loginProvider: "email_passwordless",
+        extraLoginOptions: {
+          login_hint: email.trim(),
+        },
+      });
+      setProvider(web3authProvider);
+      if (web3auth.connected) {
+        setLoggedIn(true);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Email login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -189,10 +219,19 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
+    try {
+      setLoading(true);
+      setError(null);
+      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
+      setProvider(web3authProvider);
+      if (web3auth.connected) {
+        setLoggedIn(true);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Wallet Connect login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -219,9 +258,18 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    await web3auth.logout();
-    setProvider(null);
-    setLoggedIn(false);
+    try {
+      setLoading(true);
+      setError(null);
+      await web3auth.logout();
+      setProvider(null);
+      setLoggedIn(false);
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Logout failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getChainId = async () => {
@@ -341,10 +389,19 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connectTo(adapterName);
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
+    try {
+      setLoading(true);
+      setError(null);
+      const web3authProvider = await web3auth.connectTo(adapterName);
+      setProvider(web3authProvider);
+      if (web3auth.connected) {
+        setLoggedIn(true);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Wallet login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -429,9 +486,10 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={logout} className="card">
-            Log Out
+          <button onClick={logout} className="card" disabled={loading}>
+            {loading ? "Logging Out..." : "Log Out"}
           </button>
+          {error && <div className="error">{error}</div>}
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
@@ -442,30 +500,31 @@ function App() {
 
   const unloggedInView = (
     <div className="login-container">
-      <button onClick={login} className="card">
-        Login
+      <button onClick={login} className="card" disabled={loading}>
+        {loading ? "Logging In..." : "Login"}
       </button>
       <div className="input-button-group">
         <input type="text" placeholder="+65-XXXXXXX" required onChange={(e) => setPhoneNumber(e.target.value)} />
-        <button onClick={loginWithSMS} className="card login-button">
-          SMS Login
+        <button onClick={loginWithSMS} className="card login-button" disabled={loading}>
+          {loading ? "Logging In..." : "SMS Login"}
         </button>
       </div>
       <div className="input-button-group">
         <input type="email" placeholder="username@email.io" required onChange={(e) => setEmail(e.target.value)} />
-        <button onClick={loginWithEmail} className="card login-button">
-          Email Login
+        <button onClick={loginWithEmail} className="card login-button" disabled={loading}>
+          {loading ? "Logging In..." : "Email Login"}
         </button>
       </div>
-      <button onClick={loginWCModal} className="card">
-        Login with Wallet Connect v2
+      <button onClick={loginWCModal} className="card" disabled={loading}>
+        {loading ? "Connecting..." : "Login with Wallet Connect v2"}
       </button>
 
       {injectedAdapters?.map((adapter: IAdapter<unknown>) => (
-        <button key={adapter.name.toUpperCase()} onClick={() => loginWithInjected(adapter.name)} className="card">
-          Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet
+        <button key={adapter.name.toUpperCase()} onClick={() => loginWithInjected(adapter.name)} className="card" disabled={loading}>
+          {loading ? "Connecting..." : `Login with ${adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet`}
         </button>
       ))}
+      {error && <div className="error">{error}</div>}
     </div>
   );
 

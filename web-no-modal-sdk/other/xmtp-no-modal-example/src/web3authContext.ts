@@ -20,4 +20,4 @@ const web3AuthContextConfig = {
 };
 // IMP END - Instantiate SDK
 
-export default web3AuthContextConfig;
+export default web3AuthContextConfig; 

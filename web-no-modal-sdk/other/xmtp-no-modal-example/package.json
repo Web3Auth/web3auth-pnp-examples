@@ -12,17 +12,11 @@
   },
   "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
-    "@web3auth/auth-adapter": "^9.7.0",
-    "@web3auth/base": "^9.7.0",
-    "@web3auth/ethereum-provider": "^9.7.0",
     "@web3auth/no-modal": "^10.0.0-beta.7",
     "@xmtp/react-sdk": "^6.0.0",
-    "empty-module": "^0.0.2",
     "ethers": "^6.13.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "viem": "^2.18.8",
-    "web3": "^4.11.1"
+    "react-dom": "^18.3.1"
   },
   "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {

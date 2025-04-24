@@ -16,13 +16,13 @@ export function SignMessage() {
       <h2>Sign Message</h2>
       <form onSubmit={submit}>
         <input name="message" placeholder="Message" required />
-        <button disabled={isPending} type="submit" className="card">
-          {isPending ? 'Signing...' : 'Sign Message'}
+        <button disabled={isPending} type="submit">
+          {isPending ? 'Signing...' : 'Sign'}
         </button>
       </form>
-      {hash && <div>Message Hash: {hash}</div>}
+      {hash && <div className="hash">Message Hash: {hash}</div>}
       {error && (
-        <div>Error: {error.message}</div>
+        <div className="error">Error: {error.message}</div>
       )}
     </div>
   )

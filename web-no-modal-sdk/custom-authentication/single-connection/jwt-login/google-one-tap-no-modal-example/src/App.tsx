@@ -16,14 +16,14 @@ function App() {
 
   const loginWithGoogle = async (response: CredentialResponse) => {
     const idToken = response.credential;
+    console.log("idToken", idToken);
 
     await connect(WALLET_CONNECTORS.AUTH, {
-      groupedAuthConnectionId: "aggregate-sapphire",
-      authConnectionId: "w3a-google",
+      authConnectionId: "w3a-google-demo",
       authConnection: AUTH_CONNECTION.CUSTOM,
-      login_hint: idToken,
+      id_token: idToken,
       extraLoginOptions: {
-        id_token: idToken,
+        isUserIdCaseSensitive: false,
       },
     });
   };

@@ -10,10 +10,10 @@ import { SwitchChain } from "../components/switchNetwork";
 import { useEffect } from "react";
 
 function App() {
-  const { connect, isConnected } = useWeb3AuthConnect();
-  const { disconnect } = useWeb3AuthDisconnect();
+  const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
-  const { token, authenticateUser } = useIdentityToken();
+  const { token, authenticateUser, loading: idTokenLoading, error: idTokenError } = useIdentityToken();
   const { web3Auth } = useWeb3Auth();
   const { address, connector } = useAccount();
 
@@ -26,7 +26,7 @@ function App() {
   }
 
   const validateIdToken = async () => {
-    await getIdToken();
+    await authenticateUser();
     const pubKey = await web3Auth!.provider!.request({ method: "public_key" });
 
     // Validate idToken with server
@@ -49,18 +49,6 @@ function App() {
     return res.status;
   };
 
-  const login = async () => {
-    await connect(WALLET_CONNECTORS.AUTH, {
-      authConnection: "google",
-    });
-  };
-
-  const getIdToken = async () => {
-    await authenticateUser();
-    uiConsole(token);
-  };
-
-
   useEffect(() => {
     const init = async () => {
       try {
@@ -76,7 +64,7 @@ function App() {
   }, [isConnected]);
 
   const loggedInView = (
-    <>
+    <div className="grid">
       <h2>Connected to {connector?.name}</h2>
       <div>{address}</div>
       <div className="flex-container"> 
@@ -86,9 +74,11 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={getIdToken} className="card">
+          <button onClick={() => authenticateUser().then(() => uiConsole(token))} className="card">
             Get ID Token
           </button>
+          {idTokenLoading && <div className="loading">Getting ID Token...</div>}
+          {idTokenError && <div className="error">{idTokenError.message}</div>}
         </div>
         <div>
           <button onClick={validateIdToken} className="card">
@@ -99,18 +89,26 @@ function App() {
           <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
       </div>
       <SendTransaction />
       <Balance />
       <SwitchChain />
-    </>
+    </div>
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <div className="grid">
+      <button onClick={() => connect(WALLET_CONNECTORS.AUTH, {
+        authConnection: "google",
+      })} className="card">
+        Login
+      </button>
+      {connectLoading && <div className="loading">Connecting...</div>}
+      {connectError && <div className="error">{connectError.message}</div>}
+    </div>
   );
 
   return (

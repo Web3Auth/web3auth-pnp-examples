@@ -11,42 +11,41 @@ import { getAuth, GithubAuthProvider, signInWithPopup } from "firebase/auth";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAAAF-xdPur0wJpgwXLGdLZWDwRCTRLdX8",
-  authDomain: "web3auth-firebase-github.firebaseapp.com",
-  projectId: "web3auth-firebase-github",
-  storageBucket: "web3auth-firebase-github.appspot.com",
-  messagingSenderId: "384159528034",
-  appId: "1:384159528034:web:9a9121481ea2948237cd3b",
+  apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E",
+  authDomain: "web3auth-oauth-logins.firebaseapp.com",
+  projectId: "web3auth-oauth-logins",
+  storageBucket: "web3auth-oauth-logins.appspot.com",
+  messagingSenderId: "461819774167",
+  appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
 function App() {
-  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
-  const { disconnect } = useWeb3AuthDisconnect();
+  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { address } = useAccount();
 
   const loginWithFirebaseGithub = async () => {
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const githubProvider = new GithubAuthProvider();
+    try {
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const githubProvider = new GithubAuthProvider();
 
-    const result = await signInWithPopup(auth, githubProvider);    
+      const result = await signInWithPopup(auth, githubProvider);    
 
-    const idToken = await result.user.getIdToken(true);
+      const idToken = await result.user.getIdToken(true);
 
-    connect(WALLET_CONNECTORS.AUTH, {
-      groupedAuthConnectionId: "aggregate-sapphire",
-      authConnectionId: "w3a-firebase",
-      authConnection: AUTH_CONNECTION.CUSTOM,
-      login_hint: idToken,
-      extraLoginOptions: {
+      connect(WALLET_CONNECTORS.AUTH, {
+        authConnectionId: "w3a-firebase-demo",
+        authConnection: AUTH_CONNECTION.CUSTOM,
         id_token: idToken,
-      },
-    });
+        extraLoginOptions: {
+          isUserIdCaseSensitive: false,
+        },
+      });
+    } catch (error) {
+      console.error("Firebase authentication error:", error);
+    }
   };
 
   function uiConsole(...args: any[]): void {
@@ -58,7 +57,7 @@ function App() {
   }
 
   const loggedInView = (
-    <>
+    <div className="grid">
       <h2>Connected to {connectorName}</h2>
       <div>{address}</div>
       <div className="flex-container"> 
@@ -71,19 +70,25 @@ function App() {
           <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
       </div>
       <SendTransaction />
       <Balance />
       <SwitchChain />
-    </>
+    </div>
   );
 
   const unloggedInView = (
-    <div className="flex-container">
-      <button onClick={loginWithFirebaseGithub} className="card">
-        Login with Firebase GitHub
-      </button>
+    <div className="grid">
+      <div className="flex-container">
+        <button onClick={loginWithFirebaseGithub} className="card">
+          Login with Firebase GitHub
+        </button>
+      </div>
+      {connectLoading && <div className="loading">Connecting...</div>}
+      {connectError && <div className="error">{connectError.message}</div>}
     </div>
   );
 
@@ -96,7 +101,7 @@ function App() {
         & React No Modal with Firebase
       </h1>
 
-      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      {isConnected ? loggedInView : unloggedInView}
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>

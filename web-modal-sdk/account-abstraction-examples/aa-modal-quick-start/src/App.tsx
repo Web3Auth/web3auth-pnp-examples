@@ -1,43 +1,34 @@
 import "./App.css";
 
-import { IProvider, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { AccountAbstractionProvider, SafeSmartAccount } from "@web3auth/account-abstraction-provider";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
+import { IProvider, Web3Auth, WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
 import { useEffect, useState } from "react";
 
 
 import RPC from "./ethersRPC";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
-// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0xaa36a7, clientId)!;
+const clientId = "BBWsHL_ho__CfdDwMoJTwvBkt6KtsMq9F1XlqYF2uuS1V_MTgVUm3U93PVkp0rdcLHdtwLqv_E6U-ogTvSY226E"; // get from https://dashboard.web3auth.io
 
 const pimlicoAPIKey = import.meta.env.VITE_API_KEY;
 
-const accountAbstractionProvider = new AccountAbstractionProvider({
-  config: {
-    chainConfig,
-    bundlerConfig: {
-      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
-    },
-    smartAccountInit: new SafeSmartAccount(),
-    paymasterConfig: {
-      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
-    }
-  }
-});
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-  accountAbstractionProvider
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  authBuildEnv: 'testing',
+  defaultChainId: "0xaa36a7",
+  accountAbstractionConfig: {
+    smartAccountType: "biconomy",
+    chains: [
+      {
+        chainId: "0xaa36a7",
+        bundlerConfig: {
+          url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+        },
+        paymasterConfig: {
+          url: `https://api.pimlico.io/v2/11155111/paymaster?apikey=${pimlicoAPIKey}`,
+        }
+      },
+    ],
+  },
 }
 
 const web3auth = new Web3Auth(web3AuthOptions);

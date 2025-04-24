@@ -1,5 +1,5 @@
 {
-  "originHash" : "df4fd2fa513d090507ecd800c962d144abc1220365ed0d23bf4f5191c8d05fbe",
+  "originHash" : "7cbb23c8504bf7142e6a373dc1e1a829954d2e18d5df31faae1d2304660f8792",
   "pins" : [
     {
       "identity" : "bigint",
@@ -186,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Web3Auth/web3auth-swift-sdk/",
       "state" : {
-        "revision" : "3d3a3c8dcd6fbcdfd490b100746caae440ff9f63",
-        "version" : "11.1.0"
+        "branch" : "feat/auth_service_v10_changes",
+        "revision" : "e83c9a78513a012094c1b35d13dcd80be6640839"
       }
     },
     {

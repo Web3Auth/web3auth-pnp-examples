@@ -11,12 +11,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.*
 import org.web3j.crypto.Credentials
@@ -54,37 +52,28 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
         web3 = Web3j.build(HttpService(rpcUrl))
 
+        val authConnectionConfig = ArrayList<AuthConnectionConfig>()
+        authConnectionConfig.add(
+            AuthConnectionConfig(
+                authConnectionId = "w3a-firebase-demo",
+                authConnection = AuthConnection.JWT,
+                clientId = getString(R.string.web3auth_project_id),
+            )
+        )
+
         web3Auth = Web3Auth(
            Web3AuthOptions(
                clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
                network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
-               buildEnv = BuildEnv.PRODUCTION,
+               authBuildEnv = BuildEnv.TESTING,
                redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth"), // your app's redirect URL
-               // Optional parameters
-               whiteLabel = WhiteLabelData(
-                   "Web3Auth Android FireBase Example",
-                   null,
-                   "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-                   "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-                   Language.EN,
-                   ThemeModes.LIGHT,
-                   true,
-                   hashMapOf(
-                       "primary" to "#eb5424"
-                   )
-               ),
                mfaSettings = MfaSettings(
                    deviceShareFactor = MfaSetting(true, 1, true),
                    socialBackupFactor = MfaSetting(true, 2, true),
                    passwordFactor = MfaSetting(true, 3, false),
                    backUpShareFactor = MfaSetting(true, 4, false),
                ),
-               loginConfig = hashMapOf("jwt" to LoginConfigItem(
-                   verifier = "w3a-firebase-demo",
-                   typeOfLogin = TypeOfLogin.JWT,
-                   name = "Firebase login",
-                   clientId = getString(R.string.web3auth_project_id)
-               ))
+               authConnectionConfig = authConnectionConfig
            ), context = this
        )
 
@@ -167,8 +156,8 @@ class MainActivity : AppCompatActivity() {
                         val idToken = result.token
                         //Do whatever
                         Log.d(TAG, "GetTokenResult result = $idToken")
-                        val selectedLoginProvider = Provider.JWT
-                        val loginParams = LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain= "firebase", id_token = idToken, verifierIdField = "sub"))
+                        val authConnection = AuthConnection.JWT
+                        val loginParams = LoginParams(authConnection, extraLoginOptions = ExtraLoginOptions(domain= "firebase", id_token = idToken, verifierIdField = "sub"))
                         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(loginParams)
 
                         loginCompletableFuture.whenComplete {  _, error ->
@@ -221,18 +210,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareLoginParams(result: GetTokenResult): LoginParams {
-        val selectedLoginProvider = Provider.JWT
-        return LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain= "firebase", id_token = result.token, verifierIdField = "sub"))
+        val authConnection = AuthConnection.JWT
+        return LoginParams(authConnection, extraLoginOptions = ExtraLoginOptions(domain= "firebase", id_token = result.token, verifierIdField = "sub"))
     }
 
     private fun launchWalletServices() {
-        val completableFuture = web3Auth.launchWalletServices(
-            ChainConfig(
+        val chainsConfig = ArrayList<ChainsConfig>()
+        chainsConfig.add(
+            ChainsConfig(
                 chainId = "0x1",
                 rpcTarget = "https://1rpc.io/eth",
                 ticker = "ETH",
                 chainNamespace = ChainNamespace.EIP155
             )
+        )
+        val completableFuture = web3Auth.showWalletUI(
+            chainConfig = chainsConfig,
+            chainId = "0x1",
         )
 
         completableFuture.whenComplete{_, error ->

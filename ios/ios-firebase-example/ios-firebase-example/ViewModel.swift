@@ -23,22 +23,15 @@ class ViewModel: ObservableObject {
         web3Auth = try await Web3Auth(W3AInitParams(
             clientId: clientId,
             network: network,
-            buildEnv: .testing,
+            authBuildEnv: .testing,
             redirectUrl: "web3auth.ios-firebase-example://auth",
-            loginConfig: [
-                TypeOfLogin.jwt.rawValue:
-                        .init(
-                            verifier: "w3a-firebase-demo",
-                            typeOfLogin: .jwt,
-                            clientId: self.clientId
-                        )
+            authConnectionConfig: [
+                AuthConnectionConfig.init(
+                    authConnectionId: "w3a-firebase-demo",
+                    typeOfLogin: .jwt,
+                    clientId: self.clientId
+                )
             ],
-            mfaSettings: MfaSettings(
-                deviceShareFactor: MfaSetting(enable: true, priority: 1),
-                backUpShareFactor: MfaSetting(enable: true, priority: 2),
-                socialBackupFactor: MfaSetting(enable: true, priority: 3),
-                passwordFactor: MfaSetting(enable: true, priority: 4)
-            ),
             // 259200 allows user to stay authenticated for 3 days with Web3Auth.
             // Default is 86400, which is 1 day.
             sessionTime: 259200
@@ -60,11 +53,14 @@ class ViewModel: ObservableObject {
     func launchWalletServices() {
         Task {
             do {
-                try await web3Auth!.launchWalletServices(
-                    chainConfig: ChainConfig(
-                        chainId: "0xaa36a7",
-                        rpcTarget: "https://eth-sepolia.public.blastapi.io"
-                    )
+                try await web3Auth!.showWalletUI(
+                    chains: [
+                        ChainsConfig(
+                            chainId: "0xaa36a7",
+                            rpcTarget: "https://eth-sepolia.public.blastapi.io"
+                        )
+                    ],
+                    chainId: "0xaa36a7"
                 )
             } catch {
                 print(error.localizedDescription)
@@ -111,7 +107,7 @@ class ViewModel: ObservableObject {
                 params.append("Web3Auth")
                 
                 let result = try await self.web3Auth?.request(
-                    chainConfig: ChainConfig(
+                    chainConfig: ChainsConfig(
                         chainId: "0x89",
                         rpcTarget: "https://polygon.llamarpc.com"
                     ),
@@ -151,7 +147,7 @@ class ViewModel: ObservableObject {
         let idToken = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true)
         
         return W3ALoginParams(
-            loginProvider: .JWT,
+            authConnection: .JWT,
             dappShare: nil,
             extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: idToken?.token, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil, additionalParams: nil),
             mfaLevel: .NONE,
@@ -179,7 +175,7 @@ extension ViewModel {
             User info:
                 Name: \(result.userInfo?.name ?? "")
                 Profile image: \(result.userInfo?.profileImage ?? "N/A")
-                Type of login: \(result.userInfo?.typeOfLogin ?? "")
+                Type of login: \(result.userInfo?.authConnectionId ?? "")
         """)
     }
 }

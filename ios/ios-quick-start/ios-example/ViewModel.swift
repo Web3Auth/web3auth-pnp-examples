@@ -27,7 +27,7 @@ class ViewModel: ObservableObject {
             web3Auth = try await Web3Auth(W3AInitParams(
                 clientId: clientId,
                 network: network,
-                buildEnv: .testing,
+                authBuildEnv: .testing,
                 redirectUrl: "web3auth.ios-example://auth"
             ))
         } catch {
@@ -44,12 +44,12 @@ class ViewModel: ObservableObject {
         })
     }
     
-    func login(provider: Web3AuthProvider) {
+    func login(connection: AuthConnection) {
         Task {
             do {
                 // IMP START - Login
                 let result = try await web3Auth?.login(
-                    W3ALoginParams(loginProvider: provider)
+                    W3ALoginParams(authConnection: connection)
                 )
                 // IMP END - Login
                 await MainActor.run(body: {
@@ -85,11 +85,11 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func loginEmailPasswordless(provider: Web3AuthProvider, email: String) {
+    func loginEmailPasswordless(connection: AuthConnection, email: String) {
         Task {
             do {
                 // IMP START - Login
-                let result = try await web3Auth?.login(W3ALoginParams(loginProvider: provider, extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: email, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil)))
+                let result = try await web3Auth?.login(W3ALoginParams(authConnection: connection, extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: email, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil)))
                 // IMP END - Login
                 await MainActor.run(body: {
                     user = result

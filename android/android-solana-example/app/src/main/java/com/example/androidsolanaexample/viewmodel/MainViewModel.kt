@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidsolanaexample.data.Web3AuthHelper
 import com.example.androidsolanaexample.domain.SolanaUseCase
+import com.web3auth.core.types.AuthConnection
 import com.web3auth.core.types.LoginParams
-import com.web3auth.core.types.Provider
 import com.web3auth.core.types.UserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +34,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val sola
         solanaKeyPair = Keypair.fromSecretKey(solanaPrivateKey().hexToByteArray())
     }
     fun login(){
-        val loginParams = LoginParams(loginProvider = Provider.GOOGLE)
+        val loginParams = LoginParams(authConnection = AuthConnection.GOOGLE)
         viewModelScope.launch {
             try {
                 web3AuthHelper.login(loginParams = loginParams).await()

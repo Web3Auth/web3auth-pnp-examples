@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             Web3AuthOptions(
                 clientId = getString(R.string.web3auth_project_id),
                 network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
-                buildEnv = BuildEnv.PRODUCTION,
+                authBuildEnv = BuildEnv.TESTING,
                 redirectUrl = Uri.parse("com.sbz.web3authdemoapp://auth")
             ), this
         )
@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     private fun signIn() {
         val email = emailInput.text.toString()
         // IMP START - Login
-        val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val selectedLoginProvider = AuthConnection.EMAIL_PASSWORDLESS   // Can be GOOGLE, FACEBOOK, TWITCH etc.
         val loginParams = LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(login_hint = email))
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
             web3Auth.login(loginParams)

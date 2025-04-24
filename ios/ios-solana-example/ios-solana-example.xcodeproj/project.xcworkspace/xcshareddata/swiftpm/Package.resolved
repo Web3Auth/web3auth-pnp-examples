@@ -1,33 +1,6 @@
 {
-  "originHash" : "edf43263484c458b2f2acf14cf0abd81b2aafca008f8a166f2055d3b10bbb47a",
+  "originHash" : "c365abaa0a1fdf68f57228a18d3bbc6a91dc765ac9ac3d65edb578ae0713d78b",
   "pins" : [
-    {
-      "identity" : "bigint",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/attaswift/BigInt.git",
-      "state" : {
-        "revision" : "114343a705df4725dfe7ab8a2a326b8883cfd79c",
-        "version" : "5.5.1"
-      }
-    },
-    {
-      "identity" : "curvelib.swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tkey/curvelib.swift",
-      "state" : {
-        "revision" : "432bf1abe7ff505fc2ac9fcf697341ff5b2dc6d0",
-        "version" : "2.0.0"
-      }
-    },
-    {
-      "identity" : "keychain-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/evgenyneu/keychain-swift.git",
-      "state" : {
-        "revision" : "d108a1fa6189e661f91560548ef48651ed8d93b9",
-        "version" : "20.0.0"
-      }
-    },
     {
       "identity" : "secp256k1.swift",
       "kind" : "remoteSourceControl",
@@ -35,15 +8,6 @@
       "state" : {
         "revision" : "cd187c632fb812fd93711a9f7e644adb7e5f97f0",
         "version" : "0.1.7"
-      }
-    },
-    {
-      "identity" : "session-manager-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Web3Auth/session-manager-swift.git",
-      "state" : {
-        "revision" : "de18a6b3d98f67b3c77f84ebab73f7a51807a503",
-        "version" : "6.1.0"
       }
     },
     {
@@ -71,15 +35,6 @@
       "state" : {
         "revision" : "f8fd111642bf2336b11ef9ea828510693106e954",
         "version" : "1.1.0"
-      }
-    },
-    {
-      "identity" : "web3auth-swift-sdk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Web3Auth/web3auth-swift-sdk/",
-      "state" : {
-        "revision" : "35d05c0af33687dac1a35968f498658c8c1893c7",
-        "version" : "11.0.4"
       }
     }
   ],

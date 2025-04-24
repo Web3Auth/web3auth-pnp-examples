@@ -8,6 +8,7 @@ import com.example.androidsolanaexample.data.Web3AuthHelperImpl
 import com.example.androidsolanaexample.domain.SolanaUseCase
 import com.example.androidsolanaexample.viewmodel.MainViewModel
 import com.web3auth.core.Web3Auth
+import com.web3auth.core.types.BuildEnv
 import com.web3auth.core.types.Network
 import com.web3auth.core.types.Web3AuthOptions
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -34,6 +35,7 @@ private fun getWeb3AuthHelper(context: Context): Web3AuthHelper {
         Web3AuthOptions(
             clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
             network = Network.SAPPHIRE_MAINNET,
+            authBuildEnv = BuildEnv.TESTING,
             redirectUrl = Uri.parse( "com.example.androidsolanaexample://auth")
         ), context
     )

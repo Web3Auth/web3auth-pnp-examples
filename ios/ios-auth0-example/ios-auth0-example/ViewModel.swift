@@ -18,21 +18,13 @@ class ViewModel: ObservableObject {
         web3Auth = try await Web3Auth(W3AInitParams(
             clientId: clientId, network: network,
             redirectUrl: "web3auth.ios-auth0-example://auth", 
-            loginConfig: [
-                TypeOfLogin.jwt.rawValue:
-                        .init(
-                            verifier: "w3a-auth0-demo",
-                            typeOfLogin: .jwt,
-                            clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O"
-                        )
+            authConnectionConfig: [
+                AuthConnectionConfig(
+                    authConnectionId: "w3a-auth0-demo",
+                    typeOfLogin: .jwt,
+                    clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O"
+                )
             ],
-            whiteLabel: W3AWhiteLabelData(
-                appName: "Web3Auth Stub",
-                logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
-                logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
-                defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
-                mode: .dark,
-                theme: ["primary": "#d53f8c"]),
             mfaSettings: MfaSettings(
                 deviceShareFactor: MfaSetting(enable: true, priority: 1),
                 backUpShareFactor: MfaSetting(enable: true, priority: 2),
@@ -60,7 +52,7 @@ class ViewModel: ObservableObject {
             do {
                 let result = try await web3Auth?.login(
                     W3ALoginParams(
-                        loginProvider: .JWT,
+                        authConnection: .JWT,
                         dappShare: nil,
                         extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: "https://web3auth.au.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "sub", isVerifierIdCaseSensitive: nil, additionalParams: nil),
                         mfaLevel: .NONE,
@@ -97,7 +89,7 @@ extension ViewModel {
             User info:
                 Name: \(result.userInfo?.name ?? "")
                 Profile image: \(result.userInfo?.profileImage ?? "N/A")
-                Type of login: \(result.userInfo?.typeOfLogin ?? "")
+                Type of login: \(result.userInfo?.authConnectionId ?? "")
         """)
     }
 }

@@ -19,6 +19,7 @@ class Web3AuthHelper {
             W3AInitParams(
                 clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Replace with your actual client ID
                 network: Network.sapphire_mainnet, // Change network based on your requirements
+                authBuildEnv: .testing,
                 redirectUrl: "com.w3a.ios-aptos-example://auth" // Update the redirect URL as per your app's configuration
             )
         )
@@ -62,7 +63,7 @@ class Web3AuthHelper {
     func login(email: String) async throws {
         let _ = try await web3Auth.login(
             W3ALoginParams(
-                loginProvider: Web3AuthProvider.EMAIL_PASSWORDLESS, // Using passwordless email login
+                authConnection: .EMAIL_PASSWORDLESS, // Using passwordless email login
                 extraLoginOptions: ExtraLoginOptions(login_hint: email) // Providing the email as a login hint
             )
         )

@@ -50,7 +50,7 @@
       "react-app/jest"
     ]
   },
-  "name": "sfa-web-bitcoin-example",
+  "name": "bitcoin-no-modal-example",
   "overrides": {
     "typescript": "^5.0.4"
   },

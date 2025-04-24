@@ -1,5 +1,5 @@
 {
-  "name": "jwt-no-modal-example",
+  "name": "farcaster-no-modal-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

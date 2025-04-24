@@ -1,5 +1,5 @@
 {
-  "name": "sfa-web-nextauth-example",
+  "name": "nextauth-no-modal-example",
   "version": "0.1.0",
   "private": true,
   "scripts": {

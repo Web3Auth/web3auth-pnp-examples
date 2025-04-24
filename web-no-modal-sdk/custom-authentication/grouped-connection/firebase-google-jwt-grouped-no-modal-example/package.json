@@ -1,5 +1,5 @@
 {
-  "name": "firebase-google-aggregate-no-modal-example",
+  "name": "firebase-google-jwt-grouped-no-modal-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

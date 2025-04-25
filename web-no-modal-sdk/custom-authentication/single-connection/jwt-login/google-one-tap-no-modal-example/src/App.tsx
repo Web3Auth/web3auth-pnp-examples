@@ -24,6 +24,7 @@ function App() {
       id_token: idToken,
       extraLoginOptions: {
         isUserIdCaseSensitive: false,
+        userIdField: "email",
       },
     });
   };

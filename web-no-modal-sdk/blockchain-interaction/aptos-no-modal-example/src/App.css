@@ -206,4 +206,79 @@ input::placeholder {
 	overflow: auto;
 	word-wrap: break-word;
 	font-family: monospace;
+	font-size: 14px; /* Use whole px */
+	padding: 16px;
+	margin: 24px 0;
+	background-color: #0a0a0a; /* Near-black background */
+	color: #e0e0e0; /* Light grey text */
+	border-radius: 0; /* Sharp corners */
+	border: none; /* No border */
+}
+
+/* Footer */
+.footer {
+	width: 100%;
+	padding: 32px 0;
+	border-top: 1px solid var(--border-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 24px;
+	margin-top: 48px;
+	flex-wrap: wrap;
+}
+
+.footer a {
+	color: var(--text-muted);
+	text-decoration: none;
+	font-size: 14px;
+	transition: color 0.2s ease;
+}
+
+.footer a:hover {
+	color: var(--primary-color);
+}
+
+.error {
+	color: red;
+}
+
+.loading {
+	color: var(--primary-color);
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+	.container {
+		max-width: 640px;
+	}
+	
+	.title {
+		font-size: 32px;
+	}
+	
+	form {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+	
+	form button {
+		margin-top: 0;
+	}
+}
+
+@media (min-width: 768px) {
+	.container {
+		max-width: 768px;
+	}
+	
+	.title {
+		font-size: 36px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.container {
+		max-width: 1024px;
+	}
 }

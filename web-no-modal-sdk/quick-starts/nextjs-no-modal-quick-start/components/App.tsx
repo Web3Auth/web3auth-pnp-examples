@@ -1,9 +1,9 @@
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS, accountAbstractionProvider } from "@web3auth/no-modal";
+import { WALLET_CONNECTORS } from "@web3auth/no-modal";
 import { useAccount } from "wagmi";
-import { SendTransaction } from "../components/sendTransaction";
-import { Balance } from "../components/getBalance";
-import { SwitchChain } from "../components/switchNetwork";
+import { SendTransaction } from "./wagmi.tsx/sendTransaction";
+import { Balance } from "./wagmi.tsx/getBalance";
+import { SwitchChain } from "./wagmi.tsx/switchNetwork";
 function App() {
   const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();

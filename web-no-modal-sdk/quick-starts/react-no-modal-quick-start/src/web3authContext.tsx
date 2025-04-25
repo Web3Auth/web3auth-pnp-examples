@@ -1,5 +1,5 @@
 // IMP START - Quick Start
-import { authConnector, MFA_LEVELS, WEB3AUTH_NETWORK, type Web3AuthNoModalOptions } from "@web3auth/no-modal";
+import { WEB3AUTH_NETWORK, type Web3AuthNoModalOptions } from "@web3auth/no-modal";
 // IMP END - Quick Start
 
 // IMP START - Dashboard Registration

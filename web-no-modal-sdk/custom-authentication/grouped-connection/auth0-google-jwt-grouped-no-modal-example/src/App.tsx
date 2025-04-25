@@ -22,9 +22,10 @@ function App() {
       groupedAuthConnectionId: "aggregate-sapphire",
       authConnectionId: "w3a-google",
       authConnection: AUTH_CONNECTION.CUSTOM,
-      login_hint: idToken,
+      id_token: idToken,
       extraLoginOptions: {
-        id_token: idToken,
+        isUserIdCaseSensitive: false,
+        verifierIdField: "email",
       },
     });
   };
@@ -40,9 +41,10 @@ function App() {
         groupedAuthConnectionId: "aggregate-sapphire",
         authConnectionId: "w3a-a0-github",
         authConnection: AUTH_CONNECTION.CUSTOM,
-        login_hint: idToken,
+        id_token: idToken,
         extraLoginOptions: {
-          id_token: idToken,
+          isUserIdCaseSensitive: false,
+          verifierIdField: "email",
         },
       });
 
@@ -99,7 +101,7 @@ function App() {
         />
       </div>
       <button onClick={loginWithAuth0} className="card">
-        Login with Auth0 Google
+        Login with Auth0 GitHub
       </button>
     </div>
   );

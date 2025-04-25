@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import "./App.css";
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/no-modal/react";
 import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
@@ -18,7 +18,11 @@ function App() {
       authConnection: AUTH_CONNECTION.CUSTOM,
       authConnectionId: "w3a-cognito-demo",
       extraLoginOptions: {
-        clientId: "7i7vcbpuj37mqmfr6qrqbj55s",
+        clientId: "2upuksfh6n0n5c0nciirc1bdrv",
+        domain: "https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com",
+        verifierIdField: "email",
+        response_type: "token",
+        scope: "email profile openid",
       },
     });
   };
@@ -35,7 +39,7 @@ function App() {
     <>
       <h2>Connected to {connectorName}</h2>
       <div>{address}</div>
-      <div className="flex-container"> 
+      <div className="flex-container">
         <div>
           <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info

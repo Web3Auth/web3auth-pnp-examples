@@ -1,59 +1,45 @@
-import { useAccount, useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
-import { useState } from "react";
+import { FormEvent } from "react";
+import { useWaitForTransactionReceipt, useSendTransaction, BaseError } from "wagmi";
+import { Hex, parseEther } from "viem";
 
 export function SendTransaction() {
-  const { address } = useAccount();
-  const [to, setTo] = useState<string>(address || "");
-  const [amount, setAmount] = useState<string>("0.001");
+  const { data: hash, error, isPending, sendTransaction } = useSendTransaction()
 
-  const { data: hash, sendTransaction } = useSendTransaction();
-  
-  const { isLoading, isSuccess } = useWaitForTransactionReceipt({
-    hash,
-  });
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    sendTransaction({
-      to: to,
-      value: BigInt(parseFloat(amount) * 10 ** 18),
-    });
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData(e.target as HTMLFormElement)
+    const to = formData.get('address') as Hex
+    const value = formData.get('value') as string
+    sendTransaction({ to, value: parseEther(value) })
   }
-  
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    })
+
   return (
-    <div className="flex-container">
-      <form onSubmit={handleSubmit}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <input
-            placeholder="Receiver address"
-            onChange={(e) => setTo(e.target.value)}
-            value={to}
-            className="card"
-          />
-          <input
-            placeholder="Amount in ETH"
-            onChange={(e) => setAmount(e.target.value)}
-            value={amount}
-            className="card"
-          />
-          <button type="submit" className="card">
-            Send Transaction
-          </button>
-        </div>
+    <div>
+      <h2>Send Transaction</h2>
+      <form onSubmit={submit}>
+        <input name="address" placeholder="Address" required />
+        <input
+          name="value"
+          placeholder="Amount (ETH)"
+          type="number"
+          step="0.000000001"
+          required
+        />
+        <button disabled={isPending} type="submit">
+          {isPending ? 'Confirming...' : 'Send'}
+        </button>
       </form>
-      <div>
-        {isLoading && <div>Confirming...</div>}
-        {isSuccess && (
-          <div>
-            Successfully sent {amount} ETH to {to}
-            <div>
-              <a href={`https://polygonscan.com/tx/${hash}`} target="_blank" rel="noreferrer">
-                View on Polygonscan
-              </a>
-            </div>
-          </div>
-        )}
-      </div>
+      {hash && <div>Transaction Hash: {hash}</div>}
+      {isConfirming && 'Waiting for confirmation...'}
+      {isConfirmed && 'Transaction confirmed.'}
+      {error && (
+        <div>Error: {(error as BaseError).shortMessage || error.message}</div>
+      )}
     </div>
-  );
-} 
+  )
+}

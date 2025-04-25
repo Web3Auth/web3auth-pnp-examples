@@ -5,26 +5,35 @@ import { useEffect, useState } from "react";
 
 
 import RPC from "./ethersRPC";
+import { parseAbi } from "viem";
 
-const clientId = "BBWsHL_ho__CfdDwMoJTwvBkt6KtsMq9F1XlqYF2uuS1V_MTgVUm3U93PVkp0rdcLHdtwLqv_E6U-ogTvSY226E"; // get from https://dashboard.web3auth.io
+const clientId = "BJGOPAjv_1yJTYfmZfmHZqge71eHId9B1H6RXNNPznkw5Gu9AAamCxioL2ZN04_uZuIAZfFYMOSz4URX46OibJM"; // get from https://dashboard.web3auth.io
 
 const pimlicoAPIKey = import.meta.env.VITE_API_KEY;
+
+// Pimlico's ERC-20 Paymaster address
+const pimlicoPaymasterAddress = "0x777777777777AeC03fd955926DbF81597e66834C";
+// USDC address on Ethereum Sepolia
+const usdcAddress = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
 
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
   authBuildEnv: 'testing',
-  defaultChainId: "0xaa36a7",
+  defaultChainId: "0x14a34",
   accountAbstractionConfig: {
-    smartAccountType: "biconomy",
+    smartAccountType: "metamask",
     chains: [
       {
-        chainId: "0xaa36a7",
+        chainId: "0x14a34",
         bundlerConfig: {
-          url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+          url: `https://api.pimlico.io/v2/84532/rpc?apikey=${pimlicoAPIKey}`,
+          paymasterContext: {
+            token: usdcAddress,
+          }
         },
         paymasterConfig: {
-          url: `https://api.pimlico.io/v2/11155111/paymaster?apikey=${pimlicoAPIKey}`,
+          url: `https://api.pimlico.io/v2/84532/rpc?apikey=${pimlicoAPIKey}`,
         }
       },
     ],
@@ -38,9 +47,10 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
     const init = async () => {
       try {
-        await web3auth.initModal();
+        await web3auth.initModal({ signal: controller.signal });
         setProvider(web3auth.provider);
 
         if (web3auth.connected) {
@@ -52,6 +62,10 @@ function App() {
     };
 
     init();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   const login = async () => {
@@ -80,7 +94,13 @@ function App() {
       uiConsole("Provider is not initialized yet");
       return;
     }
-    const address = await RPC.getAccounts(provider);
+    const { smartAccount } = web3auth.accountAbstractionProvider || {};
+    if (!smartAccount) {
+      const address = await RPC.getAccounts(provider);
+      uiConsole(address);
+      return;
+    }
+    const address = await smartAccount?.getAddress();
     uiConsole(address);
   };
 
@@ -98,7 +118,8 @@ function App() {
       uiConsole("Provider is not initialized yet");
       return;
     }
-    const signedMessage = await RPC.signMessage(provider);
+    const { smartAccount } = web3auth.accountAbstractionProvider || {};
+    const signedMessage = await smartAccount?.signMessage({ message: "YOUR_MESSAGE" });
     uiConsole(signedMessage);
   };
 
@@ -108,8 +129,114 @@ function App() {
       return;
     }
     uiConsole("Sending Transaction...");
-    const transactionReceipt = await RPC.sendTransaction(provider);
-    uiConsole(transactionReceipt);
+    const amount = 10000000000000n;
+    const { smartAccount, bundlerClient } = web3auth.accountAbstractionProvider || {};
+    if (!smartAccount || !bundlerClient) {
+      uiConsole("Smart account or bundler client is not initialized yet");
+      return;
+    }
+    const userOpHash = await bundlerClient.sendUserOperation({
+      account: smartAccount,
+      calls: [
+        {
+          to: smartAccount.address,
+          value: amount,
+          data: "0x",
+        },
+      ],
+    });
+
+    // Retrieve user operation receipt
+    const receipt = await bundlerClient.waitForUserOperationReceipt({
+      hash: userOpHash,
+    });
+
+    const transactionHash = receipt.receipt.transactionHash;
+    uiConsole(transactionHash);
+  };
+
+  const sendBatchTransaction = async () => {
+    if (!provider) {
+      uiConsole("Provider is not initialized yet");
+      return;
+    }
+    const amount = 10000000000000n;
+    const { smartAccount, bundlerClient } = web3auth.accountAbstractionProvider || {};
+    if (!smartAccount || !bundlerClient) {
+      uiConsole("Smart account or bundler client is not initialized yet");
+      return;
+    }
+    uiConsole("Sending Transaction...");
+    const userOpHash = await bundlerClient.sendUserOperation({
+      account: smartAccount,
+      calls: [
+        {
+          to: smartAccount.address,
+          value: amount,
+          data: "0x",
+        },
+        {
+          to: smartAccount.address,
+          value: amount,
+          data: "0x",
+        },
+      ],
+    });
+
+    // Retrieve user operation receipt
+    const receipt = await bundlerClient.waitForUserOperationReceipt({
+      hash: userOpHash,
+    });
+
+    const transactionHash = receipt.receipt.transactionHash;
+    uiConsole(transactionHash);
+  };
+
+  const sendERC20PaymasterSponsoredTransaction = async () => {
+    if (!provider) {
+      uiConsole("Provider is not initialized yet");
+      return;
+    }
+    const { smartAccount, bundlerClient } = web3auth.accountAbstractionProvider || {};
+    if (!smartAccount || !bundlerClient) {
+      uiConsole("Smart account or bundler client is not initialized yet");
+      return;
+    }
+
+    uiConsole("Sending Transaction...");
+    // const amount = 10000000000000n;
+    // 10 USDC in WEI format. Since USDC has 6 decimals, 10 * 10^6
+    const approvalAmount = 10000000n;
+
+    const userOpHash = await bundlerClient.sendUserOperation({
+      account: smartAccount,
+      calls: [
+        {
+          to: usdcAddress,
+          abi: parseAbi(["function approve(address,uint)"]),
+          functionName: "approve",
+          args: [pimlicoPaymasterAddress, approvalAmount],
+        },
+        {
+          to: "0xFd9FD1E47D4371595bC2705c6Fcea6a1b146c583",
+          // value: amount,
+          data: "0x",
+        },
+        {
+          to: "0xFd9FD1E47D4371595bC2705c6Fcea6a1b146c583",
+          // value: amount,
+          data: "0x",
+        },
+      ],
+    });
+
+    // Retrieve user operation receipt
+    const receipt = await bundlerClient.waitForUserOperationReceipt({
+      hash: userOpHash,
+    });
+
+    const transactionHash = receipt.receipt.transactionHash;
+    uiConsole(transactionHash);
   };
 
   const signTransaction = async () => {
@@ -117,8 +244,35 @@ function App() {
       uiConsole("Provider is not initialized yet");
       return;
     }
+    const { smartAccount, bundlerClient } = web3auth.accountAbstractionProvider || {};
+    if (!smartAccount || !bundlerClient) {
+      uiConsole("Smart account or bundler client is not initialized yet");
+      return;
+    }
+
     uiConsole("Signing Transaction...");
-    const signature = await RPC.signTransaction(provider);
+
+    // Sign the transaction
+    const request = await bundlerClient.prepareUserOperation({
+      account: smartAccount,
+      calls: [
+        {
+          to: "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56",
+          value: BigInt(1000n),
+          data: "0x",
+        },
+      ],
+    });
+    const signature = await smartAccount.signUserOperation({
+      callData: request.callData,
+      callGasLimit: request.callGasLimit,
+      maxFeePerGas: request.maxFeePerGas,
+      maxPriorityFeePerGas: request.maxPriorityFeePerGas,
+      nonce: request.nonce,
+      preVerificationGas: request.preVerificationGas,
+      verificationGasLimit: request.verificationGasLimit,
+      signature: request.signature,
+    });
     uiConsole(signature);
   };
 
@@ -161,6 +315,16 @@ function App() {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={sendBatchTransaction} className="card">
+            Send Batch Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={sendERC20PaymasterSponsoredTransaction} className="card">
+            Send ERC20-paymaster-sponsored Transaction
           </button>
         </div>
         <div>

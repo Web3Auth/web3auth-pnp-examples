@@ -5,8 +5,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#6D5AE6",
+        primary: "#1c64f2",
         secondary: "#FF7D54",
+        success: "#0e9f6e",
+        info: "#0694a2",
+        warning: "#c27803",
+        danger: "#f05252",
         // Modern dark theme
         dark: {
           bg: {
@@ -91,6 +95,7 @@ module.exports = {
         'xs': '2px',
       },
       borderRadius: {
+        DEFAULT: '8px',
         'xl': '1rem',
         '2xl': '1.5rem',
         '3xl': '2rem',

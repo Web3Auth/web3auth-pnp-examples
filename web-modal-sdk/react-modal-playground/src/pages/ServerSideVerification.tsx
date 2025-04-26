@@ -1,4 +1,4 @@
-import { useWeb3Auth } from "@web3auth/modal/react";
+import { useWeb3AuthConnect } from "@web3auth/modal/react";
 import React, { useState } from "react";
 
 import Console from "../components/Console";
@@ -11,7 +11,7 @@ import { usePlayground } from "../services/playground";
 
 function ServerSideVerification() {
   const [loading, setLoading] = useState(false);
-  const { isConnected } = useWeb3Auth();
+  const { isConnected } = useWeb3AuthConnect();
   const [tokenId, setTokenId] = useState(null);
   const { verifyServerSide, getIdToken } = usePlayground();
 
@@ -46,38 +46,42 @@ function ServerSideVerification() {
         {isConnected ? (
           <>
             <Sidebar />
-            <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
-              <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Server Side Verification</h1>
-              <Form heading="" formDetails={formDetails}>
-                {tokenId ? (
-                  <LoaderButton
-                    className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                    style={{ backgroundColor: "#0364ff" }}
-                    onClick={async () => {
-                      setLoading(true);
-                      await verifyServerSide(tokenId);
-                      setLoading(false);
-                    }}
-                  >
-                    Verify
-                  </LoaderButton>
-                ) : (
-                  <LoaderButton
-                    className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                    style={{ backgroundColor: "#0364ff" }}
-                    onClick={async () => {
-                      setLoading(true);
-                      const idtoken = await getIdToken();
-                      setTokenId(idtoken);
-                      setLoading(false);
-                    }}
-                  >
-                    Get ID Token
-                  </LoaderButton>
-                )}
-              </Form>
-              <Console />
-              <SourceCode />
+            <div className="w-full h-full flex flex-1 flex-col bg-gray-50 dark:bg-dark-bg-secondary items-center overflow-y-auto lg:pl-64">
+              <div className="w-full max-w-4xl px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+                <h1 className="w-full px-4 pt-16 pb-8 text-2xl font-bold text-center sm:text-3xl text-gray-900 dark:text-dark-text-primary">
+                  Server Side Verification
+                </h1>
+                <Form heading="" formDetails={formDetails}>
+                  {tokenId ? (
+                    <LoaderButton
+                      className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                      style={{ backgroundColor: "#0364ff" }}
+                      onClick={async () => {
+                        setLoading(true);
+                        await verifyServerSide(tokenId);
+                        setLoading(false);
+                      }}
+                    >
+                      Verify
+                    </LoaderButton>
+                  ) : (
+                    <LoaderButton
+                      className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                      style={{ backgroundColor: "#0364ff" }}
+                      onClick={async () => {
+                        setLoading(true);
+                        const idtoken = await getIdToken();
+                        setTokenId(idtoken);
+                        setLoading(false);
+                      }}
+                    >
+                      Get ID Token
+                    </LoaderButton>
+                  )}
+                </Form>
+                <Console />
+                <SourceCode />
+              </div>
             </div>
           </>
         ) : (

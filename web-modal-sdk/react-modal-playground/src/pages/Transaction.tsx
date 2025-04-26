@@ -1,4 +1,4 @@
-import { useWeb3Auth } from "@web3auth/modal/react";
+import { useWeb3AuthConnect } from "@web3auth/modal/react";
 import React, { useState } from "react";
 
 import Console from "../components/Console";
@@ -12,7 +12,7 @@ import { usePlayground } from "../services/playground";
 
 function Transaction() {
   const { getSignature, sendTransaction } = usePlayground();
-  const { isConnected } = useWeb3Auth();
+  const { isConnected } = useWeb3AuthConnect();
 
   const [message, setMessage] = useState("Welcome to Web3Auth");
   const [address, setAddress] = useState("0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8");
@@ -76,40 +76,44 @@ function Transaction() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         {isConnected ? (
-          <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
-            <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Signing/ Transaction</h1>
-            <Tabs tabData={TabData} />
-            {tab === "signMessage" ? (
-              <Form formDetails={formDetailsSignMessage}>
-                <LoaderButton
-                  className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                  style={{ backgroundColor: "#0364ff" }}
-                  onClick={async () => {
-                    setLoading(true);
-                    await getSignature(message);
-                    setLoading(false);
-                  }}
-                >
-                  Sign Message
-                </LoaderButton>
-              </Form>
-            ) : (
-              <Form formDetails={formDetailsDestinationAddress}>
-                <LoaderButton
-                  className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                  style={{ backgroundColor: "#0364ff" }}
-                  onClick={async () => {
-                    setLoading(true);
-                    await sendTransaction(amount, address);
-                    setLoading(false);
-                  }}
-                >
-                  Send Transaction
-                </LoaderButton>
-              </Form>
-            )}
-            <Console />
-            <SourceCode />
+          <div className="w-full h-full flex flex-1 flex-col bg-gray-50 dark:bg-dark-bg-secondary items-center overflow-y-auto lg:pl-64">
+            <div className="w-full max-w-4xl px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+              <h1 className="w-full px-4 pt-16 pb-8 text-2xl font-bold text-center sm:text-3xl text-gray-900 dark:text-dark-text-primary">
+                Signing/ Transaction
+              </h1>
+              <Tabs tabData={TabData} />
+              {tab === "signMessage" ? (
+                <Form formDetails={formDetailsSignMessage}>
+                  <LoaderButton
+                    className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                    style={{ backgroundColor: "#0364ff" }}
+                    onClick={async () => {
+                      setLoading(true);
+                      await getSignature(message);
+                      setLoading(false);
+                    }}
+                  >
+                    Sign Message
+                  </LoaderButton>
+                </Form>
+              ) : (
+                <Form formDetails={formDetailsDestinationAddress}>
+                  <LoaderButton
+                    className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                    style={{ backgroundColor: "#0364ff" }}
+                    onClick={async () => {
+                      setLoading(true);
+                      await sendTransaction(amount, address);
+                      setLoading(false);
+                    }}
+                  >
+                    Send Transaction
+                  </LoaderButton>
+                </Form>
+              )}
+              <Console />
+              <SourceCode />
+            </div>
           </div>
         ) : (
           <NotConnectedPage />

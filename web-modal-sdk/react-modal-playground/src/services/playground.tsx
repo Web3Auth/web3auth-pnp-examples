@@ -1,5 +1,5 @@
-import { CONNECTOR_STATUS, CustomChainConfig, IProvider, WALLET_CONNECTORS } from "@web3auth/modal";
-import { useWeb3Auth } from "@web3auth/modal/react";
+import { CONNECTOR_STATUS, type CustomChainConfig, type IProvider, WALLET_CONNECTORS } from "@web3auth/modal";
+import { useIdentityToken, useSwitchChain, useWeb3Auth, useWeb3AuthConnect, useWeb3AuthUser } from "@web3auth/modal/react";
 import * as jose from "jose";
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
@@ -83,7 +83,11 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     console.log(...args);
   };
 
-  const { status, connect, switchChain, userInfo, provider, web3Auth, authenticateUser } = useWeb3Auth();
+  const { status, provider } = useWeb3Auth();
+  const { connect, connectorName } = useWeb3AuthConnect();
+  const { switchChain } = useSwitchChain();
+  const { userInfo } = useWeb3AuthUser();
+  const { token: idToken } = useIdentityToken();
   // const { showCheckout, showWalletConnectScanner, showWalletUI } = useWalletServicesPlugin();
 
   const setNewWalletProvider = useCallback(
@@ -102,34 +106,20 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     } else if (status === CONNECTOR_STATUS.CONNECTED) {
       setNewWalletProvider(provider);
     }
-  }, [web3Auth, status, provider, connect, setNewWalletProvider]);
+  }, [status, provider, connect, setNewWalletProvider]);
 
   const getUserInfo = async () => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return;
-    }
     uiConsole(userInfo);
     return userInfo;
   };
 
   const getPublicKey = async () => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return "";
-    }
-
     const publicKey = await walletProvider.getPublicKey();
     uiConsole(publicKey);
     return publicKey;
   };
 
   const getAddress = async () => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return "";
-    }
-
     const updatedAddress = await walletProvider.getAddress();
     setAddress(updatedAddress);
     uiConsole(updatedAddress);
@@ -137,10 +127,6 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getBalance = async () => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return "";
-    }
     const updatedBalance = await walletProvider.getBalance();
 
     setBalance(updatedBalance);
@@ -149,67 +135,41 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getSignature = async (message: string) => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return "";
-    }
     const signature = await walletProvider.getSignature(message);
     uiConsole(signature);
     return signature;
   };
 
   const sendTransaction = async (amount: string, destination: string) => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return "";
-    }
     const receipt = await walletProvider.sendTransaction(amount, destination);
     uiConsole(receipt);
     return receipt;
   };
 
   const getPrivateKey = async () => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return "";
-    }
     const privateKey = await walletProvider.getPrivateKey();
     uiConsole("Private Key: ", privateKey);
     return privateKey;
   };
 
   const getChainId = async () => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return "";
-    }
-
-    await walletProvider.getChainId();
+    const newChainId = await walletProvider.getChainId();
+    uiConsole("Chain Id: ", newChainId);
+    return newChainId;
   };
 
   const deployContract = async (abi: any, bytecode: string, initValue: string): Promise<any> => {
-    if (!web3Auth) {
-      uiConsole("web3Auth not initialized yet");
-      return;
-    }
     const receipt = await walletProvider.deployContract(abi, bytecode, initValue);
     return receipt;
   };
 
   const readContract = async (contractAddress: string, contractABI: any): Promise<string> => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
     const message = await walletProvider.readContract(contractAddress, contractABI);
     uiConsole(message);
+    return message;
   };
 
   const writeContract = async (contractAddress: string, contractABI: any, updatedValue: string): Promise<string> => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
     const receipt = await walletProvider.writeContract(contractAddress, contractABI, updatedValue);
     uiConsole(receipt);
 
@@ -218,6 +178,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
         await readContract(contractAddress, contractABI);
       }, 2000);
     }
+    return receipt;
   };
 
   const parseToken = (token: any) => {
@@ -232,9 +193,8 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getIdToken = async () => {
-    const idToken = await authenticateUser();
-    uiConsole("Id Token: ", parseToken(idToken.idToken));
-    return idToken.idToken;
+    uiConsole("Id Token: ", parseToken(idToken));
+    return idToken;
   };
 
   const verifyServerSide = async (idTokenInFrontend: string) => {
@@ -244,7 +204,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
         return;
       }
       // ideally this should be done on the server side
-      if (web3Auth.connectedConnectorName === WALLET_CONNECTORS.AUTH) {
+      if (connectorName === WALLET_CONNECTORS.AUTH) {
         const pubkey = await getPublicKey();
         const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks"));
         const jwtDecoded = await jose.jwtVerify(idTokenInFrontend, jwks, {
@@ -321,14 +281,9 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const changeChain = async (chainConfig: CustomChainConfig) => {
-    if (!web3Auth || !provider) {
-      uiConsole("web3Auth or provider is not initialized yet");
-      return;
-    }
-
     try {
       setIsLoading(true);
-      await switchChain(chainConfig);
+      await switchChain(chainConfig.chainId);
       setChainId(await walletProvider.getChainId());
       setAddress(await walletProvider.getAddress());
       setBalance(await walletProvider.getBalance());

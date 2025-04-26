@@ -1,360 +1,194 @@
-import { useEffect, useState } from "react";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { useState } from "react";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter, getEvmChainConfig } from "@web3auth/base";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth } from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 import { AuthAdapter, AuthLoginParams } from "@web3auth/auth-adapter";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import { getInjectedAdapters } from "@web3auth/default-evm-adapter";
 import "./App.css";
-import RPC from "./web3RPC"; // for using web3.js
-//import RPC from "./ethersRPC"; // for using ethers.js
-//import RPC from "./viemRPC"; // for using viem
-
-const clientId = "BHgArYmWwSeq21czpcarYh0EVq2WWOzflX-NTK-tY1-1pauPzHKRRLgpABkmYiIV_og9jAvoIxQ8L3Smrwe04Lw"; // get from https://dashboard.web3auth.io
+import {
+  getAccounts, getBalance, getChainId, getPrivateKey, readFromContract, sendTransaction, signMessage, writeToContract
+} from "./ethersRPC";
 
 function App() {
-  const [web3auth, setWeb3Auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
   const [walletServicesPlugin, setWalletServicesPlugin] = useState<WalletServicesPlugin | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-        const chainConfig = getEvmChainConfig(0x1, clientId)!;
-        
-        const web3authNoModalOptions: IWeb3AuthCoreOptions = {
-          clientId,
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-          useCoreKitKey: false,
-          authBuildEnv: "testing",
-          connectors: [],
-          uiConfig: {
-            appName: "W3A Heroes",
-            appUrl: "https://web3auth.io",
-            logoLight: "https://web3auth.io/images/web3authlog.png",
-            logoDark: "https://web3auth.io/images/web3authlogodark.png",
-            defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-            mode: "dark", // whether to enable dark mode. defaultValue: false
-            theme: {
-              primary: "#768729",
-            },
-            useLogoLoader: true,
-          },
-          loginSettings: {
-            mfaLevel: "optional",
-          },
-          mfaSettings: {
-            deviceShareFactor: {
-              enable: true,
-              priority: 1,
-              mandatory: true,
-            },
-            backUpShareFactor: {
-              enable: true,
-              priority: 2,
-              mandatory: false,
-            },
-            socialBackupFactor: {
-              enable: true,
-              priority: 3,
-              mandatory: false,
-            },
-            passwordFactor: {
-              enable: true,
-              priority: 4,
-              mandatory: true,
-            },
-            passkeysFactor: {
-              enable: true,
-              priority: 5,
-              mandatory: false,
-            },
-            authenticatorFactor: {
-              enable: true,
-              priority: 6,
-              mandatory: false,
-            },
-          },
-          redirectUrl: window.location.origin,
-          adapterSettings: {
-            uxMode: UX_MODE.REDIRECT,
-            // buildEnv: "testing",
-            loginConfig: {
-              email_passwordless: {
-                verifier: "w3a-email-passwordless-demo",
-                typeOfLogin: "email_passwordless",
-                clientId,
-              },
-            },
-          },
-        };
-        
-        const web3auth = new Web3AuthNoModal(web3authNoModalOptions);
-
-        // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings("eip155", ["0x1", "0xaa36a7"], "04309ed1007e77d1f119b85205bb779d");
-        const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
-        const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          adapterSettings: {
-            qrcodeModal: walletConnectModal,
-            ...defaultWcSettings.adapterSettings,
-          },
-          loginSettings: { ...defaultWcSettings.loginSettings },
-        });
-        web3auth.configureAdapter(walletConnectV2Adapter);
-
-        const injectedAdapters = await getInjectedAdapters({ options: web3authNoModalOptions });
-        injectedAdapters.forEach((adapter: IAdapter<unknown>) => {
-          web3auth.configureAdapter(adapter);
-        });
-
-        const walletServicesPluginInstance = new WalletServicesPlugin({
-          wsEmbedOpts: {},
-          walletInitOptions: { whiteLabel: { showWidgetButton: true } },
-        });
-
-        setWalletServicesPlugin(walletServicesPluginInstance);
-        web3auth.addPlugin(walletServicesPluginInstance);
-
-        setWeb3Auth(web3auth);
-        await web3auth.init();
-        setProvider(web3auth.provider);
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-        setError("Failed to initialize Web3Auth");
-      }
-    };
-
-    init();
-  }, []);
+  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { provider, chainId: web3AuthChainId } = useWeb3Auth();
 
   const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
     try {
-      setLoading(true);
       setError(null);
-      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-        loginProvider: "google",
+      await connect(WALLET_CONNECTORS.AUTH, {
+        loginProvider: AUTH_CONNECTION.GOOGLE,
       });
-      setProvider(web3authProvider);
-      if (web3auth.connected) {
-        setLoggedIn(true);
-      }
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Login failed");
-    } finally {
-      setLoading(false);
     }
   };
 
   const loginWithSMS = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
     try {
-      setLoading(true);
       setError(null);
-      const web3authProvider = await web3auth.connectTo<AuthLoginParams>(WALLET_ADAPTERS.AUTH, {
-        loginProvider: "sms_passwordless",
+      await connect(WALLET_CONNECTORS.AUTH, {
+        loginProvider: AUTH_CONNECTION.SMS_PASSWORDLESS,
         extraLoginOptions: {
           login_hint: phoneNumber.trim(),
         },
       });
-      setProvider(web3authProvider);
-      if (web3auth.connected) {
-        setLoggedIn(true);
-      }
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : "SMS login failed");
-    } finally {
-      setLoading(false);
     }
   };
 
   const loginWithEmail = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
     try {
-      setLoading(true);
       setError(null);
-      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-        loginProvider: "email_passwordless",
+      await connect(WALLET_CONNECTORS.AUTH, {
+        loginProvider: AUTH_CONNECTION.EMAIL_PASSWORDLESS,
         extraLoginOptions: {
           login_hint: email.trim(),
         },
       });
-      setProvider(web3authProvider);
-      if (web3auth.connected) {
-        setLoggedIn(true);
-      }
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Email login failed");
-    } finally {
-      setLoading(false);
     }
   };
 
   const loginWCModal = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
     try {
-      setLoading(true);
       setError(null);
-      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.WALLET_CONNECT_V2);
-      setProvider(web3authProvider);
-      if (web3auth.connected) {
-        setLoggedIn(true);
-      }
+      await connect(WALLET_ADAPTERS.WALLET_CONNECT_V2);
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Wallet Connect login failed");
-    } finally {
-      setLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      setError(null);
+      await disconnect();
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Logout failed");
     }
   };
 
   const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
-  };
-
-  const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  };
-
-  const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!provider) {
+      uiConsole("provider not initialized yet");
       return;
     }
     try {
-      setLoading(true);
-      setError(null);
-      await web3auth.logout();
-      setProvider(null);
-      setLoggedIn(false);
+      uiConsole("User Info:", userInfo);
     } catch (err) {
-      console.error(err);
-      setError(err instanceof Error ? err.message : "Logout failed");
-    } finally {
-      setLoading(false);
+      console.error("Error authenticating user:", err);
+      uiConsole("Error authenticating user:", err);
     }
   };
 
-  const getChainId = async () => {
+  const getUserInfo = async () => {
+    uiConsole("User Info:", userInfo);
+  };
+
+  const onGetChainId = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const chainId = await rpc.getChainId();
-    uiConsole(chainId);
+    try {
+      const chainIdResult = await getChainId(provider);
+      uiConsole("Chain ID:", chainIdResult);
+    } catch (err) {
+      console.error("Error getting chain ID:", err);
+      uiConsole("Error getting chain ID:", err);
+    }
   };
 
-  const addChain = async () => {
+  const onGetAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    // Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-    const newChain = getEvmChainConfig(0xaa36a7, clientId)!;
-    await web3auth?.addChain(newChain);
-    uiConsole("New Chain Added");
+    try {
+      const accountsResult = await getAccounts(provider);
+      uiConsole("Accounts:", accountsResult);
+    } catch (err) {
+      console.error("Error getting accounts:", err);
+      uiConsole("Error getting accounts:", err);
+    }
   };
 
-  const switchChain = async () => {
+  const onGetBalance = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    await web3auth?.switchChain({ chainId: "0xaa36a7" });
-    uiConsole("Chain Switched");
+    try {
+      const balanceResult = await getBalance(provider);
+      uiConsole("Balance:", balanceResult);
+    } catch (err) {
+      console.error("Error getting balance:", err);
+      uiConsole("Error getting balance:", err);
+    }
   };
 
-  const getAccounts = async () => {
+  const onSendTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const address = await rpc.getAccounts();
-    uiConsole(address);
+    try {
+      const txResult = await sendTransaction(provider);
+      uiConsole("Transaction Receipt:", txResult);
+    } catch (err) {
+      console.error("Error sending transaction:", err);
+      uiConsole("Error sending transaction:", err);
+    }
   };
 
-  const getBalance = async () => {
+  const onSignMessage = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
+    try {
+      const signedMessageResult = await signMessage(provider);
+      uiConsole("Signed Message:", signedMessageResult);
+    } catch (err) {
+      console.error("Error signing message:", err);
+      uiConsole("Error signing message:", err);
+    }
   };
 
-  const sendTransaction = async () => {
+  const onGetPrivateKey = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
+    try {
+      const privateKeyResult = await getPrivateKey(provider);
+      uiConsole("Private Key:", privateKeyResult);
+    } catch (err) {
+      console.error("Error getting private key:", err);
+      uiConsole("Error getting private key:", err);
     }
-    const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    uiConsole(signedMessage);
-  };
-
-  const getPrivateKey = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    uiConsole(privateKey);
   };
 
   const showWalletUi = async () => {
     if (!walletServicesPlugin) {
-      uiConsole("provider not initialized yet");
+      uiConsole("walletServicesPlugin not initialized yet");
       return;
     }
     await walletServicesPlugin.showWalletUi();
@@ -362,7 +196,7 @@ function App() {
 
   const showWalletConnectScanner = async () => {
     if (!walletServicesPlugin) {
-      uiConsole("provider not initialized yet");
+      uiConsole("walletServicesPlugin not initialized yet");
       return;
     }
     await walletServicesPlugin.showWalletConnectScanner();
@@ -370,7 +204,7 @@ function App() {
 
   const showCheckout = async () => {
     if (!walletServicesPlugin) {
-      uiConsole("provider not initialized yet");
+      uiConsole("walletServicesPlugin not initialized yet");
       return;
     }
     await walletServicesPlugin.showCheckout();
@@ -378,30 +212,19 @@ function App() {
 
   const showSwap = async () => {
     if (!walletServicesPlugin) {
-      uiConsole("provider not initialized yet");
+      uiConsole("walletServicesPlugin not initialized yet");
       return;
     }
     await walletServicesPlugin.showSwap();
   };
 
   const loginWithInjected = async (adapterName: string) => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
     try {
-      setLoading(true);
       setError(null);
-      const web3authProvider = await web3auth.connectTo(adapterName);
-      setProvider(web3authProvider);
-      if (web3auth.connected) {
-        setLoggedIn(true);
-      }
+      await connect(adapterName as WALLET_ADAPTERS);
     } catch (err) {
       console.error(err);
-      setError(err instanceof Error ? err.message : "Wallet login failed");
-    } finally {
-      setLoading(false);
+      setError(err instanceof Error ? err.message : `Injected wallet (${adapterName}) login failed`);
     }
   };
 
@@ -415,6 +238,7 @@ function App() {
   const loggedInView = (
     <>
       <div className="flex-container">
+        <div> Connected with {connectorName} </div>
         <div>
           <button onClick={getUserInfo} className="card">
             Get User Info
@@ -426,18 +250,33 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={getChainId} className="card">
+          <button onClick={onGetChainId} className="card">
             Get Chain ID
           </button>
         </div>
         <div>
-          <button onClick={addChain} className="card">
-            Add Chain
+          <button onClick={onGetAccounts} className="card">
+            Get Accounts
           </button>
         </div>
         <div>
-          <button onClick={switchChain} className="card">
-            Switch Chain
+          <button onClick={onGetBalance} className="card">
+            Get Balance
+          </button>
+        </div>
+        <div>
+          <button onClick={onSignMessage} className="card">
+            Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={onSendTransaction} className="card">
+            Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={onGetPrivateKey} className="card">
+            Get Private Key
           </button>
         </div>
         <div>
@@ -452,79 +291,67 @@ function App() {
         </div>
         <div>
           <button onClick={showCheckout} className="card">
-            Show Checkout (Fiat to Crypto)
+            Show Checkout
           </button>
         </div>
         <div>
           <button onClick={showSwap} className="card">
-            Swap
+            Show Swap
           </button>
         </div>
         <div>
-          <button onClick={getAccounts} className="card">
-            Get Accounts
+          <button onClick={logout} className="card">
+            Log Out
           </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={getPrivateKey} className="card">
-            Get Private Key
-          </button>
-        </div>
-        <div>
-          <button onClick={logout} className="card" disabled={loading}>
-            {loading ? "Logging Out..." : "Log Out"}
-          </button>
-          {error && <div className="error">{error}</div>}
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
+        <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
     </>
   );
 
   const unloggedInView = (
-    <div className="login-container">
-      <button onClick={login} className="card" disabled={loading}>
-        {loading ? "Logging In..." : "Login"}
-      </button>
-      <div className="input-button-group">
-        <input type="text" placeholder="+65-XXXXXXX" required onChange={(e) => setPhoneNumber(e.target.value)} />
-        <button onClick={loginWithSMS} className="card login-button" disabled={loading}>
-          {loading ? "Logging In..." : "SMS Login"}
+    <div className="grid">
+      <div className="flex-container">
+        <button onClick={login} className="card">
+          Login with Google
         </button>
+        <input
+          type="text"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          placeholder="Enter Phone Number (+11234567890)"
+          className="card input-field"
+        />
+        <button onClick={loginWithSMS} disabled={!phoneNumber} className="card">
+          Login with SMS
+        </button>
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter Email"
+          className="card input-field"
+        />
+        <button onClick={loginWithEmail} disabled={!email} className="card">
+          Login with Email
+        </button>
+        <button onClick={loginWCModal} className="card">
+          Login with Wallet Connect
+        </button>
+        <button onClick={() => loginWithInjected(WALLET_ADAPTERS.METAMASK)} className="card">
+          Login with Metamask
+        </button>
+        <button onClick={() => loginWithInjected(WALLET_ADAPTERS.COINBASE)} className="card">
+          Login with Coinbase Wallet
+        </button>
+        {connectLoading && <div className="loading">Connecting...</div>}
+        {connectError && <div className="error">{connectError.message}</div>}
+        {error && <div className="error">{error}</div>}
       </div>
-      <div className="input-button-group">
-        <input type="email" placeholder="username@email.io" required onChange={(e) => setEmail(e.target.value)} />
-        <button onClick={loginWithEmail} className="card login-button" disabled={loading}>
-          {loading ? "Logging In..." : "Email Login"}
-        </button>
-      </div>
-      <button onClick={loginWCModal} className="card" disabled={loading}>
-        {loading ? "Connecting..." : "Login with Wallet Connect v2"}
-      </button>
-
-      {injectedAdapters?.map((adapter: IAdapter<unknown>) => (
-        <button key={adapter.name.toUpperCase()} onClick={() => loginWithInjected(adapter.name)} className="card" disabled={loading}>
-          {loading ? "Connecting..." : `Login with ${adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet`}
-        </button>
-      ))}
-      {error && <div className="error">{error}</div>}
     </div>
   );
 
@@ -532,12 +359,12 @@ function App() {
     <div className="container">
       <h1 className="title">
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
-          Web3Auth
-        </a>{" "}
-        NoModal React-Vite Ethereum Example
+          Web3Auth{" "}
+        </a>
+        & EVM No Modal Example
       </h1>
 
-      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
@@ -546,9 +373,6 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fblockchain-connection-examples%2Fevm-no-modal-example&project-name=w3a-evm-no-modal&repository-name=w3a-evm-no-modal">
-          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

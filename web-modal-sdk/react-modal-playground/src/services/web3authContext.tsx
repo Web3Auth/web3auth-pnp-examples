@@ -7,6 +7,9 @@ const web3AuthOptions: Web3AuthOptions = {
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
   authBuildEnv: "testing",
   plugins: [walletServicesPlugin()],
+  uiConfig: {
+    mode: "dark",
+  },
 };
 
 export default web3AuthOptions;

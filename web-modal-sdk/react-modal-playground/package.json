@@ -3,14 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@coinbase/wallet-sdk": "^4.3.2",
     "@tailwindcss/forms": "^0.5.9",
-    "@toruslabs/config": "^2.2.0",
-    "@vitejs/plugin-react": "^4.3.1",
-    "@walletconnect/sign-client": "^2.16.2",
-    "@walletconnect/utils": "^2.16.2",
-    "@web3auth/modal": "^10.0.0-beta.7",
-    "ethers": "^6.13.2",
+    "@web3auth/base": "^8.0.0",
+    "@web3auth/modal": "^8.0.0",
+    "@web3auth/openlogin-adapter": "^8.0.0",
+    "ethers": "^6.13.7",
     "hamburger-react": "^2.5.1",
     "jose": "^5.9.2",
     "react": "^18.3.1",
@@ -18,8 +15,7 @@
     "react-js-pagination": "^3.0.3",
     "react-json-formatter": "^0.4.0",
     "react-router-dom": "^6.26.2",
-    "vite": "^5.4.8",
-    "web3": "^4.13.0"
+    "wagmi": "^2.15.0"
   },
   "optionalDependencies": {
     "esbuild": "^0.14.0"
@@ -38,6 +34,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@toruslabs/config": "^2.2.0",
     "@toruslabs/eslint-config-typescript": "^3.3.3",
     "@types/http-cache-semantics": "^4.0.4",
     "@types/minimist": "^1.2.5",
@@ -47,9 +44,9 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
     "buffer": "^6.0.3",
-    "empty-module": "^0.0.2",
     "eslint": "^8.55.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
@@ -61,15 +58,9 @@
     "minimist": "^1.2.8",
     "normalize-package-data": "^7.0.0",
     "parse-json": "^8.1.0",
-    "path-browserify": "^1.0.1",
     "postcss": "^8.4.47",
     "prettier": "3.3.3",
-    "stream-browserify": "^3.0.0",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.2",
-    "web-vitals": "^4.2.3"
-  },
-  "overrides": {
     "typescript": "^5.6.2"
   },
   "scripts": {

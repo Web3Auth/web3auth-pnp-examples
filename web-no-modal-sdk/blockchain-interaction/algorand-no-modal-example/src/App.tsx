@@ -1,146 +1,61 @@
-import { useEffect, useState } from "react";
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { CHAIN_NAMESPACES, IProvider, UX_MODE, WALLET_ADAPTERS } from "@web3auth/base";
-import { AuthAdapter } from "@web3auth/auth-adapter";
-import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import RPC from "./algorandRPC";
+
 import "./App.css";
+import {
+  useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth
+} from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { getAlgorandKeyPair, getAccounts, getBalance, signMessage, signAndSendTransaction } from "./algorandRPC";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.OTHER,
-  chainId: "0x1",
-  rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
-  displayName: "Algorand Mainnet",
-  blockExplorerUrl: "",
-  ticker: "ALGO",
-  tickerName: "Algorand",
-  logo: "",
-};
-
-const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  privateKeyProvider,
-  web3AuthNetwork: "sapphire_mainnet",
-  enableLogging: true,
-});
-
-const authAdapter = new AuthAdapter();
-web3auth.configureAdapter(authAdapter);
 
 function App() {
-  const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(false);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        await web3auth!.init();
-        setProvider(web3auth!.provider);
-        if (web3auth!.connected) {
-          setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
-
-  const login = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-      loginProvider: "google",
-    });
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
-    }
-  };
-
-  const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
-  };
-
-  const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    // console.log(user);
-    uiConsole(user);
-  };
-
-  const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    await web3auth.logout();
-    setProvider(null);
-    setLoggedIn(false);
-  };
+  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { provider } = useWeb3Auth();
 
   const onGetAlgorandKeypair = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider as IProvider);
-    const algorandKeypair = await rpc.getAlgorandKeyPair();
+    const algorandKeypair = await getAlgorandKeyPair(provider);
     uiConsole("Keypair", algorandKeypair);
   };
 
-  const getAccounts = async () => {
+  const onGetAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const userAccount = await rpc.getAccounts();
+    const userAccount = await getAccounts(provider);
     uiConsole("Address", userAccount);
   };
 
-  const getBalance = async () => {
+  const onGetBalance = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
+    const balance = await getBalance(provider);
     uiConsole("Balance", balance, "You can get testnet funds from https://bank.testnet.algorand.network/");
   };
 
-  const signMessage = async () => {
+  const onSignMessage = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const result = await rpc.signMessage();
+    const result = await signMessage(provider);
     uiConsole("Hash", result);
   };
 
-  const signAndSendTransaction = async () => {
+  const onSignAndSendTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const result = await rpc.signAndSendTransaction();
+    const result = await signAndSendTransaction(provider);
     uiConsole("Transaction ID: ", result);
   };
 
@@ -152,16 +67,11 @@ function App() {
   }
 
   const loggedInView = (
-    <>
+    <div className="grid">
       <div className="flex-container">
         <div>
-          <button onClick={getUserInfo} className="card">
+          <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
-          </button>
-        </div>
-        <div>
-          <button onClick={authenticateUser} className="card">
-            Get ID Token
           </button>
         </div>
         <div>
@@ -170,42 +80,52 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={getAccounts} className="card">
+          <button onClick={onGetAccounts} className="card">
             Get Accounts
           </button>
         </div>
         <div>
-          <button onClick={getBalance} className="card">
+          <button onClick={onGetBalance} className="card">
             Get Balance
           </button>
         </div>
         <div>
-          <button onClick={signAndSendTransaction} className="card">
+          <button onClick={onSignAndSendTransaction} className="card">
             Send Transaction
           </button>
         </div>
         <div>
-          <button onClick={signMessage} className="card">
+          <button onClick={onSignMessage} className="card">
             Sign Message
           </button>
         </div>
         <div>
-          <button onClick={logout} className="card">
+          <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
+        
         </div>
       </div>
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
-      </div>
-    </>
+    </div>
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    // IMP START - Login  
+    <div className="grid">
+      <button onClick={() => connect(WALLET_CONNECTORS.AUTH, {
+        authConnection: AUTH_CONNECTION.GOOGLE,
+      })} className="card">
+        Login
+      </button>
+      {connectLoading && <div className="loading">Connecting...</div>}
+      {connectError && <div className="error">{connectError.message}</div>}
+    </div>
+    // IMP END - Login
+
   );
+
 
   return (
     <div className="container">
@@ -216,8 +136,10 @@ function App() {
         & Algorand Example
       </h1>
 
-      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
-
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
       <footer className="footer">
         <a
           href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/algorand-no-modal-example/evm-no-modal-example"
@@ -225,9 +147,6 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fblockchain-connection-examples%2Falgorand-no-modal-example&project-name=w3a-algorand-no-modal&repository-name=w3a-algorand-no-modal">
-          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

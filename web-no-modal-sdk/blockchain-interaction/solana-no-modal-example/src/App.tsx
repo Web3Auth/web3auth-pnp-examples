@@ -1,208 +1,209 @@
 import { useEffect, useState } from "react";
-import { Web3AuthNoModal, WALLET_CONNECTORS } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, UX_MODE, WEB3AUTH_NETWORK, IWeb3AuthCoreOptions, IAdapter, getSolanaChainConfig } from "@web3auth/base";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth } from "@web3auth/no-modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
 import { WalletConnectModal } from "@walletconnect/modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 import { getInjectedAdapters } from "@web3auth/default-solana-adapter";
-import RPC from "./solanaRPC";
+import {
+  getAccounts, getBalance, getPrivateKey, sendTransaction, sendVersionTransaction, signAllTransaction,
+  signAllVersionedTransaction, signMessage, signTransaction, signVersionedTransaction
+} from "./solanaRPC";
 import "./App.css";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
-  const [provider, setProvider] = useState<IProvider | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const web3authOptions: IWeb3AuthCoreOptions = {
-          clientId,
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-          authBuildEnv: "testing",
-          chainConfig: getSolanaChainConfig(0x1),
-          uiConfig: {
-            uxMode: UX_MODE.REDIRECT,
-          }
-        };
-        
-        const web3auth = new Web3AuthNoModal(web3authOptions);
-        setWeb3auth(web3auth);
-
-        // adding wallet connect v2 adapter
-        const defaultWcSettings = await getWalletConnectV2Settings(CHAIN_NAMESPACES.SOLANA, ["0x1", "0x2"], "04309ed1007e77d1f119b85205bb779d");
-        const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
-        const walletConnectV2Adapter = new WalletConnectV2Adapter({
-          adapterSettings: {
-            qrcodeModal: walletConnectModal,
-            ...defaultWcSettings.adapterSettings,
-          },
-          loginSettings: { ...defaultWcSettings.loginSettings },
-        });
-        web3auth.configureAdapter(walletConnectV2Adapter);
-
-        // Get injected adapters
-        const injectedAdapters = getInjectedAdapters({ options: web3authOptions });
-        injectedAdapters.forEach((adapter) => {
-          web3auth.configureAdapter(adapter);
-        });
-
-        await web3auth.init();
-        setProvider(web3auth.provider);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
+  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { provider } = useWeb3Auth();
 
   const loginWithGoogle = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
+    try {
+      setError(null);
+      await connect(WALLET_CONNECTORS.AUTH, {
+        loginProvider: AUTH_CONNECTION.GOOGLE,
+      });
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Google login failed");
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      loginProvider: "google",
-    });
-    setProvider(web3authProvider);
   };
 
   const loginWCModal = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
+    try {
+      setError(null);
+      await connect(WALLET_CONNECTORS.WALLET_CONNECT_V2);
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Wallet Connect login failed");
     }
-    const web3authProvider = await web3auth.connectTo(WALLET_CONNECTORS.WALLET_CONNECT_V2);
-    setProvider(web3authProvider);
   };
 
   const loginWithAdapter = async (adapterName: string) => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
+    try {
+      setError(null);
+      await connect(adapterName as WALLET_CONNECTORS);
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : `Adapter login (${adapterName}) failed`);
     }
-    const web3authProvider = await web3auth.connectTo(adapterName);
-    setProvider(web3authProvider);
   };
 
   const authenticateUser = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+    if (!provider) {
+      uiConsole("provider not initialized yet");
       return;
     }
-    const idToken = await web3auth.authenticateUser();
-    uiConsole(idToken);
+    try {
+      uiConsole("User Info (might contain auth details):", userInfo);
+    } catch (err) {
+      console.error("Error fetching user info for auth data:", err);
+      uiConsole("Error fetching user info for auth data:", err);
+    }
   };
 
   const getUserInfo = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
+    uiConsole("User Info:", userInfo);
   };
 
   const logout = async () => {
-    if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
-      return;
+    try {
+      setError(null);
+      await disconnect();
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Logout failed");
     }
-    await web3auth.logout();
-    setProvider(null);
   };
 
-  const getAccounts = async () => {
+  const onGetAccounts = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const address = await rpc.getAccounts();
-    uiConsole(address);
+    try {
+      const accountsResult = await getAccounts(provider);
+      uiConsole("Accounts:", accountsResult);
+    } catch (err) {
+      console.error("Error getting accounts:", err);
+      uiConsole("Error getting accounts:", err);
+    }
   };
 
-  const getBalance = async () => {
+  const onGetBalance = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
+    try {
+      const balanceResult = await getBalance(provider);
+      uiConsole("Balance:", balanceResult);
+    } catch (err) {
+      console.error("Error getting balance:", err);
+      uiConsole("Error getting balance:", err);
+    }
   };
 
-  const sendTransaction = async () => {
+  const onSendTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
+    try {
+      const receipt = await sendTransaction(provider);
+      uiConsole("Transaction Receipt:", receipt);
+    } catch (err) {
+      console.error("Error sending transaction:", err);
+      uiConsole("Error sending transaction:", err);
+    }
   };
 
-  const sendVersionTransaction = async () => {
+  const onSendVersionTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendVersionTransaction();
-    uiConsole(receipt);
+    try {
+      const receipt = await sendVersionTransaction(provider);
+      uiConsole("Versioned Transaction Receipt:", receipt);
+    } catch (err) {
+      console.error("Error sending versioned transaction:", err);
+      uiConsole("Error sending versioned transaction:", err);
+    }
   };
 
-  const signVersionedTransaction = async () => {
+  const onSignVersionedTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.signVersionedTransaction();
-    uiConsole(receipt);
+    try {
+      const receipt = await signVersionedTransaction(provider);
+      uiConsole("Signed Versioned Transaction:", receipt);
+    } catch (err) {
+      console.error("Error signing versioned transaction:", err);
+      uiConsole("Error signing versioned transaction:", err);
+    }
   };
 
-  const signAllVersionedTransaction = async () => {
+  const onSignAllVersionedTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.signAllVersionedTransaction();
-    uiConsole(receipt);
+    try {
+      const receipt = await signAllVersionedTransaction(provider);
+      uiConsole("Signed All Versioned Transactions:", receipt);
+    } catch (err) {
+      console.error("Error signing all versioned transactions:", err);
+      uiConsole("Error signing all versioned transactions:", err);
+    }
   };
 
-  const signAllTransaction = async () => {
+  const onSignAllTransaction = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.signAllTransaction();
-    uiConsole(receipt);
+    try {
+      const receipt = await signAllTransaction(provider);
+      uiConsole("Signed All Transactions:", receipt);
+    } catch (err) {
+      console.error("Error signing all transactions:", err);
+      uiConsole("Error signing all transactions:", err);
+    }
   };
 
-  const signMessage = async () => {
+  const onSignMessage = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    uiConsole(signedMessage);
+    try {
+      const signedMessageResult = await signMessage(provider);
+      uiConsole("Signed Message:", signedMessageResult);
+    } catch (err) {
+      console.error("Error signing message:", err);
+      uiConsole("Error signing message:", err);
+    }
   };
 
-  const getPrivateKey = async () => {
+  const onGetPrivateKey = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    const rpc = new RPC(provider);
-    const privateKey = await rpc.getPrivateKey();
-    uiConsole(privateKey);
+    try {
+      const privateKeyResult = await getPrivateKey(provider);
+      uiConsole("Private Key:", privateKeyResult);
+    } catch (err) {
+      console.error("Error getting private key:", err);
+      uiConsole("Error getting private key:", err);
+    }
   };
 
   function uiConsole(...args: any[]): void {
@@ -215,6 +216,7 @@ function App() {
   const loggedInView = (
     <>
       <div className="flex-container">
+        <div> Connected with {connectorName} </div>
         <div>
           <button onClick={getUserInfo} className="card">
             Get User Info
@@ -226,47 +228,47 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={getAccounts} className="card">
+          <button onClick={onGetAccounts} className="card">
             Get Accounts
           </button>
         </div>
         <div>
-          <button onClick={getBalance} className="card">
+          <button onClick={onGetBalance} className="card">
             Get Balance
           </button>
         </div>
         <div>
-          <button onClick={signMessage} className="card">
+          <button onClick={onSignMessage} className="card">
             Sign Message
           </button>
         </div>
         <div>
-          <button onClick={sendTransaction} className="card">
+          <button onClick={onSendTransaction} className="card">
             Send Transaction
           </button>
         </div>
         <div>
-          <button onClick={sendVersionTransaction} className="card">
+          <button onClick={onSendVersionTransaction} className="card">
             Send Version Transaction
           </button>
         </div>
         <div>
-          <button onClick={signVersionedTransaction} className="card">
+          <button onClick={onSignVersionedTransaction} className="card">
             Sign Versioned Transaction
           </button>
         </div>
         <div>
-          <button onClick={signAllVersionedTransaction} className="card">
+          <button onClick={onSignAllVersionedTransaction} className="card">
             Sign All Versioned Transaction
           </button>
         </div>
         <div>
-          <button onClick={signAllTransaction} className="card">
+          <button onClick={onSignAllTransaction} className="card">
             Sign All Transaction
           </button>
         </div>
         <div>
-          <button onClick={getPrivateKey} className="card">
+          <button onClick={onGetPrivateKey} className="card">
             Get Private Key
           </button>
         </div>
@@ -274,28 +276,33 @@ function App() {
           <button onClick={logout} className="card">
             Log Out
           </button>
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
       </div>
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
+        <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
     </>
   );
 
   const unloggedInView = (
-    <>
-      <button onClick={loginWithGoogle} className="card">
-        Login with Google
-      </button>
-      <button onClick={loginWCModal} className="card">
-        Login with Wallet Connect v2
-      </button>
-      {injectedAdapters?.map((adapter: IAdapter<unknown>) => (
-        <button key={adapter.name.toUpperCase()} onClick={() => loginWithAdapter(adapter.name)} className="card">
-          Login with {adapter.name.charAt(0).toUpperCase() + adapter.name.slice(1)} Wallet
+    <div className="grid">
+      <div className="flex-container">
+        <button onClick={loginWithGoogle} className="card">
+          Login with Google
         </button>
-      ))}
-    </>
+        <button onClick={loginWCModal} className="card">
+          Login with WalletConnect
+        </button>
+        <button onClick={() => loginWithAdapter("phantom")} className="card">
+          Login with Phantom
+        </button>
+        {connectLoading && <div className="loading">Connecting...</div>}
+        {connectError && <div className="error">{connectError.message}</div>}
+        {error && <div className="error">{error}</div>}
+      </div>
+    </div>
   );
 
   return (
@@ -304,10 +311,10 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & React Solana Example
+        & Solana No Modal Example
       </h1>
 
-      <div className="grid">{web3auth?.status === "connected" ? loggedInView : unloggedInView}</div>
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
         <a
@@ -316,9 +323,6 @@ function App() {
           rel="noopener noreferrer"
         >
           Source code
-        </a>
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fblockchain-connection-examples%2Fsolana-no-modal-example&project-name=w3a-solana-no-modal&repository-name=w3a-solana-no-modal">
-          <img src="https://vercel.com/button" alt="Deploy with Vercel" />
         </a>
       </footer>
     </div>

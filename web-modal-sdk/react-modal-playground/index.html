@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <script type="module">
       import { Buffer } from "buffer";
@@ -8,6 +8,7 @@
       window.process = process;
     </script>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="title" content="PnP Playground - Web3Auth">
     <meta name="description" content="A playground to test all the features of the Web3Auth Plug and Play SDK in React.">
     <meta name="keywords" content="web3auth, web3, authentication, crypto, social login, plug and play, modal sdk">
@@ -16,6 +17,12 @@
     <meta name="language" content="English">
 
     <title>PnP Playground - Web3Auth</title>
+    
+    <!-- Script to ensure dark mode is applied -->
+    <script>
+      // Make sure dark mode is applied
+      document.documentElement.classList.add('dark');
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

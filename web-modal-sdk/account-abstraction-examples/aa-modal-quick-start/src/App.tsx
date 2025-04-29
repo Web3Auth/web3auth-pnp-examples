@@ -1,12 +1,13 @@
 import "./App.css";
 
-import { useWeb3Auth, useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
-import { useAccount, useBalance, useSendTransaction, useSignMessage } from 'wagmi'
+import { useWalletUI, useWeb3Auth, useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+import { useAccount, useBalance, useSendTransaction, useSignMessage } from "wagmi";
 
 import { parseEther } from "viem";
 
 function App() {
-  const { isConnected } = useWeb3Auth();
+  const { isConnected, web3Auth } = useWeb3Auth();
+  const { showWalletUI } = useWalletUI();
   const { userInfo } = useWeb3AuthUser();
   const { connect } = useWeb3AuthConnect();
   const { disconnect } = useWeb3AuthDisconnect();
@@ -23,57 +24,112 @@ function App() {
     }
   }
 
+  const sendBatchTransaction = async () => {
+    const { smartAccount, bundlerClient } = web3Auth?.accountAbstractionProvider || {};
+    if (!smartAccount || !bundlerClient) {
+      throw new Error("Smart account or bundler client not found");
+    }
+
+    const hash = await bundlerClient.sendUserOperation({
+      account: smartAccount,
+      calls: [
+        // {
+        //   to: usdcAddress,
+        //   abi: parseAbi(["function approve(address,uint)"]),
+        //   functionName: "approve",
+        //   args: [pimlicoPaymasterAddress, maxUint256],
+        // },
+        {
+          to: "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56",
+          value: parseEther("0.00001"),
+        },
+        {
+          to: "0xDC5aFb5DE928bAc740e4bcB1600B93504560d850",
+          value: parseEther("0.0000001"),
+        },
+      ],
+    });
+
+    const { receipt } = await bundlerClient.waitForUserOperationReceipt({ hash });
+    uiConsole(receipt.transactionHash);
+  };
+
   const loggedInView = (
     <>
       <div className="flex-container">
         <div>
-          <button onClick={() => {
-            uiConsole(userInfo);
-          }} className="card">
+          <button
+            onClick={() => {
+              uiConsole(userInfo);
+            }}
+            className="card"
+          >
             Get User Info
           </button>
         </div>
         <div>
-          <button onClick={() => {
-            uiConsole(address);
-          }} className="card">
+          <button
+            onClick={() => {
+              uiConsole(address);
+            }}
+            className="card"
+          >
             Get Accounts
           </button>
         </div>
         <div>
-          <button onClick={() => {
-            uiConsole(balance?.value.toString());
-          }} className="card">
+          <button
+            onClick={() => {
+              uiConsole(balance?.value.toString());
+            }}
+            className="card"
+          >
             Get Balance
           </button>
         </div>
         <div>
-          <button onClick={async () => {
-            const signature = await signMessageAsync({ message: "Hello, world!" });
-            uiConsole(signature);
-          }} className="card">
+          <button
+            onClick={async () => {
+              const signature = await signMessageAsync({ message: "Hello, world!" });
+              uiConsole(signature);
+            }}
+            className="card"
+          >
             Sign Message
           </button>
         </div>
-        {/* <div>
-          <button onClick={signTransaction} className="card">
-            Sign Transaction
-          </button>
-        </div> */}
         <div>
-          <button onClick={async () => {
-            const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
-            const amount = parseEther("0.00001");
-            const transactionReceipt = await sendTransactionAsync({ to: destination, value: amount, });
-            uiConsole(transactionReceipt);
-          }} className="card">
-            Send Transaction
+          <button onClick={sendBatchTransaction} className="card">
+            Send Batch Transaction
           </button>
         </div>
         <div>
           <button onClick={() => {
-            disconnect();
+            showWalletUI();
           }} className="card">
+            Show Wallet UI
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={async () => {
+              const destination = address;
+              const amount = parseEther("0.00001");
+              const transactionReceipt = await sendTransactionAsync({ to: destination, value: amount });
+              uiConsole(transactionReceipt);
+            }}
+            className="card"
+          >
+            Send Transaction
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              disconnect();
+            }}
+            className="card"
+          >
             Log Out
           </button>
         </div>
@@ -82,9 +138,12 @@ function App() {
   );
 
   const unloggedInView = (
-    <button onClick={() => {
-      connect();
-    }} className="card">
+    <button
+      onClick={() => {
+        connect();
+      }}
+      className="card"
+    >
       Login
     </button>
   );

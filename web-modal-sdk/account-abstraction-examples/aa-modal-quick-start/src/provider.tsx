@@ -12,17 +12,20 @@ const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
   authBuildEnv: "testing",
-  defaultChainId: "0xaa36a7",
+  defaultChainId: "0x14a34",
   accountAbstractionConfig: {
-    smartAccountType: "biconomy",
+    smartAccountType: "metamask"
     chains: [
       {
-        chainId: "0xaa36a7",
+        chainId: "0x14a34",
         bundlerConfig: {
-          url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+          url: `https://api.pimlico.io/v2/84532/rpc?apikey=${pimlicoAPIKey}`,
+          paymasterContext: {
+            token: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+          }
         },
         paymasterConfig: {
-          url: `https://api.pimlico.io/v2/11155111/paymaster?apikey=${pimlicoAPIKey}`,
+          url: `https://api.pimlico.io/v2/84532/rpc?apikey=${pimlicoAPIKey}`,
         }
       },
     ],

@@ -40,7 +40,7 @@
     "@types/keccak": "^3.0.1",
     "@types/node": "^18.11.2",
     "@types/readable-stream": "^2.3.14",
-    "jasmine-core": "~4.4.0",
+    "jasmine-core": "~5.7.0",
     "karma": "~6.4.1",
     "karma-chrome-launcher": "~3.1.1",
     "karma-coverage": "~2.2.0",

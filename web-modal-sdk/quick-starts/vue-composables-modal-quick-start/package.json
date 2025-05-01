@@ -24,7 +24,7 @@
   "//IMP END": "IMP END - Web3Auth Installation",
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.9",
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^5.46.1",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",

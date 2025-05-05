@@ -14,7 +14,7 @@ const web3AuthOptions: Web3AuthOptions = {
   authBuildEnv: "testing",
   defaultChainId: "0x14a34",
   accountAbstractionConfig: {
-    smartAccountType: "metamask"
+    smartAccountType: "metamask",
     chains: [
       {
         chainId: "0x14a34",

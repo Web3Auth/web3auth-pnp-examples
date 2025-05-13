@@ -31,10 +31,10 @@ function App() {
     await connect(WALLET_CONNECTORS.AUTH, {
       groupedAuthConnectionId: "aggregate-sapphire",
       authConnectionId: "w3a-google",
-      authConnection: AUTH_CONNECTION.CUSTOM,
-      login_hint: idToken,
+      authConnection: AUTH_CONNECTION.GOOGLE,
+      id_token: idToken,
       extraLoginOptions: {
-        id_token: idToken,
+        isUserIdCaseSensitive: false,
       },
     });
   };

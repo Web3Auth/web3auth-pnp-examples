@@ -20,11 +20,10 @@ function App() {
 
     await connect(WALLET_CONNECTORS.AUTH, {
       authConnectionId: "w3a-google-demo",
-      authConnection: AUTH_CONNECTION.CUSTOM,
+      authConnection: AUTH_CONNECTION.GOOGLE,
       id_token: idToken,
       extraLoginOptions: {
         isUserIdCaseSensitive: false,
-        userIdField: "email",
       },
     });
   };

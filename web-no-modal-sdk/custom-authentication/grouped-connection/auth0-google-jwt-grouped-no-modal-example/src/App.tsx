@@ -21,11 +21,10 @@ function App() {
     await connect(WALLET_CONNECTORS.AUTH, {
       groupedAuthConnectionId: "aggregate-sapphire",
       authConnectionId: "w3a-google",
-      authConnection: AUTH_CONNECTION.CUSTOM,
+      authConnection: AUTH_CONNECTION.GOOGLE,
       id_token: idToken,
       extraLoginOptions: {
         isUserIdCaseSensitive: false,
-        verifierIdField: "email",
       },
     });
   };

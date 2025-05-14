@@ -2,7 +2,7 @@ import { type FormEvent } from "react";
 import { useWaitForTransactionReceipt, useSendTransaction, BaseError } from "wagmi";
 import { parseEther, type Hex } from "viem";
 
-export function SendTransaction() {
+export function SendUserOperation() {
   const { data: hash, error, isPending, sendTransaction } = useSendTransaction()
 
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -20,7 +20,7 @@ export function SendTransaction() {
 
   return (
     <div>
-      <h2>Send Transaction</h2>
+      <h2>Send User Operation</h2>
       <form onSubmit={submit}>
         <input name="address" placeholder="Address" required />
         <input
@@ -30,7 +30,7 @@ export function SendTransaction() {
           step="0.000000001"
           required
         />
-        <button disabled={isPending} type="submit" className="card">
+        <button disabled={isPending} type="submit">
           {isPending ? 'Confirming...' : 'Send'}
         </button>
       </form>

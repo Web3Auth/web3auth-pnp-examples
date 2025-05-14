@@ -1,7 +1,7 @@
 import "./App.css";
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
 import { useAccount } from "wagmi";
-import { SendTransaction } from "./components/SendTransaction";
+import { SendUserOperation } from "./components/SendUserOperation";
 import { Balance } from "./components/Balance";
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
           </button>
         </div>
       </div>
-      <SendTransaction />
+      <SendUserOperation />
       <Balance />
     </>
   );

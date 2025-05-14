@@ -1,112 +1,24 @@
 import "./App.css";
-
-import { IProvider, Web3Auth, WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
-import { useEffect, useState } from "react";
-
-
-import RPC from "./ethersRPC";
-
-// Get from https://dashboard.web3auth.io
-const clientId = "BBWsHL_ho__CfdDwMoJTwvBkt6KtsMq9F1XlqYF2uuS1V_MTgVUm3U93PVkp0rdcLHdtwLqv_E6U-ogTvSY226E";
-
-const web3AuthOptions: Web3AuthOptions = {
-  clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-  authBuildEnv: 'testing',
-}
-
-const web3auth = new Web3Auth(web3AuthOptions);
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+import { SendTransaction } from "./components/SendTransaction";
+import { Balance } from "./components/Balance";
 
 function App() {
-  const [provider, setProvider] = useState<IProvider | null>(null);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        await web3auth.initModal();
-        setProvider(web3auth.provider);
-
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
+  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
+  // IMP START - Logout
+  const { disconnect } = useWeb3AuthDisconnect();
+  // IMP END - Logout
+  const { userInfo } = useWeb3AuthUser();
+  const { address } = useAccount();
 
   const login = async () => {
-    const web3authProvider = await web3auth.connect();
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
-    }
+    // IMP START - Login
+    await connect();
+    // IMP END - Login
   };
 
-  const getUserInfo = async () => {
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  };
-
-  const logout = async () => {
-    await web3auth.logout();
-    setProvider(null);
-    setLoggedIn(false);
-    uiConsole("logged out");
-  };
-
-
-  const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    const address = await RPC.getAccounts(provider);
-    uiConsole(address);
-  };
-
-  const getBalance = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    const balance = await RPC.getBalance(provider);
-    uiConsole(balance);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    const signedMessage = await RPC.signMessage(provider);
-    uiConsole(signedMessage);
-  };
-
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    uiConsole("Sending Transaction...");
-    const transactionReceipt = await RPC.sendTransaction(provider);
-    uiConsole(transactionReceipt);
-  };
-
-  const signTransaction = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    uiConsole("Signing Transaction...");
-    const signature = await RPC.signTransaction(provider);
-    uiConsole(signature);
-  };
-
-  function uiConsole(...args: unknown[]): void {
+  function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
@@ -116,43 +28,22 @@ function App() {
 
   const loggedInView = (
     <>
-      <div className="flex-container">
+      <h2>Connected to {connectorName}</h2>
+      <div>{address}</div>
+      <div className="flex-container"> 
         <div>
-          <button onClick={getUserInfo} className="card">
+          <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
           </button>
         </div>
         <div>
-          <button onClick={getAccounts} className="card">
-            Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={signTransaction} className="card">
-            Sign Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={logout} className="card">
+          <button onClick={() => disconnect()} className="card">
             Log Out
           </button>
         </div>
       </div>
+      <SendTransaction />
+      <Balance />
     </>
   );
 
@@ -164,27 +55,30 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="title">
-        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
-          Web3Auth{" "}
-        </a>
-        & AA React Quick Start
-      </h1>
+          <h1 className="title">
+            <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
+              Web3Auth{" "}
+            </a>
+            & React Account Abstraction Quick Start
+          </h1>
 
-      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
-      <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
-      </div>
+          <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+          <div id="console" style={{ whiteSpace: "pre-line" }}>
+            <p style={{ whiteSpace: "pre-line" }}></p>
+          </div>
 
-      <footer className="footer">
-        <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/account-abstraction/aa-modal-quick-start"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Source code
-        </a>
-      </footer>
+          <footer className="footer">
+            <a
+              href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/react-hooks-no-modal-quick-start"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Source code
+            </a>
+            <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-no-modal-sdk%2Fquick-starts%2Freact-hooks-no-modal-quick-start&project-name=react-hooks-no-modal-quick-start&repository-name=react-hooks-no-modal-quick-start">
+              <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+            </a>
+          </footer>
     </div>
   );
 }

@@ -1,51 +1,54 @@
-# Web3Auth Modal AA Quick Start 
-![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)
-[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
+# React + TypeScript + Vite
 
-[Join our Community Portal](https://community.web3auth.io/) to get support and stay up to date with the latest news and updates.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-This example demonstrates how to use Web3Auth [Account abstraction provider](https://www.npmjs.com/package/@web3auth/account-abstraction-provider) with Web3Auth Modal in React.
+Currently, two official plugins are available:
 
-## Getting Started
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-1. Download Manually
+## Expanding the ESLint configuration
 
-```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/account-abstraction/aa-modal-quick-start w3a-aa-example
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
 ```
 
-2. Navigate into the project directory
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```bash
-cd w3a-aa-example
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
 ```
-
-3. Install dependencies
-```bash
-npm install
-```
-
-## Setup
-Set up the required environment variables by creating a `.env` file in the root of the project. Follow the instructions in the Environment Variables section.
-
-Here is an example `.env` file template
-
-```
-VITE_API_KEY = "YOUR_PIMLICO_API_KEY"
-```
-<!-- markdown-link-check-disable-next-line -->
-Get your pimlico API key from the [Pimlico Dashboard](https://dashboard.pimlico.io/)
-
-## Run 
-To start the development, run the following command
-```bash
-npm run dev
-```
-## Important Links
-
-- [Website](https://web3auth.io)
-- [Docs](https://web3auth.io/docs)
-- [Guides](https://web3auth.io/docs/guides)
-- [SDK / API References](https://web3auth.io/docs/sdk)
-- [Pricing](https://web3auth.io/pricing.html)
-- [Community Portal](https://community.web3auth.io)

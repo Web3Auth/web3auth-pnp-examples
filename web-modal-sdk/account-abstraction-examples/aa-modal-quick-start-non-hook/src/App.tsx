@@ -2,8 +2,8 @@ import "./App.css";
 
 import { IProvider, Web3Auth, WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
 import { useEffect, useState } from "react";
-
-
+import { SendUserOperation } from "./components/SendUserOperation";
+import { Balance } from "./components/Balance";
 import RPC from "./ethersRPC";
 
 // Get from https://dashboard.web3auth.io
@@ -20,6 +20,8 @@ const web3auth = new Web3Auth(web3AuthOptions);
 function App() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const [address, setAddress] = useState<string>("");
 
   useEffect(() => {
     const init = async () => {
@@ -29,6 +31,10 @@ function App() {
 
         if (web3auth.connected) {
           setLoggedIn(true);
+          const user = await web3auth.getUserInfo();
+          setUserInfo(user);
+          const accounts = await RPC.getAccounts(web3auth.provider!);
+          setAddress(accounts);
         }
       } catch (error) {
         console.error(error);
@@ -41,69 +47,22 @@ function App() {
   const login = async () => {
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
-    if (web3auth.connected) {
+    if (web3auth.connected && web3authProvider) {
       setLoggedIn(true);
+      const user = await web3auth.getUserInfo();
+      setUserInfo(user);
+      const accounts = await RPC.getAccounts(web3authProvider);
+      setAddress(accounts);
     }
-  };
-
-  const getUserInfo = async () => {
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
   };
 
   const logout = async () => {
     await web3auth.logout();
     setProvider(null);
     setLoggedIn(false);
+    setUserInfo(null);
+    setAddress("");
     uiConsole("logged out");
-  };
-
-
-  const getAccounts = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    const address = await RPC.getAccounts(provider);
-    uiConsole(address);
-  };
-
-  const getBalance = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    const balance = await RPC.getBalance(provider);
-    uiConsole(balance);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    const signedMessage = await RPC.signMessage(provider);
-    uiConsole(signedMessage);
-  };
-
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    uiConsole("Sending Transaction...");
-    const transactionReceipt = await RPC.sendTransaction(provider);
-    uiConsole(transactionReceipt);
-  };
-
-  const signTransaction = async () => {
-    if (!provider) {
-      uiConsole("Provider is not initialized yet");
-      return;
-    }
-    uiConsole("Signing Transaction...");
-    const signature = await RPC.signTransaction(provider);
-    uiConsole(signature);
   };
 
   function uiConsole(...args: unknown[]): void {
@@ -116,35 +75,12 @@ function App() {
 
   const loggedInView = (
     <>
+      <h2>Connected to Web3Auth</h2>
+      <div>{address}</div>
       <div className="flex-container">
         <div>
-          <button onClick={getUserInfo} className="card">
+          <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
-          </button>
-        </div>
-        <div>
-          <button onClick={getAccounts} className="card">
-            Get Accounts
-          </button>
-        </div>
-        <div>
-          <button onClick={getBalance} className="card">
-            Get Balance
-          </button>
-        </div>
-        <div>
-          <button onClick={signMessage} className="card">
-            Sign Message
-          </button>
-        </div>
-        <div>
-          <button onClick={signTransaction} className="card">
-            Sign Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={sendTransaction} className="card">
-            Send Transaction
           </button>
         </div>
         <div>
@@ -153,6 +89,8 @@ function App() {
           </button>
         </div>
       </div>
+      <SendUserOperation provider={provider} />
+      <Balance provider={provider} />
     </>
   );
 
@@ -168,7 +106,7 @@ function App() {
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & AA React Quick Start
+        & React Modal AA Quick Start (Non Hook)
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>

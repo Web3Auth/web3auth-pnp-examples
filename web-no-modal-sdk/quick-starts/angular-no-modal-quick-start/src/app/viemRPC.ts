@@ -1,6 +1,6 @@
 import { createWalletClient, createPublicClient, custom, formatEther, parseEther } from 'viem'
 import { mainnet, polygonAmoy, sepolia } from 'viem/chains'
-import type { IProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/no-modal";
 
 const getViewChain = (provider: IProvider) => {
   switch (provider.chainId) {

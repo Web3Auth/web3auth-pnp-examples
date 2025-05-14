@@ -42,11 +42,10 @@ export class AppComponent {
         // IMP START - SDK Initialization
         await web3auth.init();
         // IMP END - SDK Initialization
-        this.provider = web3auth.provider;
-
         if (web3auth.connected) {
           this.loggedIn = true;
         }
+        this.provider = web3auth.provider;
       } catch (error) {
         console.error(error);
       }

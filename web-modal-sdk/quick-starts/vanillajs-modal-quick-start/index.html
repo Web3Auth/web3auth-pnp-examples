@@ -2,8 +2,8 @@
 <html>
 
 <head>
-  <title>Web3Auth Getting Started</title>
-  <meta charset="UTF-8" />
+<title>Web3Auth Getting Started</title>
+<meta charset="UTF-8" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -19,8 +19,6 @@
       <button id="get-accounts" class="btn">Get Accounts</button>
       <button id="get-balance" class="btn">Get Balance</button>
       <button id="sign-message" class="btn">Sign Message</button>
-      <button id="show-wallet" class="btn">Show Wallet</button>
-      
       <button id="logout" class="btn">Logout</button>
       <div class="console" id="console">
         <p id="code" class="code"></p>
@@ -38,22 +36,19 @@
       </a>
       <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWeb3Auth%2Fweb3auth-pnp-examples%2Ftree%2Fmain%2Fweb-modal-sdk%2Fquick-starts%2Fvanillajs-modal-quick-start&project-name=w3a-vanillajs-modal&repository-name=w3a-vanillajs-modal">
         <img src="https://vercel.com/button" alt="Deploy with Vercel" />
-      </a>
+      </a>      
     </footer>
   </div>
 
-  
   <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="https://unpkg.com/base64-js@1.5.1/base64js.min.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
   <!--IMP START - Quick Start-->
   <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@9"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@web3auth/wallet-services-plugin@9"></script>
   <script src="https://cdn.jsdelivr.net/npm/@web3auth/ethereum-provider@9"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@web3auth/auth-adapter@9"></script>
   <!--IMP END - Quick Start-->
   <script src="https://cdn.jsdelivr.net/npm/web3@4.1.1/dist/web3.min.js"></script>
-  
-  <script src="script.js?as"></script>
+  <script src="script.js"></script>
 </body>
 
 </html>

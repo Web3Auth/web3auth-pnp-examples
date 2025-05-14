@@ -3,7 +3,7 @@ import { WEB3AUTH_NETWORK, type Web3AuthNoModalOptions } from "@web3auth/no-moda
 // IMP END - Quick Start
 
 // IMP START - Dashboard Registration
-const clientId = "BAS4B9cHfGZ147TYTOhKfnahOwCOtSRz_9Ce2aOQWYn8eYKKmEMQJUYdsokqpk_YGvfA3sKymOcNJnBIYUGuRfs"; // get from https://dashboard.web3auth.io
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 // IMP START - Instantiate SDK

@@ -1,109 +1,152 @@
 :host {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-		Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-	font-size: 14px;
-	color: #333;
-	box-sizing: border-box;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-
-.title {
-	font-size: 3rem;
-}
-
-.title a {
-	color: #0070f3;
-	text-decoration: none;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
 }
 
 .content {
-	display: flex;
-	margin: 82px auto 32px;
-	padding: 0 16px;
-	max-width: 960px;
-	flex-direction: column;
-	align-items: center;
-}
-
-.card-container {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	margin-top: 16px;
-}
-
-.card {
-	all: unset;
-	border-radius: 4px;
-	border: 1px solid #0070f3;
-	color: #0070f3;
-	height: 40px;
-	width: 150px;
-	margin: 0 8px 16px;
-	padding: 16px;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	transition: all 0.2s ease-in-out;
-	line-height: 24px;
-}
-
-.card.card-small {
-	height: 16px;
-	width: 128px;
-	cursor: pointer;
-}
-
-.card-container .card:not(.highlight-card):hover {
-	transform: translateY(-3px);
-	box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
-}
-
-.grid {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-}
-
-.console {
 	width: 100%;
-}
-
-.code {
-	background: #fafafa;
-	border-radius: 5px;
-	font-size: 1rem;
-	font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-		Bitstream Vera Sans Mono, Courier New, monospace;
-	overflow-wrap: break-word;
-	padding: 1rem;
-}
-
-.footer {
+	padding: 0 16px;
+	margin: 0 auto;
 	display: flex;
-	flex: 1;
-	padding: 2rem 0;
-	border-top: 1px solid #eaeaea;
-	justify-content: center;
+	flex-direction: column;
 	align-items: center;
-	margin-top: 10rem;
+	min-height: 100vh;
+	padding: 32px 0;
 }
 
-.footer a {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-grow: 1;
+.title {
+	font-size: 28px;
+	text-align: center;
+	margin: 24px 0;
+	line-height: 1.2;
+	font-weight: 600;
 }
 
-.logo {
-	height: 1em;
-	height: 1.5rem;
-	margin-left: 0.5rem;
+.title a {
+	color: var(--primary-color);
+	text-decoration: none;
 }
 
 .setting {
 	width: 100%;
+	max-width: 560px;
+}
+
+.card-container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-bottom: 16px;
+}
+
+.card {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 16px;
+	background-color: var(--bg-light);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius);
+	color: var(--text-color);
+	font-weight: 500;
+	font-size: 14px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: var(--shadow-sm);
+	width: 100%;
+	margin: 8px 0;
+	text-align: center;
+}
+
+.card:hover {
+	background-color: var(--bg-hover);
+	box-shadow: var(--shadow-md);
+	transform: translateY(-1px);
+}
+
+.console {
+	width: 100%;
+	margin-top: 24px;
+}
+
+.code {
+	width: 100%;
+	max-height: 250px;
+	overflow: auto;
+	word-wrap: break-word;
+	font-family: monospace;
+	font-size: 14px;
+	padding: 16px;
+	margin: 0;
+	background-color: #0a0a0a;
+	color: #e0e0e0;
+	border-radius: 0;
+	border: none;
+}
+
+.footer {
+	width: 100%;
+	padding: 32px 0;
+	border-top: 1px solid var(--border-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 24px;
+	margin-top: 48px;
+	flex-wrap: wrap;
+}
+
+.footer a {
+	color: var(--text-muted);
+	text-decoration: none;
+	font-size: 14px;
+	transition: color 0.2s ease;
+}
+
+.footer a:hover {
+	color: var(--primary-color);
+}
+
+.logo {
+	height: 20px;
+}
+
+/* Media queries for larger screens */
+@media (min-width: 640px) {
+	.content {
+		max-width: 640px;
+	}
+	
+	.title {
+		font-size: 32px;
+	}
+	
+	.card-container {
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 12px;
+	}
+	
+	.card {
+		width: auto;
+		margin: 0;
+	}
+}
+
+@media (min-width: 768px) {
+	.content {
+		max-width: 768px;
+	}
+	
+	.title {
+		font-size: 36px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.content {
+		max-width: 1024px;
+	}
 }

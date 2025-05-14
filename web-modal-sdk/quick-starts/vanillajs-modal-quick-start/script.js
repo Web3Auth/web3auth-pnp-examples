@@ -1,5 +1,4 @@
 let web3auth = null;
-let walletServicesPlugin = null;
 
 (async function init() {
   $(".btn-logged-in").hide();
@@ -9,43 +8,19 @@ let walletServicesPlugin = null;
   const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get your clientId from https://dashboard.web3auth.io
   // IMP END - Dashboard Registration
 
-  // IMP START - Chain Config
-  const chainConfig = {
-    chainNamespace: "eip155",
-    chainId: "0xaa36a7",
-    rpcTarget: "https://1rpc.io/sepolia",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Ethereum Sepolia Testnet",
-    blockExplorerUrl: "https://sepolia.etherscan.io",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-    logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-  };
-  // IMP END - Chain Config
-
   // IMP START - SDK Initialization
-  const privateKeyProvider = new window.EthereumProvider.EthereumPrivateKeyProvider({ config: { chainConfig } });
-
   web3auth = new window.Modal.Web3Auth({
     clientId,
-    privateKeyProvider,
     web3AuthNetwork: "sapphire_mainnet",
+    authBuildEnv: "testing",
   });
 
-  // Add wallet service plugin
-  walletServicesPlugin = new window.WalletServicesPlugin.WalletServicesPlugin();
-  web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
-
-  await web3auth.initModal();
+  await web3auth.init();
   // IMP END - SDK Initialization
 
   if (web3auth.connected) {
     $(".btn-logged-in").show();
     $(".btn-logged-out").hide();
-    if (web3auth.connected === "openlogin") {
-      $("#sign-tx").show();
-    }
   } else {
     $(".btn-logged-out").show();
     $(".btn-logged-in").hide();
@@ -55,7 +30,7 @@ let walletServicesPlugin = null;
 $("#login").click(async function (event) {
   try {
     // IMP START - Login
-    await web3auth.connect();
+    await web3auth.connect(); 
     // IMP END - Login
     $(".btn-logged-out").hide();
     $(".btn-logged-in").show();
@@ -104,15 +79,6 @@ $("#get-balance").click(async function (event) {
     uiConsole(balance);
   } catch (error) {
     console.error(error.message);
-  }
-});
-
-$("#show-wallet").click(async function (event) {
-  // print status in console
-  uiConsole(walletServicesPlugin.status);
-  if (walletServicesPlugin.status == "connected") {
-    // check if wallet is connected
-    await walletServicesPlugin.showWalletUi();
   }
 });
 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { IProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/modal";
 import { ethers } from "ethers";
 
 const getChainId = async (provider: IProvider): Promise<any> => {
@@ -55,14 +55,12 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
 
     const amount = ethers.parseEther("0.001");
 
-    const fees = await ethersProvider.getFeeData()
-
     // Submit transaction to the blockchain
     const tx = await signer.sendTransaction({
       to: destination,
       value: amount,
-      maxPriorityFeePerGas: fees.maxPriorityFeePerGas, // Max priority fee per gas
-      maxFeePerGas: fees.maxFeePerGas, // Max fee per gas
+      maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+      maxFeePerGas: "6000000000000", // Max fee per gas
     });
 
     // Wait for transaction to be mined
@@ -94,4 +92,4 @@ const signMessage = async (provider: IProvider): Promise<any> => {
   }
 }
 
-export default { getChainId, getAccounts, getBalance, sendTransaction, signMessage };
+export default {getChainId, getAccounts, getBalance, sendTransaction, signMessage};

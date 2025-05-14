@@ -1,37 +1,23 @@
 import { Component } from "@angular/core";
 // IMP START - Quick Start
-import { IAdapter, IProvider, WEB3AUTH_NETWORK, getEvmChainConfig } from "@web3auth/base";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { Web3Auth, IProvider, WEB3AUTH_NETWORK } from "@web3auth/modal";
+
 // IMP END - Quick Start
 
 // IMP START - Blockchain Calls
 import RPC from "./ethersRPC";
 // import RPC from "./viemRPC";
-// import RPC from "./web3RPC";
 // IMP END - Blockchain Calls
 
 // IMP START - Dashboard Registration
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
-// IMP START - Chain Config
-// Get custom chain configs for your chain from https://web3auth.io/docs/connect-blockchain
-const chainConfig = getEvmChainConfig(0xaa36a7, clientId)!;
-// IMP END - Chain Config
-
-// IMP START - SDK Initialization
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3AuthOptions: Web3AuthOptions = {
+const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-}
-const web3auth = new Web3Auth(web3AuthOptions);
+  authBuildEnv: "testing",
+});
 // IMP END - SDK Initialization
 
 
@@ -53,12 +39,6 @@ export class AppComponent {
   async ngOnInit() {
     const init = async () => {
       try {
-        // IMP START - Configuring External Wallets
-        const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-        adapters.forEach((adapter: IAdapter<unknown>) => {
-          web3auth.configureAdapter(adapter);
-        });
-        // IMP END - Configuring External Wallets
         // IMP START - SDK Initialization
         await web3auth.initModal();
         // IMP END - SDK Initialization

@@ -1,5 +1,6 @@
 // IMP START - Quick Start
 import { WEB3AUTH_NETWORK, type Web3AuthNoModalOptions } from "@web3auth/no-modal";
+import { type Web3AuthContextConfig } from "@web3auth/no-modal/vue";
 // IMP END - Quick Start
 
 // IMP START - Dashboard Registration
@@ -15,7 +16,7 @@ const web3AuthOptions: Web3AuthNoModalOptions = {
 // IMP END - Instantiate SDK
 
 // IMP START - Instantiate SDK
-const web3AuthContextConfig = {
+const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions
 };
 // IMP END - Instantiate SDK

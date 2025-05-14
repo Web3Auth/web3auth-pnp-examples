@@ -1,8 +1,9 @@
 import "./App.css";
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
 import { useAccount } from "wagmi";
 import { SendUserOperation } from "./components/SendUserOperation";
 import { Balance } from "./components/Balance";
+import { AUTH_CONNECTION, WALLET_CONNECTORS } from "@web3auth/no-modal";
 
 function App() {
   const { connect, isConnected, connectorName } = useWeb3AuthConnect();
@@ -11,7 +12,9 @@ function App() {
   const { address } = useAccount();
 
   const login = async () => {
-    await connect();
+    await connect(WALLET_CONNECTORS.AUTH, {
+      authConnection: AUTH_CONNECTION.GOOGLE,
+    });
   };
 
   function uiConsole(...args: any[]): void {
@@ -45,7 +48,7 @@ function App() {
 
   const unloggedInView = (
     <button onClick={login} className="card">
-      Login
+      Login with Google
     </button>
   );
 
@@ -55,7 +58,7 @@ function App() {
             <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
               Web3Auth{" "}
             </a>
-            & React Modal AA Quick Start
+            & React No Modal AA Quick Start
           </h1>
 
           <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>

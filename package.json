@@ -8,26 +8,7 @@
     "lint-all": "lerna exec --concurrency 1 -- 'npm run lint'"
   },
   "devDependencies": {
-    "eslint": "^8.34.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-mocha": "^10.5.0",
-    "eslint-plugin-n": "^15.6.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-tsdoc": "^0.2.17",
     "lerna": "^6.4.1",
-    "npm-check-updates": "^16.7.4",
-    "prettier": "^2.8.7"
-  },
-  "dependencies": {
-    "@react-native-community/eslint-config": "^3.2.0",
-    "@toruslabs/eslint-config-typescript": "^1.4.0",
-    "all": "^0.0.0",
-    "bip39": "^3.1.0",
-    "crypto": "^1.0.1",
-    "near-seed-phrase": "^0.2.0"
+    "npm-check-updates": "^16.7.4"
   }
 }

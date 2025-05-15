@@ -1,5 +1,5 @@
 {
-  "name": "ton-no-modal-example",
+  "name": "ton-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,7 +15,8 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "typescript": "^5.5.4",
-    "vite": "^5.4.0","assert": "^2.0.0",
+    "vite": "^5.4.0",
+    "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "empty-module": "^0.0.2",

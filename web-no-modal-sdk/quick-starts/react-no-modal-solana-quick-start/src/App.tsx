@@ -2,7 +2,7 @@ import "./App.css";
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
 import { WALLET_CONNECTORS } from "@web3auth/no-modal";
 import { useSolanaWallet } from "@web3auth/no-modal/react/solana";
-import { SendTransaction } from "./components/sendTransaction";
+import { SignTransaction } from "./components/signTransaction";
 import { Balance } from "./components/getBalance";
 import { SendVersionedTransaction } from "./components/sendVersionedTransaction";
 import { SignMessage } from "./components/signMessage";
@@ -41,7 +41,7 @@ function App() {
       </div>
       <Balance />
       <SignMessage />
-      <SendTransaction />
+      <SignTransaction />
       <SendVersionedTransaction />
       <SwitchChain />
     </div>

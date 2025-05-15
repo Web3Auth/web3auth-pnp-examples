@@ -37,7 +37,7 @@
       </div>
       <Balance v-if="isConnected" />
       <SignMessage v-if="isConnected" />
-      <SendTransaction v-if="isConnected" />
+      <SignTransaction v-if="isConnected" />
       <SendVersionedTransaction v-if="isConnected" />
       <SwitchNetwork v-if="isConnected" />
       
@@ -61,7 +61,7 @@ import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
 import { useSolanaWallet } from "@web3auth/no-modal/vue/solana";
 
 import Balance from './components/getBalance.vue';
-import SendTransaction  from './components/sendTransaction.vue';
+import SignTransaction  from './components/signTransaction.vue';
 import SwitchNetwork from './components/switchNetwork.vue';
 import SendVersionedTransaction from "./components/sendVersionedTransaction.vue";
 import SignMessage from "./components/signMessage.vue";

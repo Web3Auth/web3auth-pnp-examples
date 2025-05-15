@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
-import { useSolanaWallet, useSignAndSendTransaction } from "@web3auth/modal/vue/solana";
+import { useSolanaWallet, useSignTransaction } from "@web3auth/modal/vue/solana";
 
-const { data: hash, error, loading: isPending, signAndSendTransaction } = useSignAndSendTransaction();
+const { data: signedTransaction, error, loading: isPending, signTransaction } = useSignTransaction();
 const { accounts, connection } = useSolanaWallet();
 
 async function submit(event: Event) {
@@ -26,14 +26,14 @@ async function submit(event: Event) {
     feePayer: new PublicKey(accounts.value[0]),
   }).add(TransactionInstruction);
   
-  signAndSendTransaction(transaction);
+  signTransaction(transaction);
 }
 </script>
 
 <template>
   <div class="container">
     <div class="stack">
-      <h2>Send Transaction</h2>
+      <h2>Sign Transaction</h2>
       <form class="set" @submit.prevent="submit">
         <input name="address" placeholder="Address" required />
         <input
@@ -44,11 +44,10 @@ async function submit(event: Event) {
           required
         />
         <button type="submit" :disabled="isPending">
-          {{ isPending ? 'Confirming...' : 'Send' }}
+          {{ isPending ? 'Signing...' : 'Sign' }}
         </button>
       </form>
-      <div v-if="hash">Transaction Hash: {{ hash }}</div>
-      <div v-if="isPending">Confirming...</div>
+      <div v-if="signedTransaction">Signed Transaction: {{ signedTransaction }}</div>
       <div v-if="error">
         Error: {{ error.message }}
       </div>

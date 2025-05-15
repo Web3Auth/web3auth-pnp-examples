@@ -1,9 +1,10 @@
 import { FormEvent } from "react";
-import { useSolanaWallet, useSignAndSendTransaction } from "@web3auth/modal/react/solana";
+import { useSolanaWallet, useSignTransaction } from "@web3auth/modal/react/solana";
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-export function SendTransaction() {
-  const { data: hash, error, loading: isPending, signAndSendTransaction } = useSignAndSendTransaction();
+export function SignTransaction() {
+  const { data: signedTransaction, error, loading: isPending, signTransaction,
+  } = useSignTransaction();
   const { accounts, connection } = useSolanaWallet();
 
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -25,13 +26,13 @@ export function SendTransaction() {
       feePayer: new PublicKey(accounts![0]),
     }).add(TransactionInstruction);
     
-    signAndSendTransaction(transaction);
+    signTransaction(transaction);
   }
 
 
   return (
     <div>
-      <h2>Send Transaction</h2>
+      <h2>Sign Transaction</h2>
       <form onSubmit={submit}>
         <input name="address" placeholder="Address" required />
         <input
@@ -42,10 +43,10 @@ export function SendTransaction() {
           required
         />
         <button disabled={isPending} type="submit" >
-          {isPending ? 'Confirming...' : 'Send'}
+          {isPending ? 'Signing...' : 'Sign'}
         </button>
       </form>
-      {hash && <div>Transaction Hash: {hash}</div>}
+      {signedTransaction && <div>Signed Trasaction: {signedTransaction}</div>}
       {error && (
         <div>Error: {error.message}</div>
       )}

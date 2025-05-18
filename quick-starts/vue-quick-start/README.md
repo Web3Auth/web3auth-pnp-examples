@@ -1,10 +1,10 @@
-# Web3Auth Vue Quick Start Example
+# Web3Auth Vue Quick Start
 
-This example demonstrates how to integrate Web3Auth's Plug and Play Modal SDK with Vue.js for EVM (Ethereum Virtual Machine) integration. It provides a simple, production-ready starting point for adding Web3Auth authentication to your Vue.js application.
+This example demonstrates how to integrate Web3Auth into a Vue.js application for EVM chains.
 
 ## Prerequisites
-- Node.js 14+
-- npm/yarn
+- Node.js 20+
+- npm
 - A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
 ## Quick Start
@@ -22,50 +22,27 @@ cd web3auth-pnp-examples/quick-starts/vue-quick-start
 ### 3. Install dependencies
 ```bash
 npm install
-# or
-yarn
 ```
 
 ### 4. Configure environment variables
 Create a `.env` file and add your Web3Auth Client ID:
 ```bash
-VUE_APP_WEB3AUTH_CLIENT_ID=your-client-id
+VUE_APP_WEB3AUTH_CLIENT_ID=YOUR_WEB3AUTH_CLIENT_ID
 ```
 
 ### 5. Run the application
 ```bash
-npm run serve
-# or
-yarn serve
+npm run dev
 ```
 
-Visit `http://localhost:8080` in your browser to see the application running.
+Visit `http://localhost:5173` in your browser to see the application running.
 
-## Features
-- Social login with Web3Auth Modal UI
-- EVM blockchain integration (Ethereum, Polygon, etc.)
-- User wallet management
-- Basic blockchain interactions
-- Vue 3 Composition API support
+## 📚 Resources
 
-## Project Structure
-- `src/components/`: Vue components
-- `src/composables/`: Vue composables for Web3Auth
-- `src/config/`: Configuration files
-- `src/services/`: Web3Auth and blockchain services
-
-## Important Links
-- [Website](https://web3auth.io)
-- [Documentation](https://web3auth.io/docs)
-- [Guides](https://web3auth.io/docs/guides)
-- [SDK / API References](https://web3auth.io/docs/sdk)
-- [Pricing](https://web3auth.io/pricing.html)
-- [Support](https://discord.gg/web3auth)
-
-## Support and Feedback
-- [Discord](https://discord.gg/web3auth)
-- [GitHub Issues](https://github.com/Web3Auth/web3auth-pnp-examples/issues)
-- [Documentation](https://web3auth.io/docs/connect-blockchain/evm)
+- [Web3Auth Documentation](https://web3auth.io/docs)
+- [SDK References](https://web3auth.io/docs/sdk)
+- [Developer Dashboard](https://dashboard.web3auth.io)
+- [Web3Auth Community](https://web3auth.io/community)
 
 ## License
 MIT

@@ -1,50 +1,48 @@
-# Web3Auth (`@web3auth/modal`) with React and Polkadot
+# Web3Auth Polkadot Example
 
-This example demonstrates how to use Web3Auth with React for connecting to the Polkadot blockchain ecosystem.
+This example demonstrates how to integrate Web3Auth into a React application for the Polkadot blockchain.
 
-## Tech Stack
+## Prerequisites
+- Node.js 20+
+- npm
+- A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
-- **Frontend Framework**: React with TypeScript
-- **Build Tool**: Vite
-- **Web3 Libraries**: 
-  - `@web3auth/modal`: Core Web3Auth functionality without UI (headless)
-  - `@polkadot/api`: JavaScript API for Polkadot and Substrate-based chains
-  - `@polkadot/util`: Utility functions for Polkadot
-  - `@polkadot/util-crypto`: Cryptographic utilities for Polkadot
-- **Additional Polyfills**: Various browser polyfills for compatibility with Node.js crypto libraries
+## Quick Start
 
-This example shows how to integrate Web3Auth's no-modal SDK into a React application for interacting with the Polkadot ecosystem. It demonstrates how to:
-
-1. Authenticate users with Web3Auth
-2. Generate Polkadot compatible key pairs
-3. Connect to Polkadot networks (mainnet, testnet, or parachains)
-4. Check balances and account information
-5. Execute transactions and interact with smart contracts
-
-The example provides a foundation for building decentralized applications on Polkadot with a seamless authentication experience.
-
-## How to Use
-
-### Download Manually
-
+### 1. Clone the repository
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web/other/polkadot-example w3a-example
+git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 ```
 
-### Installation
-
+### 2. Navigate to the example
 ```bash
-cd w3a-example
+cd web3auth-pnp-examples/other/polkadot-example
+```
+
+### 3. Install dependencies
+```bash
 npm install
 ```
 
-### Run the application
+### 4. Configure environment variables
+Create a `.env` file and add your Web3Auth Client ID:
+```bash
+VITE_WEB3AUTH_CLIENT_ID=YOUR_WEB3AUTH_CLIENT_ID
+```
 
+### 5. Run the application
 ```bash
 npm run dev
 ```
 
-## Important Links
+Visit `http://localhost:5173` in your browser to see the application running.
 
-- [Website](https://web3auth.io)
-- [Docs](https://web3auth.io/docs)
+## 📚 Resources
+
+- [Web3Auth Documentation](https://web3auth.io/docs)
+- [SDK References](https://web3auth.io/docs/sdk)
+- [Developer Dashboard](https://dashboard.web3auth.io)
+- [Web3Auth Community](https://web3auth.io/community)
+
+## License
+MIT

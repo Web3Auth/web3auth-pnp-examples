@@ -1,10 +1,10 @@
-# Web3Auth XMTP Integration Example
+# Web3Auth XMTP Example
 
-This example demonstrates how to integrate Web3Auth's Plug and Play Modal SDK with React for XMTP (Extensible Message Transport Protocol) integration. It provides a simple, production-ready starting point for adding Web3Auth authentication to your decentralized messaging application.
+This example demonstrates how to integrate Web3Auth into a React application with XMTP for decentralized messaging.
 
 ## Prerequisites
-- Node.js 14+
-- npm/yarn
+- Node.js 20+
+- npm
 - A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
 ## Quick Start
@@ -22,52 +22,27 @@ cd web3auth-pnp-examples/other/xmtp-example
 ### 3. Install dependencies
 ```bash
 npm install
-# or
-yarn
 ```
 
 ### 4. Configure environment variables
 Create a `.env` file and add your Web3Auth Client ID:
 ```bash
-VITE_WEB3AUTH_CLIENT_ID=your-client-id
+VITE_WEB3AUTH_CLIENT_ID=YOUR_WEB3AUTH_CLIENT_ID
 ```
 
 ### 5. Run the application
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 Visit `http://localhost:5173` in your browser to see the application running.
 
-## Features
-- Social login with Web3Auth Modal UI
-- XMTP protocol integration for decentralized messaging
-- Send and receive messages
-- Create conversations
-- Message history
-- Real-time updates
-- EVM blockchain integration
+## 📚 Resources
 
-## Project Structure
-- `src/components/`: React components
-- `src/config/`: Configuration files
-- `src/services/`: Web3Auth and XMTP services
-
-## Important Links
-- [Website](https://web3auth.io)
-- [Documentation](https://web3auth.io/docs)
-- [Guides](https://web3auth.io/docs/guides)
-- [SDK / API References](https://web3auth.io/docs/sdk)
-- [Pricing](https://web3auth.io/pricing.html)
-- [Support](https://discord.gg/web3auth)
-- [XMTP Documentation](https://xmtp.org/docs)
-
-## Support and Feedback
-- [Discord](https://discord.gg/web3auth)
-- [GitHub Issues](https://github.com/Web3Auth/web3auth-pnp-examples/issues)
-- [Documentation](https://web3auth.io/docs/connect-blockchain/evm)
+- [Web3Auth Documentation](https://web3auth.io/docs)
+- [SDK References](https://web3auth.io/docs/sdk)
+- [Developer Dashboard](https://dashboard.web3auth.io)
+- [Web3Auth Community](https://web3auth.io/community)
 
 ## License
 MIT

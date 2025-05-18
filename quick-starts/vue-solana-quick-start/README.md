@@ -1,106 +1,48 @@
-# Web3Auth Vue.js Solana Quick Start Example
+# Web3Auth Vue Solana Quick Start
 
-This example demonstrates how to integrate Web3Auth with Solana blockchain in a Vue.js application, enabling secure wallet creation and Solana network interactions using Vue.js's reactive capabilities.
-
-## Features
-
-- 🔐 Social login with multiple providers (Google, Facebook, Discord, etc.)
-- 🌐 Web3Auth Modal UI for seamless authentication
-- ⛓️ Solana blockchain integration
-- 💰 SOL token management
-- 🔑 SPL token support
-- 📝 Transaction signing
-- 🔄 Vue.js composables for blockchain interactions
-- 📱 Responsive and user-friendly interface
-- 🎨 Vue 3 Composition API support
+This example demonstrates how to integrate Web3Auth into a Vue.js application for the Solana blockchain.
 
 ## Prerequisites
+- Node.js 20+
+- npm
+- A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
-- Node.js 14+ and npm/yarn
-- Basic knowledge of Vue.js and Solana
-- A Web3Auth account and client ID (get one at [Web3Auth Dashboard](https://dashboard.web3auth.io))
-- Basic understanding of Solana concepts (accounts, programs, SOL, SPL tokens)
+## Quick Start
 
-## Installation
-
-1. Clone the repository:
+### 1. Clone the repository
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web/quick-starts/vue-solana-quick-start w3a-example
+git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 ```
 
-2. Install dependencies:
+### 2. Navigate to the example
 ```bash
-cd w3a-example
+cd web3auth-pnp-examples/quick-starts/vue-solana-quick-start
+```
+
+### 3. Install dependencies
+```bash
 npm install
 ```
 
-3. Configure environment variables:
-   - Create a `.env` file in the root directory
-   - Add your Web3Auth client ID and Solana configuration:
-   ```
-   VUE_APP_WEB3AUTH_CLIENT_ID=your-client-id
-   ```
-
-4. Start the development server:
+### 4. Configure environment variables
+Create a `.env` file and add your Web3Auth Client ID:
 ```bash
-npm run serve
+VUE_APP_WEB3AUTH_CLIENT_ID=YOUR_WEB3AUTH_CLIENT_ID
 ```
 
-## Project Structure
-
-```
-src/
-├── components/     # Vue components
-├── composables/    # Vue composables
-│   ├── useWeb3Auth.ts     # Web3Auth integration
-│   ├── useSolana.ts       # Solana operations
-│   └── useSPLToken.ts     # SPL token operations
-├── config/        # Configuration files
-├── services/      # Blockchain services
-├── types/         # TypeScript definitions
-└── App.vue        # Main application component
+### 5. Run the application
+```bash
+npm run dev
 ```
 
-## Common Issues and Solutions
+Visit `http://localhost:5173` in your browser to see the application running.
 
-1. **Solana Network Issues**
-   - Verify RPC endpoint availability
-   - Handle rate limiting appropriately
-   - Check network status (devnet/testnet/mainnet)
-
-2. **Transaction Issues**
-   - Ensure sufficient SOL for fees
-   - Validate address formats
-   - Handle transaction timeouts
-
-3. **Integration Issues**
-   - Check Web3Auth network configuration
-   - Verify Solana connection settings
-   - Handle provider initialization properly
-
-## Security Best Practices
-
-- Never expose private keys
-- Validate all input addresses
-- Implement proper error handling
-- Handle transaction signing securely
-- Regular security audits
-- Follow Solana security guidelines
-
-## Resources
+## 📚 Resources
 
 - [Web3Auth Documentation](https://web3auth.io/docs)
-- [Vue.js Integration Guide](https://web3auth.io/docs/sdk/pnp/web/modal/)
-- [Solana Integration Guide](https://web3auth.io/docs/connect-blockchain/solana)
-- [Solana Documentation](https://docs.solana.com)
-- [Vue.js Documentation](https://vuejs.org/)
-- [Web3Auth Dashboard](https://dashboard.web3auth.io)
-- [Discord Support](https://discord.gg/web3auth)
-
-## Contributing
-
-We welcome contributions! Please feel free to submit issues and pull requests.
+- [SDK References](https://web3auth.io/docs/sdk)
+- [Developer Dashboard](https://dashboard.web3auth.io)
+- [Web3Auth Community](https://web3auth.io/community)
 
 ## License
-
-This example is available under the MIT License. See the LICENSE file for more info.
+MIT

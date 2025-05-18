@@ -1,47 +1,48 @@
-# Web3Auth with React and Account Abstraction
+# Web3Auth Smart Account Example
 
-## Tech Stack
+This example demonstrates how to integrate Web3Auth with Smart Contract Accounts (Account Abstraction) in a React application.
 
-- **Frontend Framework**: React 19 with TypeScript
-- **Build Tool**: Vite
-- **Web3 Libraries**: 
-  - `@web3auth/modal`: Core Web3Auth functionality with Modal UI
-  - `wagmi`: React hooks for Ethereum
-  - `viem`: TypeScript interface for Ethereum
-  - `@tanstack/react-query`: Data synchronization for React applications
+## Prerequisites
+- Node.js 20+
+- npm
+- A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
-This example shows how to integrate Web3Auth with ERC-4337 Account Abstraction standard, allowing users to:
+## Quick Start
 
-1. Create smart contract wallets instead of EOAs (Externally Owned Accounts)
-2. Pay for gas fees in ERC-20 tokens instead of the native token
-3. Batch multiple transactions together
-4. Enable advanced security features like social recovery
-5. Set transaction limits and other security policies
-
-The implementation uses Web3Auth for authentication and the Account Abstraction standard for creating smart contract wallets that enhance the user experience by abstracting away blockchain complexities.
-
-## How to Use
-
-### Download Manually
-
+### 1. Clone the repository
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web/account-abstraction/aa-quick-start w3a-example
+git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 ```
 
-### Installation
-
+### 2. Navigate to the example
 ```bash
-cd w3a-example
+cd web3auth-pnp-examples/other/smart-account-example
+```
+
+### 3. Install dependencies
+```bash
 npm install
 ```
 
-### Run the application
+### 4. Configure environment variables
+Create a `.env` file and add your Web3Auth Client ID:
+```bash
+VITE_WEB3AUTH_CLIENT_ID=YOUR_WEB3AUTH_CLIENT_ID
+```
 
+### 5. Run the application
 ```bash
 npm run dev
 ```
 
-## Important Links
+Visit `http://localhost:5173` in your browser to see the application running.
 
-- [Website](https://web3auth.io)
-- [Docs](https://web3auth.io/docs)
+## 📚 Resources
+
+- [Web3Auth Documentation](https://web3auth.io/docs)
+- [SDK References](https://web3auth.io/docs/sdk)
+- [Developer Dashboard](https://dashboard.web3auth.io)
+- [Web3Auth Community](https://web3auth.io/community)
+
+## License
+MIT

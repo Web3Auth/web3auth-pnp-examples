@@ -1,40 +1,48 @@
-# Web3Auth  with React and Algorand
+# Web3Auth Algorand Example
 
-This example demonstrates how to use Web3Auth with React for connecting to Algorand blockchain.
+This example demonstrates how to integrate Web3Auth into a React application for the Algorand blockchain.
 
-## Tech Stack
+## Prerequisites
+- Node.js 20+
+- npm
+- A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
-- **Frontend Framework**: React with TypeScript
-- **Build Tool**: Vite
-- **Web3 Libraries**: 
-  - `@web3auth/modal`: Core Web3Auth functionality with Modal UI
-  - `algosdk`: Official Algorand SDK for JavaScript
-- **Additional Polyfills**: Various browser polyfills for compatibility with Node.js crypto libraries
+## Quick Start
 
-This example shows how to integrate Web3Auth authentication in a React app to connect with the Algorand blockchain. It demonstrates how to create an Algorand wallet, check balances, and perform transactions on the Algorand network after authenticating with Web3Auth.
-
-## How to Use
-
-### Download Manually
-
+### 1. Clone the repository
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web/other/algorand-example w3a-example
+git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 ```
 
-### Installation
-
+### 2. Navigate to the example
 ```bash
-cd w3a-example
+cd web3auth-pnp-examples/other/algorand-example
+```
+
+### 3. Install dependencies
+```bash
 npm install
 ```
 
-### Run the application
+### 4. Configure environment variables
+Create a `.env` file and add your Web3Auth Client ID:
+```bash
+VITE_WEB3AUTH_CLIENT_ID=YOUR_WEB3AUTH_CLIENT_ID
+```
 
+### 5. Run the application
 ```bash
 npm run dev
 ```
 
-## Important Links
+Visit `http://localhost:5173` in your browser to see the application running.
 
-- [Website](https://web3auth.io)
-- [Docs](https://web3auth.io/docs)
+## 📚 Resources
+
+- [Web3Auth Documentation](https://web3auth.io/docs)
+- [SDK References](https://web3auth.io/docs/sdk)
+- [Developer Dashboard](https://dashboard.web3auth.io)
+- [Web3Auth Community](https://web3auth.io/community)
+
+## License
+MIT

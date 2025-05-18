@@ -1,52 +1,48 @@
-# Web3Auth (`@web3auth/modal`) with Next.js and Server-Side Verification
+# Web3Auth Server-Side Verification Example
 
-This example demonstrates how to implement secure server-side verification of Web3Auth authentication in a Next.js application.
+This example demonstrates how to implement the Web3Auth Server Side Verification in a React application.
 
-## Tech Stack
+## Prerequisites
+- Node.js 20+
+- npm
+- A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
-- **Frontend Framework**: Next.js (React) with TypeScript
-- **Web3 Libraries**: 
-  - `@web3auth/modal`: Core Web3Auth functionality without UI (headless)
-  - `wagmi`: React hooks for Ethereum
-  - `@tanstack/react-query`: Data synchronization for React applications
-- **UI Components**:
-  - `@tanstack/react-table`: Table components for data display
-  - `react-toastify`: Toast notifications
-- **JWT Handling**:
-  - `jose`: JavaScript library for JWK, JWT, and JSON Web Signatures/Encryption
+## Quick Start
 
-This example shows how to implement secure server-side verification of Web3Auth authentication tokens. It demonstrates:
-
-1. Authenticating users with Web3Auth
-2. Issuing and validating JWT tokens securely
-3. Implementing server-side verification of user authentication
-4. Protecting API routes and sensitive operations
-5. Preventing token forgery and authentication bypass
-
-The implementation uses Next.js API routes to verify authentication server-side, adding an additional layer of security to your Web3 application beyond client-side authentication.
-
-## How to Use
-
-### Download Manually
-
+### 1. Clone the repository
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web/other/server-side-verification-example w3a-example
+git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 ```
 
-### Installation
-
+### 2. Navigate to the example
 ```bash
-cd w3a-example
+cd web3auth-pnp-examples/other/server-side-verification-example
+```
+
+### 3. Install dependencies
+```bash
 npm install
 ```
 
-### Run the application
+### 4. Configure environment variables
+Create a `.env` file and add your Web3Auth Client ID:
+```bash
+VITE_WEB3AUTH_CLIENT_ID=YOUR_WEB3AUTH_CLIENT_ID
+```
 
+### 5. Run the application
 ```bash
 npm run dev
 ```
 
-## Important Links
+Visit `http://localhost:5173` in your browser to see the application running.
 
-- [Website](https://web3auth.io)
-- [Docs](https://web3auth.io/docs)
+## 📚 Resources
+
+- [Web3Auth Documentation](https://web3auth.io/docs)
+- [SDK References](https://web3auth.io/docs/sdk)
+- [Developer Dashboard](https://dashboard.web3auth.io)
+- [Web3Auth Community](https://web3auth.io/community)
+
+## License
+MIT

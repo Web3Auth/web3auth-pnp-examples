@@ -1,43 +1,48 @@
-# Web3Auth (`@web3auth/modal`) with React and Bitcoin
+# Web3Auth Bitcoin Example
 
-This example demonstrates how to use Web3Auth without a modal UI for connecting to the Bitcoin blockchain.
+This example demonstrates how to integrate Web3Auth into a React application for Bitcoin blockchain.
 
-## Tech Stack
+## Prerequisites
+- Node.js 20+
+- npm
+- A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
-- **Frontend Framework**: React with TypeScript
-- **Build Tool**: Vite
-- **Web3 Libraries**: 
-  - `@web3auth/modal`: Core Web3Auth functionality without UI (headless)
-  - `bitcoinjs-lib`: Bitcoin JavaScript library
-  - `ecpair`: Library for Bitcoin cryptographic key pairs
-  - `@bitcoinerlab/secp256k1`: Implementation of secp256k1 curve used in Bitcoin
-  - `axios`: HTTP client for making API requests to Bitcoin services
-- **Additional Polyfills**: Various browser polyfills for compatibility with Node.js crypto libraries
+## Quick Start
 
-This example shows how to integrate Web3Auth's no-modal SDK into a React application for interacting with the Bitcoin blockchain. It demonstrates how to create a Bitcoin wallet, check balances, and perform transactions on the Bitcoin network after authenticating with Web3Auth. It uses the headless (no UI) version of Web3Auth for custom UI implementations.
-
-## How to Use
-
-### Download Manually
-
+### 1. Clone the repository
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web/other/bitcoin-example w3a-example
+git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 ```
 
-### Installation
-
+### 2. Navigate to the example
 ```bash
-cd w3a-example
+cd web3auth-pnp-examples/other/bitcoin-example
+```
+
+### 3. Install dependencies
+```bash
 npm install
 ```
 
-### Run the application
+### 4. Configure environment variables
+Create a `.env` file and add your Web3Auth Client ID:
+```bash
+VITE_WEB3AUTH_CLIENT_ID=YOUR_WEB3AUTH_CLIENT_ID
+```
 
+### 5. Run the application
 ```bash
 npm run dev
 ```
 
-## Important Links
+Visit `http://localhost:5173` in your browser to see the application running.
 
-- [Website](https://web3auth.io)
-- [Docs](https://web3auth.io/docs)
+## 📚 Resources
+
+- [Web3Auth Documentation](https://web3auth.io/docs)
+- [SDK References](https://web3auth.io/docs/sdk)
+- [Developer Dashboard](https://dashboard.web3auth.io)
+- [Web3Auth Community](https://web3auth.io/community)
+
+## License
+MIT

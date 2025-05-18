@@ -1,129 +1,102 @@
-# Web3Auth React Quick Start Example (EVM)
+# Web3Auth React Quick Start Example
 
-This example demonstrates how to integrate Web3Auth into a React application for Ethereum Virtual Machine (EVM) based blockchains. It provides a simple, yet comprehensive starting point for adding Web3Auth authentication to your React dApp.
+This example demonstrates how to integrate Web3Auth's Plug and Play Modal SDK with React for EVM (Ethereum Virtual Machine) integration. It provides a simple, production-ready starting point for adding Web3Auth authentication to your React application.
 
-## Features
+## Quick Start
 
-- 🔐 Social login with multiple providers (Google, Facebook, Discord, etc.)
-- 🌐 Web3Auth Modal UI for seamless authentication
-- ⛓️ EVM blockchain integration
-- 🔄 React hooks for blockchain interactions
-- 📱 Responsive and user-friendly interface
-
-## Prerequisites
-
-- Node.js 14+ and npm/yarn
-- Basic knowledge of React and Web3
-- A Web3Auth account and client ID (get one at [Web3Auth Dashboard](https://dashboard.web3auth.io))
-
-## Tech Stack
-
-- **Frontend**: React 18+ with TypeScript
-- **Build Tool**: Vite
-- **Web3 Libraries**: 
-  - `@web3auth/modal`: Core Web3Auth functionality with Modal UI
-  - `wagmi`: React hooks for Ethereum
-  - `@tanstack/react-query`: Data synchronization
-  - `ethers`: Ethereum library for blockchain interactions
-
-## Installation
-
-1. Clone the repository:
+### 1. Clone the repository
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web/quick-starts/react-quick-start w3a-example
+git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 ```
 
-2. Install dependencies:
+### 2. Navigate to the example
 ```bash
-cd w3a-example
+cd web3auth-pnp-examples/quick-starts/react-quick-start
+```
+
+### 3. Install dependencies
+```bash
 npm install
+# or
+yarn
 ```
 
-3. Configure environment variables:
-   - Create a `.env` file in the root directory
-   - Add your Web3Auth client ID:
-   ```
-   VITE_WEB3AUTH_CLIENT_ID=your-client-id
-   ```
+### 4. Configure environment variables
+Create a `.env` file and add your Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
+```bash
+VITE_WEB3AUTH_CLIENT_ID=your-client-id
+```
 
-4. Start the development server:
+### 5. Run the application
 ```bash
 npm run dev
+# or
+yarn dev
 ```
 
-## Project Structure
+## Important Links
+- [Website](https://web3auth.io)
+- [Documentation](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Support](https://discord.gg/web3auth)
 
+## Technical Details
+
+### Stack
+- Framework: React 18+
+- Web3Auth SDK: `@web3auth/modal@7.x`
+- Blockchain: EVM (Ethereum, Polygon, etc.)
+- Package Manager: npm/yarn
+- Build Tool: Vite
+
+### Key Features
+- Social login with Web3Auth Modal UI
+- EVM blockchain integration with ethers.js
+- Example blockchain interactions:
+  - Get user's Ethereum address
+  - Get user's ETH balance
+  - Sign messages
+  - Send transactions
+  - Connect to smart contracts
+- TypeScript support
+- Vite for fast development and building
+
+### Code Structure
 ```
 src/
 ├── components/     # React components
 ├── config/        # Configuration files
-├── hooks/         # Custom React hooks
 ├── services/      # Web3Auth and blockchain services
 └── App.tsx        # Main application component
 ```
 
-## Key Features Implementation
-
-### 1. Web3Auth Initialization
+### Web3Auth Configuration
 ```typescript
-const web3auth = new Web3Auth({
+const web3AuthConfig = {
   clientId: import.meta.env.VITE_WEB3AUTH_CLIENT_ID,
-  web3AuthNetwork: "testnet",
+  web3AuthNetwork: "sapphire_devnet",
   chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1", // Ethereum mainnet
+    chainNamespace: "eip155",
+    chainId: "0x1", // Ethereum Mainnet
     rpcTarget: "https://rpc.ankr.com/eth"
   }
-});
+};
 ```
 
-### 2. Social Login Integration
-The example demonstrates how to implement social login with various providers:
-- Google
-- Facebook
-- Twitter
-- Discord
-- GitHub
-- Email passwordless
-
-### 3. Blockchain Interactions
-Examples of basic blockchain interactions are included:
-- Get user's address and balance
-- Send transactions
-- Sign messages
-- Connect to smart contracts
-
-## Customization
-
-1. **Chain Configuration**: Modify `chainConfig` in `src/config/web3AuthConfig.ts` to connect to different EVM chains
-2. **UI Customization**: Update the Modal UI theme in `src/config/web3AuthConfig.ts`
-3. **RPC Configuration**: Change RPC endpoints in the chain configuration
-
-## Common Issues and Solutions
-
-1. **Invalid Client ID**: Ensure you've added the correct Web3Auth client ID in your `.env` file
-2. **Network Issues**: Check if you're using the correct RPC endpoint for your chosen network
-3. **Initialization Errors**: Make sure Web3Auth is properly initialized before use
-
 ## Security Considerations
-
-- Never commit your `.env` file or expose your client ID
-- Implement proper error handling for failed authentication
-- Validate all blockchain transactions before sending
+- Keep your Web3Auth Client ID secure and never commit it to version control
+- Implement proper error handling for authentication and blockchain interactions
+- Follow blockchain security best practices when handling transactions
 - Consider implementing rate limiting for authentication attempts
+- Validate all user inputs and transaction parameters
+- Use environment variables for sensitive configuration
 
-## Resources
-
-- [Web3Auth Documentation](https://web3auth.io/docs)
-- [React Integration Guide](https://web3auth.io/docs/sdk/pnp/web/modal/)
-- [EVM Integration Guide](https://web3auth.io/docs/connect-blockchain/evm)
-- [Web3Auth Dashboard](https://dashboard.web3auth.io)
-- [Discord Support](https://discord.gg/web3auth)
-
-## Contributing
-
-Feel free to submit issues and enhancement requests!
+## Support and Feedback
+- [Discord](https://discord.gg/web3auth)
+- [GitHub Issues](https://github.com/Web3Auth/web3auth-pnp-examples/issues)
+- [Documentation](https://web3auth.io/docs/connect-blockchain/evm)
 
 ## License
-
-This example is available under the MIT License. See the LICENSE file for more info.
+MIT

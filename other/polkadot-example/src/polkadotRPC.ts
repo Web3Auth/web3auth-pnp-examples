@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
-import type { IProvider } from "@web3auth/no-modal";
+import type { IProvider } from "@web3auth/modal";
 
 /**
  * Makes a Polkadot API client

@@ -1,5 +1,4 @@
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth } from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth } from "@web3auth/modal/react";
 import { useEffect, useState } from "react";
 import { FloatingInbox } from "./FloatingInbox";
 import { ethers, JsonRpcSigner } from "ethers";
@@ -127,9 +126,7 @@ function App() {
       <button 
         className="home-button" 
         style={{ ...styles.ButtonStyledStyle, marginLeft: 10 }} 
-        onClick={() => connect(WALLET_CONNECTORS.AUTH, {
-          authConnection: AUTH_CONNECTION.GOOGLE,
-        })} 
+        onClick={() => connect()} 
         disabled={connectLoading}
       >
         {isConnected ? "Connected" : connectLoading ? "Connecting..." : "Login with Google"}

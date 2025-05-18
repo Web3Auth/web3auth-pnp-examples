@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth } from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { useState } from "react";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth } from "@web3auth/modal/react";
 import {
   getBitcoinPrivateKey,
   getBitcoinAddressAndKeys,
@@ -19,29 +17,19 @@ function App() {
   const { provider } = useWeb3Auth();
 
   const login = async () => {
-    try {
-      setError(null);
-      await connect(WALLET_CONNECTORS.AUTH, {
-        authConnection: AUTH_CONNECTION.GOOGLE,
-      });
-    } catch (err) {
-      console.error(err);
-      setError(err instanceof Error ? err.message : "Login failed");
+    await connect();
+    if (connectError) {
+      console.error(connectError);
+      setError(connectError.message);
     }
   };
 
-  const onGetUserInfo = async () => {
-    uiConsole("User Info:", userInfo);
-  };
-
   const logout = async () => {
-    try {
-      setError(null);
-      await disconnect();
-      setCurrentBitcoinAddress(null);
-    } catch (err) {
-      console.error(err);
-      setError(err instanceof Error ? err.message : "Logout failed");
+    await disconnect();
+    setCurrentBitcoinAddress(null);
+    if (disconnectError) {
+      console.error(disconnectError);
+      setError(disconnectError.message);
     }
   };
 
@@ -121,7 +109,7 @@ function App() {
   const loggedInView = (
     <div className="flex-container">
       <div>Connected with {connectorName}</div>
-      <button onClick={onGetUserInfo} className="card">Get User Info</button>
+      <button onClick={() => uiConsole("User Info:", userInfo)} className="card">Get User Info</button>
       <button onClick={deriveAndSetAddress} className="card">Derive Bitcoin Address</button>
       {currentBitcoinAddress && (
         <>

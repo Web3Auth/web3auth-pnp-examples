@@ -1,6 +1,6 @@
 import { BigNumber, Polymesh } from "@polymeshassociation/polymesh-sdk";
 import { LocalSigningManager } from "@polymeshassociation/local-signing-manager";
-import type { IProvider } from "@web3auth/no-modal";
+import type { IProvider } from "@web3auth/modal";
 
 let api: Polymesh;
 

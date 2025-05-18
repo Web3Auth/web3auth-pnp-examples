@@ -4,7 +4,7 @@ import {
   useWeb3AuthDisconnect,
   useWeb3AuthUser,
   useWeb3Auth
-} from "@web3auth/no-modal/react";
+} from "@web3auth/modal/react";
 
 // Import RPC classes
 import {getEthereumAccounts, getEthereumBalance, signEthereumMessage, sendEthereumTransaction} from "./RPC/ethersRPC";
@@ -13,7 +13,7 @@ import { getTezosAccount, getTezosBalance, signTezosMessage, signAndSendTezosTra
 import {getPolkadotAccounts, getPolkadotBalance, signAndSendPolkadotTransaction} from "./RPC/polkadotRPC";
 
 function App() {
-  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { provider } = useWeb3Auth();
@@ -204,9 +204,7 @@ function App() {
   const unloggedInView = (
     // IMP START - Login  
     <div className="grid">
-      <button onClick={() => connect(WALLET_CONNECTORS.AUTH, {
-        authConnection: AUTH_CONNECTION.GOOGLE,
-      })} className="card">
+      <button onClick={() => connect()} className="card">
         Login
       </button>
       {connectLoading && <div className="loading">Connecting...</div>}

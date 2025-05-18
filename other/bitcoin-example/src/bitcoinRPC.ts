@@ -2,7 +2,7 @@ import ecc from "@bitcoinerlab/secp256k1";
 import ECPairFactory from "ecpair";
 import { Psbt, networks, payments, crypto, initEccLib } from "bitcoinjs-lib";
 import axios from "axios";
-import type { IProvider } from "@web3auth/no-modal";
+import type { IProvider } from "@web3auth/modal";
 
 // Initialize ECPair and ecc library
 const ECPair = ECPairFactory(ecc);

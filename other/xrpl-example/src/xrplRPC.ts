@@ -1,4 +1,4 @@
-import type { IProvider } from "@web3auth/no-modal";
+import type { IProvider } from "@web3auth/modal";
 import { convertStringToHex, Payment, xrpToDrops } from "xrpl";
 
 export async function getAccounts(provider: IProvider): Promise<any> {

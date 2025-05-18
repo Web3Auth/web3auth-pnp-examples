@@ -6,7 +6,7 @@ import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
 // @ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import type { IProvider } from "@web3auth/no-modal";
+import type { IProvider } from "@web3auth/modal";
 
 const tezos = new TezosToolkit("https://rpc.tzbeta.net/");
 

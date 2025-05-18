@@ -1,5 +1,5 @@
 // IMP START - Quick Start
-import { WEB3AUTH_NETWORK, type Web3AuthNoModalOptions } from "@web3auth/no-modal";
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
 
 // IMP END - Quick Start
 
@@ -8,7 +8,7 @@ const clientId = "BEPiu8uKOHUemeiehDF7pLspv9MR3b03cCJmba5JutbHllBVA9bGRUeeunf27J
 // IMP END - Dashboard Registration
 
 // IMP START - Instantiate SDK
-const web3AuthOptions: Web3AuthNoModalOptions = {
+const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   authBuildEnv: "testing",

@@ -1,6 +1,6 @@
 import "./App.css";
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
@@ -9,7 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { GoogleLogin, CredentialResponse, googleLogout } from "@react-oauth/google";
 
 function App() {
-  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { connectTo, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { address } = useAccount();
@@ -18,11 +18,11 @@ function App() {
   const loginWithGoogle = async (response: CredentialResponse) => {
     const idToken = response.credential;
 
-    await connect(WALLET_CONNECTORS.AUTH, {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
       groupedAuthConnectionId: "aggregate-sapphire",
       authConnectionId: "w3a-google",
       authConnection: AUTH_CONNECTION.GOOGLE,
-      id_token: idToken,
+      idToken,
       extraLoginOptions: {
         isUserIdCaseSensitive: false,
       },
@@ -36,11 +36,11 @@ function App() {
       if (!idToken) {
         throw new Error("No id token found");
       }
-      await connect(WALLET_CONNECTORS.AUTH, {
+      await connectTo(WALLET_CONNECTORS.AUTH, {
         groupedAuthConnectionId: "aggregate-sapphire",
         authConnectionId: "w3a-a0-github",
         authConnection: AUTH_CONNECTION.CUSTOM,
-        id_token: idToken,
+        idToken,
         extraLoginOptions: {
           isUserIdCaseSensitive: false,
           verifierIdField: "email",

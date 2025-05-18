@@ -1,4 +1,4 @@
-# Web3Auth (`@web3auth/no-modal`) with React and Polkadot
+# Web3Auth (`@web3auth/modal`) with React and Polkadot
 
 This example demonstrates how to use Web3Auth with React for connecting to the Polkadot blockchain ecosystem.
 
@@ -7,7 +7,7 @@ This example demonstrates how to use Web3Auth with React for connecting to the P
 - **Frontend Framework**: React with TypeScript
 - **Build Tool**: Vite
 - **Web3 Libraries**: 
-  - `@web3auth/no-modal`: Core Web3Auth functionality without UI (headless)
+  - `@web3auth/modal`: Core Web3Auth functionality without UI (headless)
   - `@polkadot/api`: JavaScript API for Polkadot and Substrate-based chains
   - `@polkadot/util`: Utility functions for Polkadot
   - `@polkadot/util-crypto`: Cryptographic utilities for Polkadot

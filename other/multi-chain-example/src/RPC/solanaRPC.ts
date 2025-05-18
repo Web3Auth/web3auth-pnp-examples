@@ -1,6 +1,6 @@
 // Solana
 import { Keypair, Connection } from "@solana/web3.js";
-import { IProvider, getED25519Key } from "@web3auth/no-modal";
+import { IProvider, getED25519Key } from "@web3auth/modal";
 import nacl from 'tweetnacl';
 /**
  * Gets the Solana account address from a private key

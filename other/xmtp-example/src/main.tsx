@@ -3,7 +3,7 @@ import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 // IMP START - Setup Web3Auth Provider
-import { Web3AuthProvider } from "@web3auth/no-modal/react";
+import { Web3AuthProvider } from "@web3auth/modal/react";
 import web3AuthContextConfig from "./web3authContext";
 // IMP END - Setup Web3Auth Provider
 

@@ -1,4 +1,4 @@
-# Web3Auth (`@web3auth/no-modal`) with React and Bitcoin
+# Web3Auth (`@web3auth/modal`) with React and Bitcoin
 
 This example demonstrates how to use Web3Auth without a modal UI for connecting to the Bitcoin blockchain.
 
@@ -7,7 +7,7 @@ This example demonstrates how to use Web3Auth without a modal UI for connecting 
 - **Frontend Framework**: React with TypeScript
 - **Build Tool**: Vite
 - **Web3 Libraries**: 
-  - `@web3auth/no-modal`: Core Web3Auth functionality without UI (headless)
+  - `@web3auth/modal`: Core Web3Auth functionality without UI (headless)
   - `bitcoinjs-lib`: Bitcoin JavaScript library
   - `ecpair`: Library for Bitcoin cryptographic key pairs
   - `@bitcoinerlab/secp256k1`: Implementation of secp256k1 curve used in Bitcoin

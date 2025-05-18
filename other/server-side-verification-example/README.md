@@ -1,4 +1,4 @@
-# Web3Auth (`@web3auth/no-modal`) with Next.js and Server-Side Verification
+# Web3Auth (`@web3auth/modal`) with Next.js and Server-Side Verification
 
 This example demonstrates how to implement secure server-side verification of Web3Auth authentication in a Next.js application.
 
@@ -6,7 +6,7 @@ This example demonstrates how to implement secure server-side verification of We
 
 - **Frontend Framework**: Next.js (React) with TypeScript
 - **Web3 Libraries**: 
-  - `@web3auth/no-modal`: Core Web3Auth functionality without UI (headless)
+  - `@web3auth/modal`: Core Web3Auth functionality without UI (headless)
   - `wagmi`: React hooks for Ethereum
   - `@tanstack/react-query`: Data synchronization for React applications
 - **UI Components**:

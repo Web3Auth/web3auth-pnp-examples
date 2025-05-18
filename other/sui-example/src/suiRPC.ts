@@ -1,4 +1,4 @@
-import type { IProvider } from "@web3auth/no-modal";
+import type { IProvider } from "@web3auth/modal";
 import { CoinBalance, getFullnodeUrl, SuiClient } from '@mysten/sui.js/client';
 import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
 import { MIST_PER_SUI } from '@mysten/sui.js/utils';

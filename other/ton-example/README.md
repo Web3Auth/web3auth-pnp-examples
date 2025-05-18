@@ -1,215 +1,80 @@
 # Web3Auth TON Integration Example
 
-[![Web3Auth](https://img.shields.io/badge/Web3Auth-SDK-blue)](https://web3auth.io/docs/sdk/pnp/web/modal)
-[![Web3Auth](https://img.shields.io/badge/Web3Auth-Community-cyan)](https://community.web3auth.io)
-
-This example demonstrates how to integrate Web3Auth with The Open Network (TON) blockchain in a React application, enabling secure wallet creation and TON network interactions.
-
-## Features
-
-- 🔐 Social login support (Google, Facebook, Twitter, etc.)
-- 🌐 Web3Auth Modal UI for seamless authentication
-- ⛓️ TON blockchain integration
-- 💰 Toncoin management
-- 🔑 Smart contract interactions
-- 📝 Transaction signing
-- 🔄 Account management
-- 🎨 Customizable UI components
-- 🚀 React hooks for TON operations
+This example demonstrates how to integrate Web3Auth's Plug and Play Modal SDK with React for TON (The Open Network) blockchain integration. It provides a simple, production-ready starting point for adding Web3Auth authentication to your TON dApp.
 
 ## Prerequisites
+- Node.js 14+
+- npm/yarn
+- A Web3Auth Client ID (get one from [Web3Auth Dashboard](https://dashboard.web3auth.io))
 
-- Node.js 14+ and npm/yarn
-- Basic knowledge of React and Web3
-- Understanding of TON blockchain concepts
-- A Web3Auth account and client ID (get one at [Web3Auth Dashboard](https://dashboard.web3auth.io))
-- Basic understanding of FunC (TON Smart Contract Language)
+## Quick Start
 
-## Tech Stack
-
-- **Frontend**: React 18+ with TypeScript
-- **Build Tool**: Vite
-- **Web3 Libraries**: 
-  - `@web3auth/modal`: Core Web3Auth functionality
-  - `@tonconnect/sdk`: TON Connect SDK
-  - `ton`: TON Client
-  - `ton-core`: TON Core types and utilities
-  - `ton-crypto`: Cryptographic utilities
-
-## Installation
-
-1. Clone the repository:
+### 1. Clone the repository
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web/other/ton-example w3a-ton-example
+git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 ```
 
-2. Install dependencies:
+### 2. Navigate to the example
 ```bash
-cd w3a-ton-example
+cd web3auth-pnp-examples/other/ton-example
+```
+
+### 3. Install dependencies
+```bash
 npm install
+# or
+yarn
 ```
 
-3. Configure environment variables:
-   - Create a `.env` file in the root directory
-   - Add your Web3Auth client ID and TON configuration:
-   ```
-   VITE_WEB3AUTH_CLIENT_ID=your-client-id
-   VITE_TON_NETWORK=mainnet  # or testnet
-   VITE_TON_ENDPOINT=your-endpoint  # Optional custom endpoint
-   ```
+### 4. Configure environment variables
+Create a `.env` file and add your Web3Auth Client ID and TON configuration:
+```bash
+VITE_WEB3AUTH_CLIENT_ID=your-client-id
+VITE_TON_NETWORK=mainnet  # or testnet
+```
 
-4. Start the development server:
+### 5. Run the application
 ```bash
 npm run dev
+# or
+yarn dev
 ```
+
+Visit `http://localhost:5173` in your browser to see the application running.
+
+## Features
+- Social login with Web3Auth Modal UI
+- TON blockchain integration
+- Toncoin management
+- Smart contract interactions
+- Transaction signing
+- Account management
+- Get user's TON address
+- Get Toncoin balance
+- Send Toncoin transactions
+- Deploy and interact with TON smart contracts
 
 ## Project Structure
+- `src/components/`: React components
+- `src/hooks/`: Custom React hooks for Web3Auth and TON
+- `src/config/`: Configuration files
+- `src/contracts/`: Smart contract sources
+- `src/services/`: Blockchain services
+- `src/types/`: TypeScript definitions
 
-```
-src/
-├── components/     # React components
-├── hooks/         # Custom React hooks
-│   ├── useWeb3Auth.ts     # Web3Auth integration
-│   ├── useTon.ts         # TON operations
-│   └── useContract.ts    # Smart contract operations
-├── config/        # Configuration files
-├── contracts/     # Smart contract sources
-├── services/      # Blockchain services
-├── types/         # TypeScript definitions
-└── App.tsx        # Main application
-```
-
-## Implementation Guide
-
-### 1. Initialize Web3Auth with TON Configuration
-
-```typescript
-const web3auth = new Web3Auth({
-  clientId: import.meta.env.VITE_WEB3AUTH_CLIENT_ID,
-  web3AuthNetwork: "testnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.OTHER,
-    chainId: "0x1", // TON mainnet
-    rpcTarget: import.meta.env.VITE_TON_ENDPOINT
-  }
-})
-```
-
-### 2. Create TON Provider
-
-```typescript
-import { TonClient } from 'ton'
-
-const client = new TonClient({
-  endpoint: import.meta.env.VITE_TON_ENDPOINT,
-  apiKey: 'your-api-key'  // if using a service provider
-})
-```
-
-### 3. Handle TON Transactions
-
-```typescript
-async function transferTon(
-  recipient: string,
-  amount: bigint
-): Promise<string> {
-  const wallet = client.open(await WalletContract.create({
-    publicKey: keyPair.publicKey,
-    workchain: 0
-  }))
-  
-  const transfer = await wallet.sendTransfer({
-    secretKey: keyPair.secretKey,
-    toAddress: recipient,
-    amount: amount,
-    seqno: await wallet.getSeqno()
-  })
-  
-  return transfer.hash
-}
-```
-
-### 4. Interact with Smart Contracts
-
-```typescript
-async function deployContract(
-  code: Cell,
-  data: Cell,
-  amount: bigint
-): Promise<string> {
-  const contract = client.open(Contract.create({
-    code,
-    data,
-    workchain: 0
-  }))
-  
-  const deploy = await contract.deploy({
-    value: amount
-  })
-  
-  return deploy.hash
-}
-```
-
-## TON Network Setup
-
-1. Choose Network:
-   - Mainnet: Production environment
-   - Testnet: Testing environment
-
-2. Configure Endpoints:
-   - Use public endpoints
-   - Or set up your own node
-   - Handle rate limiting
-
-3. Smart Contract Development:
-   - Set up FunC compiler
-   - Configure contract deployment
-   - Handle contract upgrades
-
-## Common Issues and Solutions
-
-1. **Network Issues**
-   - Verify endpoint availability
-   - Handle rate limiting
-   - Check network status
-
-2. **Transaction Issues**
-   - Ensure sufficient TON balance
-   - Validate message format
-   - Handle transaction failures
-
-3. **Smart Contract Issues**
-   - Verify contract code
-   - Handle initialization
-   - Debug contract calls
-
-## Security Best Practices
-
-- Secure private key storage
-- Validate all transactions
-- Handle errors gracefully
-- Implement proper input validation
-- Regular security audits
-- Follow TON security guidelines
-- Monitor for suspicious activities
-- Implement rate limiting
-
-## Resources
-
-- [Web3Auth Documentation](https://web3auth.io/docs)
-- [TON Developer Portal](https://ton.org/dev)
+## Important Links
+- [Website](https://web3auth.io)
+- [Documentation](https://web3auth.io/docs)
+- [Guides](https://web3auth.io/docs/guides)
+- [SDK / API References](https://web3auth.io/docs/sdk)
+- [Pricing](https://web3auth.io/pricing.html)
+- [Support](https://discord.gg/web3auth)
 - [TON Documentation](https://docs.ton.org)
-- [FunC Documentation](https://docs.ton.org/develop/smart-contracts)
-- [TON Connect](https://github.com/ton-connect/sdk)
-- [Web3Auth Dashboard](https://dashboard.web3auth.io)
-- [Community Portal](https://community.web3auth.io)
-- [Discord Support](https://discord.gg/web3auth)
 
-## Contributing
-
-We welcome contributions! Please feel free to submit issues and pull requests.
+## Support and Feedback
+- [Discord](https://discord.gg/web3auth)
+- [GitHub Issues](https://github.com/Web3Auth/web3auth-pnp-examples/issues)
+- [Documentation](https://web3auth.io/docs/connect-blockchain)
 
 ## License
-
-This example is available under the MIT License. See the LICENSE file for more info.
+MIT

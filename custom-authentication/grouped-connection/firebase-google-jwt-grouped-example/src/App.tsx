@@ -1,6 +1,6 @@
 import "./App.css";
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
 import { initializeApp } from "firebase/app";
 import { GithubAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { SendTransaction } from "./components/sendTransaction";
@@ -20,7 +20,7 @@ const firebaseConfig = {
 };
 
 function App() {
-  const { connect, isConnected, connectorName } = useWeb3AuthConnect();
+  const { connectTo, isConnected, connectorName } = useWeb3AuthConnect();
   const { disconnect } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { address } = useAccount();
@@ -28,11 +28,11 @@ function App() {
   const loginWithGoogle = async (response: CredentialResponse) => {
     const idToken = response.credential;
 
-    await connect(WALLET_CONNECTORS.AUTH, {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
       groupedAuthConnectionId: "aggregate-sapphire",
       authConnectionId: "w3a-google",
       authConnection: AUTH_CONNECTION.GOOGLE,
-      id_token: idToken,
+      idToken,
       extraLoginOptions: {
         isUserIdCaseSensitive: false,
       },
@@ -48,13 +48,13 @@ function App() {
 
     const idToken = await result.user.getIdToken(true);
 
-    connect(WALLET_CONNECTORS.AUTH, {
+    connectTo(WALLET_CONNECTORS.AUTH, {
       groupedAuthConnectionId: "aggregate-sapphire",
       authConnectionId: "w3a-firebase",
       authConnection: AUTH_CONNECTION.CUSTOM,
-      login_hint: idToken,
+      idToken,
       extraLoginOptions: {
-        id_token: idToken,
+        isUserIdCaseSensitive: false,
       },
     });
   };

@@ -1,7 +1,6 @@
 import "./App.css";
 
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS } from "@web3auth/no-modal";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
@@ -76,9 +75,7 @@ function App() {
 
   const unloggedInView = (
     <div className="grid">
-      <button onClick={() => connect(WALLET_CONNECTORS.AUTH, {
-        authConnection: "google",
-      })} className="card">
+      <button onClick={() => connect()} className="card">
         Login
       </button>
       {connectLoading && <div className="loading">Connecting...</div>}

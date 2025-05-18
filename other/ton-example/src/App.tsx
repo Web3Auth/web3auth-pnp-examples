@@ -1,12 +1,11 @@
 import "./App.css";
 import {
   useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useWeb3Auth
-} from "@web3auth/no-modal/react";
-import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/no-modal";
+} from "@web3auth/modal/react";
 import { getPrivateKey, getAccounts, getBalance, signMessage, signAndSendTransaction, getChainId } from "./tonRpc";
 
 function App() {
-  const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { provider } = useWeb3Auth();
@@ -120,9 +119,7 @@ function App() {
   const unloggedInView = (
     // IMP START - Login  
     <div className="grid">
-      <button onClick={() => connect(WALLET_CONNECTORS.AUTH, {
-        authConnection: AUTH_CONNECTION.GOOGLE,
-      })} className="card">
+      <button onClick={() => connect()} className="card">
         Login
       </button>
       {connectLoading && <div className="loading">Connecting...</div>}

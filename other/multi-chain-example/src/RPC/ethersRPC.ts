@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { IProvider } from "@web3auth/no-modal";
+import type { IProvider } from "@web3auth/modal";
 import { ethers } from "ethers";
 
 export async function getChainId(provider: IProvider): Promise<any> {

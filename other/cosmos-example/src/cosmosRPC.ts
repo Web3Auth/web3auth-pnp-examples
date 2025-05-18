@@ -1,4 +1,4 @@
-import type { IProvider } from "@web3auth/no-modal";
+import type { IProvider } from "@web3auth/modal";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 

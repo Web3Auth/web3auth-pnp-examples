@@ -27,7 +27,7 @@ function App() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col min-h-screen">
-        <Web3AuthProvider config={{ web3AuthOptions: web3AuthContextConfig }}>
+        <Web3AuthProvider config={ web3AuthContextConfig }>
           <Playground>
             <BrowserRouter>
               <Routes>

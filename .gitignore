@@ -151,3 +151,4 @@ yarn-error.log
 build/
 Pods/
 .vscode/
+.vercel

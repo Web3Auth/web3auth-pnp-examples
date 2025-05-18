@@ -4,7 +4,7 @@ import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
 // IMP END - Quick Start
 
 // IMP START - Dashboard Registration
-const clientId = "BEPiu8uKOHUemeiehDF7pLspv9MR3b03cCJmba5JutbHllBVA9bGRUeeunf27JNkZreW6gBObdW3tX8AHz6BoUk"; // get from https://dashboard.web3auth.io
+const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID || ""; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 // IMP START - Instantiate SDK

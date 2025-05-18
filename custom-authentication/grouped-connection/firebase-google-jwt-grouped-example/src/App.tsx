@@ -11,12 +11,12 @@ import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAAAF-xdPur0wJpgwXLGdLZWDwRCTRLdX8",
-  authDomain: "web3auth-firebase-github.firebaseapp.com",
-  projectId: "web3auth-firebase-github",
-  storageBucket: "web3auth-firebase-github.appspot.com",
-  messagingSenderId: "384159528034",
-  appId: "1:384159528034:web:9a9121481ea2948237cd3b",
+  apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E",
+  authDomain: "web3auth-oauth-logins.firebaseapp.com",
+  projectId: "web3auth-oauth-logins",
+  storageBucket: "web3auth-oauth-logins.appspot.com",
+  messagingSenderId: "461819774167",
+  appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92",
 };
 
 function App() {

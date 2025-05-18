@@ -25,7 +25,6 @@ This example demonstrates how to integrate Web3Auth with Firebase Authentication
 - **Authentication**: Firebase Authentication
 - **Web3 Libraries**: 
   - `@web3auth/modal`: Core Web3Auth functionality
-  - `@web3auth/base`: Base Web3Auth features
   - `firebase`: Firebase SDK
   - `ethers`: Ethereum library
 

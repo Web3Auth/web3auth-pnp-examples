@@ -1,4 +1,4 @@
-import type { IProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/modal";
 
 // Get the private key from the Web3Auth provider
 export async function getPrivateKey(provider: IProvider): Promise<string> {

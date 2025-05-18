@@ -25,8 +25,6 @@ yarn
 Create a `.env` file and add your Web3Auth Client ID and Solana configuration:
 ```bash
 VITE_WEB3AUTH_CLIENT_ID=your-client-id
-VITE_SOLANA_NETWORK=devnet  # or mainnet-beta
-VITE_RPC_URL=your-rpc-url   # Optional custom RPC
 ```
 
 ### 5. Run the application

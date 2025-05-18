@@ -6,7 +6,7 @@ import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
 import { SwitchChain } from "./components/switchNetwork";
 import { useAuth0 } from "@auth0/auth0-react";
-import { GoogleLogin, CredentialResponse, googleLogout } from "@react-oauth/google";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
 function App() {
   const { connectTo, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
@@ -25,6 +25,7 @@ function App() {
       idToken,
       extraLoginOptions: {
         isUserIdCaseSensitive: false,
+        verifierIdField: "email",
       },
     });
   };

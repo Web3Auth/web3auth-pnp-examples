@@ -1,4 +1,4 @@
-import { IProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/modal";
 import { PublicClient, WalletClient, createPublicClient, createWalletClient, custom, formatEther, parseEther } from "viem";
 import { sepolia } from "viem/chains";
 

@@ -94,12 +94,21 @@ git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
 cd web3auth-pnp-examples/<example-directory>
 ```
 
-3. Install dependencies:
+3. Create .env file based on .env.example template:
+```bash
+cp .env.example .env
+```
+
+4. Update the .env file with your Web3Auth Client ID (and any other required variables)
+
+5. Install dependencies:
 ```bash
 npm install
 # or
 yarn
 ```
+
+For more details on environment setup, see [ENV_SETUP.md](ENV_SETUP.md)
 
 ## 📚 Important Links
 - [Website](https://web3auth.io)

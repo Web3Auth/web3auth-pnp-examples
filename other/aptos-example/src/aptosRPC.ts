@@ -1,4 +1,4 @@
-import type { IProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/modal";
 import { Account, Aptos, AptosConfig, Network, Secp256k1PrivateKey } from "@aptos-labs/ts-sdk";
 
 interface CoinStoreResource {

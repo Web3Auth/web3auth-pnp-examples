@@ -97,7 +97,6 @@ export const Auth0ProviderConfig = {
 ```typescript
 // src/services/web3auth.ts
 import { Web3AuthNoModal } from '@web3auth/modal'
-import { CHAIN_NAMESPACES } from '@web3auth/base'
 
 export class Web3AuthService {
   private web3auth: Web3AuthNoModal | null = null

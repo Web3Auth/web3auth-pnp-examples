@@ -1,4 +1,4 @@
-import type { IProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/modal";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import TonWeb from "tonweb";
 

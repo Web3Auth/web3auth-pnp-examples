@@ -1,4 +1,4 @@
-import { IProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/modal";
 import TronWeb from "tronweb";
 
 const TRON_MAINNET_RPC = "https://api.trongrid.io";

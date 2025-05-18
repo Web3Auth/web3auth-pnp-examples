@@ -29,17 +29,17 @@ yarn
 ### 4. Configure environment variables
 Create a `.env` file and add your Web3Auth Client ID:
 ```bash
-VITE_WEB3AUTH_CLIENT_ID=your-client-id
+VUE_APP_WEB3AUTH_CLIENT_ID=your-client-id
 ```
 
 ### 5. Run the application
 ```bash
-npm run dev
+npm run serve
 # or
-yarn dev
+yarn serve
 ```
 
-Visit `http://localhost:5173` in your browser to see the application running.
+Visit `http://localhost:8080` in your browser to see the application running.
 
 ## Features
 - Social login with Web3Auth Modal UI

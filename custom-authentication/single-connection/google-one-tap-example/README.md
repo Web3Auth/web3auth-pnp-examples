@@ -27,11 +27,9 @@ This example demonstrates how to integrate Web3Auth with Google One Tap authenti
 - **Build Tool**: Vite
 - **Authentication**: 
   - `@react-oauth/google`: Google One Tap SDK
-  - `@web3auth/base`: Web3Auth base features
   - `@web3auth/modal`: Web3Auth core functionality
 - **Web3 Libraries**: 
   - `ethers`: Ethereum library
-  - `@web3auth/base`: Base Web3Auth features
 
 ## Installation
 
@@ -93,7 +91,6 @@ export const GoogleConfig = {
 ```typescript
 // src/services/web3auth.ts
 import { Web3Auth } from '@web3auth/modal'
-import { CHAIN_NAMESPACES } from '@web3auth/base'
 
 export class Web3AuthService {
   private web3auth: Web3Auth | null = null

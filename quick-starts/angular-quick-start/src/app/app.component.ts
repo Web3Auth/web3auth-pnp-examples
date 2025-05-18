@@ -1,6 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
+import { Web3Auth, CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/modal";
+import { environment } from '../environments/environment';
+
 // IMP START - Quick Start
-import { Web3Auth, IProvider, WEB3AUTH_NETWORK } from "@web3auth/modal";
+import { IProvider } from "@web3auth/modal";
 
 // IMP END - Quick Start
 
@@ -10,7 +15,7 @@ import RPC from "./ethersRPC";
 // IMP END - Blockchain Calls
 
 // IMP START - Dashboard Registration
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = environment.web3AuthClientId || ""; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 const web3auth = new Web3Auth({
@@ -27,7 +32,7 @@ const web3auth = new Web3Auth({
   styleUrls: ["./app.component.css"],
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = "angular-app";
 
   provider: IProvider | null = null;
@@ -40,7 +45,7 @@ export class AppComponent {
     const init = async () => {
       try {
         // IMP START - SDK Initialization
-        await web3auth.initModal();
+        await web3auth.init();
         // IMP END - SDK Initialization
         this.provider = web3auth.provider;
 

@@ -1,25 +1,25 @@
 :root {
-  /* Base colors */
-  --bg-primary: #121214;
-  --bg-secondary: #1b1b1f;
-  --bg-tertiary: #202127;
-  --bg-interactive: #2e2e36;
+  /* Base colors - Updated to match React example */
+  --bg-primary: #ffffff; /* Light mode background */
+  --bg-secondary: #f7f7f7; /* Slightly off-white for cards/inputs */
+  --bg-tertiary: #f7f7f7;
+  --bg-interactive: #eeeeee; /* Hover state */
   
   /* Text colors */
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --text-primary: #1c1e21; /* Darker text */
+  --text-secondary: #5f6368; /* Text muted */
+  --text-tertiary: rgba(31, 31, 31, 0.5);
   
   /* Interactive colors */
-  --accent-primary: #646cff;
-  --accent-hover: #747bff;
+  --accent-primary: #0364ff; /* Web3Auth Blue */
+  --accent-hover: #0050cc;
   --error: #ef4444;
   --success: #10b981;
   
   /* Border and shadow */
-  --border-color: #2e2e32;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+  --border-color: #e0e0e0; /* Lighter border */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
   
   /* Spacing */
   --space-xs: 0.25rem;
@@ -36,6 +36,28 @@
   --mobile: 480px;
   --tablet: 768px;
   --desktop: 1024px;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode colors from React example */
+    --bg-primary: #171c2a; /* Dark blue-gray background */
+    --bg-secondary: #23293d; /* Lighter blue-gray for elements */
+    --bg-tertiary: #23293d;
+    --bg-interactive: #2f364f; /* Hover state for blue-gray */
+    
+    --text-primary: #e1e3e8; /* Light text */
+    --text-secondary: #9399a8;
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+    
+    --accent-primary: #529dff; /* Slightly adjusted blue */
+    --accent-hover: #75b5ff;
+    
+    --border-color: #3b415c; /* Border matching blue-gray theme */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
 }
 
 /* Base styling */
@@ -62,7 +84,7 @@ html, body {
   max-width: 100%;
   padding: var(--space-md);
   margin: var(--space-md) auto;
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-primary);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
 }
@@ -143,9 +165,9 @@ button:disabled {
 }
 
 input {
-  background-color: rgba(255, 255, 255, 0.075);
+  background-color: var(--bg-secondary);
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.075);
+  border: 1px solid var(--border-color);
   color: var(--text-primary);
   flex: 1;
   font-size: 14px;
@@ -160,7 +182,7 @@ input {
 input:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.3);
+  box-shadow: 0 0 0 2px rgba(3, 100, 255, 0.3);
 }
 
 .card {
@@ -168,7 +190,7 @@ input:focus {
   align-items: center;
   justify-content: center;
   padding: var(--space-md);
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   color: var(--text-primary);

@@ -21,18 +21,6 @@ This example demonstrates how to integrate Web3Auth with Solana blockchain in a 
 - A Web3Auth account and client ID (get one at [Web3Auth Dashboard](https://dashboard.web3auth.io))
 - Basic understanding of Solana concepts (accounts, programs, SOL, SPL tokens)
 
-## Tech Stack
-
-- **Frontend**: Vue.js 3 with TypeScript
-- **Build Tool**: Vite
-- **State Management**: Vue.js Composition API
-- **Web3 Libraries**: 
-  - `@web3auth/modal`: Core Web3Auth functionality
-  - `@solana/web3.js`: Solana JavaScript API
-  - `@solana/spl-token`: SPL Token functionality
-  - `bs58`: Base58 encoding/decoding
-  - `vue-demi`: Vue 2/3 compatibility layer
-
 ## Installation
 
 1. Clone the repository:
@@ -50,14 +38,12 @@ npm install
    - Create a `.env` file in the root directory
    - Add your Web3Auth client ID and Solana configuration:
    ```
-   VITE_WEB3AUTH_CLIENT_ID=your-client-id
-   VITE_SOLANA_NETWORK=devnet  # or mainnet-beta
-   VITE_RPC_URL=your-rpc-url   # Optional custom RPC
+   VUE_APP_WEB3AUTH_CLIENT_ID=your-client-id
    ```
 
 4. Start the development server:
 ```bash
-npm run dev
+npm run serve
 ```
 
 ## Project Structure
@@ -73,96 +59,6 @@ src/
 ├── services/      # Blockchain services
 ├── types/         # TypeScript definitions
 └── App.vue        # Main application component
-```
-
-## Implementation Guide
-
-### 1. Web3Auth Configuration with Solana
-```typescript
-// src/config/web3AuthConfig.ts
-import { Web3Auth } from '@web3auth/modal'
-import { CHAIN_NAMESPACES } from '@web3auth/base'
-
-export const web3auth = new Web3Auth({
-  clientId: import.meta.env.VITE_WEB3AUTH_CLIENT_ID,
-  web3AuthNetwork: "testnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.SOLANA,
-    chainId: "0x1", // Mainnet
-    rpcTarget: "https://api.mainnet-beta.solana.com"
-  }
-})
-```
-
-### 2. Create Solana Composable
-```typescript
-// src/composables/useSolana.ts
-import { ref, computed } from 'vue'
-import { Connection, PublicKey, Transaction } from '@solana/web3.js'
-import { useWeb3Auth } from './useWeb3Auth'
-
-export function useSolana() {
-  const { provider } = useWeb3Auth()
-  const connection = new Connection(import.meta.env.VITE_RPC_URL)
-  const balance = ref(0)
-
-  async function getBalance(address: string) {
-    try {
-      const pubKey = new PublicKey(address)
-      balance.value = await connection.getBalance(pubKey)
-    } catch (error) {
-      console.error('Error getting balance:', error)
-    }
-  }
-
-  async function sendTransaction(to: string, amount: number) {
-    try {
-      // Implementation for sending SOL
-    } catch (error) {
-      console.error('Error sending transaction:', error)
-    }
-  }
-
-  return {
-    balance,
-    getBalance,
-    sendTransaction
-  }
-}
-```
-
-### 3. Use in Components
-```vue
-<template>
-  <div>
-    <button v-if="!isAuthenticated" @click="login">Connect Wallet</button>
-    <div v-else>
-      <p>SOL Balance: {{ formatBalance(balance) }}</p>
-      <div class="transfer-form">
-        <input v-model="recipient" placeholder="Recipient address" />
-        <input v-model="amount" type="number" placeholder="Amount" />
-        <button @click="handleTransfer">Send SOL</button>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useWeb3Auth } from '@/composables/useWeb3Auth'
-import { useSolana } from '@/composables/useSolana'
-
-const { isAuthenticated, login } = useWeb3Auth()
-const { balance, sendTransaction } = useSolana()
-const recipient = ref('')
-const amount = ref(0)
-
-const handleTransfer = () => {
-  if (recipient.value && amount.value) {
-    sendTransaction(recipient.value, amount.value)
-  }
-}
-</script>
 ```
 
 ## Common Issues and Solutions

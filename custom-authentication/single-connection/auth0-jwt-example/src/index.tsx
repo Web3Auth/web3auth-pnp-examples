@@ -22,7 +22,7 @@ root.render(
       <WagmiProvider>
         <Auth0Provider
           domain="web3auth.au.auth0.com"
-          clientId="hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O"
+          clientId={import.meta.env.VITE_AUTH0_CLIENT_ID || ""}
         >
           <App />
         </Auth0Provider>

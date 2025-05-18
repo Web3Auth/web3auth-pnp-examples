@@ -28,11 +28,9 @@ This example demonstrates how to integrate Web3Auth with a custom JWT authentica
 - **Authentication**: 
   - Custom JWT implementation
   - `jsonwebtoken`: JWT handling
-  - `@web3auth/base`: Web3Auth base features
   - `@web3auth/modal`: Web3Auth core functionality
 - **Web3 Libraries**: 
   - `ethers`: Ethereum library
-  - `@web3auth/base`: Base Web3Auth features
 
 ## Installation
 
@@ -112,7 +110,6 @@ export class JWTService {
 ```typescript
 // src/services/web3auth/web3AuthService.ts
 import { Web3Auth } from '@web3auth/modal'
-import { CHAIN_NAMESPACES } from '@web3auth/base'
 
 export class Web3AuthService {
   private web3auth: Web3Auth | null = null

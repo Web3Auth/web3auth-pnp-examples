@@ -71,7 +71,7 @@ export async function signMessage(provider: IProvider): Promise<string> {
     const hexMessage = tronWeb.toHex(message);
     const signedMessage = await tronWeb.trx.sign(hexMessage);
     
-    return signedMessage;
+    return signedMessage as string;
   } catch (error) {
     console.error("Error signing message:", error);
     throw error;
@@ -101,7 +101,7 @@ export async function signAndSendTransaction(provider: IProvider): Promise<strin
     const signedTransaction = await tronWeb.trx.sign(transaction, privateKey);
     
     // Broadcast the transaction
-    const result = await tronWeb.trx.sendRawTransaction(signedTransaction);
+    const result = await tronWeb.trx.sendRawTransaction(signedTransaction as object);
     
     return JSON.stringify(result);
   } catch (error) {

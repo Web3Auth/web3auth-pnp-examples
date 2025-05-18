@@ -1,6 +1,6 @@
 // IMP START - Quick Start
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
-import { XrplPrivateKeyProvider } from "@web3auth/modal/providers/xrpl-provider";
+import { XrplPrivateKeyProvider } from "@web3auth/no-modal/providers/xrpl-provider";
 // IMP END - Quick Start
 
 // IMP START - Dashboard Registration

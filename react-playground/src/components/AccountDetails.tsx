@@ -83,11 +83,13 @@ function AccountDetails({ children }: AccountDetailsProps) {
             <div
               className="w-full md:w-fit text-xs sm:text-sm bg-gray-100 dark:bg-dark-bg-secondary text-gray-600 dark:text-dark-text-secondary p-2 px-3 rounded-full z-0 flex flex-row justify-between space-x-2 md:space-x-4 items-center cursor-pointer truncate mt-2 md:mt-0"
               onClick={() => {
-                navigator.clipboard.writeText(address);
-                setAddressToShow("Copied!");
-                setTimeout(() => {
-                  setAddressToShow(address);
-                }, 1000);
+                if (address) {
+                  navigator.clipboard.writeText(address);
+                  setAddressToShow("Copied!");
+                  setTimeout(() => {
+                    setAddressToShow(address);
+                  }, 1000);
+                }
               }}
             >
               <span className="truncate">{addressToShow}</span>

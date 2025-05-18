@@ -1,6 +1,4 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -9,13 +7,12 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "importHelpers": true,
     "skipLibCheck": true,
     "target": "ES2022",
@@ -24,35 +21,6 @@
       "es2020",
       "dom"
     ],
-    "paths": {
-      "crypto": [
-        "./node_modules/empty-module"
-      ],
-      "stream": [
-        "./node_modules/empty-module"
-      ],
-      "assert": [
-        "./node_modules/empty-module"
-      ],
-      "http": [
-        "./node_modules/empty-module"
-      ],
-      "https": [
-        "./node_modules/empty-module"
-      ],
-      "os": [
-        "./node_modules/empty-module"
-      ],
-      "zlib": [
-        "./node_modules/empty-module"
-      ],
-      "url": [
-        "./node_modules/empty-module"
-      ],
-      "process": [
-        "./node_modules/process"
-      ]
-    },
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {

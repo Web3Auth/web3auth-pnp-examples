@@ -7,9 +7,10 @@ import { IWalletProvider } from "./walletProvider";
 const ethersWeb3Provider = (provider: IProvider | null, uiConsole: (...args: unknown[]) => void): IWalletProvider => {
   const getPublicKey = async (): Promise<string> => {
     try {
-      const pubKey: string = await provider.request({ method: "public_key" });
+      if (!provider) throw new Error("Provider not initialized");
+      const pubKey = await provider.request({ method: "public_key" });
       // Remove 0x and return the compressed public key
-      return pubKey.slice(2) as string;
+      return typeof pubKey === 'string' ? pubKey.slice(2) : "";
     } catch (error: any) {
       uiConsole(error);
       return error.toString();

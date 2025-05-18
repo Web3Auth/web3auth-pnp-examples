@@ -9,11 +9,11 @@ import { getWalletProvider, IWalletProvider } from "./walletProvider";
 export interface IPlaygroundContext {
   walletProvider: IWalletProvider | null;
   isLoading: boolean;
-  address: string;
-  balance: string;
+  address: string | null;
+  balance: string | null;
   chainList: { [key: string]: CustomChainConfig };
   chainListOptionSelected: string;
-  chainId: string;
+  chainId: string | null;
   playgroundConsole: string;
   connectedChain: CustomChainConfig;
   getUserInfo: () => Promise<any>;
@@ -56,7 +56,7 @@ export const PlaygroundContext = createContext<IPlaygroundContext>({
   writeContract: async () => "",
   getIdToken: async () => "",
   verifyServerSide: async () => {},
-  changeChain: async () => null,
+  changeChain: async () => {},
   updateConnectedChain: () => {},
 });
 
@@ -92,10 +92,19 @@ export const Playground = ({ children }: IPlaygroundProps) => {
 
   const setNewWalletProvider = useCallback(
     async (web3authProvider: IProvider) => {
-      setWalletProvider(getWalletProvider(web3authProvider, uiConsole));
-      setAddress(await walletProvider?.getAddress());
-      setBalance(await walletProvider?.getBalance());
-      setChainId(await walletProvider?.getChainId());
+      const walletProviderInstance = getWalletProvider(web3authProvider, uiConsole);
+      setWalletProvider(walletProviderInstance);
+      try {
+        const address = await walletProviderInstance.getAddress();
+        const balance = await walletProviderInstance.getBalance();
+        const chainId = await walletProviderInstance.getChainId();
+        
+        setAddress(address);
+        setBalance(balance);
+        setChainId(chainId);
+      } catch (error) {
+        console.error("Error setting wallet provider data:", error);
+      }
     },
     [chainId, address, balance]
   );
@@ -103,7 +112,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   useEffect(() => {
     if (status === CONNECTOR_STATUS.READY) {
       connect();
-    } else if (status === CONNECTOR_STATUS.CONNECTED) {
+    } else if (status === CONNECTOR_STATUS.CONNECTED && provider) {
       setNewWalletProvider(provider);
     }
   }, [status, provider, connect, setNewWalletProvider]);
@@ -114,62 +123,72 @@ export const Playground = ({ children }: IPlaygroundProps) => {
   };
 
   const getPublicKey = async () => {
+    if (!walletProvider) return "";
     const publicKey = await walletProvider.getPublicKey();
     uiConsole(publicKey);
     return publicKey;
   };
 
   const getAddress = async () => {
+    if (!walletProvider) return "";
     const updatedAddress = await walletProvider.getAddress();
     setAddress(updatedAddress);
     uiConsole(updatedAddress);
-    return address;
+    return updatedAddress;
   };
 
   const getBalance = async () => {
+    if (!walletProvider) return "";
     const updatedBalance = await walletProvider.getBalance();
 
     setBalance(updatedBalance);
     uiConsole(updatedBalance);
-    return balance;
+    return updatedBalance;
   };
 
   const getSignature = async (message: string) => {
+    if (!walletProvider) return "";
     const signature = await walletProvider.getSignature(message);
     uiConsole(signature);
     return signature;
   };
 
   const sendTransaction = async (amount: string, destination: string) => {
+    if (!walletProvider) return "";
     const receipt = await walletProvider.sendTransaction(amount, destination);
     uiConsole(receipt);
     return receipt;
   };
 
   const getPrivateKey = async () => {
+    if (!walletProvider) return "";
     const privateKey = await walletProvider.getPrivateKey();
     uiConsole("Private Key: ", privateKey);
     return privateKey;
   };
 
   const getChainId = async () => {
+    if (!walletProvider) return "";
     const newChainId = await walletProvider.getChainId();
     uiConsole("Chain Id: ", newChainId);
     return newChainId;
   };
 
   const deployContract = async (abi: any, bytecode: string, initValue: string): Promise<any> => {
+    if (!walletProvider) return {};
     const receipt = await walletProvider.deployContract(abi, bytecode, initValue);
     return receipt;
   };
 
   const readContract = async (contractAddress: string, contractABI: any): Promise<string> => {
+    if (!walletProvider) return "";
     const message = await walletProvider.readContract(contractAddress, contractABI);
     uiConsole(message);
     return message;
   };
 
   const writeContract = async (contractAddress: string, contractABI: any, updatedValue: string): Promise<string> => {
+    if (!walletProvider) return "";
     const receipt = await walletProvider.writeContract(contractAddress, contractABI, updatedValue);
     uiConsole(receipt);
 
@@ -239,7 +258,7 @@ export const Playground = ({ children }: IPlaygroundProps) => {
           algorithms: ["ES256"],
         });
         const addressFromIdToken = (jwtDecoded.payload as any).wallets.find((x: { type: string }) => x.type === "ethereum").address;
-        if (addressFromIdToken.toLowerCase() === address.toLowerCase()) {
+        if (address && addressFromIdToken && addressFromIdToken.toLowerCase() === address.toLowerCase()) {
           uiConsole(
             "Validation Success!",
             "Address from Provider: ",
@@ -284,9 +303,11 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     try {
       setIsLoading(true);
       await switchChain(chainConfig.chainId);
-      setChainId(await walletProvider.getChainId());
-      setAddress(await walletProvider.getAddress());
-      setBalance(await walletProvider.getBalance());
+      if (walletProvider) {
+        setChainId(await walletProvider.getChainId());
+        setAddress(await walletProvider.getAddress());
+        setBalance(await walletProvider.getBalance());
+      }
       updateConnectedChain(chainConfig);
       setIsLoading(false);
       uiConsole("Chain switched successfully");
@@ -322,5 +343,5 @@ export const Playground = ({ children }: IPlaygroundProps) => {
     changeChain,
     updateConnectedChain,
   };
-  return <PlaygroundContext.Provider value={contextProvider}>{children}</PlaygroundContext.Provider>;
+  return <PlaygroundContext.Provider value={contextProvider as IPlaygroundContext}>{children}</PlaygroundContext.Provider>;
 };

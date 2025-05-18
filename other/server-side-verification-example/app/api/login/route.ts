@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable camelcase */
 import * as jose from "jose";
 import { NextResponse } from "next/server";
 

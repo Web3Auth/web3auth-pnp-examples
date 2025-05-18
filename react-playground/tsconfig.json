@@ -1,20 +1,21 @@
 {
-  "extends": "@toruslabs/config/tsconfig.default.json",
   "compilerOptions": {
-    "paths": {
-      "@web3auth/*-adapter": ["./packages/adapters/*-adapter"],
-      "@web3auth/*-provider": ["./packages/providers/*-provider"],
-      "@web3auth/*": ["./packages/*"],
-      "@web3auth/*-plugin": ["./packages/plugins/*-plugin"]
-    },
-    "noEmit": true,             // Prevents emitting .js and .d.ts files
-    "isolatedModules": true,    // Required for Vite with TypeScript
-    "module": "ESNext",         // Let Vite handle the modules
-    "target": "ESNext",         // Let Vite handle the target environment
-    "jsx": "react-jsx",          // For React JSX support
-    "noUnusedLocals": false,  // Suppresses unused local variables
-    "noUnusedParameters": false  // Suppresses unused parameters
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src", "src/components/sendTransaction.tsx", "src/components/switchNetwork.tsx", "src/components/writeContract.tsx", "src/components/getBalance.tsx"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

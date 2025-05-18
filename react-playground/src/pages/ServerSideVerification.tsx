@@ -12,7 +12,7 @@ import { usePlayground } from "../services/playground";
 function ServerSideVerification() {
   const [loading, setLoading] = useState(false);
   const { isConnected } = useWeb3AuthConnect();
-  const [tokenId, setTokenId] = useState(null);
+  const [tokenId, setTokenId] = useState<string | null>(null);
   const { verifyServerSide, getIdToken } = usePlayground();
 
   const LoaderButton = ({ ...props }) => (
@@ -34,7 +34,7 @@ function ServerSideVerification() {
   const formDetails = [
     {
       label: "JWT IdToken received from Web3Auth",
-      input: tokenId as string,
+      input: tokenId || "",
       readOnly: true,
     },
   ];

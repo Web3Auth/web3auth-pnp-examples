@@ -26,7 +26,7 @@ function App() {
 
   const validateIdToken = async () => {
     await authenticateUser();
-    const pubKey = await web3Auth!.provider!.request({ method: "public_key" });
+    const pubKey = await web3Auth?.provider?.request({ method: "public_key" });
 
     // Validate idToken with server
     const res = await fetch("/api/login", {
@@ -60,7 +60,7 @@ function App() {
     };
 
     init();
-  }, [isConnected]);
+  }, [isConnected, validateIdToken]);
 
   const loggedInView = (
     <div className="grid">

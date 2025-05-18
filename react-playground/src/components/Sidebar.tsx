@@ -185,7 +185,7 @@ const Sidebar = () => {
             ))}
           </nav>
 
-          {isConnected && connectorName === WALLET_CONNECTORS.OPENLOGIN && (
+          {isConnected && connectorName === WALLET_CONNECTORS.AUTH && (
             <>
               <div className="px-4 mt-10 mb-6">
                 <h2 className="text-xs uppercase tracking-wider font-semibold text-gray-500 dark:text-github-textSecondary">External Links</h2>

@@ -15,7 +15,7 @@ import RPC from "./ethersRPC";
 // IMP END - Blockchain Calls
 
 // IMP START - Dashboard Registration
-const clientId = environment.web3AuthClientId || ""; // get from https://dashboard.web3auth.io
+const clientId = environment.WEB3AUTH_CLIENT_ID || ""; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 const web3auth = new Web3Auth({

@@ -97,10 +97,10 @@ class MainActivity : AppCompatActivity() {
         sessionResponse.whenComplete { _, error ->
             if (error == null) {
                 reRender()
-                println("PrivKey: " + web3Auth.getPrivkey())
-                println("ed25519PrivKey: " + web3Auth.getEd25519PrivKey())
+                println("PrivKey: " + web3Auth.getPrivateKey())
+                println("ed25519PrivKey: " + web3Auth.getEd25519PrivateKey())
                 println("Web3Auth UserInfo" + web3Auth.getUserInfo())
-                credentials = Credentials.create(web3Auth.getPrivkey())
+                credentials = Credentials.create(web3Auth.getPrivateKey())
 
             } else {
                 Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
@@ -174,14 +174,14 @@ class MainActivity : AppCompatActivity() {
                             extraLoginOptions = ExtraLoginOptions(
                                 domain = "firebase",
                                 id_token = idToken,
-                                verifierIdField = "sub"
+                                userIdField = "sub"
                             )
                         )
                         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(loginParams)
 
                         loginCompletableFuture.whenComplete {  _, error ->
                             if (error == null) {
-                                credentials = Credentials.create(web3Auth.getPrivkey())
+                                credentials = Credentials.create(web3Auth.getPrivateKey())
                                 reRender()
                             } else {
                                 Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong" )
@@ -230,7 +230,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun prepareLoginParams(result: GetTokenResult): LoginParams {
         val authConnection = AuthConnection.CUSTOM
-        return LoginParams(authConnection, extraLoginOptions = ExtraLoginOptions(domain= "firebase", id_token = result.token, verifierIdField = "sub"))
+        return LoginParams(
+            authConnection,
+            extraLoginOptions = ExtraLoginOptions(
+                domain = "firebase",
+                id_token = result.token,
+                userIdField = "sub"
+            )
+        )
     }
 
     private fun launchWalletServices() {
@@ -338,7 +345,7 @@ class MainActivity : AppCompatActivity() {
         var key: String? = null
         var userInfo: UserInfo? = null
         try {
-            key = web3Auth.getPrivkey()
+            key = web3Auth.getPrivateKey()
             userInfo = web3Auth.getUserInfo()
         } catch (ex: Exception) {
             print(ex)

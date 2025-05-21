@@ -7,7 +7,7 @@ import { type Web3AuthContextConfig } from "@web3auth/modal/react";
 const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID || ""; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
-// IMP START - Instantiate SDK
+// IMP START - Config
 const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions: {
     clientId,
@@ -15,6 +15,6 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
     authBuildEnv: "testing",
   }
 };
-// IMP END - Instantiate SDK
+// IMP END - Config
 
 export default web3AuthContextConfig;

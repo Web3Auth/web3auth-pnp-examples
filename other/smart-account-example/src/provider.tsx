@@ -12,7 +12,6 @@ const web3AuthOptions: Web3AuthOptions = {
   authBuildEnv: "testing",
 };
 
-
 const web3authConfig = {
   web3AuthOptions,
 };

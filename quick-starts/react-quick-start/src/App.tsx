@@ -1,9 +1,11 @@
 import "./App.css";
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+// IMP START - Blockchain Calls  
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
 import { SwitchChain } from "./components/switchNetwork";
+// IMP END - Blockchain Calls
 function App() {
   // IMP START - Login  
   const { connect, isConnected, connectorName, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
@@ -12,7 +14,9 @@ function App() {
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   // IMP END - Logout
   const { userInfo } = useWeb3AuthUser();
+  // IMP START - Blockchain Calls
   const { address } = useAccount();
+  // IMP END - Blockchain Calls
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -25,7 +29,9 @@ function App() {
   const loggedInView = (
     <div className="grid">
       <h2>Connected to {connectorName}</h2>
+      {/* // IMP START - Blockchain Calls */}
       <div>{address}</div>
+      {/* // IMP END - Blockchain Calls */}
       <div className="flex-container">
         <div>
           <button onClick={() => uiConsole(userInfo)} className="card">

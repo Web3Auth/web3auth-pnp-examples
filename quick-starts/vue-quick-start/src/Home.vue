@@ -8,7 +8,7 @@
         </a>
         Vue Composables Modal Quick Start
       </h2>
-
+      <!-- IMP START - Login   -->
       <div v-if="!isConnected" class="card-container">
         <button class="card" @click="connect()">
           Login
@@ -16,7 +16,7 @@
         <div v-if="connectLoading" class="loading">Connecting...</div>
         <div v-if="connectError" class="error">{{ connectError.message }}</div>
       </div>
-
+      <!-- IMP END - Login   -->
       <div v-if="isConnected" class="flex-col">
         <h2>Connected to {{ connectorName }}</h2>
         <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))">
@@ -25,6 +25,7 @@
               Get User Info
             </button>
           </div>
+          <!-- IMP START - Logout   -->
           <div>
             <button class="card" @click="disconnect()">
               Log Out
@@ -32,13 +33,15 @@
             <div v-if="disconnectLoading" class="loading">Disconnecting...</div>
             <div v-if="disconnectError" class="error">{{ disconnectError.message }}</div>
           </div>
+          <!-- IMP END - Logout   -->
         </div>
       </div>
+      <!-- IMP START - Blockchain Calls -->
       <Account v-if="isConnected" />
       <SendTransaction v-if="isConnected" />
       <Balance v-if="isConnected" />
       <SwitchNetwork v-if="isConnected" />
-      
+      <!-- IMP END - Blockchain Calls -->
       <div id="console">
         <p></p>
       </div>
@@ -55,12 +58,14 @@
 
 <script setup lang="ts">
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/vue";
-import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
+// IMP START - Blockchain Calls
 import Account from './components/Account.vue';
 import SendTransaction from './components/SendTransaction.vue';
 import Balance from './components/Balance.vue';
 import SwitchNetwork from './components/SwitchNetwork.vue';
-// Web3Auth hooks (direct from library)
+// IMP END - Blockchain Calls
+
+// IMP START - Login
 const { 
   connect, 
   isConnected, 
@@ -68,12 +73,15 @@ const {
   loading: connectLoading, 
   error: connectError 
 } = useWeb3AuthConnect();
+// IMP END - Login
 
+// IMP START - Logout
 const { 
   disconnect, 
   loading: disconnectLoading, 
   error: disconnectError 
 } = useWeb3AuthDisconnect();
+// IMP END - Logout
 
 const { userInfo } = useWeb3AuthUser();
 

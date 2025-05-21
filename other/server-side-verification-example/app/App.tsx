@@ -12,7 +12,7 @@ function App() {
   const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
-  const { token, authenticateUser, loading: idTokenLoading, error: idTokenError } = useIdentityToken();
+  const { token, getIdentityToken, loading: idTokenLoading, error: idTokenError } = useIdentityToken();
   const { web3Auth } = useWeb3Auth();
   const { address, connector } = useAccount();
 
@@ -25,7 +25,7 @@ function App() {
   }
 
   const validateIdToken = async () => {
-    await authenticateUser();
+    await getIdentityToken();
     const pubKey = await web3Auth?.provider?.request({ method: "public_key" });
 
     // Validate idToken with server
@@ -73,7 +73,7 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={() => authenticateUser().then(() => uiConsole(token))} className="card">
+          <button onClick={() => getIdentityToken().then(() => uiConsole(token))} className="card">
             Get ID Token
           </button>
           {idTokenLoading && <div className="loading">Getting ID Token...</div>}

@@ -13,7 +13,7 @@
   "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
     "@solana/web3.js": "^1.98.0",
-    "@web3auth/modal": "^10.0.0-beta.11",
+    "@web3auth/modal": "^10.0.0-beta.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

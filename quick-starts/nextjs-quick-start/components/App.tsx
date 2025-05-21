@@ -1,13 +1,24 @@
+// IMP START - Quick Start
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+// IMP END - Quick Start
+// IMP START - Blockchain Calls  
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./wagmi.tsx/sendTransaction";
 import { Balance } from "./wagmi.tsx/getBalance";
 import { SwitchChain } from "./wagmi.tsx/switchNetwork";
+// IMP END - Blockchain Calls
+
 function App() {
+  // IMP START - Login
   const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  // IMP END - Login
+  // IMP START - Logout
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
+  // IMP END - Logout
   const { userInfo } = useWeb3AuthUser();
+  // IMP START - Blockchain Calls
   const { address, connector } = useAccount();
+  // IMP END - Blockchain Calls
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -20,13 +31,16 @@ function App() {
   const loggedInView = (
     <div className="grid">
       <h2>Connected to {connector?.name}</h2>
+      {/* IMP START - Blockchain Calls */}
       <div>{address}</div>
+      {/* IMP END - Blockchain Calls */}
       <div className="flex-container">
         <div>
           <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
           </button>
         </div>
+        {/* IMP START - Logout */}
         <div>
           <button onClick={() => disconnect()} className="card">
             Log Out
@@ -34,14 +48,18 @@ function App() {
           {disconnectLoading && <div className="loading">Disconnecting...</div>}
           {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
+        {/* IMP END - Logout */}
       </div>
+      {/* IMP START - Blockchain Calls */}
       <SendTransaction />
       <Balance />
       <SwitchChain />
+      {/* IMP END - Blockchain Calls */}
     </div>
   );
 
   const unloggedInView = (
+    // IMP START - Login
     <div className="grid">
       <button onClick={() => connect()} className="card">
         Login
@@ -49,6 +67,7 @@ function App() {
       {connectLoading && <div className="loading">Connecting...</div>}
       {connectError && <div className="error">{connectError.message}</div>}
     </div>
+    // IMP END - Login
   );
 
   return (

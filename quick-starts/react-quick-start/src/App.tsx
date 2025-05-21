@@ -1,5 +1,8 @@
 import "./App.css";
+// IMP START - Quick Start
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+// IMP END - Quick Start
+
 // IMP START - Blockchain Calls  
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
@@ -48,9 +51,11 @@ function App() {
         </div>
         {/* // IMP END - Logout */}
       </div>
+      {/* IMP START - Blockchain Calls */}
       <SendTransaction />
       <Balance />
       <SwitchChain />
+      {/* IMP END - Blockchain Calls */}
     </div>
   );
 

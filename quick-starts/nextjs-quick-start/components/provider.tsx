@@ -12,9 +12,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // IMP START - Dashboard Registration
 const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || ""; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
-const queryClient = new QueryClient();
 
-// IMP START - Instantiate SDK
+// IMP START - Setup Wagmi Provider
+const queryClient = new QueryClient();
+// IMP END - Setup Wagmi Provider
+ 
+// IMP START - Config
 const web3AuthContextConfig: Web3AuthContextConfig = {
     web3AuthOptions: {
       clientId,
@@ -22,7 +25,7 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
       authBuildEnv: "testing",
     }
   };
-// IMP END - Instantiate SDK
+// IMP END - Config
 
 export default function Provider({ children }: { children: React.ReactNode }) {
     return (

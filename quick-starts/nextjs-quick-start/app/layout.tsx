@@ -1,5 +1,7 @@
 import React from "react";
+// IMP START - Quick Start
 import Provider from "../components/provider";
+// IMP END - Quick Start
 import "./globals.css";
 
 import { Inter } from "next/font/google";

@@ -8,7 +8,7 @@
     "@taquito/utils": "^13.0.0",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
     "@vitejs/plugin-react": "^4.3.1",
-    "@web3auth/modal": "^10.0.0-beta.13",
+    "@web3auth/modal": "^10.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

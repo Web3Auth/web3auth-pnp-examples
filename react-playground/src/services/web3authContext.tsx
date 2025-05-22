@@ -7,7 +7,6 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions: {
     clientId,
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    authBuildEnv: "testing",
   },
 };
 

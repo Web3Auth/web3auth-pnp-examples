@@ -7,7 +7,7 @@ const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  authBuildEnv: "testing",
+  
 };
 
 const web3AuthContextConfig = {

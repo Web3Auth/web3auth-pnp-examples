@@ -17,7 +17,7 @@ const clientId = environment.WEB3AUTH_CLIENT_ID || ""; // get from https://dashb
 const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  authBuildEnv: "testing",
+  
 });
 // IMP END - Config
 

@@ -20,7 +20,6 @@ let web3auth = null;
     clientId,
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
     privateKeyProvider: privateKeyProvider,
-    authBuildEnv: "testing",
   });
   // IMP END - Instantiate SDK
 

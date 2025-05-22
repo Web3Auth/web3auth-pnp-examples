@@ -10,7 +10,7 @@ const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || ""; // get from h
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  authBuildEnv: "testing",
+  
 };
 // IMP END - Instantiate SDK
 

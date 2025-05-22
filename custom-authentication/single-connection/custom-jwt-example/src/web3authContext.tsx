@@ -7,7 +7,7 @@ const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID;
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  authBuildEnv: "testing",
+  
 };
 
 const web3AuthContextConfig = {

@@ -9,7 +9,7 @@
     "@taquito/taquito": "^19.0.1",
     "@taquito/utils": "^19.0.1",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
-    "@web3auth/modal": "^10.0.0-beta.12",
+    "@web3auth/modal": "^10.0.0-beta.13",
     "ethers": "^6.10.0",
     "near-api-js": "^4.0.4",
     "react": "^18.3.1",

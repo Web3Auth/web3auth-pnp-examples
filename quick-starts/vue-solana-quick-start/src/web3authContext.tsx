@@ -13,7 +13,6 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
     clientId,
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
     defaultChainId: "0x66",
-    authBuildEnv: "testing",
   }
 };
 // IMP END - Instantiate SDK

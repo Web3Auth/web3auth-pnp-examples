@@ -2,11 +2,12 @@
 
 // IMP START - Setup Web3Auth Provider
 import { Web3AuthProvider, type Web3AuthContextConfig } from "@web3auth/modal/react";
-import { WEB3AUTH_NETWORK } from "@web3auth/modal";
+import { IWeb3AuthState, WEB3AUTH_NETWORK } from "@web3auth/modal";
 // IMP END - Setup Web3Auth Provider
 // IMP START - Setup Wagmi Provider
 import { WagmiProvider } from "@web3auth/modal/react/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 // IMP END - Setup Wagmi Provider
 
 // IMP START - Dashboard Registration
@@ -23,14 +24,16 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
       authBuildEnv: "testing",
+      ssr: true,
+
     }
   };
 // IMP END - Config
 
-export default function Provider({ children }: { children: React.ReactNode }) {
-    return (
+export default function Provider({ children, web3authInitialState }: { children: React.ReactNode, web3authInitialState: IWeb3AuthState | undefined }) {
+  return (
     // IMP START - Setup Web3Auth Provider
-    <Web3AuthProvider config={web3AuthContextConfig}>
+    <Web3AuthProvider config={web3AuthContextConfig} initialState={web3authInitialState}>
       {/* // IMP END - Setup Web3Auth Provider */}
       {/*// IMP START - Setup Wagmi Provider*/}
       <QueryClientProvider client={queryClient}>

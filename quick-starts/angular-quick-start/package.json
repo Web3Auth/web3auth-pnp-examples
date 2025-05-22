@@ -1,0 +1,47 @@
+{
+  "name": "angular-quick-start",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "lint": "ng line"
+  },
+  "private": true,
+  "//IMP START": "IMP START - Web3Auth Installation",
+  "dependencies": {
+    "@angular/animations": "~18.1.4",
+    "@angular/common": "~18.1.4",
+    "@angular/compiler": "~18.1.4",
+    "@angular/core": "~18.1.4",
+    "@angular/forms": "~18.1.4",
+    "@angular/platform-browser": "~18.1.4",
+    "@angular/platform-browser-dynamic": "~18.1.4",
+    "@angular/router": "~18.1.4",
+    "@web3auth/modal": "^10.0.0",
+    "empty-module": "^0.0.2",
+    "ethers": "^6.13.2",
+    "viem": "^2.19.1",
+    "zone.js": "^0.14.10"
+  },
+  "//IMP END": "IMP END - Web3Auth Installation",
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~18.1.4",
+    "@angular/cli": "~18.1.4",
+    "@angular/compiler-cli": "~18.1.4",
+    "@types/jasmine": "~4.3.0",
+    "@types/keccak": "^3.0.1",
+    "@types/node": "^18.11.2",
+    "@types/readable-stream": "^2.3.14",
+    "jasmine-core": "~4.4.0",
+    "karma": "~6.4.1",
+    "karma-chrome-launcher": "~3.1.1",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
+    "process": "^0.11.10",
+    "typescript": "~5.5.4"
+  }
+}

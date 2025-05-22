@@ -150,3 +150,5 @@ yarn-error.log
 .DS_Store
 build/
 Pods/
+.vscode/
+.vercel

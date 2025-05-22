@@ -20,10 +20,10 @@ root.render(
   <Web3AuthProvider config={web3AuthContextConfig}>
     <QueryClientProvider client={queryClient}>
       <WagmiProvider>
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+        <GoogleOAuthProvider clientId="519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com">
           <Auth0Provider
             domain="web3auth.au.auth0.com"
-            clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+            clientId="hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O"
             authorizationParams={{
               redirect_uri: window.location.origin,
             }}

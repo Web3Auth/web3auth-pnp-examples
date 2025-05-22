@@ -1,4 +1,4 @@
-import { Web3Auth, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/modal";
+import { Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
 
 let web3auth = null;
 
@@ -6,22 +6,10 @@ let web3auth = null;
   $(".btn-logged-in").hide();
   $("#sign-tx").hide();
 
-  // IMP START - Dashboard Registration
-  // Load client ID from environment variable or fallback to default
-  const clientId = process.env.WEB3AUTH_CLIENT_ID || ""; // get your clientId from https://dashboard.web3auth.io
-  // IMP END - Dashboard Registration
-
-  // IMP START - Instantiate SDK
-  const privateKeyProvider = new EthereumPrivateKeyProvider({
-    config: { chainConfig }
-  });
-
   const web3auth = new Web3Auth({
-    clientId,
+    clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get your clientId from https://dashboard.web3auth.io
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    privateKeyProvider: privateKeyProvider,
   });
-  // IMP END - Instantiate SDK
 
   await web3auth.init();
 

@@ -18,7 +18,7 @@ function App() {
       authConnection: AUTH_CONNECTION.CUSTOM,
       authConnectionId: "w3a-cognito-demo",
       extraLoginOptions: {
-        clientId: "2upuksfh6n0n5c0nciirc1bdrv",
+        client_id: "2upuksfh6n0n5c0nciirc1bdrv",
         domain: "https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com",
         verifierIdField: "email",
         response_type: "token",

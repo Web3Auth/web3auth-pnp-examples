@@ -16,8 +16,9 @@ export const metadata = {
 };
 
 // eslint-disable-next-line no-undef
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const web3authInitialState = cookieToWeb3AuthState((headers()).get('cookie'))
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const headersList = await headers();
+  const web3authInitialState = cookieToWeb3AuthState(headersList.get('cookie'));
 
   return (
     <html lang="en">

@@ -24,25 +24,31 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
       authBuildEnv: "testing",
+      // IMP START - SSR
       ssr: true,
-
+      // IMP END - SSR
     }
   };
 // IMP END - Config
 
-export default function Provider({ children, web3authInitialState }: { children: React.ReactNode, web3authInitialState: IWeb3AuthState | undefined }) {
+// IMP START - SSR
+export default function Provider({ children, web3authInitialState }: 
+  { children: React.ReactNode, web3authInitialState: IWeb3AuthState | undefined }) {
+// IMP END - SSR
   return (
     // IMP START - Setup Web3Auth Provider
+    // IMP START - SSR
     <Web3AuthProvider config={web3AuthContextConfig} initialState={web3authInitialState}>
+      {/* // IMP END - SSR */}
       {/* // IMP END - Setup Web3Auth Provider */}
-      {/*// IMP START - Setup Wagmi Provider*/}
+      {/* // IMP START - Setup Wagmi Provider */}
       <QueryClientProvider client={queryClient}>
         <WagmiProvider>
         {children}
         </WagmiProvider>
       </QueryClientProvider>
-      {/*// IMP END - Setup Wagmi Provider*/}
-      {/*// IMP START - Setup Web3Auth Provider*/}
+      {/*// IMP END - Setup Wagmi Provider */}
+      {/*// IMP START - Setup Web3Auth Provider */}
     </Web3AuthProvider>
     // IMP END - Setup Web3Auth Provider
   );

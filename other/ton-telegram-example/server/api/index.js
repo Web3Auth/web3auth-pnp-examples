@@ -69,7 +69,8 @@ app.post("/auth/telegram", async (req, res) => {
 
   console.log("Received initDataRaw:", initDataRaw);
   console.log("isMocked:", isMocked);
-  console.log("photoUrl:", photoUrl); // Log the photoUrl for debugging
+  const sanitizedPhotoUrl = photoUrl ? photoUrl.replace(/\n|\r/g, "") : photoUrl;
+  console.log("photoUrl (sanitized):", sanitizedPhotoUrl); // Log the sanitized photoUrl for debugging
 
   if (!initDataRaw) {
     return res.status(400).json({ error: "initDataRaw is required" });

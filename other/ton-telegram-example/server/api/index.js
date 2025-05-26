@@ -67,7 +67,8 @@ app.get("/test", (req, res) => {
 app.post("/auth/telegram", async (req, res) => {
   const { initDataRaw, isMocked, photoUrl } = req.body; // Extract photoUrl from request body
 
-  console.log("Received initDataRaw:", initDataRaw);
+  const sanitizedInitDataRaw = initDataRaw ? initDataRaw.replace(/\n|\r/g, "") : initDataRaw;
+  console.log("Received initDataRaw (sanitized):", sanitizedInitDataRaw);
   console.log("isMocked:", isMocked);
   const sanitizedPhotoUrl = photoUrl ? photoUrl.replace(/\n|\r/g, "") : photoUrl;
   console.log("photoUrl (sanitized):", sanitizedPhotoUrl); // Log the sanitized photoUrl for debugging

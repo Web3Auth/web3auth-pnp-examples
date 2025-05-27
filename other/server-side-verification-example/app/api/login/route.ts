@@ -1,29 +1,55 @@
 import * as jose from "jose";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const authHeader = request.headers.get("authorization");
-    const idToken = authHeader?.split(" ")[1] || "";
+    // Extract JWT token from Authorization header
+    const authHeader = req.headers.get("authorization");
+    const idToken = authHeader?.split(" ")[1];
     
-    const body = await request.json();
-    const app_pub_key = body.appPubKey;
+    if (!idToken) {
+      return NextResponse.json({ error: "No token provided" }, { status: 401 });
+    }
 
-    const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
-    const jwtDecoded = await jose.jwtVerify(idToken, jwks, {
-      algorithms: ["ES256"],
-    });
+    // Get public key from request body
+    const { appPubKey } = await req.json();
     
-    if (
-      (jwtDecoded.payload as any).wallets.find((x: { type: string }) => x.type === "web3auth_app_key").public_key.toLowerCase() ===
-      app_pub_key.toLowerCase()
-    ) {
-      // Verified
-      return NextResponse.json({ name: "Validation Success" }, { status: 200 });
+    if (!appPubKey) {
+      return NextResponse.json({ error: "No appPubKey provided" }, { status: 400 });
+    }
+
+    // Verify JWT using Web3Auth JWKS
+    const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks"));
+    const { payload } = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
+
+    // Find matching wallet in JWT
+    const wallets = (payload as any).wallets || [];
+    const normalizedAppKey = appPubKey.toLowerCase().replace(/^0x/, '');
+    
+    const isValid = wallets.some((wallet: any) => {
+      if (wallet.type !== "web3auth_app_key") return false;
+      
+      const walletKey = wallet.public_key.toLowerCase();
+      
+      // Direct key comparison for ed25519 keys
+      if (walletKey === normalizedAppKey) return true;
+      
+      // Handle compressed secp256k1 keys
+      if (wallet.curve === "secp256k1" && walletKey.length === 66 && normalizedAppKey.length === 128) {
+        const compressedWithoutPrefix = walletKey.substring(2);
+        return normalizedAppKey.startsWith(compressedWithoutPrefix);
+      }
+      
+      return false;
+    });
+
+    if (isValid) {
+      return NextResponse.json({ name: "Verification Successful" }, { status: 200 });
     } else {
-      return NextResponse.json({ name: "Failed" }, { status: 400 });
+      return NextResponse.json({ name: "Verification Failed" }, { status: 400 });
     }
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    console.error("Social login verification error:", error);
+    return NextResponse.json({ error: "Verification error" }, { status: 500 });
   }
 } 

@@ -9,7 +9,7 @@ import { SwitchChain } from "../components/switchNetwork";
 import { useEffect } from "react";
 
 function App() {
-  const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { connect, isConnected, loading: connectLoading, error: connectError, connectorName } = useWeb3AuthConnect();
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { token, getIdentityToken, loading: idTokenLoading, error: idTokenError } = useIdentityToken();
@@ -25,26 +25,43 @@ function App() {
   }
 
   const validateIdToken = async () => {
-    await getIdentityToken();
-    const pubKey = await web3Auth?.provider?.request({ method: "public_key" });
+    const idToken = await getIdentityToken();
+    
+    let res;
+    if (connectorName === "auth") {
+      // Social login: send public key
+      const pubKey = await web3Auth?.provider?.request({ method: "public_key" });
+      console.log("pubKey:", pubKey);
+      res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify({ appPubKey: pubKey }),
+      });
+    } else {
+      // External wallet: send address
+      const address = await web3Auth?.provider?.request({ method: "eth_accounts" });
+      res = await fetch("/api/login-external", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify({ address }),
+      });
+    }
 
-    // Validate idToken with server
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ appPubKey: pubKey }),
-    });
+    // Handle response
     if (res.status === 200) {
       toast.success("JWT Verification Successful");
       uiConsole(`Logged in Successfully!`, userInfo);
     } else {
       toast.error("JWT Verification Failed");
-      console.log("JWT Verification Failed");
       await disconnect();
     }
+    
     return res.status;
   };
 
@@ -60,7 +77,7 @@ function App() {
     };
 
     init();
-  }, [isConnected, validateIdToken]);
+  }, [isConnected]);
 
   const loggedInView = (
     <div className="grid">

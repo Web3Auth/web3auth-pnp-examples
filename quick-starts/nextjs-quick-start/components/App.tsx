@@ -1,9 +1,9 @@
 import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
 // IMP START - Blockchain Calls  
 import { useAccount } from "wagmi";
-import { SendTransaction } from "./wagmi.tsx/sendTransaction";
-import { Balance } from "./wagmi.tsx/getBalance";
-import { SwitchChain } from "./wagmi.tsx/switchNetwork";
+import { SendTransaction } from "./wagmi/sendTransaction";
+import { Balance } from "./wagmi/getBalance";
+import { SwitchChain } from "./wagmi/switchNetwork";
 // IMP END - Blockchain Calls
 
 function App() {

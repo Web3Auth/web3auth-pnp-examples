@@ -11,7 +11,7 @@
   "dependencies": {
     "@tanstack/vue-query": "^5.74.6",
     "@wagmi/vue": "^0.1.16",
-    "@web3auth/modal": "^10.0.0",
+    "@web3auth/modal": "^10.0.2",
     "core-js": "^3.38.0",
     "vue": "^3.4.36"
   },

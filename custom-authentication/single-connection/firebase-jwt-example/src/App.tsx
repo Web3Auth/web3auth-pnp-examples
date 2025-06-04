@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 import "./App.css";
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser, useManageMFA, useEnableMFA } from "@web3auth/modal/react";
 import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
 import { Balance } from "./components/getBalance";
 import { SwitchChain } from "./components/switchNetwork";
 import { initializeApp } from "firebase/app";
-import { getAuth, GithubAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -24,19 +24,21 @@ function App() {
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { address } = useAccount();
+  const { manageMFA, loading: manageMFALoading, error: manageMFAError } = useManageMFA();
+  const { enableMFA, loading: enableMFALoading, error: enableMFAError } = useEnableMFA();
 
-  const loginWithFirebaseGithub = async () => {
+  const loginWithFirebaseGoogle = async () => {
     try {
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
-      const githubProvider = new GithubAuthProvider();
+      const googleProvider = new GoogleAuthProvider();
 
-      const result = await signInWithPopup(auth, githubProvider);    
+      const result = await signInWithPopup(auth, googleProvider);    
 
       const idToken = await result.user.getIdToken(true);
 
       connectTo(WALLET_CONNECTORS.AUTH, {
-        authConnectionId: "w3a-firebase-demo",
+        authConnectionId: "w3a-firebase-demo-new",
         authConnection: AUTH_CONNECTION.CUSTOM,
         idToken,
         extraLoginOptions: {
@@ -73,6 +75,20 @@ function App() {
           {disconnectLoading && <div className="loading">Disconnecting...</div>}
           {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
+        <div>
+          <button onClick={() => enableMFA()} className="card">
+            Enable MFA
+          </button>
+          {enableMFALoading && <div className="loading">Enabling MFA...</div>}
+          {enableMFAError && <div className="error">{enableMFAError.message}</div>}
+        </div>
+        <div>
+          <button onClick={() => manageMFA()} className="card">
+            Manage MFA
+          </button>
+          {manageMFALoading && <div className="loading">Managing MFA...</div>}
+          {manageMFAError && <div className="error">{manageMFAError.message}</div>}
+        </div>
       </div>
       <SendTransaction />
       <Balance />
@@ -83,8 +99,8 @@ function App() {
   const unloggedInView = (
     <div className="grid">
       <div className="flex-container">
-        <button onClick={loginWithFirebaseGithub} className="card">
-          Login with Firebase GitHub
+        <button onClick={loginWithFirebaseGoogle} className="card">
+          Login with Firebase Google
         </button>
       </div>
       {connectLoading && <div className="loading">Connecting...</div>}

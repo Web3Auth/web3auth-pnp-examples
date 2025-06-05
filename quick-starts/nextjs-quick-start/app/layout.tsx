@@ -19,16 +19,22 @@ export const metadata = {
 };
 
 // eslint-disable-next-line no-undef
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   // IMP START - SSR
   const headersList = await headers();
-  const web3authInitialState = cookieToWeb3AuthState(headersList.get('cookie'));
+  const web3authInitialState = cookieToWeb3AuthState(headersList.get("cookie"));
   // IMP END - SSR
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning={true}>
         {/* // IMP START - SSR */}
-        <Provider web3authInitialState={web3authInitialState}>{children}</Provider>
+        <Provider web3authInitialState={web3authInitialState}>
+          {children}
+        </Provider>
         {/* // IMP END - SSR */}
       </body>
     </html>

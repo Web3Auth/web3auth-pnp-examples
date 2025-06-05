@@ -1,5 +1,11 @@
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
-// IMP START - Blockchain Calls  
+import React, { useEffect } from "react";
+import {
+  useWeb3AuthConnect,
+  useWeb3AuthDisconnect,
+  useWeb3AuthUser,
+  useIdentityToken,
+} from "@web3auth/modal/react";
+// IMP START - Blockchain Calls
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./wagmi/sendTransaction";
 import { Balance } from "./wagmi/getBalance";
@@ -8,15 +14,25 @@ import { SwitchChain } from "./wagmi/switchNetwork";
 
 function App() {
   // IMP START - Login
-  const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const {
+    connect,
+    isConnected,
+    loading: connectLoading,
+    error: connectError,
+  } = useWeb3AuthConnect();
   // IMP END - Login
   // IMP START - Logout
-  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
+  const {
+    disconnect,
+    loading: disconnectLoading,
+    error: disconnectError,
+  } = useWeb3AuthDisconnect();
   // IMP END - Logout
   const { userInfo } = useWeb3AuthUser();
   // IMP START - Blockchain Calls
   const { address, connector } = useAccount();
   // IMP END - Blockchain Calls
+  const { token, getIdentityToken, error } = useIdentityToken();
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -25,6 +41,20 @@ function App() {
       console.log(...args);
     }
   }
+
+  // Watch for token changes and display in console
+  useEffect(() => {
+    if (token) {
+      uiConsole({ identityToken: token });
+    }
+  }, [token]);
+
+  // Watch for error changes and display in console
+  useEffect(() => {
+    if (error) {
+      uiConsole({ error: error.message });
+    }
+  }, [error]);
 
   const loggedInView = (
     <div className="grid">
@@ -37,6 +67,9 @@ function App() {
           <button onClick={() => uiConsole(userInfo)} className="card">
             Get User Info
           </button>
+          <button onClick={() => getIdentityToken()} className="card">
+            Get Identity Token
+          </button>
         </div>
         {/* IMP START - Logout */}
         <div>
@@ -44,7 +77,9 @@ function App() {
             Log Out
           </button>
           {disconnectLoading && <div className="loading">Disconnecting...</div>}
-          {disconnectError && <div className="error">{disconnectError.message}</div>}
+          {disconnectError && (
+            <div className="error">{disconnectError.message}</div>
+          )}
         </div>
         {/* IMP END - Logout */}
       </div>
@@ -71,7 +106,10 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
+        <a
+          target="_blank"
+          href="https://web3auth.io/docs/sdk/pnp/web/modal"
+          rel="noreferrer">
           Web3Auth{" "}
         </a>
         & Next.js Modal Quick Start
@@ -86,8 +124,7 @@ function App() {
         <a
           href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nextjs-modal-quick-start"
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           Source code
         </a>
       </footer>

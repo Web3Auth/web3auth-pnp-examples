@@ -1,0 +1,284 @@
+/* Modern, mobile-first CSS with improved form elements */
+:root {
+	/* Web3Auth Docs Inspired Colors (Light Mode) */
+	--primary-color: #0364ff; /* Web3Auth Blue */
+	--primary-hover: #0050cc;
+	--bg-color: #ffffff;
+	--bg-light: #f7f7f7; /* Slightly off-white for cards/inputs */
+	--bg-hover: #eeeeee;
+	--border-color: #e0e0e0; /* Lighter border */
+	--text-color: #1c1e21; /* Darker text */
+	--text-muted: #5f6368;
+	--radius: 6px; /* Slightly smaller radius */
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+	/* Font stack remains similar, common sans-serif */
+	--font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* Dark Mode Variables */
+@media (prefers-color-scheme: dark) {
+	:root {
+		/* Web3Auth Docs Inspired Colors (Dark Mode - Bluish) */
+		--primary-color: #529dff; /* Slightly adjusted blue */
+		--primary-hover: #75b5ff;
+		--bg-color: #171c2a; /* Dark blue-gray background */
+		--bg-light: #23293d; /* Lighter blue-gray for elements */
+		--bg-hover: #2f364f; /* Hover state for blue-gray */
+		--border-color: #3b415c; /* Border matching blue-gray theme */
+		--text-color: #e1e3e8; /* Light text */
+		--text-muted: #9399a8;
+		--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+		--shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+	}
+
+	/* Keep input background consistent with --bg-light */
+	input, select, textarea {
+		background-color: var(--bg-light);
+		border-color: var(--border-color);
+		color: var(--text-color);
+	}
+
+	input:focus, select:focus, textarea:focus {
+		border-color: var(--primary-color);
+		box-shadow: 0 0 0 3px rgba(64, 144, 255, 0.3);
+	}
+
+	/* Keep button background consistent with --bg-light or slightly darker */
+	button, .card {
+		background-color: var(--bg-light);
+		border-color: var(--border-color);
+		color: var(--text-color);
+	}
+
+	button:hover, .card:hover {
+		background-color: var(--bg-hover);
+		border-color: var(--text-muted);
+	}
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: var(--font-sans);
+	color: var(--text-color);
+	background-color: var(--bg-color);
+	line-height: 1.6;
+}
+
+/* Layout */
+.container {
+	width: 100%;
+	padding: 0 16px;
+	margin: 0 auto;
+}
+
+.main {
+	min-height: 100vh;
+	padding: 32px 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* Typography */
+.title {
+	font-size: 28px;
+	text-align: center;
+	margin: 24px 0;
+	line-height: 1.2;
+	font-weight: 600;
+}
+
+.title a {
+	color: var(--primary-color);
+	text-decoration: none;
+}
+
+h2 {
+	font-size: 24px;
+	margin: 24px 0 16px;
+	font-weight: 600;
+}
+
+h3 {
+	font-size: 20px;
+	margin: 16px 0 12px;
+	font-weight: 500;
+	color: var(--text-muted);
+}
+
+/* Buttons */
+button, .card {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 16px;
+	background-color: var(--bg-light);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius);
+	color: var(--text-color);
+	font-weight: 500;
+	font-size: 14px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: var(--shadow-sm);
+}
+
+button:hover, .card:hover {
+	background-color: var(--bg-hover);
+	box-shadow: var(--shadow-md);
+	transform: translateY(-1px);
+}
+
+.card {
+	width: 100%;
+	margin: 8px 0;
+	text-align: center;
+}
+
+button[disabled] {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+/* Form elements */
+form {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 12px;
+	margin: 16px 0;
+}
+
+input, select, textarea {
+	width: 100%;
+	padding: 12px 16px;
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius);
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	font-family: var(--font-sans);
+	font-size: 14px;
+	transition: border-color 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+}
+
+input::placeholder {
+	color: var(--text-muted);
+}
+
+/* Utils */
+.flex-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	width: 100%;
+}
+
+.flex-col {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 100%;
+}
+
+.grid {
+	display: grid;
+	gap: 16px;
+	width: 100%;
+}
+
+/* Console output */
+#console {
+	width: 100%;
+	max-height: 250px;
+	overflow: auto;
+	word-wrap: break-word;
+	font-family: monospace;
+	font-size: 14px; /* Use whole px */
+	padding: 16px;
+	margin: 24px 0;
+	background-color: #0a0a0a; /* Near-black background */
+	color: #e0e0e0; /* Light grey text */
+	border-radius: 0; /* Sharp corners */
+	border: none; /* No border */
+}
+
+/* Footer */
+.footer {
+	width: 100%;
+	padding: 32px 0;
+	border-top: 1px solid var(--border-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 24px;
+	margin-top: 48px;
+	flex-wrap: wrap;
+}
+
+.footer a {
+	color: var(--text-muted);
+	text-decoration: none;
+	font-size: 14px;
+	transition: color 0.2s ease;
+}
+
+.footer a:hover {
+	color: var(--primary-color);
+}
+
+.error {
+	color: red;
+}
+
+.loading {
+	color: var(--primary-color);
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+	.container {
+		max-width: 640px;
+	}
+	
+	.title {
+		font-size: 32px;
+	}
+	
+	form {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+	
+	form button {
+		margin-top: 0;
+	}
+}
+
+@media (min-width: 768px) {
+	.container {
+		max-width: 768px;
+	}
+	
+	.title {
+		font-size: 36px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.container {
+		max-width: 1024px;
+	}
+}

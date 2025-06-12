@@ -46,7 +46,7 @@ export function SignTransaction() {
           {isPending ? 'Signing...' : 'Sign'}
         </button>
       </form>
-      {signedTransaction && <div>Signed Trasaction: {signedTransaction}</div>}
+      {signedTransaction && <div>Signed Transaction: {signedTransaction}</div>}
       {error && (
         <div>Error: {error.message}</div>
       )}

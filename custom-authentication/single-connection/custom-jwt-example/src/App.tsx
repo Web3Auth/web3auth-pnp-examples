@@ -34,7 +34,7 @@ function App() {
       
       await connectTo(WALLET_CONNECTORS.AUTH, {
         authConnection: AUTH_CONNECTION.CUSTOM,
-        authConnectionId: "w3a-node-demo",
+        authConnectionId: "w3a-node-demo-dev",
         idToken,
         extraLoginOptions: {
           isUserIdCaseSensitive: false,

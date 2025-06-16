@@ -32,7 +32,6 @@ const web3AuthOptions: Web3AuthOptions = {
   chains: [chain],
   defaultChainId: "0x6",
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-  
 };
 // IMP END - Instantiate SDK
 

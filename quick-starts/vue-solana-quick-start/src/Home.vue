@@ -6,7 +6,7 @@
         <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
           Web3Auth
         </a>
-        Vue Composables Modal Quick Start
+        Vue Composables Solana Modal Quick Start
       </h2>
 
       <div v-if="!isConnected" class="card-container">

@@ -23,7 +23,7 @@ function App() {
   const loginWithAuth0Google = async () => {
     await connectTo(WALLET_CONNECTORS.AUTH, {
       groupedAuthConnectionId: "aggregate-sapphire",
-      authConnectionId: "w3a-a0-google",
+      authConnectionId: "w3a-a0-github",
       authConnection: AUTH_CONNECTION.CUSTOM,
       extraLoginOptions: {
         connection: "google-oauth2",

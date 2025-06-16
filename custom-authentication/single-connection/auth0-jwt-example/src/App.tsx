@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import "./App.css";
-import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
+import { useEnableMFA, useManageMFA, useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser} from "@web3auth/modal/react";
 import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
 import { useAccount } from "wagmi";
 import { SendTransaction } from "./components/sendTransaction";
@@ -14,6 +14,8 @@ function App() {
   const { userInfo } = useWeb3AuthUser();
   const { address } = useAccount();
   const { getIdTokenClaims, loginWithPopup, logout } = useAuth0();
+  const { manageMFA, loading: manageMFALoading, error: manageMFAError } = useManageMFA();
+  const { enableMFA, loading: enableMFALoading, error: enableMFAError } = useEnableMFA();
 
   const loginWithAuth0 = async () => {
     try {
@@ -65,6 +67,20 @@ function App() {
           }} className="card">
             Log Out
           </button>
+        </div>
+        <div>
+          <button onClick={() => enableMFA()} className="card">
+            Enable MFA
+          </button>
+          {enableMFALoading && <div className="loading">Enabling MFA...</div>}
+          {enableMFAError && <div className="error">{enableMFAError.message}</div>}
+        </div>
+        <div>
+          <button onClick={() => manageMFA()} className="card">
+            Manage MFA
+          </button>
+          {manageMFALoading && <div className="loading">Managing MFA...</div>}
+          {manageMFAError && <div className="error">{manageMFAError.message}</div>}
         </div>
       </div>
       <SendTransaction />

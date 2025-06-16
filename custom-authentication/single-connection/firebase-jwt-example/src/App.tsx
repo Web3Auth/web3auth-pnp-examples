@@ -38,34 +38,17 @@ function App() {
       const idToken = await result.user.getIdToken(true);
 
       connectTo(WALLET_CONNECTORS.AUTH, {
-        authConnectionId: "w3a-firebase-demo",
+        authConnectionId: "web3auth-firebase-examples",
         authConnection: AUTH_CONNECTION.CUSTOM,
         idToken,
+        extraLoginOptions: {
+          isUserIdCaseSensitive: true,
+        },
       });
     } catch (error) {
       console.error("Firebase authentication error:", error);
     }
   };
-
-  const enableMFAWithIdToken = async () => {
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
-    
-    const result = await signInWithPopup(auth, googleProvider);    
-
-    const idToken = await result.user.getIdToken(true);
-
-    enableMFA({
-      authConnectionId: "w3a-firebase-demo",
-      authConnection: AUTH_CONNECTION.CUSTOM,
-      idToken,
-      extraLoginOptions: {
-        client_id: "BQZ400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-      },
-    });
-    
-  }
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -93,7 +76,7 @@ function App() {
           {disconnectError && <div className="error">{disconnectError.message}</div>}
         </div>
         <div>
-          <button onClick={() => enableMFAWithIdToken()} className="card">
+          <button onClick={() => enableMFA()} className="card">
             Enable MFA
           </button>
           {enableMFALoading && <div className="loading">Enabling MFA...</div>}

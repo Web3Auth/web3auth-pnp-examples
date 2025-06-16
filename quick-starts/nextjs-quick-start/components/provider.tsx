@@ -11,7 +11,7 @@ import React from "react";
 // IMP END - Setup Wagmi Provider
 
 // IMP START - Dashboard Registration
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId = "BHgArYmWwSeq21czpcarYh0EVq2WWOzflX-NTK-tY1-1pauPzHKRRLgpABkmYiIV_og9jAvoIxQ8L3Smrwe04Lw"; // get from https://dashboard.web3auth.io
 // IMP END - Dashboard Registration
 
 // IMP START - Setup Wagmi Provider
@@ -22,7 +22,7 @@ const queryClient = new QueryClient();
 const web3AuthContextConfig: Web3AuthContextConfig = {
     web3AuthOptions: {
       clientId,
-      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
         // IMP START - SSR
       ssr: true,
       // IMP END - SSR

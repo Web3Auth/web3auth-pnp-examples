@@ -1,4 +1,4 @@
-import { Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
+import { Web3Auth } from "@web3auth/modal";
 
 let web3auth = null;
 
@@ -7,8 +7,8 @@ let web3auth = null;
   $("#sign-tx").hide();
 
   const web3auth = new Web3Auth({
-    clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get your clientId from https://dashboard.web3auth.io
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+    clientId: "BHgArYmWwSeq21czpcarYh0EVq2WWOzflX-NTK-tY1-1pauPzHKRRLgpABkmYiIV_og9jAvoIxQ8L3Smrwe04Lw", // get your clientId from https://dashboard.web3auth.io
+    web3AuthNetwork: "sapphire_devnet",
   });
 
   await web3auth.init();

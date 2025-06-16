@@ -16,7 +16,7 @@
     "wagmi": "^2.15.0"
   },
   "optionalDependencies": {
-    "esbuild": "^0.14.0"
+    "esbuild": "^0.25.5"
   },
   "browserslist": {
     "production": [
@@ -42,7 +42,7 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
-    "@vitejs/plugin-react": "^4.3.1",
+    "@vitejs/plugin-react": "^4.5.2",
     "autoprefixer": "^10.4.20",
     "buffer": "^6.0.3",
     "eslint": "^8.55.0",

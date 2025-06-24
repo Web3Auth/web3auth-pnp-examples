@@ -1,0 +1,63 @@
+{
+  "browserslist": {
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
+    ]
+  },
+  "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
+    "@orbs-network/ton-access": "^2.3.3",
+    "@telegram-apps/sdk-react": "^2.0.6",
+    "@telegram-apps/types": "^1.0.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@twa-dev/sdk": "^7.8.0",
+    "@types/jest": "^29.4.0",
+    "@types/node": "^18.13.0",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@web3auth/modal": "^10.0.0",
+    "lucide-react": "^0.454.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "source-map-loader": "^4.0.1",
+    "tonweb": "^0.0.66",
+    "typescript": "^5.0.4",
+    "vite": "^5.4.1",
+    "web-vitals": "^3.1.1"
+  },
+  "devDependencies": {
+    "buffer": "^6.0.3",
+    "empty-module": "^0.0.2",
+    "prettier": "^2.8.4",
+    "process": "^0.11.10"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "name": "sfa-web-ton-telegram-example",
+  "overrides": {
+    "typescript": "^5.0.4"
+  },
+  "private": true,
+  "scripts": {
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "start": "vite"
+  },
+  "version": "0.1.0"
+}

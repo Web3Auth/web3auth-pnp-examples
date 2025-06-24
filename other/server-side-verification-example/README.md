@@ -11,12 +11,12 @@ This example demonstrates how to implement the Web3Auth Server Side Verification
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
+git clone https://github.com/Web3Auth/web3auth-examples.git
 ```
 
 ### 2. Navigate to the example
 ```bash
-cd web3auth-pnp-examples/other/server-side-verification-example
+cd web3auth-examples/other/server-side-verification-example
 ```
 
 ### 3. Install dependencies

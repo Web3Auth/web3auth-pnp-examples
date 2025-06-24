@@ -10,7 +10,7 @@
   "//IMP START": "IMP START - Web3Auth Installation",
   "dependencies": {
     "@solana/web3.js": "^1.87.6",
-    "@web3auth/modal": "^10.0.3",
+    "@web3auth/modal": "^10.0.4",
     "core-js": "^3.38.0",
     "vue": "^3.4.36"
   },

@@ -11,12 +11,12 @@ This comprehensive example demonstrates the full capabilities of Web3Auth integr
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
+git clone https://github.com/Web3Auth/web3auth-examples.git
 ```
 
 ### 2. Navigate to the example
 ```bash
-cd web3auth-pnp-examples/react-playground
+cd web3auth-examples/react-playground
 ```
 
 ### 3. Install dependencies

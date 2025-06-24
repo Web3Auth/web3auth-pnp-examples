@@ -4,7 +4,7 @@ const SourceCode = () => {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-center mb-12">
       <a
-        href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground"
+        href="https://github.com/Web3Auth/web3auth-examples/tree/main/react-playground"
         target="_blank"
         rel="noopener noreferrer"
         className="group flex items-center space-x-2 text-dark-text-secondary hover:text-dark-text-accent transition-colors duration-200"

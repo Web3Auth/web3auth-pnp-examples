@@ -61,7 +61,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/react-hooks-no-modal-quick-start"
+          href="https://github.com/Web3Auth/web3auth-examples/tree/main/other/smart-account-example"
           target="_blank"
           rel="noopener noreferrer"
         >

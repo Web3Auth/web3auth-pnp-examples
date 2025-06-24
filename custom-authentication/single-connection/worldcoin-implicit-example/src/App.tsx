@@ -78,7 +78,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-connection/implicit-login/worldcoin-no-modal-example"
+          href="https://github.com/Web3Auth/web3auth-examples/tree/main/custom-authentication/single-connection/worldcoin-implicit-example"
           target="_blank"
           rel="noopener noreferrer"
         >

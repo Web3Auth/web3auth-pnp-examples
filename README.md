@@ -15,8 +15,8 @@ This repository contains ready-to-use examples for integrating Web3Auth across v
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
-    cd web3auth-pnp-examples
+    git clone https://github.com/Web3Auth/web3auth-examples.git
+    cd web3auth-examples
     ```
 
 2. Choose an example that matches your tech stack

@@ -39,7 +39,7 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   }
 
   function goToSourceCode() {
-    window.open("https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground");
+    window.open("https://github.com/Web3Auth/web3auth-examples/tree/main/react-playground");
   }
 
   const location = useLocation();

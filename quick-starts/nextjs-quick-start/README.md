@@ -11,12 +11,12 @@ This example demonstrates how to integrate Web3Auth into a Next.js application f
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
+git clone https://github.com/Web3Auth/web3auth-examples.git
 ```
 
 ### 2. Navigate to the example
 ```bash
-cd web3auth-pnp-examples/quick-starts/nextjs-quick-start
+cd web3auth-examples/quick-starts/nextjs-quick-start
 ```
 
 ### 3. Install dependencies

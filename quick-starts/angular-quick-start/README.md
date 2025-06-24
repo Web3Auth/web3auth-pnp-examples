@@ -11,12 +11,12 @@ This example demonstrates how to integrate Web3Auth into an Angular application 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Web3Auth/web3auth-pnp-examples.git
+git clone https://github.com/Web3Auth/web3auth-examples.git
 ```
 
 ### 2. Navigate to the example
 ```bash
-cd web3auth-pnp-examples/quick-starts/angular-quick-start
+cd web3auth-examples/quick-starts/angular-quick-start
 ```
 
 ### 3. Install dependencies

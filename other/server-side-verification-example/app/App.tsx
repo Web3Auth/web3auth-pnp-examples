@@ -141,7 +141,7 @@ function App() {
 
           <footer className="footer">
             <a
-              href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/other/server-side-verification-no-modal-example"
+              href="https://github.com/Web3Auth/web3auth-examples/tree/main/other/server-side-verification-example"
               target="_blank"
               rel="noopener noreferrer"
             >

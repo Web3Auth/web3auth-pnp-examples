@@ -47,7 +47,7 @@
       </div>
 
       <footer class="footer">
-        <a href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-composables-modal-quick-start"
+        <a href="https://github.com/Web3Auth/web3auth-examples/tree/main/quick-starts/vue-quick-start"
           target="_blank" rel="noopener noreferrer">
           Source code
         </a>

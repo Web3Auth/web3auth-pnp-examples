@@ -28,7 +28,7 @@ const Sidebar = () => {
     window.open(connectedChain?.blockExplorerUrl || "");
   }
   function goToSourceCode() {
-    window.open("https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground");
+    window.open("https://github.com/Web3Auth/web3auth-examples/tree/main/react-playground");
   }
   function goToFaucet() {
     if (connectedChain?.chainId === "0xaa36a7") {

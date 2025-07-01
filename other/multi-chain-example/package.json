@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@polkadot/api": "^10.11.2",
+    "@polkadot/api": "^16.2.2",
     "@polkadot/util-crypto": "^12.6.2",
     "@taquito/signer": "^19.0.1",
     "@taquito/taquito": "^19.0.1",

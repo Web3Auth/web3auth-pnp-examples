@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@polkadot/api": "^15.10.2",
+    "@polkadot/api": "^16.2.2",
     "@polkadot/util": "^13.4.4",
     "@polkadot/util-crypto": "^13.4.4",
     "@web3auth/modal": "^10.0.4",

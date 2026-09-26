@@ -12,7 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.37.1",
     "@web3auth/modal": "^11.0.2",
-    "next": "15.3.8",
+    "next": "15.5.24",
     "react": "^19.1.4",
     "react-dom": "^19.1.4",
     "wagmi": "^3.0.0"

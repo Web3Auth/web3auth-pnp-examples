@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@taquito/signer": "^13.0.0",
-    "@taquito/taquito": "^13.0.0",
+    "@taquito/signer": "^25.0.0",
+    "@taquito/taquito": "^25.0.0",
     "@taquito/utils": "^13.0.0",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
     "@vitejs/plugin-react": "^4.3.1",

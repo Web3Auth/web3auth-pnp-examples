@@ -6,6 +6,11 @@ jobs:
   markdown-link-check:
     runs-on: ubuntu-latest
     steps:
+      - name: Wiz sensor
+        uses: Web3Auth/.github/.github/actions/wiz-sensor@2f62f5725c0aa2bbdf6ad947dbe589d44665f58c # feat/wiz-sensor-action
+        with:
+          enabled: ${{ vars.WIZ_SENSOR_ENABLED }}
+          token: ${{ secrets.WIZ_SENSOR_TOKEN }}
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
